@@ -37,6 +37,7 @@ class User(var login: String, var token: String, var first_name: String, var las
                 remove("user.token")
                 remove("user.first_name")
                 remove("user.last_name")
+                commit()
             }
         }
     }
