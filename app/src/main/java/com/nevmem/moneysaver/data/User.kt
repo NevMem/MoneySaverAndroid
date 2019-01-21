@@ -1,0 +1,33 @@
+package com.nevmem.moneysaver.data
+
+import android.content.Context
+import com.nevmem.moneysaver.exceptions.UserCredentialsNotFound
+
+class User(var login: String, var token: String, var first_name: String, var last_name: String) {
+    override fun toString(): String {
+        return "${this.login}\n${this.first_name}\n${this.last_name}\n${this.token}"
+    }
+
+    companion object {
+        fun loadUserCredintials(context: Context): User {
+            val sharedPrefs = context.getSharedPreferences("com.nevmem.glob", Context.MODE_PRIVATE)
+            val login = sharedPrefs.getString("user.login", "empty")
+            val token = sharedPrefs.getString("user.token", "empty")
+            val first_name = sharedPrefs.getString("user.first_name", "empty")
+            val last_name = sharedPrefs.getString("user.last_name", "empty")
+            if (login == "empty" || token == "empty" || first_name == "empty" || last_name == "empty")
+                throw UserCredentialsNotFound()
+            return User(login, token, first_name, last_name)
+        }
+
+        fun saveUserCredentials(context: Context, user: User) {
+            val sharedPrefs = context.getSharedPreferences("com.nevmem.glob", Context.MODE_PRIVATE)
+            val editor = sharedPrefs.edit()
+            editor.putString("user.login",  user.login)
+            editor.putString("user.token",  user.token)
+            editor.putString("user.first_name",  user.first_name)
+            editor.putString("user.last_name",  user.last_name)
+            editor.commit()
+        }
+    }
+}
