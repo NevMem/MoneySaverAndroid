@@ -29,5 +29,15 @@ class User(var login: String, var token: String, var first_name: String, var las
             editor.putString("user.last_name",  user.last_name)
             editor.commit()
         }
+
+        fun clearCredentials(context: Context) {
+            val sharedPrefs = context.getSharedPreferences("com.nevmem.glob", Context.MODE_PRIVATE)
+            with(sharedPrefs.edit()) {
+                remove("user.login")
+                remove("user.token")
+                remove("user.first_name")
+                remove("user.last_name")
+            }
+        }
     }
 }
