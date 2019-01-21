@@ -84,6 +84,7 @@ class LoginPageActivity : FragmentActivity() {
                             it.getString("first_name"), it.getString("last_name"))
 
                         User.saveUserCredentials(this, user)
+                        goToHomePage()
                     } else {
                         loginModel.error.value = "Server response was incorrect"
                     }

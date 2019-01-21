@@ -6,12 +6,15 @@
         <!--<item name="colorPrimary">@color/colorPrimary</item>-->
         <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:fontFamily">Segoe UI,Tahoma,Geneva,Verdana,sans-serif</item>
     </style>
 
     <style name="SpecialButtonStyle">
         <item name="android:textColor">#fff</item>
         <item name="android:background">@color/mainColor</item>
+    </style>
+
+    <style name="LogOutButton" parent = "Base.Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
 </resources>

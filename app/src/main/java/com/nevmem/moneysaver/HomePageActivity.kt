@@ -7,12 +7,14 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.TextView
+import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -21,6 +23,7 @@ import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.exceptions.UserCredentialsNotFound
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.login_page.*
+import kotlinx.android.synthetic.main.user_profile.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -44,6 +47,18 @@ class HomePageActivity : FragmentActivity() {
         homeModel.user.observe(this, object: Observer<User> {
             override fun onChanged(value: User?) {
                 userName.text = value!!.first_name
+            }
+        })
+
+        homeModel.averageSpend.observe(this, object: Observer<Double> {
+            override fun onChanged(value: Double?) {
+                averageDay.text = value!!.toString()
+            }
+        })
+
+        homeModel.totalSpend.observe(this, object: Observer<Double> {
+            override fun onChanged(value: Double?) {
+                totalSpend.text = value!!.toString()
             }
         })
     }
@@ -113,12 +128,38 @@ class HomePageActivity : FragmentActivity() {
         if (!parsed) {
         } else {
             if (result.size != 0) {
-                mainList.adapter = MainArrayAdapter(this, result)
+                val toast = Toast.makeText(this, "Loaded records", Toast.LENGTH_SHORT)
+                toast.setGravity(Gravity.BOTTOM, 0, 40)
+                toast.show()
 
+                var sum = 0.0
+                var amountOfDays = 50
+
+                for (i in 0 until(result.size)) {
+                    sum += result[i].value
+                }
+
+                homeModel.totalSpend.value = sum
+                homeModel.amountOfDays.value = amountOfDays
+
+                homeModel.averageSpend.value = sum / amountOfDays
+
+                mainList.adapter = MainArrayAdapter(this, result)
                 mainList.onItemClickListener =
                         AdapterView.OnItemClickListener { parent, view, position, id -> println(position) }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        val toast = Toast.makeText(this, "Press log out button for logging out", Toast.LENGTH_LONG)
+        toast.setGravity(Gravity.BOTTOM, 0, 40)
+        toast.show()
+    }
+
+    fun logoutButtonClicked(view: View) {
+        User.clearCredentials(this)
+        finish()
     }
 
     internal inner class MainArrayAdapter(val context: Context, list: List<Record>) : BaseAdapter() {
@@ -178,7 +219,6 @@ class HomePageActivity : FragmentActivity() {
             {
                 System.out.println("Error occurred")
                 System.out.println(it.toString())
-//                mainTextView.text = "Error while loading, try later"
             }
         ) {
             override fun getBody(): ByteArray {

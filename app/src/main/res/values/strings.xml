@@ -4,4 +4,11 @@
     <string name="loginPage_loginButtonText">Log in</string>
     <string name="Login">Login</string>
     <string name="load_data">Load information</string>
+    <string name="defaultRecordName">Some record name</string>
+    <string name="defaultRecordDate">"01.01.1970"</string>
+    <string name="defaultRecordValue">1000</string>
+    <string name="defaultUserName">Some user</string>
+    <string name="logout">Log out</string>
+    <string name="defaultTotallySpend">Default total spend: 1000</string>
+    <string name="defaultAverage">Average: 1200.12 per day</string>
 </resources>
