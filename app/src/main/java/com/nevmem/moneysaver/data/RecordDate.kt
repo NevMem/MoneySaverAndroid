@@ -32,6 +32,6 @@ class RecordDate {
     }
 
     override fun toString(): String {
-        return format(day) + "." + format(month) + "." + year + " " + hour + ":" + minute
+        return format(day) + "." + format(month) + "." + year + " " + format(hour) + ":" + format(minute)
     }
 }

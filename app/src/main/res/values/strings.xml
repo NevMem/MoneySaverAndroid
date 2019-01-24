@@ -3,7 +3,7 @@
     <string name="passwordString">Password</string>
     <string name="loginPage_loginButtonText">Log in</string>
     <string name="Login">Login</string>
-    <string name="load_data">Load information</string>
+    <string name="load_data">Load more</string>
     <string name="defaultRecordName">Some record name</string>
     <string name="defaultRecordDate">"01.01.1970"</string>
     <string name="defaultRecordValue">1000</string>

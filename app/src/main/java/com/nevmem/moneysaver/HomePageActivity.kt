@@ -47,14 +47,24 @@ class HomePageActivity : FragmentActivity() {
         homeModel.user.observe(this, Observer<User> {
             userName.text = it!!.first_name
         })
-
         homeModel.averageSpend.observe(this, Observer<Double> {
             averageDay.text = it!!.toString()
         })
-
         homeModel.totalSpend.observe(this, Observer<Double> {
             totalSpend.text = it!!.toString()
         })
+        homeModel.loading.observe(this, Observer {
+            if (it == true)
+                loadingBar.visibility = View.VISIBLE
+            else
+                loadingBar.visibility = View.GONE
+        })
+
+//        homePage.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY -> run{ // TODO:for endless scrolling
+//            if (topLinear.height - 100 <= scrollY + homePage.height) {
+//                System.out.println("Update needed")
+//            }
+//        } }
     }
 
     fun processRow(json: JSONObject): Record {
@@ -138,9 +148,23 @@ class HomePageActivity : FragmentActivity() {
 
                 homeModel.averageSpend.value = sum / amountOfDays
 
-                mainList.adapter = MainArrayAdapter(this, result)
-                mainList.onItemClickListener =
-                        AdapterView.OnItemClickListener { parent, view, position, id -> println(position) }
+                val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+                mainList.removeAllViews()
+
+                for (index in 0 until(Math.min(15, result.size))) {
+                    val recordView = inflater.inflate(R.layout.record_layout, mainList, false)
+                    val nameField: TextView = recordView.findViewById(R.id.recordName)
+                    nameField.text = result[index].name
+                    val valueField: TextView = recordView.findViewById(R.id.recordValue)
+                    valueField.text = java.lang.Double.valueOf(result[index].value).toString()
+                    val dateField: TextView = recordView.findViewById(R.id.dateField)
+                    dateField.text = result[index].date.toString()
+                    recordView.setOnClickListener {
+                        System.out.println("Hello from this kek " + result[index].name)
+                    }
+                    mainList.addView(recordView)
+                }
             }
         }
     }
@@ -204,13 +228,17 @@ class HomePageActivity : FragmentActivity() {
     fun loadButtonClick(view: View) {
         val requestQueue = Volley.newRequestQueue(this)
 
+        homeModel.loading.value = true
+
         val stringRequest = object : StringRequest(
             Request.Method.POST,
             "http://104.236.71.129/api/data",
             {
+                homeModel.loading.value = false
                 processData(it)
             },
             {
+                homeModel.loading.value = false
                 System.out.println("Error occurred")
                 System.out.println(it.toString())
             }

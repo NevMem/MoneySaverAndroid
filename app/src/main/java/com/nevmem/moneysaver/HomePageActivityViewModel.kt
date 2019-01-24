@@ -9,4 +9,5 @@ class HomePageActivityViewModel : ViewModel() {
     var totalSpend: MutableLiveData<Double> = MutableLiveData()
     var amountOfDays: MutableLiveData<Int> = MutableLiveData()
     var averageSpend: MutableLiveData<Double> = MutableLiveData()
+    var loading: MutableLiveData<Boolean> = MutableLiveData()
 }
