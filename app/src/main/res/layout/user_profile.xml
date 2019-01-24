@@ -3,19 +3,21 @@
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
                                              xmlns:tools="http://schemas.android.com/tools"
                                              android:layout_width="match_parent"
-                                             android:layout_height="wrap_content" android:id="@+id/totallySpend">
+                                             android:layout_height="wrap_content" android:id="@+id/totallySpend"
+                                             android:background="@drawable/profile_background"
+>
 
     <TextView
             tools:text="@string/defaultUserName"
             android:layout_width="176dp"
-            android:layout_height="36dp"
+            android:layout_height="64dp"
             android:id="@+id/userName" android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp" android:textColor="#fff"
             android:gravity="center|start" android:textSize="24sp"/>
     <Button
             android:text="@string/logout"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
+            android:layout_height="64dp"
             android:id="@+id/logoutButton"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp" style="@style/LogOutButton"
             android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
@@ -26,7 +28,8 @@
             android:layout_height="34dp"
             android:id="@+id/totalSpend" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
             android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/userName"
-            android:gravity="center|start"/>
+            android:gravity="center|start" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     <TextView
             tools:text="@string/defaultAverage"
             android:layout_width="0dp"
@@ -34,6 +37,7 @@
             android:id="@+id/averageDay" app:layout_constraintStart_toEndOf="@+id/totalSpend"
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             android:gravity="center|start" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/logoutButton"/>
+            app:layout_constraintTop_toBottomOf="@+id/logoutButton" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

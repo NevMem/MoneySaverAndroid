@@ -4,4 +4,6 @@
     <color name="mainColor">#7a0099</color>
     <color name="mainFontColor">#000</color>
     <color name="errorColor">#f55</color>
+    <color name="dangerColor">#FF2424</color>
+    <color name="cardColor">#292929</color>
 </resources>
