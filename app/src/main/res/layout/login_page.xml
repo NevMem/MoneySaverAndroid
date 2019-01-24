@@ -53,9 +53,19 @@
             app:layout_constraintEnd_toEndOf="parent" android:background="@color/mainColor" android:textColor="#fff"/>
     <TextView
             android:layout_width="221dp"
-            android:layout_height="79dp"
+            android:layout_height="49dp"
             android:id="@+id/errors" android:layout_marginTop="24dp"
             app:layout_constraintTop_toBottomOf="@+id/appName" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" android:gravity="center" android:textColor="@color/errorColor"/>
+    <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:id="@+id/loginPageLoadingBar"
+            android:visibility="invisible" tools:visibility="visible" android:indeterminateTint="#fff"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/appName" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/appName"/>
 </android.support.constraint.ConstraintLayout>

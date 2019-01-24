@@ -19,7 +19,7 @@
             android:textColor="@color/mainColor"
             app:layout_constraintStart_toStartOf="parent" style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
 
-    <include layout="@layout/user_profile" android:layout_height="98dp"
+    <include layout="@layout/user_profile" android:layout_height="wrap_content"
              android:layout_width="match_parent"
              tools:layout_editor_absoluteX="0dp"
              app:layout_constraintTop_toTopOf="parent" android:id="@+id/include"/>

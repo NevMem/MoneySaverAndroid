@@ -1,32 +1,19 @@
 package com.nevmem.moneysaver
 
-import android.app.Activity
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
-import android.support.v7.app.AppCompatActivity
 import android.view.*
-import android.widget.AdapterView
-import android.widget.BaseAdapter
-import android.widget.TextView
 
 import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.exceptions.UserCredentialsNotFound
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.login_page.*
-import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
-import org.json.JSONTokener
 
 class LoginPageActivity : FragmentActivity() {
 
@@ -38,10 +25,14 @@ class LoginPageActivity : FragmentActivity() {
 
         loginModel = ViewModelProviders.of(this).get(LoginPageViewModel::class.java)
 
-        loginModel.error.observe(this, object: Observer<String> {
-            override fun onChanged(value: String?) {
-                errors.text = value
-            }
+        loginModel.error.observe(this, Observer {
+            errors.text = it
+        })
+        loginModel.loading.observe(this, Observer {
+            if (it == true)
+                loginPageLoadingBar.visibility = View.VISIBLE
+            else
+                loginPageLoadingBar.visibility = View.INVISIBLE
         })
 
         try {
@@ -73,9 +64,11 @@ class LoginPageActivity : FragmentActivity() {
         params.put("password", password)
 
         loginModel.error.value = ""
+        loginModel.loading.value = true
 
         val jsonRequest = JsonObjectRequest(Request.Method.POST, "http://104.236.71.129/api/login",
             params, {
+                loginModel.loading.value = false
                 if (it.has("err")) {
                     loginModel.error.value = it.getString("err")
                 } else {
@@ -90,6 +83,7 @@ class LoginPageActivity : FragmentActivity() {
                     }
                 }
         }, {
+            loginModel.loading.value = false
             loginModel.error.value = it.toString()
         })
 

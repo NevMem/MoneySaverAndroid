@@ -44,22 +44,16 @@ class HomePageActivity : FragmentActivity() {
             System.out.println("User credentials not found")
         }
 
-        homeModel.user.observe(this, object: Observer<User> {
-            override fun onChanged(value: User?) {
-                userName.text = value!!.first_name
-            }
+        homeModel.user.observe(this, Observer<User> {
+            userName.text = it!!.first_name
         })
 
-        homeModel.averageSpend.observe(this, object: Observer<Double> {
-            override fun onChanged(value: Double?) {
-                averageDay.text = value!!.toString()
-            }
+        homeModel.averageSpend.observe(this, Observer<Double> {
+            averageDay.text = it!!.toString()
         })
 
-        homeModel.totalSpend.observe(this, object: Observer<Double> {
-            override fun onChanged(value: Double?) {
-                totalSpend.text = value!!.toString()
-            }
+        homeModel.totalSpend.observe(this, Observer<Double> {
+            totalSpend.text = it!!.toString()
         })
     }
 
