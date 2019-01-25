@@ -1,17 +1,16 @@
 package com.nevmem.moneysaver
 
-import android.app.Activity
+import android.app.ActivityOptions
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.content.SharedPreferences
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.TextView
 import android.widget.Toast
@@ -22,15 +21,17 @@ import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.exceptions.UserCredentialsNotFound
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.login_page.*
+import kotlinx.android.synthetic.main.record_layout.view.*
 import kotlinx.android.synthetic.main.user_profile.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-class HomePageActivity : FragmentActivity() {
+class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
 
     lateinit var homeModel: HomePageActivityViewModel
+
+    val DEFAULT_COUNT_OF_ELEMENTS = 20
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,11 +61,39 @@ class HomePageActivity : FragmentActivity() {
                 loadingBar.visibility = View.GONE
         })
 
-//        homePage.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY -> run{ // TODO:for endless scrolling
-//            if (topLinear.height - 100 <= scrollY + homePage.height) {
-//                System.out.println("Update needed")
-//            }
-//        } }
+        homePage.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY -> run{ // TODO:for endless scrolling
+            if (topLinear.height - 200 <= scrollY + homePage.height) {
+                hideAddButton()
+            } else {
+                showAddButton()
+            }
+        } }
+
+        tryLoad()
+    }
+
+    private fun hideAddButton() {
+        if (!homeModel.changingAddButtonState.value!!) {
+            homeModel.changingAddButtonState.value = true
+            val animator = addRecordButton.animate().alpha(0.0f).setDuration(100)
+            animator.withEndAction {
+                addRecordButton.visibility = View.INVISIBLE
+                homeModel.changingAddButtonState.value = false
+            }
+            animator.start()
+        }
+    }
+
+    private fun showAddButton() {
+        if (!homeModel.changingAddButtonState.value!!) {
+            homeModel.changingAddButtonState.value = true
+            addRecordButton.visibility = View.VISIBLE
+            val animator = addRecordButton.animate().alpha(1.0f).setDuration(100)
+            animator.withEndAction {
+                homeModel.changingAddButtonState.value = false
+            }
+            animator.start()
+        }
     }
 
     fun processRow(json: JSONObject): Record {
@@ -148,25 +177,20 @@ class HomePageActivity : FragmentActivity() {
 
                 homeModel.averageSpend.value = sum / amountOfDays
 
-                val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                val application = applicationContext as App
+                application.clearRecords()
+                application.saveRecords(result)
 
-                mainList.removeAllViews()
+                clearRecordsView()
 
-                for (index in 0 until(Math.min(15, result.size))) {
-                    val recordView = inflater.inflate(R.layout.record_layout, mainList, false)
-                    val nameField: TextView = recordView.findViewById(R.id.recordName)
-                    nameField.text = result[index].name
-                    val valueField: TextView = recordView.findViewById(R.id.recordValue)
-                    valueField.text = java.lang.Double.valueOf(result[index].value).toString()
-                    val dateField: TextView = recordView.findViewById(R.id.dateField)
-                    dateField.text = result[index].date.toString()
-                    recordView.setOnClickListener {
-                        System.out.println("Hello from this kek " + result[index].name)
-                    }
-                    mainList.addView(recordView)
-                }
+                showMore()
             }
         }
+    }
+
+    fun clearRecordsView() {
+        showedRecords = 0
+        mainList.removeAllViews()
     }
 
     override fun onBackPressed() {
@@ -212,7 +236,7 @@ class HomePageActivity : FragmentActivity() {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val recordView = inflater.inflate(R.layout.record_layout, parent, false)
 
-            val nameField: TextView = recordView.findViewById(R.id.recordName)
+            val nameField: TextView = recordView.findViewById(R.id.recordNameField)
             nameField.text = values[index].name
 
             val valueField: TextView = recordView.findViewById(R.id.recordValue)
@@ -225,11 +249,33 @@ class HomePageActivity : FragmentActivity() {
         }
     }
 
-    fun loadButtonClick(view: View) {
+    fun showMore() {
+        val application = applicationContext as App
+        if (showedRecords != application.records.size) {
+            val inflater = applicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+            val delta = Math.min(DEFAULT_COUNT_OF_ELEMENTS, application.records.size - showedRecords)
+            for (index in showedRecords until(showedRecords + delta)) {
+                val recordRow = inflater.inflate(R.layout.record_layout, mainList, false)
+                recordRow.recordNameField.text = application.records[index].name
+                recordRow.recordValue.text = application.records[index].value.toString()
+                recordRow.dateField.text = application.records[index].date.toString()
+                mainList.addView(recordRow)
+            }
+            showedRecords += delta
+            showAddButton()
+        }
+    }
+
+    fun addButtonClicked(view: View) {
+        System.out.println("We're going to start new activity")
+        val intent = Intent(this, AddRecordPage::class.java)
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+    }
+
+    private fun tryLoad() {
         val requestQueue = Volley.newRequestQueue(this)
-
         homeModel.loading.value = true
-
         val stringRequest = object : StringRequest(
             Request.Method.POST,
             "http://104.236.71.129/api/data",
@@ -244,7 +290,7 @@ class HomePageActivity : FragmentActivity() {
             }
         ) {
             override fun getBody(): ByteArray {
-                val params = HashMap < String, String >()
+                val params = HashMap<String, String>()
                 params.put("login", homeModel.user.value!!.login)
                 params.put("token", homeModel.user.value!!.token)
                 return JSONObject(params).toString().toByteArray()
@@ -254,7 +300,15 @@ class HomePageActivity : FragmentActivity() {
                 return "application/json"
             }
         }
-
         requestQueue.add(stringRequest)
+    }
+
+    fun loadButtonClick(view: View) {
+        val application = applicationContext as App
+        if (application.records.size != 0) {
+            showMore()
+        } else {
+            tryLoad()
+        }
     }
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-            android:text="@string/defaultRecordName"
-            android:id="@+id/recordName"
+            tools:text="@string/defaultRecordName"
+            android:id="@+id/recordNameField"
             android:layout_height="60dp"
             android:layout_alignParentTop="true"
             android:layout_marginTop="0dp"
@@ -16,11 +16,11 @@
             android:textSize="22sp" android:layout_width="wrap_content"/>
 
     <TextView
-            android:text="@string/defaultRecordValue"
+            tools:text="@string/defaultRecordValue"
             android:id="@+id/recordValue"
             android:layout_width="178dp"
             android:layout_height="30dp"
-            android:layout_below="@+id/recordName"
+            android:layout_below="@+id/recordNameField"
             android:layout_alignParentStart="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
@@ -30,14 +30,14 @@
             android:textColor="@android:color/darker_gray"/>
 
     <TextView
-            android:text="@string/defaultRecordDate"
+            tools:text="@string/defaultRecordDate"
             android:id="@+id/dateField"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="0dp"
-            android:layout_toEndOf="@+id/recordName"
+            android:layout_toEndOf="@+id/recordNameField"
             android:gravity="center|end"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"

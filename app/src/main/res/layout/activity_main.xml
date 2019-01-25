@@ -7,6 +7,16 @@
                                              android:background="#202020"
                                              tools:context="com.nevmem.moneysaver.HomePageActivity">
 
+    <Button
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/addRecordButton" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="@+id/homePage"
+            android:text="Add" android:background="@drawable/add_button" android:textSize="18sp"
+            android:onClick="addButtonClicked"/>
     <ScrollView
         android:id="@+id/homePage"
         android:layout_height="match_parent"
@@ -49,5 +59,4 @@
                     android:background="@drawable/load_more_btn_background"/>
         </LinearLayout>
     </ScrollView>
-
 </android.support.constraint.ConstraintLayout>
