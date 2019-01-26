@@ -13,11 +13,11 @@ class User(var login: String, var token: String, var first_name: String, var las
             val sharedPrefs = context.getSharedPreferences("com.nevmem.glob", Context.MODE_PRIVATE)
             val login = sharedPrefs.getString("user.login", "empty")
             val token = sharedPrefs.getString("user.token", "empty")
-            val first_name = sharedPrefs.getString("user.first_name", "empty")
-            val last_name = sharedPrefs.getString("user.last_name", "empty")
-            if (login == "empty" || token == "empty" || first_name == "empty" || last_name == "empty")
+            val firstName = sharedPrefs.getString("user.first_name", "empty")
+            val lastName = sharedPrefs.getString("user.last_name", "empty")
+            if (login == "empty" || token == "empty" || firstName == "empty" || lastName == "empty")
                 throw UserCredentialsNotFound()
-            return User(login, token, first_name, last_name)
+            return User(login, token, firstName, lastName)
         }
 
         fun saveUserCredentials(context: Context, user: User) {
