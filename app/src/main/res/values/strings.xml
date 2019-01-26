@@ -11,4 +11,7 @@
     <string name="logout">Log out</string>
     <string name="defaultTotallySpend">Default total spend: 1000</string>
     <string name="defaultAverage">Average: 1200.12 per day</string>
+    <string name="chooseTag">Tag: </string>
+    <string name="chooseWallet">Wallet:</string>
+    <string name="addRecordHeader">Add new record</string>
 </resources>

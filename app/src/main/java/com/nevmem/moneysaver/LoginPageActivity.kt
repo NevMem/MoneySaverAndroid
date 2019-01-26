@@ -37,10 +37,17 @@ class LoginPageActivity : FragmentActivity() {
 
         try {
             User.loadUserCredintials(this)
+            saveUserToApplication()
             goToHomePage()
         } catch (e: UserCredentialsNotFound) {
             System.out.println("There is no user credentials")
         }
+    }
+
+    private fun saveUserToApplication() {
+        val savedUser = User.loadUserCredintials(this)
+        val application = applicationContext as App
+        application.user = savedUser
     }
 
     fun goToHomePage() {
@@ -77,6 +84,7 @@ class LoginPageActivity : FragmentActivity() {
                             it.getString("first_name"), it.getString("last_name"))
 
                         User.saveUserCredentials(this, user)
+                        saveUserToApplication()
                         goToHomePage()
                     } else {
                         loginModel.error.value = "Server response was incorrect"

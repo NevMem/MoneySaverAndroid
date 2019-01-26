@@ -19,7 +19,7 @@
             tools:text="@string/defaultRecordValue"
             android:id="@+id/recordValue"
             android:layout_width="178dp"
-            android:layout_height="30dp"
+            android:layout_height="45dp"
             android:layout_below="@+id/recordNameField"
             android:layout_alignParentStart="true"
             android:layout_marginStart="0dp"
@@ -42,5 +42,11 @@
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
             android:textColor="@android:color/white"/>
+    <TextView
+            tools:text="Wallet"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp" android:id="@+id/walletField" android:layout_below="@+id/dateField"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/recordValue" android:gravity="center|end" android:paddingEnd="20dp"/>
 
 </RelativeLayout>

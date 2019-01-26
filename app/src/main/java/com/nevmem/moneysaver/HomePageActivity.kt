@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.user_profile.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.lang.ClassCastException
 
 class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
 
@@ -101,7 +102,13 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
 
         record.name = json.get("name") as String
         record.value = -java.lang.Double.valueOf(json.get("value").toString())
-        record.wallet = json.get("wallet") as String
+        try {
+            record.wallet = json.get("wallet") as String
+        } catch (_: ClassCastException) {
+            record.wallet = "Not set"
+        } catch (_: JSONException) {
+            record.wallet = "Not set"
+        }
 
         val date = json.get("date") as JSONObject
         val year = Integer.valueOf(date.get("year").toString())
@@ -110,9 +117,13 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
         val hour = Integer.valueOf(date.get("hour").toString())
         val minute = Integer.valueOf(date.get("minute").toString())
 
-        val tags = json.get("tags") as JSONArray
-        for (i in 0 until tags.length())
-        record.tags.add(tags.getString(i))
+        try {
+            val tags = json.get("tags") as JSONArray
+            for (i in 0 until tags.length())
+                record.tags.add(tags.getString(i))
+        } catch (_ : ClassCastException) {
+            record.tags.add("Not set")
+        }
 
         record.date.year = year
         record.date.month = month
@@ -260,6 +271,7 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
                 recordRow.recordNameField.text = application.records[index].name
                 recordRow.recordValue.text = application.records[index].value.toString()
                 recordRow.dateField.text = application.records[index].date.toString()
+                recordRow.walletField.text = application.records[index].wallet.toString()
                 mainList.addView(recordRow)
             }
             showedRecords += delta

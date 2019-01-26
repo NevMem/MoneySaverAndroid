@@ -6,6 +6,19 @@
                                              android:layout_height="match_parent" android:background="#202020"
                                              tools:context=".AddRecordPage">
 
+    <TextView
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:id="@+id/text_"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="32dp"
+            android:gravity="center|start" android:text="@string/chooseWallet" android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/text_1"/>
+    <Spinner android:layout_width="0dp" android:layout_height="49dp"
+             app:layout_constraintEnd_toEndOf="parent"
+             android:layout_marginEnd="32dp" android:id="@+id/chooseWallet"
+             android:layout_marginTop="24dp"
+             app:layout_constraintTop_toBottomOf="@+id/tags" app:layout_constraintStart_toEndOf="@+id/text_"
+             android:layout_marginStart="16dp"/>
     <EditText
             android:layout_height="53dp"
             android:id="@+id/recordValueField" tools:text="Record value" app:layout_constraintStart_toStartOf="parent"
@@ -22,10 +35,11 @@
             android:layout_height="53dp"
             android:id="@+id/recordNameField" tools:text="Record name" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="32dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="32dp"
-            android:layout_marginTop="32dp" app:layout_constraintTop_toTopOf="parent" android:gravity="center|start"
+            android:gravity="center|start"
             android:padding="8dp" android:textSize="20sp" android:hint="Name" android:textColorHint="#aaa"
             android:layout_width="0dp"
-            android:background="@drawable/edit_text" app:layout_constraintHorizontal_bias="0.0"/>
+            android:background="@drawable/edit_text" app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
     <Button
             android:text="Add"
             android:layout_width="160dp"
@@ -41,10 +55,48 @@
             <!--app:layout_constraintTop_toBottomOf="@+id/recordValueField" app:layout_constraintStart_toStartOf="parent"-->
             <!--android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"-->
             <!--android:theme="@android:style/Theme.Material" android:layout_marginTop="24dp"/>-->
-    <Spinner android:layout_width="0dp" android:layout_height="49dp"
+    <Spinner android:layout_width="0dp" android:layout_height="50dp"
              android:layout_marginTop="24dp"
-             app:layout_constraintTop_toBottomOf="@+id/recordValueField" app:layout_constraintStart_toStartOf="parent"
-             android:layout_marginStart="32dp" app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintTop_toBottomOf="@+id/recordValueField"
+             app:layout_constraintEnd_toEndOf="parent"
              android:layout_marginEnd="32dp" android:id="@+id/tags"
-    ></Spinner>
+             app:layout_constraintStart_toEndOf="@+id/text_1" android:layout_marginStart="16dp"/>
+    <TextView
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:id="@+id/text_1"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/recordValueField"
+            android:gravity="center|start" android:text="@string/chooseTag"/>
+    <android.support.constraint.ConstraintLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/profile_background"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/linearLayout" android:gravity="center|start" android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp" android:layout_marginTop="16dp">
+        <ProgressBar
+                style="?android:attr/progressBarStyle"
+                android:visibility="gone"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/loadingBar" android:layout_weight="1"
+                android:layout_alignParentTop="true" android:layout_alignParentStart="true"
+                android:layout_marginStart="8dp" android:layout_toStartOf="@+id/headerText"
+                android:layout_alignBottom="@+id/headerText" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
+        <TextView
+                android:layout_height="wrap_content"
+                android:id="@+id/headerText" tools:text="@string/addRecordHeader"
+                android:padding="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" android:gravity="center|start"
+                android:text="@string/addRecordHeader" android:textSize="20sp" android:layout_width="0dp"
+                android:layout_alignParentTop="true" android:layout_alignParentEnd="true"
+                app:layout_constraintStart_toEndOf="@+id/loadingBar" android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
