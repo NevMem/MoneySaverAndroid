@@ -315,6 +315,13 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
         requestQueue.add(stringRequest)
     }
 
+    fun reloadButtonClicked(view: View) {
+        val application = applicationContext as App
+        application.clearRecords()
+        clearRecordsView()
+        tryLoad()
+    }
+
     fun loadButtonClick(view: View) {
         val application = applicationContext as App
         if (application.records.size != 0) {

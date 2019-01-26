@@ -9,7 +9,7 @@
 
     <TextView
             tools:text="@string/defaultUserName"
-            android:layout_width="176dp"
+            android:layout_width="wrap_content"
             android:layout_height="64dp"
             android:id="@+id/userName" android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp" android:textColor="#fff"
@@ -39,5 +39,14 @@
             android:gravity="center|end" android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/logoutButton" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"/>
+    <ImageButton
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/reloadButton"
+            android:onClick="reloadButtonClicked"
+            app:layout_constraintStart_toEndOf="@+id/userName" android:layout_marginStart="16dp"
+            android:src="@drawable/update_icon" android:background="#00000000"
+            app:layout_constraintBottom_toBottomOf="@+id/userName" app:layout_constraintTop_toTopOf="@+id/userName"
+            android:padding="8dp"/>
 
 </android.support.constraint.ConstraintLayout>
