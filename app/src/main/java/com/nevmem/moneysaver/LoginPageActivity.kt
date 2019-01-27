@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
+import android.support.v4.content.ContextCompat
 import android.view.*
 
 import com.android.volley.*
@@ -22,6 +23,7 @@ class LoginPageActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_page)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.mPurple)
 
         loginModel = ViewModelProviders.of(this).get(LoginPageViewModel::class.java)
 

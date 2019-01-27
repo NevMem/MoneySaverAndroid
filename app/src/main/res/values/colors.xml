@@ -2,6 +2,7 @@
 <resources>
     <color name="colorAccent">#D81B60</color>
     <color name="mainColor">#7a0099</color>
+    <color name="mPurple">#BB00FF</color>
     <color name="mainFontColor">#c7c7c7</color>
     <color name="secondaryFontColor">#9AC7C7C7</color>
     <color name="errorColor">#f55</color>
