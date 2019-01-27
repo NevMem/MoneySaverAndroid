@@ -12,6 +12,7 @@ import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.exceptions.UserCredentialsNotFound
 import org.json.JSONArray
 import org.json.JSONException
+import org.json.JSONObject
 
 class App() : Application() {
     var records: ArrayList<Record> = ArrayList()
@@ -38,6 +39,13 @@ class App() : Application() {
             System.out.println(it.toString())
         })
         requestQueue.add(request)
+    }
+
+    fun userCredentialsJSON(): JSONObject {
+        val json = JSONObject()
+        json.put("login", user.login)
+        json.put("token", user.token)
+        return json
     }
 
 

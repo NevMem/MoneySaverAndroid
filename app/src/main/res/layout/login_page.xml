@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#202020"
-                tools:context="com.nevmem.moneysaver.LoginPageActivity">
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="@drawable/login_page_background"
+                                             tools:context="com.nevmem.moneysaver.LoginPageActivity">
     <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -39,7 +39,8 @@
             app:layout_constraintTop_toBottomOf="@+id/passwordField"
             style="@style/SpecialButtonStyle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:onClick="onLoginButtonClick"/>
+            app:layout_constraintEnd_toEndOf="parent" android:onClick="onLoginButtonClick"
+            android:background="@color/specialColor"/>
     <TextView
             android:text="@string/app_name"
             android:layout_width="0dp"
@@ -50,14 +51,16 @@
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:background="@color/mainColor" android:textColor="#fff"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="#fff"/>
     <TextView
             android:layout_width="221dp"
             android:layout_height="49dp"
             android:id="@+id/errors" android:layout_marginTop="24dp"
             app:layout_constraintTop_toBottomOf="@+id/appName" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:gravity="center" android:textColor="@color/errorColor"/>
+            android:layout_marginStart="8dp" android:gravity="center" android:textColor="@color/errorColor"
+            android:textSize="20sp"/>
     <ProgressBar
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"

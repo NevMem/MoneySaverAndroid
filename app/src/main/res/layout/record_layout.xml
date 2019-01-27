@@ -32,7 +32,7 @@
     <TextView
             tools:text="@string/defaultRecordDate"
             android:id="@+id/dateField"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="60dp"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="0dp"
@@ -47,6 +47,8 @@
             android:layout_width="wrap_content"
             android:layout_height="45dp" android:id="@+id/walletField" android:layout_below="@+id/dateField"
             android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/recordValue" android:gravity="center|end" android:paddingEnd="20dp"/>
+            android:layout_toEndOf="@+id/recordValue" android:gravity="center|end"
+            android:paddingStart="20dp" android:paddingEnd="20dp"
+            android:textColor="@color/mainFontColor"/>
 
 </RelativeLayout>

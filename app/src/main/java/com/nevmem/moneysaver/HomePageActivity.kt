@@ -1,6 +1,7 @@
 package com.nevmem.moneysaver
 
 import android.app.ActivityOptions
+import android.app.Application
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -15,6 +16,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import android.widget.Toast
 import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.nevmem.moneysaver.data.Record
@@ -31,12 +33,14 @@ import java.lang.ClassCastException
 class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
 
     lateinit var homeModel: HomePageActivityViewModel
-
     val DEFAULT_COUNT_OF_ELEMENTS = 20
+    lateinit var app: App
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        app = applicationContext as App
 
         homeModel = ViewModelProviders.of(this).get(HomePageActivityViewModel::class.java)
 
@@ -50,10 +54,18 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
             userName.text = it!!.first_name
         })
         homeModel.averageSpend.observe(this, Observer<Double> {
-            averageDay.text = it!!.toString()
+            try {
+                averageSpend.text = it!!.toString()
+            } catch (_: KotlinNullPointerException) {
+                averageSpend.text = ""
+            }
         })
         homeModel.totalSpend.observe(this, Observer<Double> {
-            totalSpend.text = it!!.toString()
+            try {
+                totalSpend.text = it!!.toString()
+            } catch (_: KotlinNullPointerException) {
+                totalSpend.text = ""
+            }
         })
         homeModel.loading.observe(this, Observer {
             if (it == true)
@@ -148,6 +160,12 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
         return parsed
     }
 
+    private fun showDefaultToast(message: String) {
+        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.BOTTOM, 0, 40)
+        toast.show()
+    }
+
     fun processData(it: String) {
         var parsed = false
         var result = ArrayList<Record>()
@@ -172,21 +190,7 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
         if (!parsed) {
         } else {
             if (result.size != 0) {
-                val toast = Toast.makeText(this, "Loaded records", Toast.LENGTH_SHORT)
-                toast.setGravity(Gravity.BOTTOM, 0, 40)
-                toast.show()
-
-                var sum = 0.0
-                var amountOfDays = 50
-
-                for (i in 0 until(result.size)) {
-                    sum += result[i].value
-                }
-
-                homeModel.totalSpend.value = sum
-                homeModel.amountOfDays.value = amountOfDays
-
-                homeModel.averageSpend.value = sum / amountOfDays
+                showDefaultToast("Loaded records")
 
                 val application = applicationContext as App
                 application.clearRecords()
@@ -312,12 +316,40 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
                 return "application/json"
             }
         }
+        val jsonRequest = JsonObjectRequest(Request.Method.POST, "http://104.236.71.129/api/info", app.userCredentialsJSON(),
+            {
+                if (!it.has("type")) {
+                    showDefaultToast("Server response has unknown format")
+                } else {
+                    if (it.getString("type").equals("error")) {
+                        showDefaultToast("Server error")
+                    } else {
+                        try {
+                            val info = it.getJSONObject("info")
+                            System.out.println(info.toString())
+                            if (info.has("totalSpend"))
+                                homeModel.totalSpend.value = info.getDouble("totalSpend")
+                            if (info.has("average"))
+                                homeModel.averageSpend.value = info.getDouble("average")
+                            if (info.has("amountOfDays"))
+                                homeModel.amountOfDays.value = info.getInt("amountOfDays")
+                        } catch (_: JSONException) {
+                            showDefaultToast("Server response is unable to parse")
+                        }
+                    }
+                }
+            }, {
+                System.out.println(it.toString())
+            })
         requestQueue.add(stringRequest)
+        requestQueue.add(jsonRequest)
     }
 
     fun reloadButtonClicked(view: View) {
-        val application = applicationContext as App
-        application.clearRecords()
+        app.clearRecords()
+        homeModel.amountOfDays.value = null
+        homeModel.totalSpend.value = null
+        homeModel.averageSpend.value = null
         clearRecordsView()
         tryLoad()
     }
