@@ -14,4 +14,8 @@
     <string name="chooseTag">Tag: </string>
     <string name="chooseWallet">Wallet:</string>
     <string name="addRecordHeader">Add new record</string>
+    <string name="totalSpend">Total spend:</string>
+    <string name="averageSpending">Average spending:</string>
+    <string name="amountOfDays">Tracked days:</string>
+    <string name="defaultTrackedDays">Over 9000 years</string>
 </resources>

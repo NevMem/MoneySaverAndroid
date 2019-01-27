@@ -67,6 +67,13 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
                 totalSpend.text = ""
             }
         })
+        homeModel.amountOfDays.observe(this, Observer<Int> {
+            try {
+                trackedDays.text = it!!.toString()
+            } catch (_: KotlinNullPointerException) {
+                trackedDays.text = ""
+            }
+        })
         homeModel.loading.observe(this, Observer {
             if (it == true)
                 loadingBar.visibility = View.VISIBLE
