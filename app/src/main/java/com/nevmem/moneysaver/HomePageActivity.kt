@@ -83,6 +83,10 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
             else
                 loadingBar.visibility = View.GONE
         })
+        homeModel.sumDay.observe(this, Observer {
+            sumDayChart.values = it!!
+            sumDayChart.invalidate()
+        })
 
         homePage.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY -> run{ // TODO:for endless scrolling
             if (topLinear.height - 200 <= scrollY + homePage.height) {
@@ -326,7 +330,9 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
                 return "application/json"
             }
         }
-        val jsonRequest = JsonObjectRequest(Request.Method.POST, "http://104.236.71.129/api/info", app.userCredentialsJSON(),
+        val options = app.userCredentialsJSON()
+        options.put("daysDescription", "true")
+        val jsonRequest = JsonObjectRequest(Request.Method.POST, "http://104.236.71.129/api/info", options,
             {
                 if (!it.has("type")) {
                     showDefaultToast("Server response has unknown format")
@@ -343,6 +349,15 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
                                 homeModel.averageSpend.value = info.getDouble("average")
                             if (info.has("amountOfDays"))
                                 homeModel.amountOfDays.value = info.getInt("amountOfDays")
+                            if (info.has("daySum")) {
+                                val bufferJSON = info.getJSONObject("daySum")
+                                val it = bufferJSON.keys()
+                                val buffer = ArrayList<Float>()
+                                it.forEach {
+                                    buffer.add(bufferJSON[it].toString().toFloat())
+                                }
+                                homeModel.sumDay.value = buffer
+                            }
                         } catch (_: JSONException) {
                             showDefaultToast("Server response is unable to parse")
                         }
