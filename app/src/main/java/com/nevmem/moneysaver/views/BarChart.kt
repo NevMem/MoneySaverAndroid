@@ -17,6 +17,11 @@ class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
     var rounded = false
     var barWidth = 20
     var baseColor: Int = Color.parseColor("#FFFFFF")
+    var dividersFontColor: Int = Color.parseColor("#AAAAAA")
+    var liningColor: Int = Color.parseColor("#15ffffff")
+    var leftBarSize = 60
+    var divCount = 5
+    var showLabels = true
 
     init {
         System.out.println("Hello from BarChart init() function")
@@ -26,6 +31,9 @@ class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
         rounded = gt.getBoolean(R.styleable.BarChart_rounded, rounded)
         barWidth = gt.getInteger(R.styleable.BarChart_barWidth, barWidth)
         baseColor = gt.getColor(R.styleable.BarChart_baseColor, baseColor)
+        dividersFontColor = gt.getColor(R.styleable.BarChart_labelsFontColor, dividersFontColor)
+        showLabels = gt.getBoolean(R.styleable.BarChart_showLabels, showLabels)
+        liningColor = gt.getColor(R.styleable.BarChart_labelsLiningColor, liningColor)
         gt.recycle()
     }
 
@@ -77,10 +85,37 @@ class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
             for (i in index until (values.size))
                 if (mx < values[i])
                     mx = values[i]
-            System.out.println(mx)
+
+            var smx = mx * 1.1f
+            smx = (((smx + 500) / 1000).toInt()) * 1000f
+
+            if (showLabels) {
+                for (i in 0 until (divCount + 1)) {
+                    val cur = smx * i / divCount
+                    paint.textSize = 18f
+                    paint.color = dividersFontColor
+                    canvas.drawText(
+                        cur.toInt().toString(), paddingLeft.toFloat(),
+                        height - paddingBottom - (height - paddingTop - paddingBottom) / divCount.toFloat() * i, paint
+                    )
+                    paint.color = liningColor
+                    canvas.drawLine(
+                        paddingLeft.toFloat(),
+                        height - paddingBottom - (height - paddingTop - paddingBottom) / divCount.toFloat() * i,
+                        width.toFloat(),
+                        height - paddingBottom - (height - paddingTop - paddingBottom) / divCount.toFloat() * i,
+                        paint
+                    )
+                }
+            }
             for (i in index until (values.size)) {
-                val dx = width * (i - index) / showAmount + width / showAmount / 2
-                drawBar(canvas, dx, height - 10, barWidth, (values[i] * (height - 20) / mx).toInt())
+                var dx = paddingLeft +
+                        (width - paddingLeft - paddingRight) * (i - index) / showAmount +
+                        width / showAmount / 2
+                if (showLabels) dx = leftBarSize + paddingLeft +
+                        (width - leftBarSize - paddingLeft - paddingRight) * (i - index) / showAmount +
+                        width / showAmount / 2
+                drawBar(canvas, dx, height - paddingBottom, barWidth, (values[i] * (height - paddingTop - paddingBottom) / smx).toInt())
             }
         } else {
             paint.color = Color.parseColor("#9AC7C7C7")

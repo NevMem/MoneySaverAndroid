@@ -5,5 +5,8 @@
         <attr name="rounded" format="boolean" />
         <attr name="barWidth" format="integer" />
         <attr name="baseColor" format="color" />
+        <attr name="labelsFontColor" format="color" />
+        <attr name="showLabels" format="boolean" />
+        <attr name="labelsLiningColor" format="color" />
     </declare-styleable>
 </resources>
