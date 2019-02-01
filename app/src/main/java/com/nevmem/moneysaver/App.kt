@@ -1,15 +1,16 @@
 package com.nevmem.moneysaver
 
 import android.app.Application
+import android.app.VoiceInteractor
 import android.util.Log.*
+import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
+import com.android.volley.Response
+import com.android.volley.toolbox.*
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.User
-import com.nevmem.moneysaver.exceptions.UserCredentialsNotFound
+import com.nevmem.moneysaver.structure.Callback
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -28,7 +29,7 @@ class App() : Application() {
     }
 
     fun loadTags() {
-        val request = StringRequest(Request.Method.POST, "http://104.236.71.129/api/tags", {
+        val request = StringRequest(Request.Method.POST, Vars.ServerApiTags, {
             try {
                 val json = JSONArray(it)
                 for (i in 0 until(json.length())) {
@@ -50,7 +51,7 @@ class App() : Application() {
 
 
     fun loadWallets() {
-        val request = StringRequest(Request.Method.POST, "http://104.236.71.129/api/wallets", {
+        val request = StringRequest(Request.Method.POST, Vars.ServerApiWallets, {
             try {
                 val json = JSONArray(it)
                 for (i in 0 until (json.length())) {
@@ -76,6 +77,78 @@ class App() : Application() {
         i("APP_CLASS", "records array was cleared")
     }
 
+    fun isValidUserInfo(json: JSONObject): Boolean {
+        if (json.has("token") && json.has("first_name") &&
+            json.has("last_name") && json.has("login"))
+            return true
+        return false
+    }
+
+    fun tryLogin(login: String, password: String, onSuccess: Callback<String>, onError: Callback<String>) {
+        val params = JSONObject()
+        params.put("login", login)
+        params.put("password", password)
+        val jsonRequest = JsonObjectRequest(Request.Method.POST, Vars.ServerApiLogin,
+            params,
+            {
+                System.out.println(it.toString())
+                if (it.has("err")) {
+                    onError.callback(it.getString("err"))
+                } else {
+                    if (!isValidUserInfo(it)) {
+                        onError.callback("Wrong server response")
+                    } else {
+                        val parsedUser = User(it.getString("login"), it.getString("token"),
+                            it.getString("first_name"), it.getString("last_name"))
+
+                        User.saveUserCredentials(this, parsedUser)
+                        user = parsedUser
+                        onSuccess.callback(null)
+                    }
+                }
+            }, {
+                System.out.println(it.toString())
+                onError.callback("Internet error")
+            })
+        requestQueue.add(jsonRequest)
+    }
+
+    fun loadInfo(onSuccess: Callback<JSONObject>, onError: Callback<String>) {
+        val options = userCredentialsJSON()
+        options.put("daysDescription", "true")
+        val jsonRequest = JsonObjectRequest(Request.Method.POST, Vars.ServerApiInfo, options,
+            {
+                if (!it.has("type")) {
+                    onError.callback("Server response has unknown format")
+                } else {
+                    if (it.getString("type") == "ok")
+                        onSuccess.callback(it.getJSONObject("info"))
+                    else
+                        onError.callback("Server error")
+                }
+            },{
+                System.out.println(it.toString())
+                onError.callback("Internet error")
+            })
+        requestQueue.add(jsonRequest)
+    }
+
+    fun loadData(onSuccess: Callback<String>, onError: Callback<String>) {
+        val stringRequest = object : StringRequest(Request.Method.POST, Vars.ServerApiData, {
+            onSuccess.callback(it)
+        }, {
+            onError.callback(it.toString())
+        }) {
+            override fun getBody(): ByteArray {
+                return userCredentialsJSON().toString().toByteArray()
+            }
+
+            override fun getBodyContentType(): String {
+                return "application/json"
+            }
+        }
+        requestQueue.add(stringRequest)
+    }
 
     fun saveRecords(from: ArrayList<Record>) {
         for (index in 0 until(from.size))

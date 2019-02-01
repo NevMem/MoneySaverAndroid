@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
+import android.support.v7.view.menu.ShowableListMenu
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ import com.android.volley.toolbox.Volley
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.exceptions.UserCredentialsNotFound
+import com.nevmem.moneysaver.structure.Callback
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.record_layout.view.*
 import kotlinx.android.synthetic.main.user_profile.*
@@ -180,7 +182,7 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
         toast.show()
     }
 
-    fun processData(it: String) {
+    fun processData(it: String?) {
         var parsed = false
         var result = ArrayList<Record>()
         try {
@@ -305,69 +307,39 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
 
     private fun tryLoad() {
         val requestQueue = Volley.newRequestQueue(this)
+        val app = applicationContext as App
         homeModel.loading.value = true
-        val stringRequest = object : StringRequest(
-            Request.Method.POST,
-            "http://104.236.71.129/api/data",
-            {
-                homeModel.loading.value = false
-                processData(it)
-            },
-            {
-                homeModel.loading.value = false
-                System.out.println("Error occurred")
-                System.out.println(it.toString())
-            }
-        ) {
-            override fun getBody(): ByteArray {
-                val params = HashMap<String, String>()
-                params.put("login", homeModel.user.value!!.login)
-                params.put("token", homeModel.user.value!!.token)
-                return JSONObject(params).toString().toByteArray()
-            }
-
-            override fun getBodyContentType(): String {
-                return "application/json"
-            }
-        }
-        val options = app.userCredentialsJSON()
-        options.put("daysDescription", "true")
-        val jsonRequest = JsonObjectRequest(Request.Method.POST, "http://104.236.71.129/api/info", options,
-            {
-                if (!it.has("type")) {
-                    showDefaultToast("Server response has unknown format")
-                } else {
-                    if (it.getString("type").equals("error")) {
-                        showDefaultToast("Server error")
-                    } else {
-                        try {
-                            val info = it.getJSONObject("info")
-                            System.out.println(info.toString())
-                            if (info.has("totalSpend"))
-                                homeModel.totalSpend.value = info.getDouble("totalSpend")
-                            if (info.has("average"))
-                                homeModel.averageSpend.value = info.getDouble("average")
-                            if (info.has("amountOfDays"))
-                                homeModel.amountOfDays.value = info.getInt("amountOfDays")
-                            if (info.has("daySum")) {
-                                val bufferJSON = info.getJSONObject("daySum")
-                                val it = bufferJSON.keys()
-                                val buffer = ArrayList<Float>()
-                                it.forEach {
-                                    buffer.add(bufferJSON[it].toString().toFloat())
-                                }
-                                homeModel.sumDay.value = buffer
-                            }
-                        } catch (_: JSONException) {
-                            showDefaultToast("Server response is unable to parse")
-                        }
+        app.loadData(Callback {
+            homeModel.loading.value = false
+            processData(it)
+        }, Callback {
+            homeModel.loading.value = false
+            showDefaultToast("Error occurred, please try later")
+            System.out.println(it)
+        })
+        app.loadInfo(Callback {
+            try {
+                if (it!!.has("totalSpend"))
+                    homeModel.totalSpend.value = it.getDouble("totalSpend")
+                if (it.has("average"))
+                    homeModel.averageSpend.value = it.getDouble("average")
+                if (it.has("amountOfDays"))
+                    homeModel.amountOfDays.value = it.getInt("amountOfDays")
+                if (it.has("daySum")) {
+                    val bufferJSON = it.getJSONObject("daySum")
+                    val iterator = bufferJSON.keys()
+                    val buffer = ArrayList<Float>()
+                    iterator.forEach {
+                        buffer.add(bufferJSON[it].toString().toFloat())
                     }
+                    homeModel.sumDay.value = buffer
                 }
-            }, {
-                System.out.println(it.toString())
-            })
-        requestQueue.add(stringRequest)
-        requestQueue.add(jsonRequest)
+            } catch (_: JSONException) {
+                showDefaultToast("Error occurred while parsing request")
+            }
+        }, Callback {
+            showDefaultToast(it!!)
+        })
     }
 
     fun reloadButtonClicked(view: View) {

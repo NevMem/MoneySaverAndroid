@@ -13,6 +13,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.exceptions.UserCredentialsNotFound
+import com.nevmem.moneysaver.structure.Callback
 import kotlinx.android.synthetic.main.login_page.*
 import org.json.JSONObject
 
@@ -57,46 +58,20 @@ class LoginPageActivity : FragmentActivity() {
         startActivity(intent)
     }
 
-    fun isValidUserInfo(json: JSONObject): Boolean {
-        if (json.has("token") && json.has("first_name") &&
-                json.has("last_name") && json.has("login"))
-            return true
-        return false
-    }
-
     fun onLoginButtonClick(view: View) {
         val login = loginField.text.toString()
         val password = passwordField.text.toString()
 
-        val params = JSONObject()
-        params.put("login", login)
-        params.put("password", password)
-
         loginModel.error.value = ""
         loginModel.loading.value = true
 
-        val jsonRequest = JsonObjectRequest(Request.Method.POST, "http://104.236.71.129/api/login",
-            params, {
-                loginModel.loading.value = false
-                if (it.has("err")) {
-                    loginModel.error.value = it.getString("err")
-                } else {
-                    if (isValidUserInfo(it)) {
-                        val user = User(it.getString("login"), it.getString("token"),
-                            it.getString("first_name"), it.getString("last_name"))
-
-                        User.saveUserCredentials(this, user)
-                        saveUserToApplication()
-                        goToHomePage()
-                    } else {
-                        loginModel.error.value = "Server response was incorrect"
-                    }
-                }
-        }, {
+        val app = applicationContext as App
+        app.tryLogin(login, password, Callback {
             loginModel.loading.value = false
-            loginModel.error.value = it.toString()
+            goToHomePage()
+        }, Callback {
+            loginModel.loading.value = false
+            loginModel.error.value = it!!.toString()
         })
-
-        Volley.newRequestQueue(this).add(jsonRequest)
     }
 }
