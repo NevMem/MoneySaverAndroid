@@ -1,20 +1,32 @@
 package com.nevmem.moneysaver.views
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.util.Log.i
 import android.view.View
+import com.nevmem.moneysaver.R
 import java.lang.Integer.max
 
 class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
     var values = ArrayList<Float>()
     var showAmount = 20
+    var rounded = false
+    var barWidth = 20
+    var baseColor: Int = Color.parseColor("#FFFFFF")
 
     init {
         System.out.println("Hello from BarChart init() function")
+        System.out.println(attrs.toString())
+        val gt = context.theme.obtainStyledAttributes(attrs, R.styleable.BarChart, 0, 0)
+        showAmount = gt.getInteger(R.styleable.BarChart_amountOfBars, showAmount)
+        rounded = gt.getBoolean(R.styleable.BarChart_rounded, rounded)
+        barWidth = gt.getInteger(R.styleable.BarChart_barWidth, barWidth)
+        baseColor = gt.getColor(R.styleable.BarChart_baseColor, baseColor)
+        gt.recycle()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -30,12 +42,25 @@ class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
 
     fun drawBar(canvas: Canvas?, dx: Int, dy: Int, barWidth: Int, barHeight: Int) {
         val paint = Paint()
-        paint.color = Color.parseColor("#FF3C3C")
-        canvas!!.drawRect((dx - barWidth / 2).toFloat(),
+        paint.color = baseColor
+        if (!rounded) {
+            canvas!!.drawRect(
+                (dx - barWidth / 2).toFloat(),
                 (dy - barHeight).toFloat(),
                 (dx + barWidth / 2).toFloat(),
                 dy.toFloat(),
-                paint)
+                paint
+            )
+        } else {
+            canvas!!.drawRoundRect(
+                (dx - barWidth / 2).toFloat(),
+                (dy - barHeight).toFloat(),
+                (dx + barWidth / 2).toFloat(),
+                dy.toFloat(),
+                barWidth / 2.toFloat(), barWidth / 2.toFloat(),
+                paint
+            )
+        }
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -55,7 +80,7 @@ class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
             System.out.println(mx)
             for (i in index until (values.size)) {
                 val dx = width * (i - index) / showAmount + width / showAmount / 2
-                drawBar(canvas, dx, height - 10, 10, (values[i] * (height - 20) / mx).toInt())
+                drawBar(canvas, dx, height - 10, barWidth, (values[i] * (height - 20) / mx).toInt())
             }
         } else {
             paint.color = Color.parseColor("#9AC7C7C7")
