@@ -26,9 +26,9 @@ import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.exceptions.UserCredentialsNotFound
 import com.nevmem.moneysaver.structure.Callback
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.record_layout.view.*
 import kotlinx.android.synthetic.main.user_profile.*
+import kotlinx.android.synthetic.main.home_page_activity.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -43,7 +43,7 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.home_page_activity)
 
         window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
         app = applicationContext as App
@@ -56,28 +56,42 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
             System.out.println("User credentials not found")
         }
 
-        homeModel.user.observe(this, Observer<User> {
+        homeModel.user.observe(this, Observer {
             userName.text = it!!.first_name
         })
-        homeModel.averageSpend.observe(this, Observer<Double> {
+        homeModel.averageSpend.observe(this, Observer {
             try {
                 averageSpend.text = it!!.toString()
             } catch (_: KotlinNullPointerException) {
                 averageSpend.text = ""
             }
         })
-        homeModel.totalSpend.observe(this, Observer<Double> {
+        homeModel.totalSpend.observe(this, Observer {
             try {
                 totalSpend.text = it!!.toString()
             } catch (_: KotlinNullPointerException) {
                 totalSpend.text = ""
             }
         })
-        homeModel.amountOfDays.observe(this, Observer<Int> {
+        homeModel.amountOfDays.observe(this, Observer {
             try {
                 trackedDays.text = it!!.toString()
             } catch (_: KotlinNullPointerException) {
                 trackedDays.text = ""
+            }
+        })
+        homeModel.average7Days.observe(this, Observer {
+            try {
+                average7Days.text = it!!.toString()
+            } catch (_: KotlinNullPointerException) {
+                average7Days.text = ""
+            }
+        })
+        homeModel.average30Days.observe(this, Observer {
+            try {
+                average30Days.text = it!!.toString()
+            } catch (_: KotlinNullPointerException) {
+                average30Days.text = ""
             }
         })
         homeModel.loading.observe(this, Observer {
@@ -326,6 +340,10 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
                     homeModel.averageSpend.value = it.getDouble("average")
                 if (it.has("amountOfDays"))
                     homeModel.amountOfDays.value = it.getInt("amountOfDays")
+                if (it.has("average30Days"))
+                    homeModel.average30Days.value = it.getDouble("average30Days")
+                if (it.has("average7Days"))
+                    homeModel.average7Days.value = it.getDouble("average7Days")
                 if (it.has("daySum")) {
                     val bufferJSON = it.getJSONObject("daySum")
                     val iterator = bufferJSON.keys()

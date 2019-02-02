@@ -13,6 +13,8 @@ class HomePageActivityViewModel : ViewModel() {
     var loading: MutableLiveData<Boolean> = MutableLiveData()
     var changingAddButtonState: MutableLiveData<Boolean> = MutableLiveData()
     var sumDay: MutableLiveData<ArrayList<Float>> = MutableLiveData()
+    var average7Days: MutableLiveData<Double> = MutableLiveData()
+    var average30Days: MutableLiveData<Double> = MutableLiveData()
 
     init {
         changingAddButtonState.value = false

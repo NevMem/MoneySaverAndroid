@@ -117,6 +117,8 @@ class App() : Application() {
     fun loadInfo(onSuccess: Callback<JSONObject>, onError: Callback<String>) {
         val options = userCredentialsJSON()
         options.put("daysDescription", "true")
+        options.put("info7", "true")
+        options.put("info30", "true")
         val jsonRequest = JsonObjectRequest(Request.Method.POST, Vars.ServerApiInfo, options,
             {
                 if (!it.has("type")) {

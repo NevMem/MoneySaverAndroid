@@ -16,6 +16,8 @@
     <string name="addRecordHeader">Add new record</string>
     <string name="totalSpend">Total spend:</string>
     <string name="averageSpending">Average spending:</string>
+    <string name="average7Days">Average in last 7 days:</string>
+    <string name="average30Days">Average in last 30 days:</string>
     <string name="amountOfDays">Tracked days:</string>
     <string name="defaultTrackedDays">Over 9000 years</string>
 </resources>

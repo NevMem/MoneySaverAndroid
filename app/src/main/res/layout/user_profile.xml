@@ -90,6 +90,48 @@
             android:layout_marginStart="8dp" android:textSize="18sp" android:textColor="@color/mainFontColor"
     />
 
+    <TextView
+            android:text="@string/average30Days"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:id="@+id/text_4"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp" android:gravity="center|start" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/text_3" android:textSize="18sp"
+            android:textColor="@color/secondaryFontColor"/>
+    <TextView
+            tools:text="Average 30 days"
+            android:layout_width="0dp"
+            android:layout_height="34dp"
+            android:id="@+id/average30Days"
+            android:gravity="center|end"
+            app:layout_constraintTop_toBottomOf="@+id/trackedDays"
+            android:layout_marginTop="8dp" android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/text_3"
+            android:layout_marginStart="8dp" android:textSize="18sp" android:textColor="@color/mainFontColor"
+    />
+
+    <TextView
+            android:text="@string/average7Days"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:id="@+id/text_5"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp" android:gravity="center|start" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/text_4" android:textSize="18sp"
+            android:textColor="@color/secondaryFontColor"/>
+    <TextView
+            tools:text="Average 7 days"
+            android:layout_width="0dp"
+            android:layout_height="34dp"
+            android:id="@+id/average7Days"
+            android:gravity="center|end"
+            app:layout_constraintTop_toBottomOf="@+id/average30Days"
+            android:layout_marginTop="8dp" android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/text_3"
+            android:layout_marginStart="8dp" android:textSize="18sp" android:textColor="@color/mainFontColor"
+    />
+
     <com.nevmem.moneysaver.views.BarChart
             android:id="@+id/sumDayChart"
             android:layout_height="120dp"
@@ -106,7 +148,7 @@
             android:paddingLeft="0dp"
             android:paddingRight="10dp"
             android:paddingBottom="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/text_3" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_5" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="parent"/>
 
