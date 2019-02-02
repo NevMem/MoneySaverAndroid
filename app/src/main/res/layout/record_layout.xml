@@ -13,7 +13,9 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:textColor="@android:color/white"
-            android:textSize="22sp" android:layout_width="wrap_content"/>
+            android:textSize="22sp" android:layout_width="wrap_content"
+            android:transitionName="recordName"
+    />
 
     <TextView
             tools:text="@string/defaultRecordValue"
@@ -27,7 +29,9 @@
             android:gravity="center|start"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:textColor="@android:color/darker_gray"/>
+            android:textColor="@android:color/darker_gray"
+            android:transitionName="recordValue"
+    />
 
     <TextView
             tools:text="@string/defaultRecordDate"

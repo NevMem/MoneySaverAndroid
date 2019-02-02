@@ -1,5 +1,6 @@
 package com.nevmem.moneysaver
 
+import android.app.Activity
 import android.app.ActivityOptions
 import android.app.Application
 import android.arch.lifecycle.Observer
@@ -8,8 +9,10 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.view.menu.ShowableListMenu
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -29,6 +32,7 @@ import com.nevmem.moneysaver.structure.Callback
 import kotlinx.android.synthetic.main.record_layout.view.*
 import kotlinx.android.synthetic.main.user_profile.*
 import kotlinx.android.synthetic.main.home_page_activity.*
+import android.util.Pair
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -250,51 +254,6 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
         finish()
     }
 
-    internal inner class MainArrayAdapter(val context: Context, list: List<Record>) : BaseAdapter() {
-        var mapper: java.util.HashMap<Record, Long>
-        var values: java.util.ArrayList<Record>
-
-        init {
-            mapper = java.util.HashMap()
-            values = java.util.ArrayList()
-            for (i in list.indices) {
-                mapper[list[i]] = i.toLong()
-                values.add(list[i])
-            }
-        }
-
-        override fun getCount(): Int {
-            return mapper.size
-        }
-
-        override fun getItem(position: Int): Record? {
-            return values[position]
-        }
-
-        override fun getItemId(position: Int): Long {
-            val item = getItem(position)
-            val current = mapper[item]
-            return current!!.toLong()
-        }
-
-        override fun getView(index: Int, convertView: View?, parent: ViewGroup): View {
-            val inflater = context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val recordView = inflater.inflate(R.layout.record_layout, parent, false)
-
-            val nameField: TextView = recordView.findViewById(R.id.recordNameField)
-            nameField.text = values[index].name
-
-            val valueField: TextView = recordView.findViewById(R.id.recordValue)
-            valueField.text = java.lang.Double.valueOf(values[index].value).toString()
-
-            val dateField: TextView = recordView.findViewById(R.id.dateField)
-            dateField.text = values[index].date.toString()
-
-            return recordView
-        }
-    }
-
     fun showMore() {
         val application = applicationContext as App
         if (showedRecords != application.records.size) {
@@ -306,7 +265,15 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
                 recordRow.recordNameField.text = application.records[index].name
                 recordRow.recordValue.text = application.records[index].value.toString()
                 recordRow.dateField.text = application.records[index].date.toString()
-                recordRow.walletField.text = application.records[index].wallet.toString()
+                recordRow.walletField.text = application.records[index].wallet
+                recordRow.setOnClickListener {
+                    val intent = Intent(this, FullDescriptionActivity::class.java)
+                    intent.putExtra("index", index)
+                    val options = ActivityOptions.makeSceneTransitionAnimation(this,
+                        Pair<View, String>(recordRow.recordNameField, "recordNameTransition"),
+                        Pair<View, String>(recordRow.recordValue, "recordValueTransition"))
+                    startActivity(intent, options.toBundle())
+                }
                 mainList.addView(recordRow)
             }
             showedRecords += delta
@@ -321,7 +288,6 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
     }
 
     private fun tryLoad() {
-        val requestQueue = Volley.newRequestQueue(this)
         val app = applicationContext as App
         homeModel.loading.value = true
         app.loadData(Callback {

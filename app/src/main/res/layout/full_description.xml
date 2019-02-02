@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                                             android:layout_height="match_parent" tools:context=".FullDescriptionActivity" android:background="@color/backgroundColor">
+
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:id="@+id/recordNameField" tools:text="Some record name"
+            android:layout_marginTop="24dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp" android:textSize="26sp"
+            android:textColor="@color/mainFontColor" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:gravity="center|start"
+            android:transitionName="recordNameTransition"
+    />
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:id="@+id/recordValueField" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/recordNameField" android:gravity="center|start" tools:text="$ 1000"
+            android:textSize="18sp"
+            android:transitionName="recordValueTransition"
+    />
+</android.support.constraint.ConstraintLayout>
