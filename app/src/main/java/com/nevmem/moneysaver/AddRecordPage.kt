@@ -31,6 +31,7 @@ class AddRecordPage : FragmentActivity() {
 
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
 
         val application = applicationContext as App
         viewModel = ViewModelProviders.of(this).get(AddRecordPageViewModel::class.java)

@@ -142,7 +142,7 @@ class App() : Application() {
         date.put("year", curCalendar.get(Calendar.YEAR))
         date.put("month", curCalendar.get(Calendar.MONTH) + 1)
         date.put("day", curCalendar.get(Calendar.DATE))
-        date.put("hour", curCalendar.get(Calendar.HOUR))
+        date.put("hour", curCalendar.get(Calendar.HOUR_OF_DAY))
         date.put("minute", curCalendar.get(Calendar.MINUTE))
         return date
     }

@@ -48,8 +48,8 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_page_activity)
-
         window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
+
         app = applicationContext as App
 
         homeModel = ViewModelProviders.of(this).get(HomePageActivityViewModel::class.java)
