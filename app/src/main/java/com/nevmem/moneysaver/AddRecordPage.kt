@@ -20,9 +20,11 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.nevmem.moneysaver.exceptions.AddRecordPageViewModel
+import com.nevmem.moneysaver.structure.Callback
 import kotlinx.android.synthetic.main.add_record_activity.*
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.*
 
 class AddRecordPage : FragmentActivity() {
     lateinit var viewModel: AddRecordPageViewModel
@@ -110,44 +112,20 @@ class AddRecordPage : FragmentActivity() {
     }
 
     private fun sendAddRequest(name: String, value: String, tag: String?, wallet: String?) {
-        val requestQueue = Volley.newRequestQueue(this)
-
-        val application = applicationContext as App
-
-        var params = JSONObject()
-        params.put("name", name)
-        params.put("value", value)
-        params.put("login", application.user.login)
-        params.put("token", application.user.token)
-        params.put("wallet", wallet)
-        val tags = JSONArray()
-        tags.put(tag)
-        params.put("tags", tags)
-
+        var app = applicationContext as App
         viewModel.loading.value = true
         viewModel.error.value = ""
         viewModel.success.value = ""
-
-        val request = JsonObjectRequest(Request.Method.POST, "http://104.236.71.129/api/add", params,
-            {
-                viewModel.loading.value = false
-                if (it.has("data")) {
-                    viewModel.success.value = it.getString("data")
-                } else if (it.has("err")) {
-                    viewModel.error.value = it.getString("err")
-                } else {
-                    viewModel.error.value = "Server response has unknown format"
-                }
-            }, {
-                viewModel.loading.value = false
-                viewModel.error.value = it.toString()
-            })
-
-        requestQueue.add(request)
+        app.makeAddRequest(name, value, tag, wallet, Callback {
+            viewModel.loading.value = false
+            viewModel.success.value = it
+        }, Callback {
+            viewModel.loading.value = false
+            viewModel.error.value = it
+        })
     }
 
     fun addButtonClicked(view: View) {
-        System.out.println("We're going to send information to the server")
         val name = recordNameField.text.toString()
         val value = recordValueField.text.toString()
 

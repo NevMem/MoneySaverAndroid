@@ -14,6 +14,7 @@ import com.nevmem.moneysaver.structure.Callback
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.util.*
 
 class App() : Application() {
     var records: ArrayList<Record> = ArrayList()
@@ -133,6 +134,17 @@ class App() : Application() {
         requestQueue.add(jsonRequest)
     }
 
+    private fun createDate(): JSONObject {
+        val curCalendar = Calendar.getInstance()
+        val date = JSONObject()
+        date.put("year", curCalendar.get(Calendar.YEAR))
+        date.put("month", curCalendar.get(Calendar.MONTH) + 1)
+        date.put("day", curCalendar.get(Calendar.DATE))
+        date.put("hour", curCalendar.get(Calendar.HOUR))
+        date.put("minute", curCalendar.get(Calendar.MINUTE))
+        return date
+    }
+
     fun loadData(onSuccess: Callback<String>, onError: Callback<String>) {
         val stringRequest = object : StringRequest(Request.Method.POST, Vars.ServerApiData, {
             onSuccess.callback(it)
@@ -148,6 +160,32 @@ class App() : Application() {
             }
         }
         requestQueue.add(stringRequest)
+    }
+
+    fun makeAddRequest(name: String, value: String, tag: String?, wallet: String?,
+                       onSuccess: Callback<String>, onError: Callback<String>) {
+        val params = userCredentialsJSON()
+        params.put("name", name)
+        params.put("value", value)
+        params.put("wallet", wallet)
+        params.put("date", createDate())
+        val tags = JSONArray()
+        tags.put(tag)
+        params.put("tags", tags)
+
+        val jsonRequest = JsonObjectRequest(Request.Method.POST, Vars.ServerApiAdd, params, {
+            if (it.has("data")) {
+                onSuccess.callback(it.getString("data"))
+            } else if (it.has("err")) {
+                onError.callback(it.getString("err"))
+            } else {
+                onError.callback("Server response has unknown format")
+            }
+        }, {
+            System.out.println(it)
+            onError.callback("Internet error")
+        })
+        requestQueue.add(jsonRequest)
     }
 
     fun saveRecords(from: ArrayList<Record>) {
