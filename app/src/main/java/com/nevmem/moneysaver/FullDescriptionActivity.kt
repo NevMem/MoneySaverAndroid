@@ -22,6 +22,8 @@ import android.support.v4.view.ViewPropertyAnimatorListenerAdapter
 import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
 import android.widget.NumberPicker
+import com.nevmem.moneysaver.data.Record
+import com.nevmem.moneysaver.structure.Callback
 
 
 class FullDescriptionActivity: FragmentActivity() {
@@ -100,6 +102,24 @@ class FullDescriptionActivity: FragmentActivity() {
                 saveChangesButton.visibility = View.VISIBLE
             } else {
                 saveChangesButton.visibility = View.GONE
+            }
+        })
+
+        viewModel.error.observe(this, Observer {
+            if (!it!!.isEmpty()) {
+                msg.text = it
+                msg.setTextColor(ContextCompat.getColor(this, R.color.dangerColor))
+            } else {
+                msg.text = ""
+            }
+        })
+
+        viewModel.success.observe(this, Observer {
+            if (!it!!.isEmpty()) {
+                msg.text = it
+                msg.setTextColor(ContextCompat.getColor(this, R.color.specialColor))
+            } else {
+                msg.text = ""
             }
         })
 
@@ -185,6 +205,30 @@ class FullDescriptionActivity: FragmentActivity() {
                 .show()
         }
 
+        saveChangesButton.setOnClickListener {
+            var record = Record()
+            record.tags.add(tag.text.toString())
+            record.wallet = wallet.text.toString()
+            record.id = app.records[index].id
+            record.value = recordValueField.text.toString().toDouble()
+            record.name = recordNameField.text.toString()
+
+            record.date.year = viewModel.currentYear.value!!.toInt()
+            record.date.month = getIntByMonth(viewModel.currentMonth.value!!)
+            record.date.day = viewModel.currentDay.value!!.toInt()
+            record.date.hour = viewModel.currentHour.value!!.toString().toInt()
+            record.date.minute = viewModel.currentMinute.value!!.toString().toInt()
+
+            viewModel.success.value = ""
+            viewModel.error.value = ""
+
+            app.sendEditRequest(record, Callback {
+                viewModel.success.value = it
+            }, Callback {
+                viewModel.error.value = it
+            })
+        }
+
         fillValues()
 
         Handler().postDelayed({
@@ -211,6 +255,24 @@ class FullDescriptionActivity: FragmentActivity() {
 
     private fun isLeap(year: Int): Boolean {
         return (year % 4) == 0 && (year % 100 != 0 || year % 400 == 0)
+    }
+
+    private fun getIntByMonth(month: String): Int {
+        when (month) {
+            "January" -> return 1
+            "February" -> return 2
+            "March" -> return 3
+            "April" -> return 4
+            "May" -> return 5
+            "June" -> return 6
+            "July" -> return 7
+            "August" -> return 8
+            "September" -> return 9
+            "October" -> return 10
+            "November" -> return 11
+            "December" -> return 12
+        }
+        return 13
     }
 
     private fun amountOfDaysInMonth(year: Int, month: String): Int {

@@ -149,6 +149,7 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
 
         record.name = json.get("name") as String
         record.value = -java.lang.Double.valueOf(json.get("value").toString())
+        record.id = json.getString("_id")
         try {
             record.wallet = json.get("wallet") as String
         } catch (_: ClassCastException) {
@@ -157,12 +158,21 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
             record.wallet = "Not set"
         }
 
-        val date = json.get("date") as JSONObject
-        val year = Integer.valueOf(date.get("year").toString())
-        val month = Integer.valueOf(date.get("month").toString())
-        val day = Integer.valueOf(date.get("day").toString())
-        val hour = Integer.valueOf(date.get("hour").toString())
-        val minute = Integer.valueOf(date.get("minute").toString())
+        try {
+            val date = json.get("date") as JSONObject
+            val year = Integer.valueOf(date.get("year").toString())
+            val month = Integer.valueOf(date.get("month").toString())
+            val day = Integer.valueOf(date.get("day").toString())
+            val hour = Integer.valueOf(date.get("hour").toString())
+            val minute = Integer.valueOf(date.get("minute").toString())
+            record.date.year = year
+            record.date.month = month
+            record.date.day = day
+            record.date.hour = hour
+            record.date.minute = minute
+        } catch (_: JSONException) {
+            System.out.println("Date is corrupted")
+        }
 
         try {
             val tags = json.get("tags") as JSONArray
@@ -171,12 +181,6 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
         } catch (_ : ClassCastException) {
             record.tags.add("Not set")
         }
-
-        record.date.year = year
-        record.date.month = month
-        record.date.day = day
-        record.date.hour = hour
-        record.date.minute = minute
 
         return record
     }

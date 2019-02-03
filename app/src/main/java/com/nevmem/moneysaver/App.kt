@@ -147,6 +147,16 @@ class App() : Application() {
         return date
     }
 
+    private fun createDateFromRecord(record: Record): JSONObject {
+        val date = JSONObject()
+        date.put("year", record.date.year)
+        date.put("month", record.date.month)
+        date.put("day", record.date.day)
+        date.put("hour", record.date.hour)
+        date.put("minute", record.date.minute)
+        return date
+    }
+
     fun loadData(onSuccess: Callback<String>, onError: Callback<String>) {
         val stringRequest = object : StringRequest(Request.Method.POST, Vars.ServerApiData, {
             onSuccess.callback(it)
@@ -164,7 +174,7 @@ class App() : Application() {
         requestQueue.add(stringRequest)
     }
 
-    fun makeAddRequest(name: String, value: String, tag: String?, wallet: String?,
+    fun makeAddRequest(name: String, value: Double, tag: String?, wallet: String?,
                        onSuccess: Callback<String>, onError: Callback<String>) {
         val params = userCredentialsJSON()
         params.put("name", name)
@@ -176,15 +186,48 @@ class App() : Application() {
         params.put("tags", tags)
 
         val jsonRequest = JsonObjectRequest(Request.Method.POST, Vars.ServerApiAdd, params, {
-            if (it.has("data")) {
-                onSuccess.callback(it.getString("data"))
-            } else if (it.has("err")) {
-                onError.callback(it.getString("err"))
+            System.out.println(it.toString())
+            if (it.has("type")) {
+                if (it.getString("type") == "error") {
+                    onError.callback(it.getString("error"))
+                } else if (it.getString("type") == "ok") {
+                    onSuccess.callback("Record was successfully added")
+                } else {
+                    onError.callback("Server response has unknown format")
+                }
+            } else {
+                onError.callback("Sever response has unknown format")
+            }
+        }, {
+            System.out.println(it)
+            onError.callback("Internet error")
+        })
+        requestQueue.add(jsonRequest)
+    }
+
+    fun sendEditRequest(record: Record, onSuccess: Callback<String>, onError: Callback<String>) {
+        val params = userCredentialsJSON()
+        params.put("id", record.id)
+        params.put("name", record.name)
+        params.put("value", record.value)
+        params.put("wallet", record.wallet)
+        val tags = JSONArray()
+        tags.put(record.tags[0])
+        params.put("tags", tags)
+        params.put("date", createDateFromRecord(record))
+        val jsonRequest = JsonObjectRequest(Request.Method.POST, Vars.ServerApiEdit, params, {
+            if (it.has("type")) {
+                if (it.getString("type") == "ok") {
+                    onSuccess.callback("Saved")
+                } else if (it.getString("type") == "error") {
+                    onError.callback(it.getString("error"))
+                } else {
+                    onError.callback("Server response has unknown format")
+                }
             } else {
                 onError.callback("Server response has unknown format")
             }
         }, {
-            System.out.println(it)
             onError.callback("Internet error")
         })
         requestQueue.add(jsonRequest)

@@ -112,7 +112,7 @@ class AddRecordPage : FragmentActivity() {
         }
     }
 
-    private fun sendAddRequest(name: String, value: String, tag: String?, wallet: String?) {
+    private fun sendAddRequest(name: String, value: Double, tag: String?, wallet: String?) {
         var app = applicationContext as App
         viewModel.loading.value = true
         viewModel.error.value = ""
@@ -144,6 +144,6 @@ class AddRecordPage : FragmentActivity() {
             valid = false
         }
         if (!valid) return
-        sendAddRequest(name, value, tags.selectedItem.toString(), chooseWallet.selectedItem.toString())
+        sendAddRequest(name, value.toDouble(), tags.selectedItem.toString(), chooseWallet.selectedItem.toString())
     }
 }

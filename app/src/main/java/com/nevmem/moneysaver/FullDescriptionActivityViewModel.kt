@@ -21,6 +21,9 @@ class FullDescriptionActivityViewModel : ViewModel() {
 
     var needChange = MutableLiveData<Boolean>()
 
+    var error = MutableLiveData<String>()
+    var success = MutableLiveData<String>()
+
     init {
         needChange.value = false
     }

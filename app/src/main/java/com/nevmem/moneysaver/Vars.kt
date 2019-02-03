@@ -9,5 +9,6 @@ public class Vars {
         const val ServerApiData= "$ServerBase/api/data"
         const val ServerApiInfo= "$ServerBase/api/info"
         const val ServerApiAdd = "$ServerBase/api/add"
+        const val ServerApiEdit = "$ServerBase/api/edit"
     }
 }
