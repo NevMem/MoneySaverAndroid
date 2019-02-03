@@ -20,4 +20,5 @@
     <string name="average30Days">Average in last 30 days:</string>
     <string name="amountOfDays">Tracked days:</string>
     <string name="defaultTrackedDays">Over 9000 years</string>
+    <string name="info_text_1">Time info(click to change):</string>
 </resources>
