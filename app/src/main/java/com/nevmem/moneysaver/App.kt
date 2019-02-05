@@ -181,9 +181,11 @@ class App() : Application() {
         params.put("value", value)
         params.put("wallet", wallet)
         params.put("date", createDate())
+        params.put("daily", true) // TODO: hardcoded value
         val tags = JSONArray()
         tags.put(tag)
         params.put("tags", tags)
+        System.out.println(params.toString())
 
         val jsonRequest = JsonObjectRequest(Request.Method.POST, Vars.ServerApiAdd, params, {
             System.out.println(it.toString())

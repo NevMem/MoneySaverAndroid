@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
-    <dimen name="stdElevation">7dp</dimen>
+    <dimen name="stdElevation">4dp</dimen>
 </resources>

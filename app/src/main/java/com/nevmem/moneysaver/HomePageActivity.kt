@@ -1,5 +1,6 @@
 package com.nevmem.moneysaver
 
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.ActivityOptions
 import android.app.Application
@@ -33,6 +34,9 @@ import kotlinx.android.synthetic.main.record_layout.view.*
 import kotlinx.android.synthetic.main.user_profile.*
 import kotlinx.android.synthetic.main.home_page_activity.*
 import android.util.Pair
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.BounceInterpolator
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -106,7 +110,14 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
         })
         homeModel.sumDay.observe(this, Observer {
             sumDayChart.values = it!!
-            sumDayChart.invalidate()
+            val animator = ValueAnimator.ofFloat(0f,  1f)
+            animator.interpolator = AccelerateDecelerateInterpolator()
+            animator.addUpdateListener {
+                sumDayChart.multiplier = it.animatedValue as Float
+                sumDayChart.invalidate()
+            }
+            animator.duration = 500
+            animator.start()
         })
 
         homePage.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY -> run{ // TODO:for endless scrolling
@@ -158,6 +169,12 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
             record.wallet = "Not set"
         }
 
+        if (json.has("daily")) {
+            record.daily = json.getBoolean("daily")
+        } else {
+            System.out.println("Daily field is not found")
+        }
+
         try {
             val date = json.get("date") as JSONObject
             val year = Integer.valueOf(date.get("year").toString())
@@ -185,7 +202,7 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
         return record
     }
 
-    fun processGetDataResponse(array: JSONArray): ArrayList<Record> {
+    private fun processGetDataResponse(array: JSONArray): ArrayList<Record> {
         val parsed = ArrayList<Record>()
         try {
             for (i in 0 .. array.length()) {
@@ -336,6 +353,8 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
         homeModel.amountOfDays.value = null
         homeModel.totalSpend.value = null
         homeModel.averageSpend.value = null
+        homeModel.average7Days.value = null
+        homeModel.average30Days.value = null
         clearRecordsView()
         tryLoad()
     }
