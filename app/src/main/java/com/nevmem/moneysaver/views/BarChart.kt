@@ -22,6 +22,7 @@ class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
     var leftBarSize = 60
     var divCount = 5
     var showLabels = true
+    var multiplier = 1f
 
     init {
         System.out.println("Hello from BarChart init() function")
@@ -115,7 +116,7 @@ class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
                 if (showLabels) dx = leftBarSize + paddingLeft +
                         (width - leftBarSize - paddingLeft - paddingRight) * (i - index) / showAmount +
                         width / showAmount / 2
-                drawBar(canvas, dx, height - paddingBottom, barWidth, (values[i] * (height - paddingTop - paddingBottom) / smx).toInt())
+                drawBar(canvas, dx, height - paddingBottom, barWidth, (values[i] * multiplier * (height - paddingTop - paddingBottom) / smx).toInt())
             }
         } else {
             paint.color = Color.parseColor("#9AC7C7C7")
