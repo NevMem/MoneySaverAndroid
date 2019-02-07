@@ -97,6 +97,15 @@ class FullDescriptionActivity: FragmentActivity() {
             comparePrevCurrent()
         })
 
+        viewModel.currentDaily.observe(this, Observer {
+            if (it != null) {
+                dailySwitch.isChecked = it!! == true
+            } else {
+                dailySwitch.isChecked = false
+            }
+            comparePrevCurrent()
+        })
+
         viewModel.needChange.observe(this, Observer {
             if (it!!) {
                 saveChangesButton.visibility = View.VISIBLE
@@ -205,13 +214,18 @@ class FullDescriptionActivity: FragmentActivity() {
                 .show()
         }
 
+        dailySwitch.setOnCheckedChangeListener { _, isChecked -> run {
+            viewModel.currentDaily.value = isChecked
+        } }
+
         saveChangesButton.setOnClickListener {
-            var record = Record()
+            val record = Record()
             record.tags.add(tag.text.toString())
             record.wallet = wallet.text.toString()
             record.id = app.records[index].id
             record.value = recordValueField.text.toString().toDouble()
             record.name = recordNameField.text.toString()
+            record.daily = dailySwitch.isChecked
 
             record.date.year = viewModel.currentYear.value!!.toInt()
             record.date.month = getIntByMonth(viewModel.currentMonth.value!!)
@@ -250,6 +264,7 @@ class FullDescriptionActivity: FragmentActivity() {
         if (viewModel.currentDay.value != viewModel.prevDay.value) diffCount++
         if (viewModel.currentHour.value != viewModel.prevHour.value) diffCount++
         if (viewModel.currentMinute.value != viewModel.prevMinute.value) diffCount++
+        if (viewModel.currentDaily.value != viewModel.prevDaily.value) diffCount++
         viewModel.needChange.value = (diffCount != 0)
     }
 
@@ -322,6 +337,9 @@ class FullDescriptionActivity: FragmentActivity() {
 
         viewModel.currentMinute.value = fillToFormat(app.records[index].date.minute.toString())
         viewModel.prevMinute.value = fillToFormat(app.records[index].date.minute.toString())
+
+        viewModel.currentDaily.value = app.records[index].daily
+        viewModel.prevDaily.value = app.records[index].daily
     }
 
     fun fadeInValues() {
@@ -333,5 +351,6 @@ class FullDescriptionActivity: FragmentActivity() {
         hourWrapper.animate().alpha(1f).setDuration(200).start()
         minuteWrapper.animate().alpha(1f).setDuration(200).start()
         info_text_1.animate().alpha(1f).setDuration(200).start()
+        dailySwitch.animate().alpha(1f).setDuration(200).start()
     }
 }

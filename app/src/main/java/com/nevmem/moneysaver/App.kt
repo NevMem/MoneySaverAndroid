@@ -213,6 +213,7 @@ class App() : Application() {
         params.put("name", record.name)
         params.put("value", record.value)
         params.put("wallet", record.wallet)
+        params.put("daily", record.daily)
         val tags = JSONArray()
         tags.put(record.tags[0])
         params.put("tags", tags)

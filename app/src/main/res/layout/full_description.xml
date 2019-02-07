@@ -14,9 +14,14 @@
             android:id="@+id/recordNameField" tools:text="Some record name"
             android:layout_marginTop="24dp" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp" android:textSize="26sp"
-            android:textColor="@color/mainFontColor" android:layout_marginEnd="24dp"
-            app:layout_constraintEnd_toEndOf="parent" android:gravity="center|start"
+            android:textColor="@color/mainFontColor"
+            android:gravity="center|start"
             android:transitionName="recordNameTransition"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toStartOf="@+id/dailySwitch"/>
+    <Switch android:layout_width="wrap_content" android:layout_height="60dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp" android:layout_marginTop="24dp"
+            app:layout_constraintTop_toTopOf="parent" android:id="@+id/dailySwitch"
+            android:alpha="0" tools:alpha="1"
     />
     <TextView
             android:layout_width="0dp"
@@ -31,7 +36,7 @@
     />
 
     <TextView
-            android:layout_width="223dp"
+            android:layout_width="173dp"
             tools:text="Tag"
             android:layout_height="40dp"
             android:id="@+id/tag" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp"

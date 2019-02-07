@@ -16,8 +16,11 @@ class FullDescriptionActivityViewModel : ViewModel() {
     var prevHour = MutableLiveData<String>()
     var currentHour = MutableLiveData<String>()
 
-    var prevMinute= MutableLiveData<String>()
+    var prevMinute = MutableLiveData<String>()
     var currentMinute = MutableLiveData<String>()
+
+    var prevDaily = MutableLiveData<Boolean>()
+    var currentDaily = MutableLiveData<Boolean>()
 
     var needChange = MutableLiveData<Boolean>()
 
