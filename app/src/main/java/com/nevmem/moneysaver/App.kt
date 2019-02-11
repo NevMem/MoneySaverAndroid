@@ -9,12 +9,14 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.*
 import com.nevmem.moneysaver.data.Record
+import com.nevmem.moneysaver.data.Template
 import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.structure.Callback
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
+import kotlin.collections.ArrayList
 
 class App() : Application() {
     var records: ArrayList<Record> = ArrayList()
@@ -22,6 +24,7 @@ class App() : Application() {
 
     var tags: ArrayList<String> = ArrayList()
     var wallets: ArrayList<String> = ArrayList()
+    var templates: ArrayList<Template> = ArrayList()
 
     lateinit var requestQueue: RequestQueue
 
