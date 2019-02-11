@@ -55,7 +55,7 @@ class LoginPageActivity : FragmentActivity() {
     }
 
     fun goToHomePage() {
-        val intent = Intent(this, HomePageActivity::class.java)
+        val intent = Intent(this, MainPage::class.java)
         startActivity(intent)
     }
 

@@ -2,6 +2,7 @@ package com.nevmem.moneysaver
 
 import android.app.Application
 import android.app.VoiceInteractor
+import android.arch.lifecycle.MutableLiveData
 import android.util.Log.*
 import com.android.volley.NetworkResponse
 import com.android.volley.Request
@@ -15,6 +16,7 @@ import com.nevmem.moneysaver.structure.Callback
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.lang.ClassCastException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -25,6 +27,8 @@ class App() : Application() {
     var tags: ArrayList<String> = ArrayList()
     var wallets: ArrayList<String> = ArrayList()
     var templates: ArrayList<Template> = ArrayList()
+
+    var recordsLoading: MutableLiveData<Boolean> = MutableLiveData()
 
     lateinit var requestQueue: RequestQueue
 
@@ -171,10 +175,106 @@ class App() : Application() {
         return date
     }
 
+    private fun processRow(json: JSONObject): Record {
+        val record = Record()
+
+        record.name = json.get("name") as String
+        record.value = -java.lang.Double.valueOf(json.get("value").toString())
+        record.id = json.getString("_id")
+        try {
+            record.wallet = json.get("wallet") as String
+        } catch (_: ClassCastException) {
+            record.wallet = "Not set"
+        } catch (_: JSONException) {
+            record.wallet = "Not set"
+        }
+
+        if (json.has("daily")) {
+            record.daily = json.getBoolean("daily")
+        } else {
+            System.out.println("Daily field is not found")
+        }
+
+        try {
+            val date = json.get("date") as JSONObject
+            val year = Integer.valueOf(date.get("year").toString())
+            val month = Integer.valueOf(date.get("month").toString())
+            val day = Integer.valueOf(date.get("day").toString())
+            val hour = Integer.valueOf(date.get("hour").toString())
+            val minute = Integer.valueOf(date.get("minute").toString())
+            record.date.year = year
+            record.date.month = month
+            record.date.day = day
+            record.date.hour = hour
+            record.date.minute = minute
+        } catch (_: JSONException) {
+            System.out.println("Date is corrupted")
+        }
+
+        try {
+            val tags = json.get("tags") as JSONArray
+            for (i in 0 until tags.length())
+                record.tags.add(tags.getString(i))
+        } catch (_ : ClassCastException) {
+            record.tags.add("Not set")
+        }
+
+        return record
+    }
+
+    private fun processGetDataResponse(array: JSONArray): java.util.ArrayList<Record> {
+        val parsed = java.util.ArrayList<Record>()
+        try {
+            for (i in 0 .. array.length()) {
+                val now = array.getJSONObject(i)
+                val current = processRow(now)
+                parsed.add(current)
+            }
+        } catch (e: JSONException) {
+            System.out.println("JSON parse exception")
+        }
+        return parsed
+    }
+
+    fun processData(it: String) {
+        var parsed = false
+        var result = java.util.ArrayList<Record>()
+        try {
+            result = processGetDataResponse(JSONArray(it))
+            parsed = true
+        } catch (e: JSONException) {
+            System.out.println("JSON exception while parsing, server response")
+        }
+        if (!parsed) {
+            try {
+                val obj = JSONObject(it)
+                val serverError = obj.getString("err")
+                if (serverError != null) {
+                }
+                parsed = true
+            } catch (e: JSONException) {
+                System.out.println("Another json exception while parsing")
+            }
+        }
+
+        if (!parsed) {
+        } else {
+            if (result.size != 0) {
+                clearRecords()
+                saveRecords(result)
+                System.out.println("Was loaded: ${result.size} records")
+            }
+        }
+    }
+
     fun loadData(onSuccess: Callback<String>, onError: Callback<String>) {
+        recordsLoading.value = true
         val stringRequest = object : StringRequest(Request.Method.POST, Vars.ServerApiData, {
+            processData(it)
             onSuccess.callback(it)
+            recordsLoading.value = false
         }, {
+            recordsLoading.value = false
             onError.callback(it.toString())
         }) {
             override fun getBody(): ByteArray {
