@@ -30,13 +30,20 @@ class App() : Application() {
     }
 
     fun loadTags() {
-        val request = StringRequest(Request.Method.POST, Vars.ServerApiTags, {
-            try {
-                val json = JSONArray(it)
-                for (i in 0 until(json.length())) {
-                    tags.add(json[i].toString())
+        val request = JsonObjectRequest(Request.Method.POST, Vars.ServerApiTags, userCredentialsJSON(), {
+            System.out.println(it.toString())
+            if (it.has("type")) {
+                if (it.getString("type") == "ok") {
+                    val fromJson = it.getJSONArray("data")
+                    tags.clear()
+                    for (i in 0 until(fromJson.length()))
+                        tags.add(fromJson[i].toString())
+                } else if(it.getString("type") == "error") {
+                    System.out.println(it.getString("error"))
+                } else  {
+                    System.out.println("Unknown server response format")
                 }
-            } catch (_: JSONException) { }
+            }
         }, {
             System.out.println(it.toString())
         })
@@ -54,6 +61,7 @@ class App() : Application() {
     fun loadWallets() {
         val request = StringRequest(Request.Method.POST, Vars.ServerApiWallets, {
             try {
+                wallets.clear()
                 val json = JSONArray(it)
                 for (i in 0 until (json.length())) {
                     wallets.add(json[i].toString())
@@ -65,11 +73,14 @@ class App() : Application() {
         requestQueue.add(request)
     }
 
+    fun loadAll() {
+        loadTags()
+        loadWallets()
+    }
+
     override fun onCreate() {
         super.onCreate()
         requestQueue = Volley.newRequestQueue(this)
-        loadTags()
-        loadWallets()
         i("APP_CLASS", "onCreate method was called")
     }
 

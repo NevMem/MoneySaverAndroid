@@ -51,6 +51,7 @@ class LoginPageActivity : FragmentActivity() {
         val savedUser = User.loadUserCredintials(this)
         val application = applicationContext as App
         application.user = savedUser
+        application.loadAll()
     }
 
     fun goToHomePage() {
