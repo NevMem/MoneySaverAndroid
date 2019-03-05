@@ -1,18 +1,14 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Material.NoActionBar">
-        <item name="colorAccent">@color/colorAccent</item>
-        <!--<item name="android:colorPrimary">#f00</item>-->
-        <!--<item name="android:colorPrimaryDark">#0F0</item>-->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorAccent">@color/specialColor</item>
+        <item name="colorPrimary">@color/mainColor</item>
+        <item name="colorPrimaryDark">@color/mainColor</item>
 
         <item name="android:windowActivityTransitions">true</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowIsTranslucent">true</item>
-
-        <!--<item name="android:windowEnterTransition">@transition/explode</item>-->
-        <!--<item name="android:windowExitTransition">@transition/explode</item>-->
-
     </style>
 
     <style name="SpecialButtonStyle">

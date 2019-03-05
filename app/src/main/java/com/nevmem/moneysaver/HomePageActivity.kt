@@ -43,7 +43,7 @@ import org.json.JSONObject
 import java.lang.ClassCastException
 import java.util.*
 
-class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
+class HomePageActivity(var showedRecords: Int = 0) : AppCompatActivity() {
 
     lateinit var homeModel: HomePageActivityViewModel
     val DEFAULT_COUNT_OF_ELEMENTS = 20
@@ -155,67 +155,6 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
         }
     }
 
-    fun processRow(json: JSONObject): Record {
-        val record = Record()
-
-        record.name = json.get("name") as String
-        record.value = -java.lang.Double.valueOf(json.get("value").toString())
-        record.id = json.getString("_id")
-        try {
-            record.wallet = json.get("wallet") as String
-        } catch (_: ClassCastException) {
-            record.wallet = "Not set"
-        } catch (_: JSONException) {
-            record.wallet = "Not set"
-        }
-
-        if (json.has("daily")) {
-            record.daily = json.getBoolean("daily")
-        } else {
-            System.out.println("Daily field is not found")
-        }
-
-        try {
-            val date = json.get("date") as JSONObject
-            val year = Integer.valueOf(date.get("year").toString())
-            val month = Integer.valueOf(date.get("month").toString())
-            val day = Integer.valueOf(date.get("day").toString())
-            val hour = Integer.valueOf(date.get("hour").toString())
-            val minute = Integer.valueOf(date.get("minute").toString())
-            record.date.year = year
-            record.date.month = month
-            record.date.day = day
-            record.date.hour = hour
-            record.date.minute = minute
-        } catch (_: JSONException) {
-            System.out.println("Date is corrupted")
-        }
-
-        try {
-            val tags = json.get("tags") as JSONArray
-            for (i in 0 until tags.length())
-                record.tags.add(tags.getString(i))
-        } catch (_ : ClassCastException) {
-            record.tags.add("Not set")
-        }
-
-        return record
-    }
-
-    private fun processGetDataResponse(array: JSONArray): ArrayList<Record> {
-        val parsed = ArrayList<Record>()
-        try {
-            for (i in 0 .. array.length()) {
-                val now = array.getJSONObject(i)
-                val current = processRow(now)
-                parsed.add(current)
-            }
-        } catch (e: JSONException) {
-            System.out.println("JSON parse exception")
-        }
-        return parsed
-    }
-
     private fun showDefaultToast(message: String) {
         val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
         toast.setGravity(Gravity.BOTTOM, 0, 40)
@@ -223,40 +162,8 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
     }
 
     fun processData(it: String?) {
-        var parsed = false
-        var result = ArrayList<Record>()
-        try {
-            result = processGetDataResponse(JSONArray(it))
-            parsed = true
-        } catch (e: JSONException) {
-            System.out.println("JSON exception while parsing, server response")
-        }
-        if (!parsed) {
-            try {
-                val obj = JSONObject(it)
-                val serverError = obj.getString("err")
-                if (serverError != null) {
-                }
-                parsed = true
-            } catch (e: JSONException) {
-                System.out.println("Another json exception while parsing")
-            }
-        }
-
-        if (!parsed) {
-        } else {
-            if (result.size != 0) {
-                showDefaultToast("Loaded records")
-
-                val application = applicationContext as App
-                application.clearRecords()
-                application.saveRecords(result)
-
-                clearRecordsView()
-
-                showMore()
-            }
-        }
+        clearRecordsView()
+        showMore()
     }
 
     fun clearRecordsView() {
@@ -334,9 +241,9 @@ class HomePageActivity(var showedRecords: Int = 0) : FragmentActivity() {
                 if (it.has("daySum")) {
                     val bufferJSON = it.getJSONObject("daySum")
                     val iterator = bufferJSON.keys()
-                    val buffer = ArrayList<Float>()
+                    val buffer = ArrayList<Double>()
                     iterator.forEach {
-                        buffer.add(bufferJSON[it].toString().toFloat())
+                        buffer.add(bufferJSON[it].toString().toDouble())
                     }
                     homeModel.sumDay.value = buffer
                 }

@@ -1,32 +1,47 @@
 package com.nevmem.moneysaver
 
 import android.app.Application
-import android.app.VoiceInteractor
 import android.util.Log.*
-import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.Response
 import com.android.volley.toolbox.*
-import com.nevmem.moneysaver.data.Record
-import com.nevmem.moneysaver.data.User
+import com.nevmem.moneysaver.data.*
 import com.nevmem.moneysaver.structure.Callback
+import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.lang.ClassCastException
 import java.util.*
+import kotlin.collections.ArrayList
 
 class App() : Application() {
-    var records: ArrayList<Record> = ArrayList()
     lateinit var user: User
+    var info: Info
 
     var tags: ArrayList<String> = ArrayList()
     var wallets: ArrayList<String> = ArrayList()
+    var loadedRecords = false
+    var records: ArrayList<Record> = ArrayList()
+//    var templates: ArrayList<Template> = ArrayList()
+
+    var templates: Templates
+
+    var infoFlow: BehaviorSubject<Info>
+    var recordsFlow: BehaviorSubject<ArrayList<Record>>
+    var templatesFlow: BehaviorSubject<Templates>
 
     lateinit var requestQueue: RequestQueue
 
     init {
         i("APP_CLASS", "App() init method was called")
+        info = Info()
+        templates = Templates()
+        infoFlow = BehaviorSubject.create()
+        recordsFlow = BehaviorSubject.create()
+        templatesFlow = BehaviorSubject.create()
     }
 
     fun loadTags() {
@@ -50,14 +65,6 @@ class App() : Application() {
         requestQueue.add(request)
     }
 
-    fun userCredentialsJSON(): JSONObject {
-        val json = JSONObject()
-        json.put("login", user.login)
-        json.put("token", user.token)
-        return json
-    }
-
-
     fun loadWallets() {
         val request = StringRequest(Request.Method.POST, Vars.ServerApiWallets, {
             try {
@@ -73,6 +80,64 @@ class App() : Application() {
         requestQueue.add(request)
     }
 
+    fun loadTemplates() {
+        templates.clear()
+        templates.ready = false
+        templatesFlow.onNext(templates)
+        val request = object : StringRequest(Request.Method.POST, Vars.ServerApiTemplates, {
+            try {
+                val response = JSONObject(it)
+                if (response.has("type")) {
+                    if (response.getString("type") == "ok") {
+                        val arr = response.getJSONArray("data")
+                        for (index in 0 until (arr.length())) {
+                            val jsonObj = arr.getJSONObject(index)
+                            println(jsonObj.toString())
+                            val name = jsonObj.getString("name")
+                            val value = jsonObj.getDouble("value")
+                            val wallet = jsonObj.getString("wallet")
+                            val tags = ArrayList<String>()
+                            val tagsJSON = jsonObj.getJSONArray("tags")
+                            val id = jsonObj.getString("id")
+                            for (i in 0 until (tagsJSON.length()))
+                                tags.add(tagsJSON.getString(i))
+                            var template = Template(name, value, tags, wallet, id)
+                            templates.add(template)
+                        }
+                        templates.ready = true
+                        templatesFlow.onNext(templates)
+                    } else if (response.getString("type") == "error") {
+                        println(response.getString("error"))
+                    } else {
+                        println("Server response has unknown format")
+                    }
+                } else {
+                    println("Server response has unknown format")
+                }
+            } catch (_: JSONException) {
+                println("JSON parse exception")
+            }
+        }, {
+
+        }) {
+            override fun getBody(): ByteArray {
+                return userCredentialsJSON().toString().toByteArray()
+            }
+
+            override fun getBodyContentType(): String {
+                return "application/json"
+            }
+        }
+        requestQueue.add(request)
+    }
+
+    fun userCredentialsJSON(): JSONObject {
+        val json = JSONObject()
+        json.put("login", user.login)
+        json.put("token", user.token)
+        return json
+    }
+
     fun loadAll() {
         loadTags()
         loadWallets()
@@ -86,6 +151,7 @@ class App() : Application() {
 
     fun clearRecords() {
         records.clear()
+        recordsFlow.onNext(records)
         i("APP_CLASS", "records array was cleared")
     }
 
@@ -126,19 +192,26 @@ class App() : Application() {
     }
 
     fun loadInfo(onSuccess: Callback<JSONObject>, onError: Callback<String>) {
+        info = Info()
+        infoFlow.onNext(info)
+        System.out.println("Hello from info loader")
         val options = userCredentialsJSON()
         options.put("daysDescription", "true")
         options.put("info7", "true")
         options.put("info30", "true")
+        options.put("months", "true")
         val jsonRequest = JsonObjectRequest(Request.Method.POST, Vars.ServerApiInfo, options,
             {
                 if (!it.has("type")) {
                     onError.callback("Server response has unknown format")
                 } else {
-                    if (it.getString("type") == "ok")
+                    if (it.getString("type") == "ok") {
+                        info.fromJSON(it.getJSONObject("info"))
+                        infoFlow.onNext(info)
                         onSuccess.callback(it.getJSONObject("info"))
-                    else
+                    } else {
                         onError.callback("Server error")
+                    }
                 }
             },{
                 System.out.println(it.toString())
@@ -168,8 +241,101 @@ class App() : Application() {
         return date
     }
 
+    private fun processRow(json: JSONObject): Record {
+        val record = Record()
+
+        record.name = json.get("name") as String
+        record.value = -java.lang.Double.valueOf(json.get("value").toString())
+        record.id = json.getString("_id")
+        try {
+            record.wallet = json.get("wallet") as String
+        } catch (_: ClassCastException) {
+            record.wallet = "Not set"
+        } catch (_: JSONException) {
+            record.wallet = "Not set"
+        }
+
+        if (json.has("daily")) {
+            record.daily = json.getBoolean("daily")
+        } else {
+            System.out.println("Daily field is not found")
+        }
+
+        try {
+            val date = json.get("date") as JSONObject
+            val year = Integer.valueOf(date.get("year").toString())
+            val month = Integer.valueOf(date.get("month").toString())
+            val day = Integer.valueOf(date.get("day").toString())
+            val hour = Integer.valueOf(date.get("hour").toString())
+            val minute = Integer.valueOf(date.get("minute").toString())
+            record.date.year = year
+            record.date.month = month
+            record.date.day = day
+            record.date.hour = hour
+            record.date.minute = minute
+        } catch (_: JSONException) {
+            System.out.println("Date is corrupted")
+        }
+
+        try {
+            val tags = json.get("tags") as JSONArray
+            for (i in 0 until tags.length())
+                record.tags.add(tags.getString(i))
+        } catch (_ : ClassCastException) {
+            record.tags.add("Not set")
+        }
+
+        return record
+    }
+
+    private fun processGetDataResponse(array: JSONArray): java.util.ArrayList<Record> {
+        val parsed = java.util.ArrayList<Record>()
+        try {
+            for (i in 0 .. array.length()) {
+                val now = array.getJSONObject(i)
+                val current = processRow(now)
+                parsed.add(current)
+            }
+        } catch (e: JSONException) {
+            System.out.println("JSON parse exception")
+        }
+        return parsed
+    }
+
+    fun processData(it: String) {
+        var parsed = false
+        var result = java.util.ArrayList<Record>()
+        try {
+            result = processGetDataResponse(JSONArray(it))
+            parsed = true
+        } catch (e: JSONException) {
+            System.out.println("JSON exception while parsing, server response")
+        }
+        if (!parsed) {
+            try {
+                val obj = JSONObject(it)
+                val serverError = obj.getString("err")
+                if (serverError != null) {
+                }
+                parsed = true
+            } catch (e: JSONException) {
+                System.out.println("Another json exception while parsing")
+            }
+        }
+
+        if (!parsed) {
+        } else {
+            if (result.size != 0) {
+                clearRecords()
+                saveRecords(result)
+                System.out.println("Was loaded: ${result.size} records")
+            }
+        }
+    }
+
     fun loadData(onSuccess: Callback<String>, onError: Callback<String>) {
         val stringRequest = object : StringRequest(Request.Method.POST, Vars.ServerApiData, {
+            processData(it)
             onSuccess.callback(it)
         }, {
             onError.callback(it.toString())
@@ -247,9 +413,53 @@ class App() : Application() {
         requestQueue.add(jsonRequest)
     }
 
+    fun checkData(callback: Callback<String>) {
+        if (!info.ready)
+            loadInfo(Callback {}, Callback {})
+        if (tags.size == 0)
+            loadTags()
+        if (wallets.size == 0)
+            loadWallets()
+        if (!loadedRecords)
+            loadData(Callback {}, Callback {})
+    }
+
     fun saveRecords(from: ArrayList<Record>) {
         for (index in 0 until(from.size))
             records.add(from[index])
+        recordsFlow.onNext(records)
         i("APP_CLASS", "Saved ${from.size} records")
+    }
+
+    fun useTemplate(template: Template) {
+        for (index in 0 until(templates.templates.size)) {
+            if (templates.getTemplate(index) == template) {
+                templates.getTemplate(index).sending = true
+            }
+        }
+        templatesFlow.onNext(templates)
+
+        var params = userCredentialsJSON()
+        params.put("date", createDate())
+        params.put("templateId", template.id)
+        val request = JsonObjectRequest(Request.Method.POST, Vars.ServerApiUseTemplate, params, {
+            if (it.has("type")) {
+                if (it.getString("type") == "ok") {
+                    for (index in 0 until(templates.templates.size)) {
+                        if (templates.getTemplate(index) == template) {
+                            templates.getTemplate(index).sending = false
+                            templates.getTemplate(index).success = true
+                        }
+                    }
+                    templatesFlow.onNext(templates)
+                } else if (it.getString("type") == "error") {
+                } else {
+
+                }
+            }
+        }, {
+            println("Erorr ${it.toString()}")
+        })
+        requestQueue.add(request)
     }
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="#101010"
+                                             android:clipToPadding="false"
+>
+
+    <FrameLayout android:layout_width="match_parent" android:layout_height="0dp"
+                 app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 android:id="@+id/anchor"
+                 app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <android.support.design.widget.BottomNavigationView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/mainPageNavigation"
+            android:background="@drawable/bottom_view_background"
+            app:menu="@menu/main_page_navigation"
+            app:itemTextColor="@android:color/white"
+            app:itemIconTint="@android:color/white"
+            android:elevation="@dimen/stdElevation"
+            android:layout_marginBottom="7dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="7dp"
+    />
+    <!--<android.support.design.widget.CoordinatorLayout android:layout_width="match_parent"-->
+                                                     <!--android:layout_height="wrap_content" android:id="@+id/navigationAnchor"-->
+                                                     <!--app:layout_constraintEnd_toEndOf="parent"-->
+                                                     <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                                                     <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--&gt;-->
+        <!--<android.support.design.bottomappbar.BottomAppBar-->
+                <!--android:id="@+id/mainPageNavigation"-->
+                <!--app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+                <!--app:menu="@menu/main_page_navigation"-->
+                <!--android:layout_width="match_parent" android:layout_height="wrap_content"-->
+                <!--app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--/>-->
+    <!--</android.support.design.widget.CoordinatorLayout>-->
+
+</android.support.constraint.ConstraintLayout>

@@ -12,7 +12,7 @@ import com.nevmem.moneysaver.R
 import java.lang.Integer.max
 
 class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
-    var values = ArrayList<Float>()
+    var values = ArrayList<Double>()
     var showAmount = 20
     var rounded = false
     var barWidth = 20
@@ -75,7 +75,7 @@ class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         val paint = Paint()
-        paint.color = Color.parseColor("#292929")
+        paint.color = Color.parseColor("#191919")
         canvas!!.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
 
         if (values.size != 0) {
@@ -88,7 +88,7 @@ class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
                     mx = values[i]
 
             var smx = mx * 1.1f
-            smx = (((smx + 500) / 1000).toInt()) * 1000f
+            smx = (((smx + 500) / 1000).toInt()) * 1000.0
 
             if (showLabels) {
                 for (i in 0 until (divCount + 1)) {
