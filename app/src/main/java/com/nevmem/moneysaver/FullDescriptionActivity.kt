@@ -6,6 +6,7 @@ import android.app.SharedElementCallback
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.PersistableBundle
@@ -40,7 +41,7 @@ class FullDescriptionActivity: FragmentActivity() {
         setContentView(R.layout.full_description)
         viewModel = ViewModelProviders.of(this).get(FullDescriptionActivityViewModel::class.java)
 
-        window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
+        window.statusBarColor = Color.parseColor("#101010")
 
         i("description", "Hello from on create method")
         app = applicationContext as App

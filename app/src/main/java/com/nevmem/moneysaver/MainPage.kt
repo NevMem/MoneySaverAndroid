@@ -3,6 +3,7 @@ package com.nevmem.moneysaver
 import android.app.Application
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -32,7 +33,7 @@ class MainPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_page_layout)
         viewModel = ViewModelProviders.of(this).get(MainPageViewModel::class.java)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
+        window.statusBarColor = Color.parseColor("#101010")
         app = applicationContext as App
 
         app.loadAll()
