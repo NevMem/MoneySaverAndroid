@@ -6,12 +6,15 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
+              android:gravity="center"
+              android:paddingBottom="100dp"
+              android:clipToPadding="false"
 >
     <android.support.constraint.ConstraintLayout
                                                  android:layout_width="match_parent"
                                                  android:layout_height="wrap_content" android:id="@+id/totallySpend"
                                                  android:background="@drawable/profile_background"
-                                                 android:elevation="@dimen/stdElevation"
+                                                 android:elevation="@dimen/stdElevation" android:clipToPadding="false"
     >
 
         <TextView
@@ -33,7 +36,6 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:id="@+id/reloadButton"
-                android:onClick="reloadButtonClicked"
                 app:layout_constraintStart_toEndOf="@+id/userName" android:layout_marginStart="16dp"
                 android:src="@drawable/update_icon" android:background="#00000000"
                 app:layout_constraintBottom_toBottomOf="@+id/userName" app:layout_constraintTop_toTopOf="@+id/userName"
@@ -108,7 +110,7 @@
                 app:amountOfBars="30"
                 app:rounded="true"
                 app:barWidth="8"
-                app:baseColor="@color/mPurple"
+                app:baseColor="#f5b700"
                 app:labelsFontColor="@color/secondaryFontColor"
                 app:labelsLiningColor="#15ffffff"
                 app:showLabels="true"
@@ -133,7 +135,77 @@
                       android:layout_marginTop="14dp" android:layout_marginBottom="14dp"
                       android:elevation="@dimen/stdElevation"
                       android:background="@drawable/profile_background"
-                      android:padding="7dp"
+                      android:paddingTop="7dp"
+                      android:paddingBottom="7dp"
+                      android:layout_marginEnd="5dp"
+                      android:layout_weight="1"
+                      android:gravity="center"
+        >
+            <TextView
+                    android:text="@string/sum7Days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:id="@+id/text_6"
+                    android:gravity="center|start"
+                    android:textSize="18sp"
+                    android:textColor="@color/secondaryFontColor"
+            />
+            <TextView
+                    tools:text="Average 7 days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/sum7Days"
+                    android:gravity="center|end"
+                    android:textSize="22sp" android:textColor="@color/mainFontColor"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+            />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:elevation="@dimen/stdElevation"
+                      android:background="@drawable/profile_background"
+                      android:layout_marginTop="14dp" android:layout_marginBottom="14dp"
+                      android:paddingTop="7dp"
+                      android:paddingBottom="7dp"
+                      android:layout_marginStart="5dp"
+                      android:layout_weight="1"
+                      android:gravity="center"
+        >
+            <TextView
+                    android:text="@string/sum30Days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:id="@+id/text_7"
+                    android:gravity="center|start"
+                    android:textSize="18sp"
+                    android:textColor="@color/secondaryFontColor"/>
+            <TextView
+                    tools:text="Average 30 days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/sum30Days"
+                    android:gravity="center|end"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:textSize="22sp" android:textColor="@color/mainFontColor"
+            />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:clipToPadding="false"
+            android:layout_gravity="fill_horizontal"
+    >
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:layout_marginTop="4dp" android:layout_marginBottom="14dp"
+                      android:elevation="@dimen/stdElevation"
+                      android:background="@drawable/profile_background"
+                      android:paddingTop="7dp"
+                      android:paddingBottom="7dp"
                       android:layout_marginEnd="5dp"
                       android:layout_weight="1"
                       android:gravity="center"
@@ -154,7 +226,8 @@
                     android:id="@+id/average7Days"
                     android:gravity="center|end"
                     android:textSize="22sp" android:textColor="@color/mainFontColor"
-                    android:padding="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
             />
         </LinearLayout>
 
@@ -162,8 +235,9 @@
                       android:orientation="vertical"
                       android:elevation="@dimen/stdElevation"
                       android:background="@drawable/profile_background"
-                      android:layout_marginTop="14dp" android:layout_marginBottom="14dp"
-                      android:padding="7dp"
+                      android:layout_marginTop="4dp" android:layout_marginBottom="14dp"
+                      android:paddingTop="7dp"
+                      android:paddingBottom="7dp"
                       android:layout_marginStart="5dp"
                       android:layout_weight="1"
                       android:gravity="center"
@@ -182,9 +256,17 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/average30Days"
                     android:gravity="center|end"
-                    android:padding="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:textSize="22sp" android:textColor="@color/mainFontColor"
             />
         </LinearLayout>
     </LinearLayout>
+    <ProgressBar android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/userProfileProgressBar"
+    />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:id="@+id/chartsAnchor" android:orientation="vertical"
+    />
 </LinearLayout>

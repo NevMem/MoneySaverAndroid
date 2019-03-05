@@ -1,18 +1,15 @@
 package com.nevmem.moneysaver
 
 import android.app.Application
-import android.app.VoiceInteractor
-import android.arch.lifecycle.MutableLiveData
 import android.util.Log.*
-import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.Response
 import com.android.volley.toolbox.*
-import com.nevmem.moneysaver.data.Record
-import com.nevmem.moneysaver.data.Template
-import com.nevmem.moneysaver.data.User
+import com.nevmem.moneysaver.data.*
 import com.nevmem.moneysaver.structure.Callback
+import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -21,19 +18,30 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class App() : Application() {
-    var records: ArrayList<Record> = ArrayList()
     lateinit var user: User
+    var info: Info
 
     var tags: ArrayList<String> = ArrayList()
     var wallets: ArrayList<String> = ArrayList()
-    var templates: ArrayList<Template> = ArrayList()
+    var loadedRecords = false
+    var records: ArrayList<Record> = ArrayList()
+//    var templates: ArrayList<Template> = ArrayList()
 
-    var recordsLoading: MutableLiveData<Boolean> = MutableLiveData()
+    var templates: Templates
+
+    var infoFlow: BehaviorSubject<Info>
+    var recordsFlow: BehaviorSubject<ArrayList<Record>>
+    var templatesFlow: BehaviorSubject<Templates>
 
     lateinit var requestQueue: RequestQueue
 
     init {
         i("APP_CLASS", "App() init method was called")
+        info = Info()
+        templates = Templates()
+        infoFlow = BehaviorSubject.create()
+        recordsFlow = BehaviorSubject.create()
+        templatesFlow = BehaviorSubject.create()
     }
 
     fun loadTags() {
@@ -57,14 +65,6 @@ class App() : Application() {
         requestQueue.add(request)
     }
 
-    fun userCredentialsJSON(): JSONObject {
-        val json = JSONObject()
-        json.put("login", user.login)
-        json.put("token", user.token)
-        return json
-    }
-
-
     fun loadWallets() {
         val request = StringRequest(Request.Method.POST, Vars.ServerApiWallets, {
             try {
@@ -80,6 +80,64 @@ class App() : Application() {
         requestQueue.add(request)
     }
 
+    fun loadTemplates() {
+        templates.clear()
+        templates.ready = false
+        templatesFlow.onNext(templates)
+        val request = object : StringRequest(Request.Method.POST, Vars.ServerApiTemplates, {
+            try {
+                val response = JSONObject(it)
+                if (response.has("type")) {
+                    if (response.getString("type") == "ok") {
+                        val arr = response.getJSONArray("data")
+                        for (index in 0 until (arr.length())) {
+                            val jsonObj = arr.getJSONObject(index)
+                            println(jsonObj.toString())
+                            val name = jsonObj.getString("name")
+                            val value = jsonObj.getDouble("value")
+                            val wallet = jsonObj.getString("wallet")
+                            val tags = ArrayList<String>()
+                            val tagsJSON = jsonObj.getJSONArray("tags")
+                            val id = jsonObj.getString("id")
+                            for (i in 0 until (tagsJSON.length()))
+                                tags.add(tagsJSON.getString(i))
+                            var template = Template(name, value, tags, wallet, id)
+                            templates.add(template)
+                        }
+                        templates.ready = true
+                        templatesFlow.onNext(templates)
+                    } else if (response.getString("type") == "error") {
+                        println(response.getString("error"))
+                    } else {
+                        println("Server response has unknown format")
+                    }
+                } else {
+                    println("Server response has unknown format")
+                }
+            } catch (_: JSONException) {
+                println("JSON parse exception")
+            }
+        }, {
+
+        }) {
+            override fun getBody(): ByteArray {
+                return userCredentialsJSON().toString().toByteArray()
+            }
+
+            override fun getBodyContentType(): String {
+                return "application/json"
+            }
+        }
+        requestQueue.add(request)
+    }
+
+    fun userCredentialsJSON(): JSONObject {
+        val json = JSONObject()
+        json.put("login", user.login)
+        json.put("token", user.token)
+        return json
+    }
+
     fun loadAll() {
         loadTags()
         loadWallets()
@@ -93,6 +151,7 @@ class App() : Application() {
 
     fun clearRecords() {
         records.clear()
+        recordsFlow.onNext(records)
         i("APP_CLASS", "records array was cleared")
     }
 
@@ -133,19 +192,26 @@ class App() : Application() {
     }
 
     fun loadInfo(onSuccess: Callback<JSONObject>, onError: Callback<String>) {
+        info = Info()
+        infoFlow.onNext(info)
+        System.out.println("Hello from info loader")
         val options = userCredentialsJSON()
         options.put("daysDescription", "true")
         options.put("info7", "true")
         options.put("info30", "true")
+        options.put("months", "true")
         val jsonRequest = JsonObjectRequest(Request.Method.POST, Vars.ServerApiInfo, options,
             {
                 if (!it.has("type")) {
                     onError.callback("Server response has unknown format")
                 } else {
-                    if (it.getString("type") == "ok")
+                    if (it.getString("type") == "ok") {
+                        info.fromJSON(it.getJSONObject("info"))
+                        infoFlow.onNext(info)
                         onSuccess.callback(it.getJSONObject("info"))
-                    else
+                    } else {
                         onError.callback("Server error")
+                    }
                 }
             },{
                 System.out.println(it.toString())
@@ -268,13 +334,10 @@ class App() : Application() {
     }
 
     fun loadData(onSuccess: Callback<String>, onError: Callback<String>) {
-        recordsLoading.value = true
         val stringRequest = object : StringRequest(Request.Method.POST, Vars.ServerApiData, {
             processData(it)
             onSuccess.callback(it)
-            recordsLoading.value = false
         }, {
-            recordsLoading.value = false
             onError.callback(it.toString())
         }) {
             override fun getBody(): ByteArray {
@@ -350,9 +413,53 @@ class App() : Application() {
         requestQueue.add(jsonRequest)
     }
 
+    fun checkData(callback: Callback<String>) {
+        if (!info.ready)
+            loadInfo(Callback {}, Callback {})
+        if (tags.size == 0)
+            loadTags()
+        if (wallets.size == 0)
+            loadWallets()
+        if (!loadedRecords)
+            loadData(Callback {}, Callback {})
+    }
+
     fun saveRecords(from: ArrayList<Record>) {
         for (index in 0 until(from.size))
             records.add(from[index])
+        recordsFlow.onNext(records)
         i("APP_CLASS", "Saved ${from.size} records")
+    }
+
+    fun useTemplate(template: Template) {
+        for (index in 0 until(templates.templates.size)) {
+            if (templates.getTemplate(index) == template) {
+                templates.getTemplate(index).sending = true
+            }
+        }
+        templatesFlow.onNext(templates)
+
+        var params = userCredentialsJSON()
+        params.put("date", createDate())
+        params.put("templateId", template.id)
+        val request = JsonObjectRequest(Request.Method.POST, Vars.ServerApiUseTemplate, params, {
+            if (it.has("type")) {
+                if (it.getString("type") == "ok") {
+                    for (index in 0 until(templates.templates.size)) {
+                        if (templates.getTemplate(index) == template) {
+                            templates.getTemplate(index).sending = false
+                            templates.getTemplate(index).success = true
+                        }
+                    }
+                    templatesFlow.onNext(templates)
+                } else if (it.getString("type") == "error") {
+                } else {
+
+                }
+            }
+        }, {
+            println("Erorr ${it.toString()}")
+        })
+        requestQueue.add(request)
     }
 }

@@ -241,9 +241,9 @@ class HomePageActivity(var showedRecords: Int = 0) : AppCompatActivity() {
                 if (it.has("daySum")) {
                     val bufferJSON = it.getJSONObject("daySum")
                     val iterator = bufferJSON.keys()
-                    val buffer = ArrayList<Float>()
+                    val buffer = ArrayList<Double>()
                     iterator.forEach {
-                        buffer.add(bufferJSON[it].toString().toFloat())
+                        buffer.add(bufferJSON[it].toString().toDouble())
                     }
                     homeModel.sumDay.value = buffer
                 }
