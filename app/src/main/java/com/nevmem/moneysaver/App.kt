@@ -1,6 +1,7 @@
 package com.nevmem.moneysaver
 
 import android.app.Application
+import android.os.Handler
 import android.util.Log.*
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -33,7 +34,6 @@ class App() : Application() {
     var templatesFlow: BehaviorSubject<Templates>
 
     var changeFlow: BehaviorSubject<RecordChangeableWrapper>
-
     lateinit var requestQueue: RequestQueue
 
     init {
@@ -460,8 +460,67 @@ class App() : Application() {
                 }
             }
         }, {
-            println("Erorr ${it.toString()}")
+            println("Error $it")
         })
         requestQueue.add(request)
+    }
+
+    fun emitChangeRecordError(error: String) {
+        var bufferChangeable = changeFlow.value
+        if (bufferChangeable != null) {
+            bufferChangeable.error = error
+            bufferChangeable.success = ""
+            bufferChangeable.loading = false
+            changeFlow.onNext(bufferChangeable)
+        }
+    }
+
+    fun emitChangeRecordSuccess(success: String) {
+        var bufferChangeable = changeFlow.value
+        if (bufferChangeable != null) {
+            bufferChangeable.success = success
+            bufferChangeable.error = ""
+            bufferChangeable.loading = false
+            changeFlow.onNext(bufferChangeable)
+        }
+    }
+
+    fun editFromDescription(record: Record) {
+        var bufferChangeable = changeFlow.value
+        if (bufferChangeable != null) {
+            bufferChangeable.loading = true
+            changeFlow.onNext(bufferChangeable)
+            val params = userCredentialsJSON()
+            params.put("name", record.name)
+            params.put("value", record.value)
+            params.put("wallet", record.wallet)
+            params.put("tags", record.tagsToJSON())
+            params.put("date", record.date.toJSON())
+            params.put("id", record.id)
+            println(record.date.toJSON().toString())
+            params.put("daily", record.daily)
+            val request = JsonObjectRequest(Request.Method.POST, Vars.ServerApiEdit, params, {
+                println(it.toString())
+                if (it.has("type")) {
+                    if (it.getString("type") == "ok") {
+                        val buffer = changeFlow.value
+                        if (buffer != null) {
+                            buffer.record = record
+                            changeFlow.onNext(buffer)
+                        }
+                        emitChangeRecordSuccess("Success")
+                    } else if (it.getString("type") == "error") {
+                        emitChangeRecordError(it.getString("error"))
+                    } else {
+                        emitChangeRecordError("Server response has unknown format")
+                    }
+                } else {
+                    emitChangeRecordError("Server response has unknown format")
+                }
+            }, {
+                print(it.toString())
+            })
+            requestQueue.add(request)
+        }
     }
 }

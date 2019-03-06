@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.PersistableBundle
+import android.os.VibrationEffect
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -110,7 +111,7 @@ class FullDescriptionActivity: FragmentActivity() {
 
         viewModel.currentDaily.observe(this, Observer {
             if (it != null) {
-                dailySwitch.isChecked = it!! == true
+                dailySwitch.isChecked = it == true
             } else {
                 dailySwitch.isChecked = false
             }
@@ -250,19 +251,37 @@ class FullDescriptionActivity: FragmentActivity() {
             viewModel.success.value = ""
             viewModel.error.value = ""
 
-            app.sendEditRequest(record, Callback {
-                viewModel.success.value = it
-            }, Callback {
-                viewModel.error.value = it
-            })
+            app.editFromDescription(record)
+        }
+
+        infoAnchor.setOnClickListener {
+            var bufferChangeable = app.changeFlow.value
+            if (bufferChangeable != null && !bufferChangeable.loading) {
+                bufferChangeable.success = ""
+                bufferChangeable.error = ""
+                app.changeFlow.onNext(bufferChangeable)
+            }
         }
     }
 
     private fun setupSubscriptions() {
         changeFlow = app.changeFlow.subscribe{ value -> run {
-            if (value.updating) {
-                println("Updating in progress")
+            successImage.visibility = View.GONE
+            errorImage.visibility = View.GONE
+            if (value.loading) {
+                infoAnchor.visibility = View.VISIBLE
+                loadingBar.visibility = View.VISIBLE
+                loadingMessage.text = "Loading..."
+            } else if (value.success.isNotEmpty()) {
+                loadingMessage.text = value.success
+                loadingBar.visibility = View.GONE
+                successImage.visibility = View.VISIBLE
+            } else if (value.error.isNotEmpty()) {
+                loadingMessage.text = value.error
+                loadingBar.visibility = View.GONE
+                errorImage.visibility = View.VISIBLE
             } else {
+                infoAnchor.visibility = View.GONE
                 with(value.record) {
                     recordNameField.text = name
                     recordValueField.text = value.record.value.toString()
@@ -282,6 +301,9 @@ class FullDescriptionActivity: FragmentActivity() {
                     viewModel.currentMinute.value = fillToFormat(date.minute.toString())
                     viewModel.prevMinute.value = fillToFormat(date.minute.toString())
                 }
+                wallet.text = value.record.wallet
+                tag.text = value.record.tags[0]
+
                 viewModel.currentDaily.value = value.record.daily
                 viewModel.prevDaily.value = value.record.daily
             }

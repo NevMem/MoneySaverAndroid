@@ -1,10 +1,13 @@
 package com.nevmem.moneysaver.data
 
+import java.util.*
+
 class RecordChangeableWrapper(fromRecord: Record) {
     var record: Record
-    var updating = false
+    var loading = false
     var error = ""
-    var success = false
+    var success = ""
+
     var deleted = false
 
     init {
