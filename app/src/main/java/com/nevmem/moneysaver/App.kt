@@ -25,13 +25,14 @@ class App() : Application() {
     var wallets: ArrayList<String> = ArrayList()
     var loadedRecords = false
     var records: ArrayList<Record> = ArrayList()
-//    var templates: ArrayList<Template> = ArrayList()
 
     var templates: Templates
 
     var infoFlow: BehaviorSubject<Info>
     var recordsFlow: BehaviorSubject<ArrayList<Record>>
     var templatesFlow: BehaviorSubject<Templates>
+
+    var changeFlow: BehaviorSubject<RecordChangeableWrapper>
 
     lateinit var requestQueue: RequestQueue
 
@@ -42,6 +43,7 @@ class App() : Application() {
         infoFlow = BehaviorSubject.create()
         recordsFlow = BehaviorSubject.create()
         templatesFlow = BehaviorSubject.create()
+        changeFlow = BehaviorSubject.create()
     }
 
     fun loadTags() {

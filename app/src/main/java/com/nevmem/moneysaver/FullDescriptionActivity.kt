@@ -6,6 +6,7 @@ import android.app.SharedElementCallback
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.PersistableBundle
@@ -24,6 +25,7 @@ import android.util.AttributeSet
 import android.widget.NumberPicker
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.structure.Callback
+import io.reactivex.disposables.Disposable
 
 
 class FullDescriptionActivity: FragmentActivity() {
@@ -35,22 +37,31 @@ class FullDescriptionActivity: FragmentActivity() {
     private lateinit var app: App
     private lateinit var viewModel: FullDescriptionActivityViewModel
 
+    private lateinit var changeFlow: Disposable
+
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
         setContentView(R.layout.full_description)
         viewModel = ViewModelProviders.of(this).get(FullDescriptionActivityViewModel::class.java)
 
-        window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
+        window.statusBarColor = Color.parseColor("#101010")
 
         i("description", "Hello from on create method")
         app = applicationContext as App
         index = intent.extras["index"].toString().toInt()
 
-        recordNameField.text = app.records[index].name
-        recordValueField.text = app.records[index].value.toString()
-
         window.sharedElementEnterTransition.duration = 200
 
+        setupLiveDateObservers()
+        setupListeners()
+        setupSubscriptions()
+
+        Handler().postDelayed({
+            fadeInValues()
+        }, 400)
+    }
+
+    private fun setupLiveDateObservers() {
         viewModel.currentYear.observe(this, Observer {
             year.text = it
             if (viewModel.prevYear.value != it) {
@@ -132,6 +143,9 @@ class FullDescriptionActivity: FragmentActivity() {
             }
         })
 
+    }
+
+    private fun setupListeners() {
         yearWrapper.setOnClickListener {
             val builder = AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
             val picker = NumberPicker(this)
@@ -141,8 +155,8 @@ class FullDescriptionActivity: FragmentActivity() {
             builder.setTitle("Choose year")
                 .setMessage("Please enter new year for this record")
                 .setPositiveButton(android.R.string.yes) { _, which -> run {
-                        viewModel.currentYear.value = picker.value.toString()
-                    } }
+                    viewModel.currentYear.value = picker.value.toString()
+                } }
                 .setNegativeButton(android.R.string.no) { _, which -> run {
                     System.out.println(which)
                 } }
@@ -242,12 +256,36 @@ class FullDescriptionActivity: FragmentActivity() {
                 viewModel.error.value = it
             })
         }
+    }
 
-        fillValues()
+    private fun setupSubscriptions() {
+        changeFlow = app.changeFlow.subscribe{ value -> run {
+            if (value.updating) {
+                println("Updating in progress")
+            } else {
+                with(value.record) {
+                    recordNameField.text = name
+                    recordValueField.text = value.record.value.toString()
 
-        Handler().postDelayed({
-            fadeInValues()
-        }, 400)
+                    viewModel.currentYear.value = date.year.toString()
+                    viewModel.prevYear.value = date.year.toString()
+
+                    viewModel.currentMonth.value = getMonth(date.month)
+                    viewModel.prevMonth.value = getMonth(date.month)
+
+                    viewModel.currentDay.value = fillToFormat(date.day.toString())
+                    viewModel.prevDay.value = fillToFormat(date.day.toString())
+
+                    viewModel.currentHour.value = fillToFormat(date.hour.toString())
+                    viewModel.prevHour.value = fillToFormat(date.hour.toString())
+
+                    viewModel.currentMinute.value = fillToFormat(date.minute.toString())
+                    viewModel.prevMinute.value = fillToFormat(date.minute.toString())
+                }
+                viewModel.currentDaily.value = value.record.daily
+                viewModel.prevDaily.value = value.record.daily
+            }
+        } }
     }
 
     private fun fillToFormat(current: String): String {
@@ -319,30 +357,7 @@ class FullDescriptionActivity: FragmentActivity() {
         return "Unknown"
     }
 
-    fun fillValues() {
-        tag.text = app.records[index].tags[0]
-        wallet.text = app.records[index].wallet
-
-        viewModel.currentYear.value = app.records[index].date.year.toString()
-        viewModel.prevYear.value = app.records[index].date.year.toString()
-
-        viewModel.currentMonth.value = getMonth(app.records[index].date.month)
-        viewModel.prevMonth.value = getMonth(app.records[index].date.month)
-
-        viewModel.currentDay.value = fillToFormat(app.records[index].date.day.toString())
-        viewModel.prevDay.value = fillToFormat(app.records[index].date.day.toString())
-
-        viewModel.currentHour.value = fillToFormat(app.records[index].date.hour.toString())
-        viewModel.prevHour.value = fillToFormat(app.records[index].date.hour.toString())
-
-        viewModel.currentMinute.value = fillToFormat(app.records[index].date.minute.toString())
-        viewModel.prevMinute.value = fillToFormat(app.records[index].date.minute.toString())
-
-        viewModel.currentDaily.value = app.records[index].daily
-        viewModel.prevDaily.value = app.records[index].daily
-    }
-
-    fun fadeInValues() {
+    private fun fadeInValues() {
         tag.animate().alpha(1f).setDuration(200).start()
         wallet.animate().alpha(1f).setDuration(200).start()
         yearWrapper.animate().alpha(1f).setDuration(200).start()

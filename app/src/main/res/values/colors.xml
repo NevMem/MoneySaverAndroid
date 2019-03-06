@@ -7,7 +7,7 @@
     <color name="secondaryFontColor">#9AC7C7C7</color>
     <color name="errorColor">#f55</color>
     <color name="dangerColor">#FF2424</color>
-    <color name="cardColor">#292929</color>
+    <color name="cardColor">#191919</color>
     <color name="backgroundColor">#202020</color>
     <color name="specialColor">#06d6a0</color>
 </resources>

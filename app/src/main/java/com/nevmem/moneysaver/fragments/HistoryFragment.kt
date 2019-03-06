@@ -15,6 +15,7 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.FullDescriptionActivity
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Record
+import com.nevmem.moneysaver.data.RecordChangeableWrapper
 import com.nevmem.moneysaver.structure.Callback
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.history_layout.*
@@ -50,6 +51,7 @@ class HistoryFragment : Fragment() {
         recordRow.dateField.text = record.date.toString()
         recordRow.walletField.text = record.wallet
         recordRow.setOnClickListener {
+            app.changeFlow.onNext(RecordChangeableWrapper(app.records[index]))
             val intent = Intent(activity, FullDescriptionActivity::class.java)
             intent.putExtra("index", index)
             val options = ActivityOptions.makeSceneTransitionAnimation(activity,
