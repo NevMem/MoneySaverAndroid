@@ -4,19 +4,25 @@ import android.app.ActivityOptions
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.util.Log.i
 import android.util.Pair
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.FullDescriptionActivity
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.RecordChangeableWrapper
 import com.nevmem.moneysaver.structure.Callback
+import com.nevmem.moneysaver.views.ConfirmationDialog
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.history_layout.*
 import kotlinx.android.synthetic.main.home_page_activity.*
@@ -44,12 +50,22 @@ class HistoryFragment : Fragment() {
         }
     }
 
-    fun createRow(record: Record, index: Int, inflater: LayoutInflater): View {
+    private fun createRow(record: Record, index: Int, inflater: LayoutInflater): View {
         val recordRow = inflater.inflate(R.layout.record_layout, historyWrapper, false)
         recordRow.recordNameField.text = record.name
         recordRow.recordValue.text = record.value.toString()
         recordRow.dateField.text = record.date.toString()
         recordRow.walletField.text = record.wallet
+        recordRow.deleteRecordButton.setOnClickListener {
+            val popupView = ConfirmationDialog(activity!!, "Do you really want delete this record?", {
+                println("Ok was clicked")
+            }, {
+                println("Dismiss was clicked")
+            })
+            val popup = PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            popup.elevation = 100f
+            popup.showAtLocation(historyScroller, Gravity.CENTER, 0, 0)
+        }
         recordRow.setOnClickListener {
             app.changeFlow.onNext(RecordChangeableWrapper(app.records[index]))
             val intent = Intent(activity, FullDescriptionActivity::class.java)
@@ -63,7 +79,7 @@ class HistoryFragment : Fragment() {
         return recordRow
     }
 
-    fun populateHistory(records: ArrayList<Record>, amount: Int) {
+    private fun populateHistory(records: ArrayList<Record>, amount: Int) {
         var realAmount = amount
         if (realAmount > records.size)
             realAmount = records.size
