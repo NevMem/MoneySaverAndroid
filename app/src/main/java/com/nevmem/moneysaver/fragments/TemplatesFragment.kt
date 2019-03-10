@@ -7,10 +7,12 @@ import android.util.Log.i
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Template
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.add_template_view.*
 import kotlinx.android.synthetic.main.template.view.*
 import kotlinx.android.synthetic.main.templates_page_fragment.*
 
@@ -71,15 +73,21 @@ class TemplatesFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         templatesFlow = app.templatesFlow.subscribe { templates -> run {
             i("templates flow", "received ${templates.ready}")
+            addNewTemplateView.visibility = View.GONE
 
             if (templates.ready) {
                 templatesLoading.visibility = View.GONE
                 showTemplates(templates.templates)
+                addNewTemplateView.visibility = View.VISIBLE
             } else {
                 clearTemplates()
                 templatesLoading.visibility = View.VISIBLE
             }
         } }
+
+        addNewTemplateView.setOnClickListener {
+            Toast.makeText(activity, "This method doesn't implemented", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onDestroyView() {
