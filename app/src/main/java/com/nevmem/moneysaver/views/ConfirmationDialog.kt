@@ -6,7 +6,9 @@ import android.view.View
 import com.nevmem.moneysaver.R
 import kotlinx.android.synthetic.main.confirmation_dialog_popup.view.*
 
-class ConfirmationDialog(ctx: Context, message: String, okCallback: () -> Unit, dismissCallback: () -> Unit) : ConstraintLayout(ctx) {
+class ConfirmationDialog(ctx: Context, message: String) : ConstraintLayout(ctx) {
+    private lateinit var okCallback: () -> Unit
+    private lateinit var dismissCallback: () -> Unit
 
     init {
         inflate(ctx, R.layout.confirmation_dialog_popup, this)
@@ -20,5 +22,13 @@ class ConfirmationDialog(ctx: Context, message: String, okCallback: () -> Unit, 
         }
 
         popupMessage.text = message
+    }
+
+    fun setOkListener(cb: () -> Unit) {
+        okCallback = cb
+    }
+
+    fun setDismissListener(cb: () -> Unit) {
+        dismissCallback = cb
     }
 }

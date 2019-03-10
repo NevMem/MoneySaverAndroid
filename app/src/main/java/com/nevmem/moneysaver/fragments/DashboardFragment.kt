@@ -35,9 +35,7 @@ class DashboardFragment : Fragment() {
         try {
             app = activity!!.applicationContext as App
             parent = activity!! as MainPage
-            app.checkData(Callback<String> {
-                System.out.println("Result string $it")
-            })
+            app.checkData()
             infoFlow = app.infoFlow.subscribe{ value -> run {
                 if (!value.ready)
                     userProfileProgressBar.visibility = View.VISIBLE

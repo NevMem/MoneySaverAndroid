@@ -44,7 +44,7 @@ class HistoryFragment : Fragment() {
         i("HistoryFragment", "onCreate")
         try {
             app = activity!!.applicationContext as App
-            app.loadData(Callback {}, Callback {})
+            app.loadData()
         } catch (_: KotlinNullPointerException) {
             System.out.println("Null pointer")
         }
@@ -57,14 +57,18 @@ class HistoryFragment : Fragment() {
         recordRow.dateField.text = record.date.toString()
         recordRow.walletField.text = record.wallet
         recordRow.deleteRecordButton.setOnClickListener {
-            val popupView = ConfirmationDialog(activity!!, "Do you really want delete this record?", {
-                println("Ok was clicked")
-            }, {
-                println("Dismiss was clicked")
-            })
-            val popup = PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            popup.elevation = 100f
+            val popupView = ConfirmationDialog(activity!!, "Do you really want delete this record?")
+            val popup = PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             popup.showAtLocation(historyScroller, Gravity.CENTER, 0, 0)
+            popupView.setOkListener {
+                popup.dismiss()
+
+                app.deleteRecord(record)
+            }
+
+            popupView.setDismissListener {
+                popup.dismiss()
+            }
         }
         recordRow.setOnClickListener {
             app.changeFlow.onNext(RecordChangeableWrapper(app.records[index]))

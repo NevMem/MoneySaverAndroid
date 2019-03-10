@@ -12,5 +12,6 @@ public class Vars {
         const val ServerApiEdit = "$ServerBase/api/edit"
         const val ServerApiTemplates = "$ServerBase/api/templates"
         const val ServerApiUseTemplate = "$ServerBase/api/useTemplate"
+        const val ServerApiDeleteRecord = "$ServerBase/api/remove"
     }
 }

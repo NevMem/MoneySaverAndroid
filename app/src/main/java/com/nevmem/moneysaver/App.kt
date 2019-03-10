@@ -24,7 +24,6 @@ class App() : Application() {
 
     var tags: ArrayList<String> = ArrayList()
     var wallets: ArrayList<String> = ArrayList()
-    var loadedRecords = false
     var records: ArrayList<Record> = ArrayList()
 
     var templates: Templates
@@ -335,12 +334,11 @@ class App() : Application() {
         }
     }
 
-    fun loadData(onSuccess: Callback<String>, onError: Callback<String>) {
+    fun loadData() {
         val stringRequest = object : StringRequest(Request.Method.POST, Vars.ServerApiData, {
             processData(it)
-            onSuccess.callback(it)
         }, {
-            onError.callback(it.toString())
+            println(it.toString())
         }) {
             override fun getBody(): ByteArray {
                 return userCredentialsJSON().toString().toByteArray()
@@ -415,15 +413,14 @@ class App() : Application() {
         requestQueue.add(jsonRequest)
     }
 
-    fun checkData(callback: Callback<String>) {
+    fun checkData() {
         if (!info.ready)
             loadInfo(Callback {}, Callback {})
         if (tags.size == 0)
             loadTags()
         if (wallets.size == 0)
             loadWallets()
-        if (!loadedRecords)
-            loadData(Callback {}, Callback {})
+        loadData()
     }
 
     fun saveRecords(from: ArrayList<Record>) {
@@ -522,5 +519,24 @@ class App() : Application() {
             })
             requestQueue.add(request)
         }
+    }
+
+    fun deleteRecord(record: Record) {
+        val params = userCredentialsJSON()
+        params.put("record_id", record.id)
+        val request = object : StringRequest(Request.Method.POST, Vars.ServerApiDeleteRecord, {
+            loadData()
+        }, {
+            println(it.toString())
+        }) {
+            override fun getBody(): ByteArray {
+                return params.toString().toByteArray()
+            }
+
+            override fun getBodyContentType(): String {
+                return "application/json"
+            }
+        }
+        requestQueue.add(request)
     }
 }
