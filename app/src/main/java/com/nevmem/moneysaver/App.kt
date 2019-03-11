@@ -326,11 +326,9 @@ class App() : Application() {
 
         if (!parsed) {
         } else {
-            if (result.size != 0) {
-                clearRecords()
-                saveRecords(result)
-                System.out.println("Was loaded: ${result.size} records")
-            }
+            clearRecords()
+            saveRecords(result)
+            System.out.println("Was loaded: ${result.size} records")
         }
     }
 
