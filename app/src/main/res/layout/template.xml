@@ -50,6 +50,14 @@
                    android:layout_marginTop="13dp"
                    tools:visibility="gone"
         />
+        <ImageView android:id="@+id/templateError"
+                   android:visibility="gone"
+                   android:layout_width="match_parent"
+                   android:layout_height="24dp"
+                   android:src="@drawable/error_mark"
+                   android:layout_marginTop="13dp"
+                   tools:visibility="gone"
+        />
         <ProgressBar android:layout_width="match_parent" android:layout_height="32dp"
                      android:visibility="gone" android:id="@+id/templateSending"
                      android:indeterminateTintMode="src_atop" android:indeterminateTint="#f5b700"

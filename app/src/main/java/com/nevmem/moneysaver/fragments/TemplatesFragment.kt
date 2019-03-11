@@ -4,15 +4,21 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log.i
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupWindow
 import android.widget.Toast
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Template
+import com.nevmem.moneysaver.views.ConfirmationDialog
+import com.nevmem.moneysaver.views.InfoDialog
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.add_template_view.*
+import kotlinx.android.synthetic.main.history_layout.*
+import kotlinx.android.synthetic.main.history_layout.view.*
 import kotlinx.android.synthetic.main.template.view.*
 import kotlinx.android.synthetic.main.templates_page_fragment.*
 
@@ -35,7 +41,7 @@ class TemplatesFragment: Fragment() {
     }
 
     private fun createTemplate(template: Template, index: Int, inflater: LayoutInflater): View {
-        var templateView = inflater.inflate(R.layout.template, templatesAnchor, false)
+        val templateView = inflater.inflate(R.layout.template, templatesAnchor, false)
         with (templateView) {
             templateName.text = template.name
             templateValue.text = template.value.toString()
@@ -43,19 +49,27 @@ class TemplatesFragment: Fragment() {
             useIt.setOnClickListener {
                 app.useTemplate(app.templates.getTemplate(index))
             }
+            useIt.visibility = View.GONE
+            templateSuccess.visibility = View.GONE
+            templateSending.visibility = View.GONE
+            templateError.visibility = View.GONE
             if (template.sending) {
-                useIt.visibility = View.GONE
-                templateSuccess.visibility = View.GONE
                 templateSending.visibility = View.VISIBLE
-            } else {
-                templateSending.visibility = View.GONE
-                if (!template.success) {
-                    templateSuccess.visibility = View.GONE
-                    useIt.visibility = View.VISIBLE
-                } else {
-                    useIt.visibility = View.GONE
-                    templateSuccess.visibility = View.VISIBLE
+            } else if (template.success) {
+                templateSuccess.visibility = View.VISIBLE
+            } else if (template.error != null) {
+                templateError.visibility = View.VISIBLE
+
+                templateError.setOnClickListener {
+                    val popupView = InfoDialog(activity!!, template.error.toString())
+                    val popup = PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                    popup.showAtLocation(templatesHeader, Gravity.CENTER, 0, 0)
+                    popupView.setOkListener {
+                        popup.dismiss()
+                    }
                 }
+            } else {
+                useIt.visibility = View.VISIBLE
             }
         }
         return templateView

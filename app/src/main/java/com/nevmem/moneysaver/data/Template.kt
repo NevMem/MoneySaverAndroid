@@ -11,7 +11,7 @@ class Template {
 
     var sending = false
     var success = false
-    var error = ""
+    var error: String? = null
 
     constructor(fromName: String, fromValue: Double, fromTags: ArrayList<String>, fromWallet: String, fromID: String) {
         name = fromName

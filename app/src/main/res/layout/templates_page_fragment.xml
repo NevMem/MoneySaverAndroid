@@ -12,7 +12,8 @@
             <TextView android:layout_height="wrap_content" android:layout_width="match_parent"
                       android:padding="17dp" android:elevation="@dimen/stdElevation"
                       android:background="@drawable/profile_background"
-                      android:textSize="20dp"
+                      android:id="@+id/templatesHeader"
+                      android:textSize="20sp"
                       android:text="Here is all your templates"
             />
             <ProgressBar

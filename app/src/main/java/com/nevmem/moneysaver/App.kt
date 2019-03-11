@@ -450,12 +450,31 @@ class App() : Application() {
                     }
                     templatesFlow.onNext(templates)
                 } else if (it.getString("type") == "error") {
+                    for (index in 0 until(templates.templates.size)) {
+                        if (templates.getTemplate(index) == template) {
+                            templates.getTemplate(index).sending = false
+                            templates.getTemplate(index).error = it.getString("error")
+                        }
+                    }
+                    templatesFlow.onNext(templates)
                 } else {
-
+                    for (index in 0 until(templates.templates.size)) {
+                        if (templates.getTemplate(index) == template) {
+                            templates.getTemplate(index).sending = false
+                            templates.getTemplate(index).error = "Server response has unknown format"
+                        }
+                    }
+                    templatesFlow.onNext(templates)
                 }
             }
         }, {
-            println("Error $it")
+            for (index in 0 until(templates.templates.size)) {
+                if (templates.getTemplate(index) == template) {
+                    templates.getTemplate(index).sending = false
+                    templates.getTemplate(index).error = "Network error"
+                }
+            }
+            templatesFlow.onNext(templates)
         })
         requestQueue.add(request)
     }
