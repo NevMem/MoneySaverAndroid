@@ -23,4 +23,5 @@
     <string name="amountOfDays">Tracked days:</string>
     <string name="defaultTrackedDays">Over 9000 years</string>
     <string name="info_text_1">Time info(click to change):</string>
+    <string name="noTemplates">You haven't templates</string>
 </resources>

@@ -77,10 +77,13 @@ class TemplatesFragment: Fragment() {
 
     private fun showTemplates(templates: ArrayList<Template>) {
         clearTemplates()
+        nothingToShow.visibility = View.GONE
         val inflater = activity!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         for (index in 0 until(templates.size)) {
             templatesAnchor.addView(createTemplate(templates[index], index, inflater))
         }
+        if (templates.size == 0)
+            nothingToShow.visibility = View.VISIBLE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
