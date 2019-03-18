@@ -15,6 +15,7 @@ import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Template
 import com.nevmem.moneysaver.views.ConfirmationDialog
 import com.nevmem.moneysaver.views.InfoDialog
+import com.nevmem.moneysaver.views.NewTemplateDialog
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.add_template_view.*
 import kotlinx.android.synthetic.main.history_layout.*
@@ -45,7 +46,7 @@ class TemplatesFragment: Fragment() {
         with (templateView) {
             templateName.text = template.name
             templateValue.text = template.value.toString()
-            templateWallet.text = template.value.toString()
+            templateWallet.text = template.wallet
             useIt.setOnClickListener {
                 app.useTemplate(app.templates.getTemplate(index))
             }
@@ -71,6 +72,21 @@ class TemplatesFragment: Fragment() {
             } else {
                 useIt.visibility = View.VISIBLE
             }
+            setOnLongClickListener {
+                val popupView = ConfirmationDialog(activity!!, "Do you really want delete this template?")
+                val popupWindow = PopupWindow(popupView,
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT,
+                    true)
+                popupWindow.showAtLocation(templatesHeader, Gravity.CENTER, 0, 0)
+                popupView.setDismissListener {
+                    popupWindow.dismiss()
+                }
+                popupView.setOkListener {
+                    app.removeTemplate(template.id)
+                    popupWindow.dismiss()
+                }
+                true
+            }
         }
         return templateView
     }
@@ -84,6 +100,8 @@ class TemplatesFragment: Fragment() {
         }
         if (templates.size == 0)
             nothingToShow.visibility = View.VISIBLE
+        else
+            nothingToShow.visibility = View.GONE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -103,8 +121,24 @@ class TemplatesFragment: Fragment() {
         } }
 
         addNewTemplateView.setOnClickListener {
-            Toast.makeText(activity, "This method doesn't implemented", Toast.LENGTH_LONG).show()
+            newTemplate()
         }
+    }
+
+    private fun newTemplate() {
+        val popupView = NewTemplateDialog(activity!!)
+        val popup = PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true)
+
+        popupView.setOkListener {
+            app.createNewTemplate(it)
+            popup.dismiss()
+        }
+
+        popupView.setDismissListener {
+            popup.dismiss()
+        }
+
+        popup.showAtLocation(templatesHeader, Gravity.CENTER, 0, 0)
     }
 
     override fun onDestroyView() {
