@@ -88,7 +88,7 @@ class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
                     mx = values[i]
 
             var smx = mx * 1.1f
-            smx = (((smx + 500) / 1000).toInt()) * 1000.0
+            smx = (((smx + 999) / 1000).toInt()) * 1000.0
 
             if (showLabels) {
                 for (i in 0 until (divCount + 1)) {
