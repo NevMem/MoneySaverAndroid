@@ -1,7 +1,7 @@
 package com.nevmem.moneysaver
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.nevmem.moneysaver.data.Record
 
 class MainPageViewModel : ViewModel() {

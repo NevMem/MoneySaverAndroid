@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="match_parent"
-                                             tools:context=".FullDescriptionActivity"
-                                             android:background="#101010"
-                                             android:clipToPadding="false"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   tools:context=".FullDescriptionActivity"
+                                                   android:background="#101010"
+                                                   android:clipToPadding="false"
 >
     <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
-        <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
-                                                         android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+                                                           android:layout_height="match_parent">
             <TextView
                     android:layout_width="0dp"
                     android:layout_height="60dp"
@@ -214,7 +214,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout2" app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="24dp" app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="24dp" android:gravity="center" tools:text="Messages here"/>
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
                       android:id="@+id/infoAnchor"
                       android:orientation="vertical"
@@ -248,4 +248,4 @@
     </FrameLayout>
 
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

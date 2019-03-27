@@ -1,35 +1,47 @@
 package com.nevmem.moneysaver
 
-import android.app.Application
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
+import android.util.Log.i
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
+import com.nevmem.moneysaver.dagger.components.AppComponent
+import com.nevmem.moneysaver.dagger.components.DaggerAppComponent
+import com.nevmem.moneysaver.dagger.modules.DataModule
+import com.nevmem.moneysaver.dagger.modules.NetworkModule
+import com.nevmem.moneysaver.data.NetworkQueue
+import com.nevmem.moneysaver.data.TemplatesRepository
 import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.fragments.AddFragment
 import com.nevmem.moneysaver.fragments.HistoryFragment
 import com.nevmem.moneysaver.fragments.DashboardFragment
 import com.nevmem.moneysaver.fragments.TemplatesFragment
-import com.nevmem.moneysaver.structure.Callback
-import kotlinx.android.synthetic.main.add_record_activity.*
-import kotlinx.android.synthetic.main.login_page.*
 import kotlinx.android.synthetic.main.main_page_layout.*
-import kotlinx.android.synthetic.main.user_profile.*
-import java.lang.Exception
-import java.util.ArrayList
+import org.json.JSONObject
+import javax.inject.Inject
 
 class MainPage : AppCompatActivity() {
     lateinit var app: App
     lateinit var viewModel: MainPageViewModel
 
+    lateinit var appComponent: AppComponent
+
+    @Inject
+    lateinit var networkQueue: NetworkQueue
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        appComponent = DaggerAppComponent.builder()
+            .networkModule(NetworkModule(this))
+            .dataModule(DataModule(this))
+            .build()
+        appComponent.inject(this)
+
         setContentView(R.layout.main_page_layout)
         viewModel = ViewModelProviders.of(this).get(MainPageViewModel::class.java)
         window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)

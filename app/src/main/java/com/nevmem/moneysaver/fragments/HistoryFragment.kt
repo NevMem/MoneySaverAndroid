@@ -1,14 +1,14 @@
 package com.nevmem.moneysaver.fragments
 
 import android.app.ActivityOptions
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
 import android.util.Log.i
 import android.util.Pair
 import android.view.Gravity
@@ -32,8 +32,8 @@ class HistoryFragment : Fragment() {
     lateinit var app: App
     lateinit var recordsFlow: Disposable
 
-    var currentShown = 0
-    val step = 10
+    private var currentShown = 0
+    private val step = 10
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.history_layout, container, false)

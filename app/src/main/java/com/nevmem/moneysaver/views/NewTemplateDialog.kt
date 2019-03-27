@@ -2,7 +2,7 @@ package com.nevmem.moneysaver.views
 
 import android.app.Activity
 import android.content.Context
-import android.support.constraint.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import android.view.View
 import android.widget.ArrayAdapter
 import com.nevmem.moneysaver.App

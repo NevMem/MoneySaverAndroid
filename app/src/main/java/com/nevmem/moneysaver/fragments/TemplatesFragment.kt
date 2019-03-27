@@ -1,31 +1,31 @@
 package com.nevmem.moneysaver.fragments
 
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log.i
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
-import android.widget.Toast
 import com.nevmem.moneysaver.App
+import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Template
+import com.nevmem.moneysaver.data.TemplatesRepository
 import com.nevmem.moneysaver.views.ConfirmationDialog
 import com.nevmem.moneysaver.views.InfoDialog
 import com.nevmem.moneysaver.views.NewTemplateDialog
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.add_template_view.*
-import kotlinx.android.synthetic.main.history_layout.*
-import kotlinx.android.synthetic.main.history_layout.view.*
 import kotlinx.android.synthetic.main.template.view.*
 import kotlinx.android.synthetic.main.templates_page_fragment.*
+import javax.inject.Inject
 
 class TemplatesFragment: Fragment() {
-    lateinit var templatesFlow: Disposable
-    lateinit var app: App
+    @Inject
+    lateinit var templatesRepo: TemplatesRepository
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.templates_page_fragment, container, false)
@@ -33,8 +33,7 @@ class TemplatesFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        app = activity!!.applicationContext as App
-        app.loadTemplates()
+        (activity as MainPage).appComponent.inject(this)
     }
 
     private fun clearTemplates() {
@@ -48,7 +47,7 @@ class TemplatesFragment: Fragment() {
             templateValue.text = template.value.toString()
             templateWallet.text = template.wallet
             useIt.setOnClickListener {
-                app.useTemplate(app.templates.getTemplate(index))
+                templatesRepo.useTemplate(index)
             }
             useIt.visibility = View.GONE
             templateSuccess.visibility = View.GONE
@@ -82,7 +81,7 @@ class TemplatesFragment: Fragment() {
                     popupWindow.dismiss()
                 }
                 popupView.setOkListener {
-                    app.removeTemplate(template.id)
+//                    app.removeTemplate(template.id)
                     popupWindow.dismiss()
                 }
                 true
@@ -106,20 +105,23 @@ class TemplatesFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        templatesFlow = app.templatesFlow.subscribe { templates -> run {
-            i("templates flow", "received ${templates.ready}")
-            addNewTemplateView.visibility = View.GONE
-
-            if (templates.ready) {
-                templatesLoading.visibility = View.GONE
-                showTemplates(templates.templates)
-                addNewTemplateView.visibility = View.VISIBLE
-            } else {
+        templatesRepo.tryUpdate()
+        templatesRepo.templates.observe(this, Observer {
+            i("TR", "Received some new data")
+            if (it != null) {
                 clearTemplates()
-                templatesLoading.visibility = View.VISIBLE
+                showTemplates(it)
             }
-        } }
-
+        })
+        templatesRepo.loading.observe(this, Observer {
+            if (it != null) {
+                if (it)
+                    templatesLoading.visibility = View.VISIBLE
+                else
+                    templatesLoading.visibility = View.GONE
+            }
+        })
+        addNewTemplateView.visibility = View.VISIBLE
         addNewTemplateView.setOnClickListener {
             newTemplate()
         }
@@ -130,7 +132,7 @@ class TemplatesFragment: Fragment() {
         val popup = PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true)
 
         popupView.setOkListener {
-            app.createNewTemplate(it)
+//            app.createNewTemplate(it)
             popup.dismiss()
         }
 
@@ -143,6 +145,5 @@ class TemplatesFragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        templatesFlow.dispose()
     }
 }

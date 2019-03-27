@@ -5,7 +5,7 @@ import java.util.ArrayList
 class Template {
     var name: String
     var value: Double
-    var tags: ArrayList<String>
+    var tag: String
     var wallet: String
     var id: String
 
@@ -13,10 +13,10 @@ class Template {
     var success = false
     var error: String? = null
 
-    constructor(fromName: String, fromValue: Double, fromTags: ArrayList<String>, fromWallet: String, fromID: String) {
+    constructor(fromName: String, fromValue: Double, fromTag: String, fromWallet: String, fromID: String) {
         name = fromName
         value = fromValue
-        tags = fromTags
+        tag = fromTag
         wallet = fromWallet
         id = fromID
     }

@@ -10,7 +10,7 @@
               android:paddingBottom="100dp"
               android:clipToPadding="false"
 >
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
                                                  android:layout_width="match_parent"
                                                  android:layout_height="wrap_content" android:id="@+id/totallySpend"
                                                  android:background="@drawable/profile_background"
@@ -123,7 +123,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintTop_toBottomOf="@+id/text_2" android:layout_marginTop="8dp"/>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
             android:layout_width="match_parent" android:layout_height="wrap_content"

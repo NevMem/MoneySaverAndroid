@@ -98,12 +98,9 @@ class App() : Application() {
                             val name = jsonObj.getString("name")
                             val value = jsonObj.getDouble("value")
                             val wallet = jsonObj.getString("wallet")
-                            val tags = ArrayList<String>()
-                            val tagsJSON = jsonObj.getJSONArray("tags")
+                            val tag = jsonObj.getString("tag")
                             val id = jsonObj.getString("id")
-                            for (i in 0 until (tagsJSON.length()))
-                                tags.add(tagsJSON.getString(i))
-                            var template = Template(name, value, tags, wallet, id)
+                            var template = Template(name, value, tag, wallet, id)
                             templates.add(template)
                         }
                         templates.ready = true
@@ -427,57 +424,6 @@ class App() : Application() {
             records.add(from[index])
         recordsFlow.onNext(records)
         i("APP_CLASS", "Saved ${from.size} records")
-    }
-
-    fun useTemplate(template: Template) {
-        for (index in 0 until(templates.templates.size)) {
-            if (templates.getTemplate(index) == template) {
-                templates.getTemplate(index).sending = true
-            }
-        }
-        templatesFlow.onNext(templates)
-
-        var params = userCredentialsJSON()
-        params.put("date", createDate())
-        params.put("templateId", template.id)
-        val request = JsonObjectRequest(Request.Method.POST, Vars.ServerApiUseTemplate, params, {
-            if (it.has("type")) {
-                if (it.getString("type") == "ok") {
-                    for (index in 0 until(templates.templates.size)) {
-                        if (templates.getTemplate(index) == template) {
-                            templates.getTemplate(index).sending = false
-                            templates.getTemplate(index).success = true
-                        }
-                    }
-                    templatesFlow.onNext(templates)
-                } else if (it.getString("type") == "error") {
-                    for (index in 0 until(templates.templates.size)) {
-                        if (templates.getTemplate(index) == template) {
-                            templates.getTemplate(index).sending = false
-                            templates.getTemplate(index).error = it.getString("error")
-                        }
-                    }
-                    templatesFlow.onNext(templates)
-                } else {
-                    for (index in 0 until(templates.templates.size)) {
-                        if (templates.getTemplate(index) == template) {
-                            templates.getTemplate(index).sending = false
-                            templates.getTemplate(index).error = "Server response has unknown format"
-                        }
-                    }
-                    templatesFlow.onNext(templates)
-                }
-            }
-        }, {
-            for (index in 0 until(templates.templates.size)) {
-                if (templates.getTemplate(index) == template) {
-                    templates.getTemplate(index).sending = false
-                    templates.getTemplate(index).error = "Network error"
-                }
-            }
-            templatesFlow.onNext(templates)
-        })
-        requestQueue.add(request)
     }
 
     fun createNewTemplate(base: TemplateBase) {
