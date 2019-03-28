@@ -1,32 +1,19 @@
 package com.nevmem.moneysaver
 
-import android.app.Activity
 import android.app.AlertDialog
-import android.app.SharedElementCallback
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import android.os.PersistableBundle
-import android.os.VibrationEffect
-import androidx.fragment.app.FragmentActivity
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
-import android.transition.Explode
-import android.transition.Transition
-import android.transition.TransitionListenerAdapter
 import android.util.Log.i
 import android.view.View
-import kotlinx.android.synthetic.main.full_description.*
-import androidx.core.view.ViewPropertyAnimatorListenerAdapter
-import androidx.core.view.ViewCompat
-import android.util.AttributeSet
 import android.widget.NumberPicker
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.data.Record
-import com.nevmem.moneysaver.structure.Callback
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.full_description.*
 
 
 class FullDescriptionActivity: FragmentActivity() {

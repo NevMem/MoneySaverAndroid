@@ -1,15 +1,11 @@
 package com.nevmem.moneysaver.dagger.modules
 
 import android.content.Context
-import android.view.ContextThemeWrapper
 import androidx.room.Room
-import com.nevmem.moneysaver.data.TemplatesRepository
-import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.data.UserHolder
 import com.nevmem.moneysaver.room.AppDatabase
 import dagger.Module
 import dagger.Provides
-import java.lang.Exception
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 import javax.inject.Singleton

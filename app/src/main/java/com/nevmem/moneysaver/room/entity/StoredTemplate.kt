@@ -1,6 +1,5 @@
 package com.nevmem.moneysaver.room.entity
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.nevmem.moneysaver.data.Template

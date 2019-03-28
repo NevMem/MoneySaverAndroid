@@ -3,7 +3,6 @@ package com.nevmem.moneysaver.fragments
 import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.util.Log.i
 import android.view.Gravity
@@ -12,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
-import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Template

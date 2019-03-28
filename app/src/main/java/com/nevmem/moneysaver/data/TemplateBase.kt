@@ -1,8 +1,5 @@
 package com.nevmem.moneysaver.data
 
-import android.util.Log.i
-import java.util.ArrayList
-
 class TemplateBase {
     var name: String
     var value: Double

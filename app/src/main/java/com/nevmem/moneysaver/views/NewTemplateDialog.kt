@@ -1,10 +1,8 @@
 package com.nevmem.moneysaver.views
 
-import android.app.Activity
 import android.content.Context
-import androidx.constraintlayout.widget.ConstraintLayout
-import android.view.View
 import android.widget.ArrayAdapter
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.TemplateBase

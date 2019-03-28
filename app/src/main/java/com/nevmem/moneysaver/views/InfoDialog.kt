@@ -2,7 +2,6 @@ package com.nevmem.moneysaver.views
 
 import android.content.Context
 import androidx.constraintlayout.widget.ConstraintLayout
-import android.view.View
 import com.nevmem.moneysaver.R
 import kotlinx.android.synthetic.main.confirmation_dialog_popup.view.*
 

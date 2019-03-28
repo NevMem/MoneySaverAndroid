@@ -1,9 +1,6 @@
 package com.nevmem.moneysaver.data
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.nevmem.moneysaver.room.entity.StoredTemplate
-import java.util.ArrayList
 
 class Template {
     var name: String

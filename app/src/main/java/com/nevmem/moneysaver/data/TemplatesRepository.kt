@@ -6,8 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log.i
 import android.widget.Toast
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
 import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.room.AppDatabase
 import com.nevmem.moneysaver.room.entity.StoredTemplate

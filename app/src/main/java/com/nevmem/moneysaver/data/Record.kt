@@ -1,7 +1,6 @@
 package com.nevmem.moneysaver.data
 
 import org.json.JSONArray
-import org.json.JSONObject
 import java.util.ArrayList
 
 class Record {

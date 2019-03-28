@@ -5,7 +5,6 @@ import com.nevmem.moneysaver.dagger.modules.DataModule
 import com.nevmem.moneysaver.dagger.modules.NetworkModule
 import com.nevmem.moneysaver.fragments.TemplatesFragment
 import dagger.Component
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton

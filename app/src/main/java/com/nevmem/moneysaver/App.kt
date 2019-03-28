@@ -1,21 +1,18 @@
 package com.nevmem.moneysaver
 
 import android.app.Application
-import android.os.Handler
-import android.util.Log.*
-import android.widget.Toast
+import android.util.Log.i
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.toolbox.*
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.nevmem.moneysaver.data.*
 import com.nevmem.moneysaver.structure.Callback
-import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.lang.ClassCastException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -53,11 +50,11 @@ class App() : Application() {
                 if (it.getString("type") == "ok") {
                     val fromJson = it.getJSONArray("data")
                     tags.clear()
-                    for (i in 0 until(fromJson.length()))
+                    for (i in 0 until (fromJson.length()))
                         tags.add(fromJson[i].toString())
-                } else if(it.getString("type") == "error") {
+                } else if (it.getString("type") == "error") {
                     System.out.println(it.getString("error"))
-                } else  {
+                } else {
                     System.out.println("Unknown server response format")
                 }
             }
@@ -75,7 +72,8 @@ class App() : Application() {
                 for (i in 0 until (json.length())) {
                     wallets.add(json[i].toString())
                 }
-            } catch (_: JSONException) { }
+            } catch (_: JSONException) {
+            }
         }, {
             System.out.println(it.toString())
         })
@@ -156,7 +154,8 @@ class App() : Application() {
 
     fun isValidUserInfo(json: JSONObject): Boolean {
         if (json.has("token") && json.has("first_name") &&
-            json.has("last_name") && json.has("login"))
+            json.has("last_name") && json.has("login")
+        )
             return true
         return false
     }
@@ -175,8 +174,10 @@ class App() : Application() {
                     if (!isValidUserInfo(it)) {
                         onError.callback("Wrong server response")
                     } else {
-                        val parsedUser = User(it.getString("login"), it.getString("token"),
-                            it.getString("first_name"), it.getString("last_name"))
+                        val parsedUser = User(
+                            it.getString("login"), it.getString("token"),
+                            it.getString("first_name"), it.getString("last_name")
+                        )
 
                         User.saveUserCredentials(this, parsedUser)
                         user = parsedUser
@@ -212,7 +213,7 @@ class App() : Application() {
                         onError.callback("Server error")
                     }
                 }
-            },{
+            }, {
                 System.out.println(it.toString())
                 onError.callback("Internet error")
             })
@@ -280,7 +281,7 @@ class App() : Application() {
             val tags = json.get("tags") as JSONArray
             for (i in 0 until tags.length())
                 record.tags.add(tags.getString(i))
-        } catch (_ : ClassCastException) {
+        } catch (_: ClassCastException) {
             record.tags.add("Not set")
         }
 
@@ -290,7 +291,7 @@ class App() : Application() {
     private fun processGetDataResponse(array: JSONArray): java.util.ArrayList<Record> {
         val parsed = java.util.ArrayList<Record>()
         try {
-            for (i in 0 .. array.length()) {
+            for (i in 0..array.length()) {
                 val now = array.getJSONObject(i)
                 val current = processRow(now)
                 parsed.add(current)
@@ -347,8 +348,10 @@ class App() : Application() {
         requestQueue.add(stringRequest)
     }
 
-    fun makeAddRequest(name: String, value: Double, tag: String?, wallet: String?,
-                       onSuccess: Callback<String>, onError: Callback<String>) {
+    fun makeAddRequest(
+        name: String, value: Double, tag: String?, wallet: String?,
+        onSuccess: Callback<String>, onError: Callback<String>
+    ) {
         val params = userCredentialsJSON()
         params.put("name", name)
         params.put("value", value)
@@ -420,7 +423,7 @@ class App() : Application() {
     }
 
     fun saveRecords(from: ArrayList<Record>) {
-        for (index in 0 until(from.size))
+        for (index in 0 until (from.size))
             records.add(from[index])
         recordsFlow.onNext(records)
         i("APP_CLASS", "Saved ${from.size} records")

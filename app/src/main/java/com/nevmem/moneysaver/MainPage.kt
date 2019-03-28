@@ -1,28 +1,23 @@
 package com.nevmem.moneysaver
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
-import android.util.Log.i
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.dagger.components.AppComponent
 import com.nevmem.moneysaver.dagger.components.DaggerAppComponent
 import com.nevmem.moneysaver.dagger.modules.DataModule
 import com.nevmem.moneysaver.dagger.modules.NetworkModule
-import com.nevmem.moneysaver.data.NetworkQueue
-import com.nevmem.moneysaver.data.TemplatesRepository
 import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.fragments.AddFragment
-import com.nevmem.moneysaver.fragments.HistoryFragment
 import com.nevmem.moneysaver.fragments.DashboardFragment
+import com.nevmem.moneysaver.fragments.HistoryFragment
 import com.nevmem.moneysaver.fragments.TemplatesFragment
 import kotlinx.android.synthetic.main.main_page_layout.*
-import org.json.JSONObject
-import javax.inject.Inject
 
 class MainPage : AppCompatActivity() {
     lateinit var app: App

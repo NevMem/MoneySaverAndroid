@@ -2,7 +2,6 @@ package com.nevmem.moneysaver.data
 
 import android.content.Context
 import android.os.Handler
-import android.os.HandlerThread
 import android.util.Log.i
 import com.android.volley.Request
 import com.android.volley.RequestQueue

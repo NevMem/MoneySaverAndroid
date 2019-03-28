@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.core.content.ContextCompat
-import android.text.TextWatcher
 import android.util.Log.i
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +13,6 @@ import android.widget.ArrayAdapter
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.MainPage
 import kotlinx.android.synthetic.main.add_record_activity.*
-import android.text.Editable
-import android.widget.AdapterView
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.structure.Callback
 

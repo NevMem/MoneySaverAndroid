@@ -1,7 +1,5 @@
 package com.nevmem.moneysaver.data
 
-import java.util.*
-
 class RecordChangeableWrapper(fromRecord: Record) {
     var record: Record
     var loading = false

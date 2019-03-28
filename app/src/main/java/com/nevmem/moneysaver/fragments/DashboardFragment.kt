@@ -1,8 +1,6 @@
 package com.nevmem.moneysaver.fragments
 
 import android.animation.ValueAnimator
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.util.Log.i
@@ -16,8 +14,6 @@ import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.structure.Callback
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.user_profile.*
-import org.reactivestreams.Subscription
-import java.lang.NullPointerException
 
 class DashboardFragment : Fragment() {
     lateinit var app: App
