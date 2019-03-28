@@ -1,214 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="match_parent"
-                                             tools:context=".FullDescriptionActivity"
-                                             android:background="#101010"
-                                             android:clipToPadding="false"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   tools:context=".FullDescriptionActivity"
+                                                   android:background="#101010"
+                                                   android:clipToPadding="false"
 >
-    <TextView
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:id="@+id/recordNameField" tools:text="Some record name"
-            android:layout_marginTop="24dp" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp" android:textSize="26sp"
-            android:textColor="@color/mainFontColor"
-            android:gravity="center|start"
-            android:transitionName="recordNameTransition"
-            android:layout_marginEnd="8dp" app:layout_constraintEnd_toStartOf="@+id/dailySwitch"/>
-    <Switch android:layout_width="wrap_content" android:layout_height="60dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp" android:layout_marginTop="24dp"
-            app:layout_constraintTop_toTopOf="parent" android:id="@+id/dailySwitch"
-            android:alpha="0" tools:alpha="1"
-    />
-    <TextView
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:id="@+id/recordValueField" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="24dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/recordNameField" android:gravity="center|start"
-            tools:text="$ 1000"
-            android:textSize="18sp"
-            android:transitionName="recordValueTransition"
-    />
-
-    <TextView
-            android:layout_width="173dp"
-            tools:text="Tag"
-            android:layout_height="40dp"
-            android:id="@+id/tag" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/recordValueField"
-            android:gravity="center|start" android:alpha="0" android:textSize="20sp"
-            tools:alpha="1"
-    />
-
-    <TextView
-            android:layout_width="0dp"
-            tools:text="Wallet"
-            android:layout_height="40dp"
-            android:id="@+id/wallet" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/recordValueField"
-            android:gravity="center|end" app:layout_constraintStart_toEndOf="@+id/tag" android:layout_marginEnd="24dp"
-            android:alpha="0" android:textSize="20sp"
-            tools:alpha="1"
-    />
-
-    <TextView android:layout_width="wrap_content" android:layout_height="30dp"
-              android:text="@string/info_text_1"
-              app:layout_constraintStart_toStartOf="parent"
-              android:layout_marginStart="24dp" android:layout_marginTop="16dp"
-              app:layout_constraintTop_toBottomOf="@+id/tag" android:id="@+id/info_text_1"
-              android:textColor="@color/secondaryFontColor"
-              android:gravity="center|start"
-              android:alpha="0" tools:alpha="1"
-    />
-
-    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                  android:orientation="horizontal" android:layout_marginTop="24dp"
-                  app:layout_constraintTop_toBottomOf="@+id/info_text_1" android:id="@+id/linearLayout3"
-                  app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp"
-                  app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp"
-                  android:clipToPadding="false" android:gravity="center"
-                  android:paddingTop="10dp" android:paddingBottom="10dp"
-                  android:scrollbarStyle="outsideOverlay"
-    >
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:background="@color/cardColor" android:elevation="@dimen/stdElevation"
-                      android:orientation="vertical" android:gravity="center"
-                      android:layout_marginStart="10dp" android:layout_marginEnd="10dp"
-                      android:id="@+id/yearWrapper" android:alpha="0" tools:alpha="1"
-        >
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:textSize="12sp" android:text="Year:"
-                      android:textColor="@color/secondaryFontColor"
-                      android:padding="5dp"
-            />
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+                                                           android:layout_height="match_parent">
             <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/year" app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tag" tools:text="1970"
-                    android:gravity="center" android:textSize="20sp"
-                    android:padding="13dp" android:textColor="@color/mainFontColor"
-            />
-        </LinearLayout>
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:background="@color/cardColor" android:elevation="@dimen/stdElevation"
-                      android:layout_marginStart="10dp" android:layout_marginEnd="10dp"
-                      android:gravity="center" android:orientation="vertical"
-                      android:id="@+id/monthWrapper" android:alpha="0" tools:alpha="1"
-        >
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:textSize="12sp" android:text="Month:"
-                      android:textColor="@color/secondaryFontColor"
-                      android:padding="5dp"
-            />
-            <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/month"
-                    app:layout_constraintTop_toBottomOf="@+id/tag" tools:text="December"
-                    app:layout_constraintStart_toEndOf="@+id/year"
-                    android:gravity="center" android:padding="13dp"
-                    android:textSize="20sp" android:textColor="@color/mainFontColor"
-            />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                  android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-                  app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp"
-                  app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp"
-                  android:clipToPadding="false" android:gravity="center" android:paddingTop="10dp" android:paddingBottom="10dp"
-                  android:id="@+id/linearLayout2">
-
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:background="@color/cardColor"
-                      android:gravity="center" android:elevation="@dimen/stdElevation"
-                      android:layout_marginStart="10dp" android:layout_marginEnd="10dp"
-                      tools:alpha="1" android:alpha="0" android:orientation="vertical"
-                      android:id="@+id/dayWrapper"
-        >
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:textSize="12sp" android:text="Day:"
-                      android:textColor="@color/secondaryFontColor"
-                      android:padding="5dp"
-            />
-            <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/day"
-                    tools:text="00"
-                    android:gravity="center"
-                    tools:layout_editor_absoluteY="252dp"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:id="@+id/recordNameField" tools:text="Some record name"
+                    android:layout_marginTop="24dp" app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp" android:textSize="26sp"
                     android:textColor="@color/mainFontColor"
-            />
-        </LinearLayout>
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:background="@color/cardColor"
-                      android:gravity="center" android:elevation="@dimen/stdElevation"
-                      android:layout_marginStart="10dp" android:layout_marginEnd="10dp"
-                      tools:alpha="1" android:alpha="0" android:orientation="vertical"
-                      android:id="@+id/hourWrapper"
-        >
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:textSize="12sp" android:text="Hour:"
-                      android:textColor="@color/secondaryFontColor"
-                      android:padding="5dp"
+                    android:gravity="center|start"
+                    android:transitionName="recordNameTransition"
+                    android:layout_marginEnd="8dp" app:layout_constraintEnd_toStartOf="@+id/dailySwitch"/>
+            <Switch android:layout_width="wrap_content" android:layout_height="60dp"
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp" android:layout_marginTop="24dp"
+                    app:layout_constraintTop_toTopOf="parent" android:id="@+id/dailySwitch"
+                    android:alpha="0" tools:alpha="1"
             />
             <TextView
-                    android:layout_width="80dp"
+                    android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:id="@+id/hour"
-                    tools:text="00"
-                    android:gravity="center"
-                    tools:layout_editor_absoluteY="252dp"
-                    android:textColor="@color/mainFontColor"
+                    android:id="@+id/recordValueField" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="24dp"
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp" android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/recordNameField" android:gravity="center|start"
+                    tools:text="$ 1000"
+                    android:textSize="18sp"
+                    android:transitionName="recordValueTransition"
             />
-        </LinearLayout>
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:background="@color/cardColor"
-                      android:gravity="center" android:elevation="@dimen/stdElevation"
-                      android:layout_marginStart="10dp" android:layout_marginEnd="10dp"
-                      tools:alpha="1" android:alpha="0" android:orientation="vertical"
-                      android:id="@+id/minuteWrapper"
-        >
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:textSize="12sp" android:text="Minute:"
+
+            <TextView
+                    android:layout_width="173dp"
+                    tools:text="Tag"
+                    android:layout_height="40dp"
+                    android:id="@+id/tag" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/recordValueField"
+                    android:gravity="center|start" android:alpha="0" android:textSize="20sp"
+                    tools:alpha="1"
+            />
+
+            <TextView
+                    android:layout_width="0dp"
+                    tools:text="Wallet"
+                    android:layout_height="40dp"
+                    android:id="@+id/wallet" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/recordValueField"
+                    android:gravity="center|end" app:layout_constraintStart_toEndOf="@+id/tag" android:layout_marginEnd="24dp"
+                    android:alpha="0" android:textSize="20sp"
+                    tools:alpha="1"
+            />
+
+            <TextView android:layout_width="wrap_content" android:layout_height="30dp"
+                      android:text="@string/info_text_1"
+                      app:layout_constraintStart_toStartOf="parent"
+                      android:layout_marginStart="24dp" android:layout_marginTop="16dp"
+                      app:layout_constraintTop_toBottomOf="@+id/tag" android:id="@+id/info_text_1"
                       android:textColor="@color/secondaryFontColor"
-                      android:padding="5dp"
+                      android:gravity="center|start"
+                      android:alpha="0" tools:alpha="1"
+            />
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                          android:orientation="horizontal" android:layout_marginTop="24dp"
+                          app:layout_constraintTop_toBottomOf="@+id/info_text_1" android:id="@+id/linearLayout3"
+                          app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp"
+                          app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp"
+                          android:clipToPadding="false" android:gravity="center"
+                          android:paddingTop="10dp" android:paddingBottom="10dp"
+                          android:scrollbarStyle="outsideOverlay"
+            >
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:background="@color/cardColor" android:elevation="@dimen/stdElevation"
+                              android:orientation="vertical" android:gravity="center"
+                              android:layout_marginStart="10dp" android:layout_marginEnd="10dp"
+                              android:id="@+id/yearWrapper" android:alpha="0" tools:alpha="1"
+                >
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:textSize="12sp" android:text="Year:"
+                              android:textColor="@color/secondaryFontColor"
+                              android:padding="5dp"
+                    />
+                    <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/year" app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tag" tools:text="1970"
+                            android:gravity="center" android:textSize="20sp"
+                            android:padding="13dp" android:textColor="@color/mainFontColor"
+                    />
+                </LinearLayout>
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:background="@color/cardColor" android:elevation="@dimen/stdElevation"
+                              android:layout_marginStart="10dp" android:layout_marginEnd="10dp"
+                              android:gravity="center" android:orientation="vertical"
+                              android:id="@+id/monthWrapper" android:alpha="0" tools:alpha="1"
+                >
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:textSize="12sp" android:text="Month:"
+                              android:textColor="@color/secondaryFontColor"
+                              android:padding="5dp"
+                    />
+                    <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/month"
+                            app:layout_constraintTop_toBottomOf="@+id/tag" tools:text="December"
+                            app:layout_constraintStart_toEndOf="@+id/year"
+                            android:gravity="center" android:padding="13dp"
+                            android:textSize="20sp" android:textColor="@color/mainFontColor"
+                    />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                          android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+                          app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp"
+                          app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp"
+                          android:clipToPadding="false" android:gravity="center" android:paddingTop="10dp" android:paddingBottom="10dp"
+                          android:id="@+id/linearLayout2">
+
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:background="@color/cardColor"
+                              android:gravity="center" android:elevation="@dimen/stdElevation"
+                              android:layout_marginStart="10dp" android:layout_marginEnd="10dp"
+                              tools:alpha="1" android:alpha="0" android:orientation="vertical"
+                              android:id="@+id/dayWrapper"
+                >
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:textSize="12sp" android:text="Day:"
+                              android:textColor="@color/secondaryFontColor"
+                              android:padding="5dp"
+                    />
+                    <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/day"
+                            tools:text="00"
+                            android:gravity="center"
+                            tools:layout_editor_absoluteY="252dp"
+                            android:textColor="@color/mainFontColor"
+                    />
+                </LinearLayout>
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:background="@color/cardColor"
+                              android:gravity="center" android:elevation="@dimen/stdElevation"
+                              android:layout_marginStart="10dp" android:layout_marginEnd="10dp"
+                              tools:alpha="1" android:alpha="0" android:orientation="vertical"
+                              android:id="@+id/hourWrapper"
+                >
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:textSize="12sp" android:text="Hour:"
+                              android:textColor="@color/secondaryFontColor"
+                              android:padding="5dp"
+                    />
+                    <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/hour"
+                            tools:text="00"
+                            android:gravity="center"
+                            tools:layout_editor_absoluteY="252dp"
+                            android:textColor="@color/mainFontColor"
+                    />
+                </LinearLayout>
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:background="@color/cardColor"
+                              android:gravity="center" android:elevation="@dimen/stdElevation"
+                              android:layout_marginStart="10dp" android:layout_marginEnd="10dp"
+                              tools:alpha="1" android:alpha="0" android:orientation="vertical"
+                              android:id="@+id/minuteWrapper"
+                >
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:textSize="12sp" android:text="Minute:"
+                              android:textColor="@color/secondaryFontColor"
+                              android:padding="5dp"
+                    />
+                    <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/minute"
+                            tools:text="00"
+                            android:gravity="center"
+                            tools:layout_editor_absoluteY="252dp"
+                            android:textColor="@color/mainFontColor"
+                    />
+                </LinearLayout>
+            </LinearLayout>
+            <Button
+                    android:id="@+id/saveChangesButton" android:text="Save Changes"
+                    android:layout_height="wrap_content" android:layout_width="wrap_content"
+                    android:layout_marginBottom="24dp" app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="40dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent" android:background="@drawable/add_button"
+                    android:elevation="@dimen/stdElevation"
             />
             <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/minute"
-                    tools:text="00"
-                    android:gravity="center"
-                    tools:layout_editor_absoluteY="252dp"
-                    android:textColor="@color/mainFontColor"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:id="@+id/msg" android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="24dp" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="24dp" android:gravity="center" tools:text="Messages here"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                      android:id="@+id/infoAnchor"
+                      android:orientation="vertical"
+                      app:layout_constraintEnd_toEndOf="parent"
+                      app:layout_constraintBottom_toBottomOf="parent"
+                      app:layout_constraintStart_toStartOf="parent"
+                      app:layout_constraintTop_toTopOf="parent"
+                      android:gravity="center"
+                      android:background="#90000000"
+                      android:visibility="gone"
+                      tools:visibility="visible"
+                      android:clickable="true" android:focusable="true"
+        >
+            <ProgressBar android:id="@+id/loadingBar" android:layout_width="50dp" android:layout_height="50dp"
+                         android:indeterminateTintMode="src_atop" android:indeterminateTint="#f5b700"
+            />
+            <ImageView android:layout_width="120dp" android:layout_height="120dp"
+                       android:src="@drawable/ic_success"
+                       android:visibility="gone" android:id="@+id/successImage"
+                       android:contentDescription="Success image"
+            />
+            <ImageView android:layout_width="120dp" android:layout_height="120dp"
+                       android:src="@drawable/ic_error"
+                       android:visibility="gone" android:id="@+id/errorImage"
+                       android:contentDescription="Error image"
+            />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/loadingMessage"
+                      tools:text="Loading" android:textSize="20sp" android:layout_marginTop="10dp"
             />
         </LinearLayout>
-    </LinearLayout>
-    <Button
-            android:id="@+id/saveChangesButton" android:text="Save Changes"
-            android:layout_height="wrap_content" android:layout_width="wrap_content"
-            android:layout_marginBottom="24dp" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:paddingStart="40dp"
-            android:paddingEnd="40dp"
-            android:visibility="gone"
-            tools:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent" android:background="@drawable/add_button"
-            android:elevation="@dimen/stdElevation"
-    />
-    <TextView
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:id="@+id/msg" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="24dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="24dp" android:gravity="center" tools:text="Messages here"/>
-</android.support.constraint.ConstraintLayout>
+    </FrameLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

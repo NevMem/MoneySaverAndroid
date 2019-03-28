@@ -1,15 +1,12 @@
 package com.nevmem.moneysaver.views
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log.i
 import android.view.View
 import com.nevmem.moneysaver.R
-import java.lang.Integer.max
 
 class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
     var values = ArrayList<Double>()
@@ -88,7 +85,7 @@ class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
                     mx = values[i]
 
             var smx = mx * 1.1f
-            smx = (((smx + 500) / 1000).toInt()) * 1000.0
+            smx = (((smx + 999) / 1000).toInt()) * 1000.0
 
             if (showLabels) {
                 for (i in 0 until (divCount + 1)) {

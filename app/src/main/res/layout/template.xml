@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-                                             android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                                                   android:layout_height="match_parent">
 
     <TextView
             android:layout_width="255dp"
@@ -9,20 +9,21 @@
             android:id="@+id/templateName"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
             tools:text="Template name"
-            android:gravity="center|left" android:paddingStart="8dp" android:textSize="20dp"/>
+            android:gravity="center|start" android:paddingStart="8dp" android:paddingEnd="8dp" android:textSize="20sp"/>
     <TextView
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:id="@+id/templateValue" app:layout_constraintStart_toEndOf="@+id/templateName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" android:gravity="center|right" android:paddingEnd="8dp"
+            app:layout_constraintTop_toTopOf="parent" android:gravity="center|end"
+            android:paddingEnd="8dp" android:paddingStart="8dp"
             tools:text="$100" android:textColor="@color/secondaryFontColor"/>
     <TextView
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:id="@+id/templateWallet" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/templateName" android:gravity="center|left"
-            android:paddingStart="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/templateName" android:gravity="center|start"
+            android:paddingStart="8dp" android:paddingEnd="8dp"
             app:layout_constraintEnd_toStartOf="@+id/useBlock" tools:text="Sberbank"
             android:textColor="@color/secondaryFontColor"/>
     <FrameLayout android:layout_width="106dp" android:layout_height="50dp"
@@ -49,6 +50,14 @@
                    android:layout_marginTop="13dp"
                    tools:visibility="gone"
         />
+        <ImageView android:id="@+id/templateError"
+                   android:visibility="gone"
+                   android:layout_width="match_parent"
+                   android:layout_height="24dp"
+                   android:src="@drawable/error_mark"
+                   android:layout_marginTop="13dp"
+                   tools:visibility="gone"
+        />
         <ProgressBar android:layout_width="match_parent" android:layout_height="32dp"
                      android:visibility="gone" android:id="@+id/templateSending"
                      android:indeterminateTintMode="src_atop" android:indeterminateTint="#f5b700"
@@ -56,4 +65,4 @@
                      tools:visibility="visible"
         />
     </FrameLayout>
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

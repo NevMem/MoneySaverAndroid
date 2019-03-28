@@ -1,51 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+                                                   android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
             tools:text="@string/defaultRecordName"
             android:id="@+id/recordNameField"
             android:layout_height="60dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="0dp"
             android:gravity="center|start"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:textColor="@android:color/white"
-            android:textSize="22sp" android:layout_width="wrap_content"
+            android:textSize="22sp" android:layout_width="0dp"
             android:transitionName="recordName"
-    />
+            android:layout_toStartOf="@+id/dateField" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/deleteRecordButton"/>
+
+    <ImageView android:layout_width="wrap_content" android:layout_height="60dp"
+               android:src="@drawable/delete_image" app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintTop_toTopOf="parent"
+               android:padding="20dp" android:id="@+id/deleteRecordButton" android:paddingEnd="10dp"
+               android:paddingStart="10dp"/>
 
     <TextView
             tools:text="@string/defaultRecordValue"
             android:id="@+id/recordValue"
-            android:layout_width="178dp"
+            android:layout_width="83dp"
             android:layout_height="45dp"
             android:layout_below="@+id/recordNameField"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="1dp"
-            android:gravity="center|start"
+            android:gravity="center|end"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:textColor="@android:color/darker_gray"
             android:transitionName="recordValue"
+            app:layout_constraintTop_toBottomOf="@+id/recordNameField" app:layout_constraintEnd_toEndOf="parent"
     />
 
     <TextView
             tools:text="@string/defaultRecordDate"
             android:id="@+id/dateField"
-            android:layout_width="80dp"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginEnd="0dp"
-            android:layout_toEndOf="@+id/recordNameField"
             android:gravity="center|end"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            app:layout_constraintTop_toBottomOf="@+id/recordNameField" app:layout_constraintStart_toStartOf="parent"
+    />
     <TextView
             tools:text="Wallet"
             android:layout_width="wrap_content"
@@ -53,6 +58,8 @@
             android:layout_alignParentEnd="true"
             android:layout_toEndOf="@+id/recordValue" android:gravity="center|end"
             android:paddingStart="20dp" android:paddingEnd="20dp"
-            android:textColor="@color/mainFontColor"/>
+            android:textColor="@color/mainFontColor"
+            app:layout_constraintTop_toBottomOf="@+id/recordNameField"
+            app:layout_constraintStart_toEndOf="@+id/dateField"/>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

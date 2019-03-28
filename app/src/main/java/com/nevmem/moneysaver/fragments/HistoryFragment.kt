@@ -1,32 +1,33 @@
 package com.nevmem.moneysaver.fragments
 
 import android.app.ActivityOptions
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log.i
 import android.util.Pair
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.FullDescriptionActivity
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Record
-import com.nevmem.moneysaver.structure.Callback
+import com.nevmem.moneysaver.data.RecordChangeableWrapper
+import com.nevmem.moneysaver.views.ConfirmationDialog
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.history_layout.*
-import kotlinx.android.synthetic.main.home_page_activity.*
 import kotlinx.android.synthetic.main.record_layout.view.*
 
 class HistoryFragment : Fragment() {
     lateinit var app: App
     lateinit var recordsFlow: Disposable
 
-    var currentShown = 0
-    val step = 10
+    private var currentShown = 0
+    private val step = 10
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.history_layout, container, false)
@@ -37,19 +38,34 @@ class HistoryFragment : Fragment() {
         i("HistoryFragment", "onCreate")
         try {
             app = activity!!.applicationContext as App
-            app.loadData(Callback {}, Callback {})
+            app.loadData()
         } catch (_: KotlinNullPointerException) {
             System.out.println("Null pointer")
         }
     }
 
-    fun createRow(record: Record, index: Int, inflater: LayoutInflater): View {
+    private fun createRow(record: Record, index: Int, inflater: LayoutInflater): View {
         val recordRow = inflater.inflate(R.layout.record_layout, historyWrapper, false)
         recordRow.recordNameField.text = record.name
         recordRow.recordValue.text = record.value.toString()
         recordRow.dateField.text = record.date.toString()
         recordRow.walletField.text = record.wallet
+        recordRow.deleteRecordButton.setOnClickListener {
+            val popupView = ConfirmationDialog(activity!!, "Do you really want delete this record?")
+            val popup = PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            popup.showAtLocation(historyScroller, Gravity.CENTER, 0, 0)
+            popupView.setOkListener {
+                popup.dismiss()
+
+                app.deleteRecord(record)
+            }
+
+            popupView.setDismissListener {
+                popup.dismiss()
+            }
+        }
         recordRow.setOnClickListener {
+            app.changeFlow.onNext(RecordChangeableWrapper(app.records[index]))
             val intent = Intent(activity, FullDescriptionActivity::class.java)
             intent.putExtra("index", index)
             val options = ActivityOptions.makeSceneTransitionAnimation(activity,
@@ -61,7 +77,7 @@ class HistoryFragment : Fragment() {
         return recordRow
     }
 
-    fun populateHistory(records: ArrayList<Record>, amount: Int) {
+    private fun populateHistory(records: ArrayList<Record>, amount: Int) {
         var realAmount = amount
         if (realAmount > records.size)
             realAmount = records.size

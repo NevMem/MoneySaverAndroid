@@ -1,5 +1,7 @@
 package com.nevmem.moneysaver.data
 
+import org.json.JSONObject
+
 class RecordDate {
     var year: Int = 0
     var month: Int = 0
@@ -7,13 +9,7 @@ class RecordDate {
     var hour: Int = 0
     var minute: Int = 0
 
-    internal constructor() {
-        minute = 0
-        hour = minute
-        day = hour
-        month = day
-        year = month
-    }
+    constructor()
 
     internal constructor(year: Int, month: Int, day: Int, hour: Int, minute: Int) {
         this.year = year
@@ -29,6 +25,16 @@ class RecordDate {
             ans = "0$ans"
         }
         return ans
+    }
+
+    fun toJSON(): JSONObject {
+        var json = JSONObject()
+        json.put("year", year)
+        json.put("month", month)
+        json.put("day", day)
+        json.put("hour", hour)
+        json.put("minute", minute)
+        return json
     }
 
     override fun toString(): String {

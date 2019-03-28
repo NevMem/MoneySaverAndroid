@@ -1,19 +1,18 @@
 package com.nevmem.moneysaver
 
 import android.app.Application
-import android.util.Log.*
+import android.util.Log.i
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.toolbox.*
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.nevmem.moneysaver.data.*
 import com.nevmem.moneysaver.structure.Callback
-import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.lang.ClassCastException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -23,9 +22,7 @@ class App() : Application() {
 
     var tags: ArrayList<String> = ArrayList()
     var wallets: ArrayList<String> = ArrayList()
-    var loadedRecords = false
     var records: ArrayList<Record> = ArrayList()
-//    var templates: ArrayList<Template> = ArrayList()
 
     var templates: Templates
 
@@ -33,6 +30,7 @@ class App() : Application() {
     var recordsFlow: BehaviorSubject<ArrayList<Record>>
     var templatesFlow: BehaviorSubject<Templates>
 
+    var changeFlow: BehaviorSubject<RecordChangeableWrapper>
     lateinit var requestQueue: RequestQueue
 
     init {
@@ -42,6 +40,7 @@ class App() : Application() {
         infoFlow = BehaviorSubject.create()
         recordsFlow = BehaviorSubject.create()
         templatesFlow = BehaviorSubject.create()
+        changeFlow = BehaviorSubject.create()
     }
 
     fun loadTags() {
@@ -51,11 +50,11 @@ class App() : Application() {
                 if (it.getString("type") == "ok") {
                     val fromJson = it.getJSONArray("data")
                     tags.clear()
-                    for (i in 0 until(fromJson.length()))
+                    for (i in 0 until (fromJson.length()))
                         tags.add(fromJson[i].toString())
-                } else if(it.getString("type") == "error") {
+                } else if (it.getString("type") == "error") {
                     System.out.println(it.getString("error"))
-                } else  {
+                } else {
                     System.out.println("Unknown server response format")
                 }
             }
@@ -73,7 +72,8 @@ class App() : Application() {
                 for (i in 0 until (json.length())) {
                     wallets.add(json[i].toString())
                 }
-            } catch (_: JSONException) { }
+            } catch (_: JSONException) {
+            }
         }, {
             System.out.println(it.toString())
         })
@@ -96,12 +96,9 @@ class App() : Application() {
                             val name = jsonObj.getString("name")
                             val value = jsonObj.getDouble("value")
                             val wallet = jsonObj.getString("wallet")
-                            val tags = ArrayList<String>()
-                            val tagsJSON = jsonObj.getJSONArray("tags")
+                            val tag = jsonObj.getString("tag")
                             val id = jsonObj.getString("id")
-                            for (i in 0 until (tagsJSON.length()))
-                                tags.add(tagsJSON.getString(i))
-                            var template = Template(name, value, tags, wallet, id)
+                            var template = Template(name, value, tag, wallet, id)
                             templates.add(template)
                         }
                         templates.ready = true
@@ -157,7 +154,8 @@ class App() : Application() {
 
     fun isValidUserInfo(json: JSONObject): Boolean {
         if (json.has("token") && json.has("first_name") &&
-            json.has("last_name") && json.has("login"))
+            json.has("last_name") && json.has("login")
+        )
             return true
         return false
     }
@@ -176,8 +174,10 @@ class App() : Application() {
                     if (!isValidUserInfo(it)) {
                         onError.callback("Wrong server response")
                     } else {
-                        val parsedUser = User(it.getString("login"), it.getString("token"),
-                            it.getString("first_name"), it.getString("last_name"))
+                        val parsedUser = User(
+                            it.getString("login"), it.getString("token"),
+                            it.getString("first_name"), it.getString("last_name")
+                        )
 
                         User.saveUserCredentials(this, parsedUser)
                         user = parsedUser
@@ -213,7 +213,7 @@ class App() : Application() {
                         onError.callback("Server error")
                     }
                 }
-            },{
+            }, {
                 System.out.println(it.toString())
                 onError.callback("Internet error")
             })
@@ -281,7 +281,7 @@ class App() : Application() {
             val tags = json.get("tags") as JSONArray
             for (i in 0 until tags.length())
                 record.tags.add(tags.getString(i))
-        } catch (_ : ClassCastException) {
+        } catch (_: ClassCastException) {
             record.tags.add("Not set")
         }
 
@@ -291,7 +291,7 @@ class App() : Application() {
     private fun processGetDataResponse(array: JSONArray): java.util.ArrayList<Record> {
         val parsed = java.util.ArrayList<Record>()
         try {
-            for (i in 0 .. array.length()) {
+            for (i in 0..array.length()) {
                 val now = array.getJSONObject(i)
                 val current = processRow(now)
                 parsed.add(current)
@@ -325,20 +325,17 @@ class App() : Application() {
 
         if (!parsed) {
         } else {
-            if (result.size != 0) {
-                clearRecords()
-                saveRecords(result)
-                System.out.println("Was loaded: ${result.size} records")
-            }
+            clearRecords()
+            saveRecords(result)
+            System.out.println("Was loaded: ${result.size} records")
         }
     }
 
-    fun loadData(onSuccess: Callback<String>, onError: Callback<String>) {
+    fun loadData() {
         val stringRequest = object : StringRequest(Request.Method.POST, Vars.ServerApiData, {
             processData(it)
-            onSuccess.callback(it)
         }, {
-            onError.callback(it.toString())
+            println(it.toString())
         }) {
             override fun getBody(): ByteArray {
                 return userCredentialsJSON().toString().toByteArray()
@@ -351,8 +348,10 @@ class App() : Application() {
         requestQueue.add(stringRequest)
     }
 
-    fun makeAddRequest(name: String, value: Double, tag: String?, wallet: String?,
-                       onSuccess: Callback<String>, onError: Callback<String>) {
+    fun makeAddRequest(
+        name: String, value: Double, tag: String?, wallet: String?,
+        onSuccess: Callback<String>, onError: Callback<String>
+    ) {
         val params = userCredentialsJSON()
         params.put("name", name)
         params.put("value", value)
@@ -413,53 +412,98 @@ class App() : Application() {
         requestQueue.add(jsonRequest)
     }
 
-    fun checkData(callback: Callback<String>) {
+    fun checkData() {
         if (!info.ready)
             loadInfo(Callback {}, Callback {})
         if (tags.size == 0)
             loadTags()
         if (wallets.size == 0)
             loadWallets()
-        if (!loadedRecords)
-            loadData(Callback {}, Callback {})
+        loadData()
     }
 
     fun saveRecords(from: ArrayList<Record>) {
-        for (index in 0 until(from.size))
+        for (index in 0 until (from.size))
             records.add(from[index])
         recordsFlow.onNext(records)
         i("APP_CLASS", "Saved ${from.size} records")
     }
 
-    fun useTemplate(template: Template) {
-        for (index in 0 until(templates.templates.size)) {
-            if (templates.getTemplate(index) == template) {
-                templates.getTemplate(index).sending = true
+    fun emitChangeRecordError(error: String) {
+        var bufferChangeable = changeFlow.value
+        if (bufferChangeable != null) {
+            bufferChangeable.error = error
+            bufferChangeable.success = ""
+            bufferChangeable.loading = false
+            changeFlow.onNext(bufferChangeable)
+        }
+    }
+
+    fun emitChangeRecordSuccess(success: String) {
+        var bufferChangeable = changeFlow.value
+        if (bufferChangeable != null) {
+            bufferChangeable.success = success
+            bufferChangeable.error = ""
+            bufferChangeable.loading = false
+            changeFlow.onNext(bufferChangeable)
+        }
+    }
+
+    fun editFromDescription(record: Record) {
+        var bufferChangeable = changeFlow.value
+        if (bufferChangeable != null) {
+            bufferChangeable.loading = true
+            changeFlow.onNext(bufferChangeable)
+            val params = userCredentialsJSON()
+            params.put("name", record.name)
+            params.put("value", record.value)
+            params.put("wallet", record.wallet)
+            params.put("tags", record.tagsToJSON())
+            params.put("date", record.date.toJSON())
+            params.put("id", record.id)
+            println(record.date.toJSON().toString())
+            params.put("daily", record.daily)
+            val request = JsonObjectRequest(Request.Method.POST, Vars.ServerApiEdit, params, {
+                println(it.toString())
+                if (it.has("type")) {
+                    if (it.getString("type") == "ok") {
+                        val buffer = changeFlow.value
+                        if (buffer != null) {
+                            buffer.record = record
+                            changeFlow.onNext(buffer)
+                        }
+                        emitChangeRecordSuccess("Success")
+                    } else if (it.getString("type") == "error") {
+                        emitChangeRecordError(it.getString("error"))
+                    } else {
+                        emitChangeRecordError("Server response has unknown format")
+                    }
+                } else {
+                    emitChangeRecordError("Server response has unknown format")
+                }
+            }, {
+                print(it.toString())
+            })
+            requestQueue.add(request)
+        }
+    }
+
+    fun deleteRecord(record: Record) {
+        val params = userCredentialsJSON()
+        params.put("record_id", record.id)
+        val request = object : StringRequest(Request.Method.POST, Vars.ServerApiDeleteRecord, {
+            loadData()
+        }, {
+            println(it.toString())
+        }) {
+            override fun getBody(): ByteArray {
+                return params.toString().toByteArray()
+            }
+
+            override fun getBodyContentType(): String {
+                return "application/json"
             }
         }
-        templatesFlow.onNext(templates)
-
-        var params = userCredentialsJSON()
-        params.put("date", createDate())
-        params.put("templateId", template.id)
-        val request = JsonObjectRequest(Request.Method.POST, Vars.ServerApiUseTemplate, params, {
-            if (it.has("type")) {
-                if (it.getString("type") == "ok") {
-                    for (index in 0 until(templates.templates.size)) {
-                        if (templates.getTemplate(index) == template) {
-                            templates.getTemplate(index).sending = false
-                            templates.getTemplate(index).success = true
-                        }
-                    }
-                    templatesFlow.onNext(templates)
-                } else if (it.getString("type") == "error") {
-                } else {
-
-                }
-            }
-        }, {
-            println("Erorr ${it.toString()}")
-        })
         requestQueue.add(request)
     }
 }

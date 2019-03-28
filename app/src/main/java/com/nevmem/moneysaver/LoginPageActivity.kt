@@ -1,21 +1,16 @@
 package com.nevmem.moneysaver
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
-import android.support.v4.content.ContextCompat
-import android.view.*
-
-import com.android.volley.*
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
+import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.exceptions.UserCredentialsNotFound
 import com.nevmem.moneysaver.structure.Callback
 import kotlinx.android.synthetic.main.login_page.*
-import org.json.JSONObject
 
 class LoginPageActivity : FragmentActivity() {
 

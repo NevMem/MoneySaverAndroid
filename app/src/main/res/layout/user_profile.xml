@@ -10,7 +10,7 @@
               android:paddingBottom="100dp"
               android:clipToPadding="false"
 >
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
                                                  android:layout_width="match_parent"
                                                  android:layout_height="wrap_content" android:id="@+id/totallySpend"
                                                  android:background="@drawable/profile_background"
@@ -115,15 +115,15 @@
                 app:labelsLiningColor="#15ffffff"
                 app:showLabels="true"
                 android:paddingTop="10dp"
-                android:paddingLeft="0dp"
-                android:paddingRight="10dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="10dp"
                 android:paddingBottom="0dp"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintTop_toBottomOf="@+id/text_2" android:layout_marginTop="8dp"/>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
             android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -262,6 +262,11 @@
             />
         </LinearLayout>
     </LinearLayout>
+
+    <com.nevmem.moneysaver.views.PieChart android:layout_width="match_parent" android:layout_height="200dp"
+                                          app:chartPadding="30"
+    />
+
     <ProgressBar android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:id="@+id/userProfileProgressBar"

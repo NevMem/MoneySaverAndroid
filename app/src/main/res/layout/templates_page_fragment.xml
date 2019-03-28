@@ -1,33 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="match_parent"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools">
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                       xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                       xmlns:tools="http://schemas.android.com/tools"
+                                                       android:layout_width="match_parent"
+                                                       android:layout_height="match_parent"
+                                                       android:id="@+id/refresh"
+>
     <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="vertical" android:gravity="center"
-                      android:padding="10dp" android:paddingBottom="60dp"
-        >
+                      android:paddingBottom="70dp"
+                      android:paddingEnd="10dp" android:paddingStart="10dp" android:paddingTop="10dp">
             <TextView android:layout_height="wrap_content" android:layout_width="match_parent"
                       android:padding="17dp" android:elevation="@dimen/stdElevation"
                       android:background="@drawable/profile_background"
-                      android:textSize="20dp"
+                      android:id="@+id/templatesHeader"
+                      android:textSize="20sp"
                       android:text="Here is all your templates"
             />
-            <ProgressBar
-                    android:padding="10dp"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    android:id="@+id/templatesLoading"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:indeterminateTintMode="src_atop"
-                    android:indeterminateTint="#f5b700"
-                    android:layout_gravity="center" />
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                           android:orientation="vertical" android:id="@+id/templatesAnchor"
             />
+            <TextView android:id="@+id/nothingToShow"
+                      android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:paddingTop="20dp" android:paddingBottom="20dp"
+                      android:gravity="center"
+                      android:visibility="gone"
+                      android:text="@string/noTemplates"
+            />
+            <include layout="@layout/add_template_view" android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+            />
         </LinearLayout>
     </ScrollView>
-</android.support.constraint.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

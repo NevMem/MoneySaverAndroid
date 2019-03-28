@@ -1,5 +1,6 @@
 package com.nevmem.moneysaver.data
 
+import org.json.JSONArray
 import java.util.ArrayList
 
 class Record {
@@ -34,6 +35,12 @@ class Record {
         date = RecordDate()
         id = ""
         daily = false
+    }
+
+    fun tagsToJSON(): JSONArray {
+        val array = JSONArray()
+        array.put(tags[0])
+        return array
     }
 
     override fun toString(): String {

@@ -1,24 +1,19 @@
 package com.nevmem.moneysaver.fragments
 
 import android.animation.ValueAnimator
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log.i
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import com.nevmem.moneysaver.App
-import com.nevmem.moneysaver.HomePageActivityViewModel
 import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.structure.Callback
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.user_profile.*
-import org.reactivestreams.Subscription
-import java.lang.NullPointerException
 
 class DashboardFragment : Fragment() {
     lateinit var app: App
@@ -36,9 +31,7 @@ class DashboardFragment : Fragment() {
         try {
             app = activity!!.applicationContext as App
             parent = activity!! as MainPage
-            app.checkData(Callback<String> {
-                System.out.println("Result string $it")
-            })
+            app.checkData()
             infoFlow = app.infoFlow.subscribe{ value -> run {
                 if (!value.ready)
                     userProfileProgressBar.visibility = View.VISIBLE
