@@ -36,7 +36,7 @@ class MainPage : AppCompatActivity() {
 
         setContentView(R.layout.main_page_layout)
         viewModel = ViewModelProviders.of(this).get(MainPageViewModel::class.java)
-        window.statusBarColor = Color.parseColor("#101010")
+        window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
         app = applicationContext as App
 
         app.loadAll()
