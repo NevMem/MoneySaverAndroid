@@ -2,10 +2,10 @@ package com.nevmem.moneysaver.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.nevmem.moneysaver.room.dao.DBTemplateDao
-import com.nevmem.moneysaver.room.entity.DBTemplate
+import com.nevmem.moneysaver.room.dao.TemplateDao
+import com.nevmem.moneysaver.room.entity.StoredTemplate
 
-@Database(entities = arrayOf(DBTemplate::class), version = 1)
+@Database(entities = [StoredTemplate::class], version = 8)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun templateDao(): DBTemplateDao
+    abstract fun templateDao(): TemplateDao
 }

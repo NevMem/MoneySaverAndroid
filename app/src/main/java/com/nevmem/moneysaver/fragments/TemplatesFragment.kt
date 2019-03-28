@@ -3,6 +3,7 @@ package com.nevmem.moneysaver.fragments
 import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.util.Log.i
 import android.view.Gravity
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
+import androidx.core.content.ContextCompat
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.R
@@ -81,7 +83,7 @@ class TemplatesFragment: Fragment() {
                     popupWindow.dismiss()
                 }
                 popupView.setOkListener {
-//                    app.removeTemplate(template.id)
+                    templatesRepo.removeTemplate(template.id)
                     popupWindow.dismiss()
                 }
                 true
@@ -105,6 +107,14 @@ class TemplatesFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        refresh.setColorSchemeColors(
+            ContextCompat.getColor(context!!, R.color.themeColor),
+            ContextCompat.getColor(context!!, R.color.specialColor),
+            ContextCompat.getColor(context!!, R.color.errorColor))
+        refresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(context!!, R.color.backgroundColor))
+        refresh.setOnRefreshListener {
+            templatesRepo.tryUpdate()
+        }
         templatesRepo.tryUpdate()
         templatesRepo.templates.observe(this, Observer {
             i("TR", "Received some new data")
@@ -115,10 +125,7 @@ class TemplatesFragment: Fragment() {
         })
         templatesRepo.loading.observe(this, Observer {
             if (it != null) {
-                if (it)
-                    templatesLoading.visibility = View.VISIBLE
-                else
-                    templatesLoading.visibility = View.GONE
+                refresh.isRefreshing = it
             }
         })
         addNewTemplateView.visibility = View.VISIBLE
@@ -132,7 +139,7 @@ class TemplatesFragment: Fragment() {
         val popup = PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true)
 
         popupView.setOkListener {
-//            app.createNewTemplate(it)
+            templatesRepo.createNewTemplate(it)
             popup.dismiss()
         }
 

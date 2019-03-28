@@ -10,4 +10,5 @@
     <color name="cardColor">#191919</color>
     <color name="backgroundColor">#202020</color>
     <color name="specialColor">#06d6a0</color>
+    <color name="themeColor">#f5b700</color>
 </resources>

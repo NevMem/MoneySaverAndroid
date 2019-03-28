@@ -30,9 +30,6 @@ class MainPage : AppCompatActivity() {
 
     lateinit var appComponent: AppComponent
 
-    @Inject
-    lateinit var networkQueue: NetworkQueue
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

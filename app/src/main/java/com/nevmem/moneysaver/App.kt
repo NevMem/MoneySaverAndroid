@@ -426,44 +426,6 @@ class App() : Application() {
         i("APP_CLASS", "Saved ${from.size} records")
     }
 
-    fun createNewTemplate(base: TemplateBase) {
-        val params = userCredentialsJSON()
-        params.put("name", base.name)
-        params.put("value", base.value)
-        params.put("wallet", base.wallet)
-        params.put("tag", base.tag)
-        val request = JsonObjectRequest(Request.Method.POST, Vars.ServerApiCreateTemplate, params, {
-            if (it.has("type")) {
-                if (it.getString("type") == "ok") {
-                    Toast.makeText(this, "Template was successfully added", Toast.LENGTH_LONG).show()
-                } else if (it.getString("type") == "error") {
-                    Toast.makeText(this, it.getString("error"), Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(this, "Server response has unknown format", Toast.LENGTH_LONG).show()
-                }
-            } else {
-                Toast.makeText(this, "Server response has unknown format", Toast.LENGTH_LONG).show()
-            }
-            loadTemplates()
-        }, {
-            Toast.makeText(this, "Internet error", Toast.LENGTH_LONG).show()
-        })
-        requestQueue.add(request)
-    }
-
-    fun removeTemplate(id: String) {
-        val params = userCredentialsJSON()
-        params.put("templateId", id)
-        val request = JsonObjectRequest(Request.Method.POST, Vars.ServerApiRemoveTemplate, params, {
-            println(it)
-            loadTemplates()
-        }, {
-            println(it)
-            loadTemplates()
-        })
-        requestQueue.add(request)
-    }
-
     fun emitChangeRecordError(error: String) {
         var bufferChangeable = changeFlow.value
         if (bufferChangeable != null) {
