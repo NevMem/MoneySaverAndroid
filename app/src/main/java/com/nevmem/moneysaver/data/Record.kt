@@ -4,8 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.nevmem.moneysaver.room.converters.HistoryConverter
-import org.json.JSONArray
-import java.util.ArrayList
 
 @Entity
 class Record {
@@ -20,42 +18,6 @@ class Record {
     var id: String = ""
     var daily: Boolean = true
     var timestamp: Long = 0
-
-    /* constructor() {
-        name = "undefined"
-        tag = ""
-        date = RecordDate()
-        id = ""
-        daily = false
-    }
-
-    constructor(
-        uid: Int,
-        name: String,
-        value: Double,
-        tag: String,
-        wallet: String,
-        date: RecordDate,
-        id: String,
-        daily: Boolean
-    ) {
-        this.uid = uid
-        this.name = name
-        this.value = value
-        this.tag = tag
-        this.wallet = wallet
-        this.date = date
-        this.id = id
-        this.daily = daily
-    }
-
-    constructor(name: String): this() {
-        this.name = name
-    }
-
-    constructor(name: String, value: Int): this(name) {
-        this.value = value.toDouble()
-    } */
 
     override fun toString(): String {
         return "{$name $value [$id]}"

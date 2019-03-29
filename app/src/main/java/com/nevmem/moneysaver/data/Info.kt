@@ -43,7 +43,7 @@ class Info {
         if (data.has("average"))
             average = data.getDouble("average")
 
-        val sum= data.getJSONObject("daySum")
+        val sum = data.getJSONObject("daySum")
         println(sum.toString())
         for (key in sum.keys()) {
             sumDay.add(sum.getDouble(key))

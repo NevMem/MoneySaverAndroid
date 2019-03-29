@@ -1,20 +1,20 @@
 package com.nevmem.moneysaver.fragments
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.core.content.ContextCompat
 import android.util.Log.i
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.MainPage
-import kotlinx.android.synthetic.main.add_record_activity.*
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.structure.Callback
+import kotlinx.android.synthetic.main.add_record_activity.*
 
 
 class AddFragment : Fragment() {
@@ -45,7 +45,8 @@ class AddFragment : Fragment() {
             tags.adapter =
                 ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, app.tags)
         if (app.wallets.size != 0)
-            chooseWallet.adapter = ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, app.wallets)
+            chooseWallet.adapter =
+                ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, app.wallets)
 
         viewModel.error.observe(parent, Observer {
             headerText.setTextColor(ContextCompat.getColor(parent, R.color.errorColor))

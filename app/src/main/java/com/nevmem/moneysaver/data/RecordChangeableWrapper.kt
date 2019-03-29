@@ -5,7 +5,6 @@ class RecordChangeableWrapper(fromRecord: Record) {
     var loading = false
     var error = ""
     var success = ""
-
     var deleted = false
 
     init {

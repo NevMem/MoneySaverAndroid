@@ -1,7 +1,6 @@
 package com.nevmem.moneysaver.fragments
 
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log.i
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.repositories.HistoryRepository
 import com.nevmem.moneysaver.fragments.adapters.HistoryFragmentAdapter
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.history_layout.*
 import javax.inject.Inject
 

@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.nevmem.moneysaver.R
@@ -68,7 +67,11 @@ class HistoryFragmentAdapter(
                     recordDate.text = history[position - 1].date.toString()
                     deleteButton.setOnClickListener {
                         val popupView = ConfirmationDialog(context, "Do you really want delete this record?")
-                        val popup = PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                        val popup = PopupWindow(
+                            popupView,
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
                         popup.showAtLocation(itemView, Gravity.CENTER, 0, 0)
                         popupView.setOkListener {
                             popup.dismiss()

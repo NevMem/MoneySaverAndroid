@@ -62,7 +62,7 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
     private fun generateColors() {
         colors.clear()
         val random = Random(System.currentTimeMillis()) // TODO: (color generator)
-        for (index in 0 until(values.size)) {
+        for (index in 0 until (values.size)) {
             val red = random.nextFloat()
             val green = random.nextFloat()
             val blue = random.nextFloat()
@@ -76,7 +76,7 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
 
     private fun makeOrder() {
         sortedOrder.clear()
-        for (index in 0 until(values.size))
+        for (index in 0 until (values.size))
             sortedOrder.add(index)
         Collections.sort(sortedOrder) { first: Int, second: Int -> values[second].compareTo(values[first]) }
     }
@@ -145,13 +145,15 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
 
         val percentsWidth = 70f
 
-        for (i in 0 until(sortedOrder.size)) {
+        for (i in 0 until (sortedOrder.size)) {
             val index = sortedOrder[i]
             paint.color = colors[index]
             canvas.drawText(labels[index], textLeftBorder + percentsWidth, (i + 1) * 34f + descriptionHeight, paint)
 
-            canvas.drawText((values[index] * 100.0 / valuesSum).toInt().toString() + " %",
-                textLeftBorder, (i + 1) * 34f + descriptionHeight, paint)
+            canvas.drawText(
+                (values[index] * 100.0 / valuesSum).toInt().toString() + " %",
+                textLeftBorder, (i + 1) * 34f + descriptionHeight, paint
+            )
         }
     }
 }

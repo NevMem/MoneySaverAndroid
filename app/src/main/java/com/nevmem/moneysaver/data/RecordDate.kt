@@ -11,8 +11,10 @@ class RecordDate {
 
     companion object {
         fun fromJSON(jsonObject: JSONObject): RecordDate {
-            return RecordDate(jsonObject.getInt("year"), jsonObject.getInt("month"),
-                jsonObject.getInt("day"), jsonObject.getInt("hour"), jsonObject.getInt("minute"))
+            return RecordDate(
+                jsonObject.getInt("year"), jsonObject.getInt("month"),
+                jsonObject.getInt("day"), jsonObject.getInt("hour"), jsonObject.getInt("minute")
+            )
         }
     }
 

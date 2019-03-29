@@ -22,8 +22,10 @@ class NetworkQueue {
         i("NQ", "NetworkQueue constructor was called")
     }
 
-    fun infinitePostJsonObjectRequest(url: String, params: JSONObject,
-                                      resolve: (JSONObject) -> Unit, timeout: Long = DEFAULT_TIMEOUT) {
+    fun infinitePostJsonObjectRequest(
+        url: String, params: JSONObject,
+        resolve: (JSONObject) -> Unit, timeout: Long = DEFAULT_TIMEOUT
+    ) {
         i("NQ", "Starting loading json object from $url")
         val request = JsonObjectRequest(Request.Method.POST, url, params, {
             i("NQ", "Successfully loaded")
@@ -38,10 +40,12 @@ class NetworkQueue {
         requestQueue.add(request)
     }
 
-    fun infinitePostStringRequest(url: String, params: JSONObject,
-                                  resolve: (String) -> Unit, timeout: Long = DEFAULT_TIMEOUT) {
+    fun infinitePostStringRequest(
+        url: String, params: JSONObject,
+        resolve: (String) -> Unit, timeout: Long = DEFAULT_TIMEOUT
+    ) {
         i("NQ", "Starting loading string from $url")
-        val request = object: StringRequest(Request.Method.POST, url, {
+        val request = object : StringRequest(Request.Method.POST, url, {
             i("NQ", "Successfully loaded string from $url")
             resolve(it)
         }, {

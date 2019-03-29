@@ -43,7 +43,7 @@ class HistoryRepository @Inject constructor(
             var updated = 0
             var removed = 0
             val ids = HashSet<String>()
-            with (appDatabase.historyDao()) {
+            with(appDatabase.historyDao()) {
                 data.forEach {
                     val inDatabase = findById(it.id)
                     if (inDatabase == null) {
