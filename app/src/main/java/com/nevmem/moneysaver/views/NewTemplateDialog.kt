@@ -8,7 +8,7 @@ import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.TemplateBase
 import kotlinx.android.synthetic.main.new_template_dialog.view.*
 
-class NewTemplateDialog(ctx: Context): ConstraintLayout(ctx) {
+class NewTemplateDialog(ctx: Context) : ConstraintLayout(ctx) {
     lateinit var okCallback: (TemplateBase) -> Unit
     lateinit var dismissCallback: () -> Unit
 
@@ -18,17 +18,23 @@ class NewTemplateDialog(ctx: Context): ConstraintLayout(ctx) {
         val app = ctx.applicationContext as App
 
         newTemplateTag.adapter = ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, app.tags)
-        newTemplateWallet.adapter = ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, app.wallets)
+        newTemplateWallet.adapter =
+            ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, app.wallets)
 
         okButton.setOnClickListener {
             var value = 0.0
             try {
                 value = newTemplateValue.text.toString().toDouble()
-            } catch (e: NumberFormatException) {}
-            okCallback(TemplateBase(newTemplateName.text.toString(),
-                value,
-                newTemplateTag.selectedItem.toString(),
-                newTemplateWallet.selectedItem.toString()))
+            } catch (e: NumberFormatException) {
+            }
+            okCallback(
+                TemplateBase(
+                    newTemplateName.text.toString(),
+                    value,
+                    newTemplateTag.selectedItem.toString(),
+                    newTemplateWallet.selectedItem.toString()
+                )
+            )
         }
 
         dismissButton.setOnClickListener {

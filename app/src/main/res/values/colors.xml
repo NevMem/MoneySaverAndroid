@@ -11,4 +11,5 @@
     <color name="backgroundColor">#202020</color>
     <color name="specialColor">#06d6a0</color>
     <color name="themeColor">#f5b700</color>
+    <color name="profile_color">#191919</color>
 </resources>

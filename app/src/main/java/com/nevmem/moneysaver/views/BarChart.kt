@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.view.View
 import com.nevmem.moneysaver.R
 
-class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
+class BarChart(val cntx: Context, val attrs: AttributeSet) : View(cntx, attrs) {
     var values = ArrayList<Double>()
     var showAmount = 20
     var rounded = false
@@ -113,7 +113,13 @@ class BarChart(val cntx: Context, val attrs: AttributeSet): View(cntx, attrs) {
                 if (showLabels) dx = leftBarSize + paddingLeft +
                         (width - leftBarSize - paddingLeft - paddingRight) * (i - index) / showAmount +
                         width / showAmount / 2
-                drawBar(canvas, dx, height - paddingBottom, barWidth, (values[i] * multiplier * (height - paddingTop - paddingBottom) / smx).toInt())
+                drawBar(
+                    canvas,
+                    dx,
+                    height - paddingBottom,
+                    barWidth,
+                    (values[i] * multiplier * (height - paddingTop - paddingBottom) / smx).toInt()
+                )
             }
         } else {
             paint.color = Color.parseColor("#9AC7C7C7")

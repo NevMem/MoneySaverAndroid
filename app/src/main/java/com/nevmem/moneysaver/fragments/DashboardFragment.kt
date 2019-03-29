@@ -2,12 +2,12 @@ package com.nevmem.moneysaver.fragments
 
 import android.animation.ValueAnimator
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.util.Log.i
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.fragment.app.Fragment
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.R
@@ -32,32 +32,34 @@ class DashboardFragment : Fragment() {
             app = activity!!.applicationContext as App
             parent = activity!! as MainPage
             app.checkData()
-            infoFlow = app.infoFlow.subscribe{ value -> run {
-                if (!value.ready)
-                    userProfileProgressBar.visibility = View.VISIBLE
-                else
-                    userProfileProgressBar.visibility = View.GONE
-                average30Days.text = value.average30Days.toString()
-                average7Days.text = value.average7Days.toString()
-                trackedDays.text = value.trackedDays.toString()
-                totalSpend.text = value.totalSpend.toString()
-                averageSpend.text = value.average.toString()
-                sum30Days.text = value.sum30Days.toString()
-                sum7Days.text = value.sum7Days.toString()
-                sumDayChart.values = value.sumDay
+            infoFlow = app.infoFlow.subscribe { value ->
+                run {
+                    if (!value.ready)
+                        userProfileProgressBar.visibility = View.VISIBLE
+                    else
+                        userProfileProgressBar.visibility = View.GONE
+                    average30Days.text = value.average30Days.toString()
+                    average7Days.text = value.average7Days.toString()
+                    trackedDays.text = value.trackedDays.toString()
+                    totalSpend.text = value.totalSpend.toString()
+                    averageSpend.text = value.average.toString()
+                    sum30Days.text = value.sum30Days.toString()
+                    sum7Days.text = value.sum7Days.toString()
+                    sumDayChart.values = value.sumDay
 
-                val animator = ValueAnimator.ofFloat(0f,  1f)
-                animator.interpolator = AccelerateDecelerateInterpolator()
-                animator.addUpdateListener {
-                    if (sumDayChart != null) {
-                        sumDayChart.multiplier = it.animatedValue as Float
-                        sumDayChart.invalidate()
+                    val animator = ValueAnimator.ofFloat(0f, 1f)
+                    animator.interpolator = AccelerateDecelerateInterpolator()
+                    animator.addUpdateListener {
+                        if (sumDayChart != null) {
+                            sumDayChart.multiplier = it.animatedValue as Float
+                            sumDayChart.invalidate()
+                        }
                     }
+                    animator.duration = 500
+                    animator.start()
+                    sumDayChart.invalidate()
                 }
-                animator.duration = 500
-                animator.start()
-                sumDayChart.invalidate()
-            }}
+            }
         } catch (_: KotlinNullPointerException) {
             System.out.println("Kotlin Null Pointer Exceptions")
         }
@@ -74,6 +76,6 @@ class DashboardFragment : Fragment() {
     }
 
     fun reload() {
-        app.loadInfo(Callback {  }, Callback {  })
+        app.loadInfo(Callback { }, Callback { })
     }
 }

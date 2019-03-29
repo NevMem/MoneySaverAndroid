@@ -1,9 +1,7 @@
 package com.nevmem.moneysaver.fragments
 
-import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.util.Log.i
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -11,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Template
-import com.nevmem.moneysaver.data.TemplatesRepository
+import com.nevmem.moneysaver.data.repositories.TemplatesRepository
 import com.nevmem.moneysaver.views.ConfirmationDialog
 import com.nevmem.moneysaver.views.InfoDialog
 import com.nevmem.moneysaver.views.NewTemplateDialog
@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.template.view.*
 import kotlinx.android.synthetic.main.templates_page_fragment.*
 import javax.inject.Inject
 
-class TemplatesFragment: Fragment() {
+class TemplatesFragment : Fragment() {
     @Inject
     lateinit var templatesRepo: TemplatesRepository
 
@@ -42,7 +42,7 @@ class TemplatesFragment: Fragment() {
 
     private fun createTemplate(template: Template, index: Int, inflater: LayoutInflater): View {
         val templateView = inflater.inflate(R.layout.template, templatesAnchor, false)
-        with (templateView) {
+        with(templateView) {
             templateName.text = template.name
             templateValue.text = template.value.toString()
             templateWallet.text = template.wallet
@@ -62,7 +62,8 @@ class TemplatesFragment: Fragment() {
 
                 templateError.setOnClickListener {
                     val popupView = InfoDialog(activity!!, template.error.toString())
-                    val popup = PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                    val popup =
+                        PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                     popup.showAtLocation(templatesHeader, Gravity.CENTER, 0, 0)
                     popupView.setOkListener {
                         popup.dismiss()
@@ -73,9 +74,11 @@ class TemplatesFragment: Fragment() {
             }
             setOnLongClickListener {
                 val popupView = ConfirmationDialog(activity!!, "Do you really want delete this template?")
-                val popupWindow = PopupWindow(popupView,
+                val popupWindow = PopupWindow(
+                    popupView,
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT,
-                    true)
+                    true
+                )
                 popupWindow.showAtLocation(templatesHeader, Gravity.CENTER, 0, 0)
                 popupView.setDismissListener {
                     popupWindow.dismiss()
@@ -94,7 +97,7 @@ class TemplatesFragment: Fragment() {
         clearTemplates()
         nothingToShow.visibility = View.GONE
         val inflater = activity!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        for (index in 0 until(templates.size)) {
+        for (index in 0 until (templates.size)) {
             templatesAnchor.addView(createTemplate(templates[index], index, inflater))
         }
         if (templates.size == 0)
@@ -108,7 +111,8 @@ class TemplatesFragment: Fragment() {
         refresh.setColorSchemeColors(
             ContextCompat.getColor(context!!, R.color.themeColor),
             ContextCompat.getColor(context!!, R.color.specialColor),
-            ContextCompat.getColor(context!!, R.color.errorColor))
+            ContextCompat.getColor(context!!, R.color.errorColor)
+        )
         refresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(context!!, R.color.backgroundColor))
         refresh.setOnRefreshListener {
             templatesRepo.tryUpdate()
@@ -134,7 +138,8 @@ class TemplatesFragment: Fragment() {
 
     private fun newTemplate() {
         val popupView = NewTemplateDialog(activity!!)
-        val popup = PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true)
+        val popup =
+            PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true)
 
         popupView.setOkListener {
             templatesRepo.createNewTemplate(it)

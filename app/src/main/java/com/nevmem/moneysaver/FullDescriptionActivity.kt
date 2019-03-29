@@ -16,7 +16,7 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.full_description.*
 
 
-class FullDescriptionActivity: FragmentActivity() {
+class FullDescriptionActivity : FragmentActivity() {
     init {
         i("description", "hello from full description activity")
     }
@@ -142,12 +142,16 @@ class FullDescriptionActivity: FragmentActivity() {
             picker.value = viewModel.currentYear.value!!.toInt()
             builder.setTitle("Choose year")
                 .setMessage("Please enter new year for this record")
-                .setPositiveButton(android.R.string.yes) { _, which -> run {
-                    viewModel.currentYear.value = picker.value.toString()
-                } }
-                .setNegativeButton(android.R.string.no) { _, which -> run {
-                    System.out.println(which)
-                } }
+                .setPositiveButton(android.R.string.yes) { _, which ->
+                    run {
+                        viewModel.currentYear.value = picker.value.toString()
+                    }
+                }
+                .setNegativeButton(android.R.string.no) { _, which ->
+                    run {
+                        System.out.println(which)
+                    }
+                }
                 .setView(picker)
                 .show()
         }
@@ -157,16 +161,31 @@ class FullDescriptionActivity: FragmentActivity() {
             val picker = NumberPicker(this)
             picker.minValue = 0
             picker.maxValue = 11
-            picker.displayedValues = arrayOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-            for (index in 0 until(picker.displayedValues.size))
+            picker.displayedValues = arrayOf(
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            )
+            for (index in 0 until (picker.displayedValues.size))
                 if (picker.displayedValues[index] == viewModel.currentMonth.value)
                     picker.value = index
             builder.setTitle("Choose month")
                 .setMessage("Please choose new month for this record")
-                .setPositiveButton(android.R.string.yes) { _, which -> run {
-                    val newMonth = picker.displayedValues[picker.value]
-                    viewModel.currentMonth.value = newMonth
-                }}
+                .setPositiveButton(android.R.string.yes) { _, which ->
+                    run {
+                        val newMonth = picker.displayedValues[picker.value]
+                        viewModel.currentMonth.value = newMonth
+                    }
+                }
                 .setView(picker)
                 .show()
         }
@@ -175,13 +194,16 @@ class FullDescriptionActivity: FragmentActivity() {
             val builder = AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
             val picker = NumberPicker(this)
             picker.minValue = 1
-            picker.maxValue = amountOfDaysInMonth(viewModel.currentYear.value!!.toInt(), viewModel.currentMonth.value.toString())
+            picker.maxValue =
+                amountOfDaysInMonth(viewModel.currentYear.value!!.toInt(), viewModel.currentMonth.value.toString())
             picker.value = viewModel.currentDay.value!!.toInt()
             builder.setTitle("Choose day of month")
                 .setMessage("Please choose new day for this record")
-                .setPositiveButton(android.R.string.yes) { _, which -> run {
-                    viewModel.currentDay.value = fillToFormat(picker.value.toString())
-                }}
+                .setPositiveButton(android.R.string.yes) { _, which ->
+                    run {
+                        viewModel.currentDay.value = fillToFormat(picker.value.toString())
+                    }
+                }
                 .setView(picker)
                 .show()
         }
@@ -194,9 +216,11 @@ class FullDescriptionActivity: FragmentActivity() {
             picker.value = viewModel.currentHour.value!!.toInt()
             builder.setTitle("Choose hour of a day")
                 .setMessage("Please choose new hour for this record")
-                .setPositiveButton(android.R.string.yes) { _, which -> run {
-                    viewModel.currentHour.value = fillToFormat(picker.value.toString())
-                }}
+                .setPositiveButton(android.R.string.yes) { _, which ->
+                    run {
+                        viewModel.currentHour.value = fillToFormat(picker.value.toString())
+                    }
+                }
                 .setView(picker)
                 .show()
         }
@@ -209,20 +233,24 @@ class FullDescriptionActivity: FragmentActivity() {
             picker.value = viewModel.currentMinute.value!!.toInt()
             builder.setTitle("Choose minute of a hour")
                 .setMessage("Please choose new minute for this record")
-                .setPositiveButton(android.R.string.yes) { _, which -> run {
-                    viewModel.currentMinute.value = fillToFormat(picker.value.toString())
-                }}
+                .setPositiveButton(android.R.string.yes) { _, which ->
+                    run {
+                        viewModel.currentMinute.value = fillToFormat(picker.value.toString())
+                    }
+                }
                 .setView(picker)
                 .show()
         }
 
-        dailySwitch.setOnCheckedChangeListener { _, isChecked -> run {
-            viewModel.currentDaily.value = isChecked
-        } }
+        dailySwitch.setOnCheckedChangeListener { _, isChecked ->
+            run {
+                viewModel.currentDaily.value = isChecked
+            }
+        }
 
         saveChangesButton.setOnClickListener {
             val record = Record()
-            record.tags.add(tag.text.toString())
+            record.tag = tag.text.toString()
             record.wallet = wallet.text.toString()
             record.id = app.records[index].id
             record.value = recordValueField.text.toString().toDouble()
@@ -252,49 +280,51 @@ class FullDescriptionActivity: FragmentActivity() {
     }
 
     private fun setupSubscriptions() {
-        changeFlow = app.changeFlow.subscribe{ value -> run {
-            successImage.visibility = View.GONE
-            errorImage.visibility = View.GONE
-            if (value.loading) {
-                infoAnchor.visibility = View.VISIBLE
-                loadingBar.visibility = View.VISIBLE
-                loadingMessage.text = "Loading..."
-            } else if (value.success.isNotEmpty()) {
-                loadingMessage.text = value.success
-                loadingBar.visibility = View.GONE
-                successImage.visibility = View.VISIBLE
-            } else if (value.error.isNotEmpty()) {
-                loadingMessage.text = value.error
-                loadingBar.visibility = View.GONE
-                errorImage.visibility = View.VISIBLE
-            } else {
-                infoAnchor.visibility = View.GONE
-                with(value.record) {
-                    recordNameField.text = name
-                    recordValueField.text = value.record.value.toString()
+        changeFlow = app.changeFlow.subscribe { value ->
+            run {
+                successImage.visibility = View.GONE
+                errorImage.visibility = View.GONE
+                if (value.loading) {
+                    infoAnchor.visibility = View.VISIBLE
+                    loadingBar.visibility = View.VISIBLE
+                    loadingMessage.text = "Loading..."
+                } else if (value.success.isNotEmpty()) {
+                    loadingMessage.text = value.success
+                    loadingBar.visibility = View.GONE
+                    successImage.visibility = View.VISIBLE
+                } else if (value.error.isNotEmpty()) {
+                    loadingMessage.text = value.error
+                    loadingBar.visibility = View.GONE
+                    errorImage.visibility = View.VISIBLE
+                } else {
+                    infoAnchor.visibility = View.GONE
+                    with(value.record) {
+                        recordNameField.text = name
+                        recordValueField.text = value.record.value.toString()
 
-                    viewModel.currentYear.value = date.year.toString()
-                    viewModel.prevYear.value = date.year.toString()
+                        viewModel.currentYear.value = date.year.toString()
+                        viewModel.prevYear.value = date.year.toString()
 
-                    viewModel.currentMonth.value = getMonth(date.month)
-                    viewModel.prevMonth.value = getMonth(date.month)
+                        viewModel.currentMonth.value = getMonth(date.month)
+                        viewModel.prevMonth.value = getMonth(date.month)
 
-                    viewModel.currentDay.value = fillToFormat(date.day.toString())
-                    viewModel.prevDay.value = fillToFormat(date.day.toString())
+                        viewModel.currentDay.value = fillToFormat(date.day.toString())
+                        viewModel.prevDay.value = fillToFormat(date.day.toString())
 
-                    viewModel.currentHour.value = fillToFormat(date.hour.toString())
-                    viewModel.prevHour.value = fillToFormat(date.hour.toString())
+                        viewModel.currentHour.value = fillToFormat(date.hour.toString())
+                        viewModel.prevHour.value = fillToFormat(date.hour.toString())
 
-                    viewModel.currentMinute.value = fillToFormat(date.minute.toString())
-                    viewModel.prevMinute.value = fillToFormat(date.minute.toString())
+                        viewModel.currentMinute.value = fillToFormat(date.minute.toString())
+                        viewModel.prevMinute.value = fillToFormat(date.minute.toString())
+                    }
+                    wallet.text = value.record.wallet
+                    tag.text = value.record.tag
+
+                    viewModel.currentDaily.value = value.record.daily
+                    viewModel.prevDaily.value = value.record.daily
                 }
-                wallet.text = value.record.wallet
-                tag.text = value.record.tags[0]
-
-                viewModel.currentDaily.value = value.record.daily
-                viewModel.prevDaily.value = value.record.daily
             }
-        } }
+        }
     }
 
     private fun fillToFormat(current: String): String {
@@ -349,19 +379,19 @@ class FullDescriptionActivity: FragmentActivity() {
     }
 
     private fun getMonth(index: Int): String {
-        when(index - 1) {
-            0->return "January"
-            1->return "February"
-            2->return "March"
-            3->return "April"
-            4->return "May"
-            5->return "June"
-            6->return "July"
-            7->return "August"
-            8->return "September"
-            9->return "October"
-            10->return "November"
-            11->return "December"
+        when (index - 1) {
+            0 -> return "January"
+            1 -> return "February"
+            2 -> return "March"
+            3 -> return "April"
+            4 -> return "May"
+            5 -> return "June"
+            6 -> return "July"
+            7 -> return "August"
+            8 -> return "September"
+            9 -> return "October"
+            10 -> return "November"
+            11 -> return "December"
         }
         return "Unknown"
     }

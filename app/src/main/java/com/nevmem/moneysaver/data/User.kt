@@ -23,10 +23,10 @@ class User(var login: String, var token: String, var first_name: String, var las
         fun saveUserCredentials(context: Context, user: User) {
             val sharedPrefs = context.getSharedPreferences("com.nevmem.glob", Context.MODE_PRIVATE)
             val editor = sharedPrefs.edit()
-            editor.putString("user.login",  user.login)
-            editor.putString("user.token",  user.token)
-            editor.putString("user.first_name",  user.first_name)
-            editor.putString("user.last_name",  user.last_name)
+            editor.putString("user.login", user.login)
+            editor.putString("user.token", user.token)
+            editor.putString("user.first_name", user.first_name)
+            editor.putString("user.last_name", user.last_name)
             editor.commit()
         }
 

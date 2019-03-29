@@ -1,17 +1,20 @@
-package com.nevmem.moneysaver.data
+package com.nevmem.moneysaver.data.repositories
 
-import androidx.lifecycle.MutableLiveData
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log.i
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
+import com.nevmem.moneysaver.data.NetworkQueue
+import com.nevmem.moneysaver.data.Template
+import com.nevmem.moneysaver.data.TemplateBase
+import com.nevmem.moneysaver.data.UserHolder
 import com.nevmem.moneysaver.room.AppDatabase
 import com.nevmem.moneysaver.room.entity.StoredTemplate
 import org.json.JSONArray
 import org.json.JSONObject
-import java.lang.Exception
 import java.util.*
 import java.util.concurrent.Executor
 import javax.inject.Inject
@@ -31,9 +34,11 @@ class TemplatesRepository {
     private var executor: Executor
 
     @Inject
-    constructor(networkQueue: NetworkQueue, userHolder: UserHolder,
-                appDatabase: AppDatabase, context: Context,
-                executor: Executor) {
+    constructor(
+        networkQueue: NetworkQueue, userHolder: UserHolder,
+        appDatabase: AppDatabase, context: Context,
+        executor: Executor
+    ) {
         i("TR", "constructor was called")
         this.networkQueue = networkQueue
         this.userHolder = userHolder
@@ -71,7 +76,7 @@ class TemplatesRepository {
 
     private fun parseLoadedTemplates(array: JSONArray): ArrayList<Template> {
         val result = ArrayList<Template>()
-        for (index in 0 until(array.length())) {
+        for (index in 0 until (array.length())) {
             val cur = array.getJSONObject(index)
             i("TR", cur.toString())
             try {
@@ -82,7 +87,8 @@ class TemplatesRepository {
                 )
                 i("TR", template.tag)
                 result.add(template)
-            } catch (_: Exception) {}
+            } catch (_: Exception) {
+            }
         }
         return result
     }
@@ -169,25 +175,25 @@ class TemplatesRepository {
             buffer[templateIndex].sending = true
             templates.value = buffer
         }
-        val params= userHolder.credentialsJson()
+        val params = userHolder.credentialsJson()
         params.put("templateId", templates.value!![templateIndex].id)
         params.put("date", createDate())
         i("TR", params.toString())
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiUseTemplate, params,
-        {
-            i("TR", it.toString())
-            if (it.has("type")) {
-                if (it.getString("type") == "ok") {
-                    updateSuccess(templateIndex)
-                } else if (it.getString("type") == "error") {
-                    updateError(templateIndex, it.getString("error"))
+            {
+                i("TR", it.toString())
+                if (it.has("type")) {
+                    if (it.getString("type") == "ok") {
+                        updateSuccess(templateIndex)
+                    } else if (it.getString("type") == "error") {
+                        updateError(templateIndex, it.getString("error"))
+                    } else {
+                        updateError(templateIndex, "Server response has unknown format")
+                    }
                 } else {
                     updateError(templateIndex, "Server response has unknown format")
                 }
-            } else {
-                updateError(templateIndex, "Server response has unknown format")
-            }
-        })
+            })
     }
 
     fun removeTemplate(id: String) {
@@ -197,7 +203,8 @@ class TemplatesRepository {
             if (it.has("type")) {
                 if (it.getString("type") == "ok") {
                     tryUpdate()
-                } else {}
+                } else {
+                }
             } else {
                 // TODO: (Unresolved server response format)
             }

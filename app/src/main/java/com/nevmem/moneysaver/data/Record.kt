@@ -1,49 +1,35 @@
 package com.nevmem.moneysaver.data
 
-import org.json.JSONArray
-import java.util.ArrayList
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.nevmem.moneysaver.room.converters.HistoryConverter
 
+@Entity
 class Record {
-    var name: String
+    @PrimaryKey(autoGenerate = true)
+    var uid: Int = 0
+    var name: String = ""
     var value: Double = 0.toDouble()
-    var tags: ArrayList<String>
+    var tag: String = ""
     var wallet: String = "unknown wallet"
-    var date: RecordDate
-    var id: String
-    var daily: Boolean
-
-    constructor() {
-        name = "undefined"
-        tags = ArrayList()
-        date = RecordDate()
-        id = ""
-        daily = false
-    }
-
-    constructor(name: String) {
-        this.name = name
-        tags = ArrayList()
-        date = RecordDate()
-        id = ""
-        daily = false
-    }
-
-    constructor(name: String, value: Int) {
-        this.name = name
-        this.value = value.toDouble()
-        tags = ArrayList()
-        date = RecordDate()
-        id = ""
-        daily = false
-    }
-
-    fun tagsToJSON(): JSONArray {
-        val array = JSONArray()
-        array.put(tags[0])
-        return array
-    }
+    @TypeConverters(HistoryConverter::class)
+    var date: RecordDate = RecordDate()
+    var id: String = ""
+    var daily: Boolean = true
+    var timestamp: Long = 0
 
     override fun toString(): String {
         return "{$name $value [$id]}"
+    }
+
+    fun updateBy(other: Record) {
+        this.name = other.name
+        this.value = other.value
+        this.timestamp = other.timestamp
+        this.tag = other.tag
+        this.daily = other.daily
+        this.wallet = other.wallet
+        this.date = other.date
     }
 }
