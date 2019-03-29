@@ -7,6 +7,7 @@ public class Vars {
         const val ServerApiWallets = "$ServerBase/api/wallets"
         const val ServerApiTags= "$ServerBase/api/tags"
         const val ServerApiData= "$ServerBase/api/data"
+        const val ServerApiHistory = "$ServerBase/api/history"
         const val ServerApiInfo= "$ServerBase/api/info"
         const val ServerApiAdd = "$ServerBase/api/add"
         const val ServerApiEdit = "$ServerBase/api/edit"

@@ -278,11 +278,9 @@ class App() : Application() {
         }
 
         try {
-            val tags = json.get("tags") as JSONArray
-            for (i in 0 until tags.length())
-                record.tags.add(tags.getString(i))
+            record.tag = json.getString("tag")
         } catch (_: ClassCastException) {
-            record.tags.add("Not set")
+            record.tag = "Not set"
         }
 
         return record
@@ -390,9 +388,7 @@ class App() : Application() {
         params.put("value", record.value)
         params.put("wallet", record.wallet)
         params.put("daily", record.daily)
-        val tags = JSONArray()
-        tags.put(record.tags[0])
-        params.put("tags", tags)
+        params.put("tag", record.tag)
         params.put("date", createDateFromRecord(record))
         val jsonRequest = JsonObjectRequest(Request.Method.POST, Vars.ServerApiEdit, params, {
             if (it.has("type")) {
@@ -458,7 +454,7 @@ class App() : Application() {
             params.put("name", record.name)
             params.put("value", record.value)
             params.put("wallet", record.wallet)
-            params.put("tags", record.tagsToJSON())
+            params.put("tag", record.tag)
             params.put("date", record.date.toJSON())
             params.put("id", record.id)
             println(record.date.toJSON().toString())

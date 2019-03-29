@@ -222,7 +222,7 @@ class FullDescriptionActivity: FragmentActivity() {
 
         saveChangesButton.setOnClickListener {
             val record = Record()
-            record.tags.add(tag.text.toString())
+            record.tag = tag.text.toString()
             record.wallet = wallet.text.toString()
             record.id = app.records[index].id
             record.value = recordValueField.text.toString().toDouble()
@@ -289,7 +289,7 @@ class FullDescriptionActivity: FragmentActivity() {
                     viewModel.prevMinute.value = fillToFormat(date.minute.toString())
                 }
                 wallet.text = value.record.wallet
-                tag.text = value.record.tags[0]
+                tag.text = value.record.tag
 
                 viewModel.currentDaily.value = value.record.daily
                 viewModel.prevDaily.value = value.record.daily

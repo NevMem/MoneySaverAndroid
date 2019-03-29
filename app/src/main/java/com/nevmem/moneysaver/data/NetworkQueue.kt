@@ -30,6 +30,7 @@ class NetworkQueue {
             resolve(it)
         }, {
             i("NQ", "Bad result of loading")
+            i("NQ", it.toString())
             Handler().postDelayed({
                 infinitePostJsonObjectRequest(url, params, resolve, timeout)
             }, timeout)

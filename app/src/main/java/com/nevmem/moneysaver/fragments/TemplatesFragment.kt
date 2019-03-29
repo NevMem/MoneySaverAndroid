@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Template
-import com.nevmem.moneysaver.data.TemplatesRepository
+import com.nevmem.moneysaver.data.repositories.TemplatesRepository
 import com.nevmem.moneysaver.views.ConfirmationDialog
 import com.nevmem.moneysaver.views.InfoDialog
 import com.nevmem.moneysaver.views.NewTemplateDialog
