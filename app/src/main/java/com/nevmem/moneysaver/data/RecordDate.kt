@@ -9,6 +9,13 @@ class RecordDate {
     var hour: Int = 0
     var minute: Int = 0
 
+    companion object {
+        fun fromJSON(jsonObject: JSONObject): RecordDate {
+            return RecordDate(jsonObject.getInt("year"), jsonObject.getInt("month"),
+                jsonObject.getInt("day"), jsonObject.getInt("hour"), jsonObject.getInt("minute"))
+        }
+    }
+
     constructor()
 
     internal constructor(year: Int, month: Int, day: Int, hour: Int, minute: Int) {
@@ -28,7 +35,7 @@ class RecordDate {
     }
 
     fun toJSON(): JSONObject {
-        var json = JSONObject()
+        val json = JSONObject()
         json.put("year", year)
         json.put("month", month)
         json.put("day", day)
