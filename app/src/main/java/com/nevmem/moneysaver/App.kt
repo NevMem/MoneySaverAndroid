@@ -185,8 +185,7 @@ class App() : Application() {
                     }
                 }
             }, {
-                System.out.println(it.toString())
-                onError.callback("Internet error")
+                onError.callback(it.toString())
             })
         requestQueue.add(jsonRequest)
     }
