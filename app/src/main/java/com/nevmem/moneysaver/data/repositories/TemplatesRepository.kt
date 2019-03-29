@@ -1,4 +1,4 @@
-package com.nevmem.moneysaver.data
+package com.nevmem.moneysaver.data.repositories
 
 import androidx.lifecycle.MutableLiveData
 import android.content.Context
@@ -7,6 +7,10 @@ import android.os.Looper
 import android.util.Log.i
 import android.widget.Toast
 import com.nevmem.moneysaver.Vars
+import com.nevmem.moneysaver.data.NetworkQueue
+import com.nevmem.moneysaver.data.Template
+import com.nevmem.moneysaver.data.TemplateBase
+import com.nevmem.moneysaver.data.UserHolder
 import com.nevmem.moneysaver.room.AppDatabase
 import com.nevmem.moneysaver.room.entity.StoredTemplate
 import org.json.JSONArray
