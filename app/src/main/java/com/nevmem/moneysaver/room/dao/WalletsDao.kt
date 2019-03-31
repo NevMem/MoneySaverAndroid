@@ -12,4 +12,7 @@ interface WalletsDao {
 
     @Query("SELECT * FROM wallet")
     fun get(): List<Wallet>
+
+    @Query("SELECT * FROM wallet WHERE name = :name LIMIT 1")
+    fun findByName(name: String): Wallet?
 }
