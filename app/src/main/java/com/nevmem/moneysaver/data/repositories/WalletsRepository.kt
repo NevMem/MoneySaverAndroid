@@ -2,6 +2,7 @@ package com.nevmem.moneysaver.data.repositories
 
 import android.os.Handler
 import android.os.Looper
+import android.util.Log.i
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.data.NetworkQueue
@@ -29,8 +30,9 @@ class WalletsRepository @Inject constructor(
                 if (it.getString("type") == "ok") {
                     val array = it.getJSONArray("data")
                     val list = ArrayList<Wallet>()
-                    for (index in 0 until(list.size))
+                    for (index in 0 until(array.length()))
                         list.add(Wallet(array.getString(index)))
+                    i("WREP", "From net received ${list.size} elements")
                     resolveConflicts(list)
                 } else if (it.getString("type") == "error") {
                     error.postValue(it.getString("type"))
@@ -46,6 +48,7 @@ class WalletsRepository @Inject constructor(
     private fun loadFromDatabase() {
         executor.execute {
             val fromDatabase = appDatabase.walletsDao().get()
+            i("WREP", "Loaded ${fromDatabase.size}")
             Handler(Looper.getMainLooper()).post {
                 wallets.postValue(fromDatabase)
             }
@@ -63,7 +66,10 @@ class WalletsRepository @Inject constructor(
                 values.forEach {
                     val inDatabase = findByName(it.name)
                     if (inDatabase == null) {
+                        i("WREP", "Inserting")
                         insert(it)
+                    } else {
+                        i("WREP", inDatabase.name)
                     }
                 }
             }

@@ -13,14 +13,19 @@ import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.data.repositories.WalletsRepository
 import com.nevmem.moneysaver.structure.Callback
 import kotlinx.android.synthetic.main.add_record_activity.*
+import javax.inject.Inject
 
 
 class AddFragment : Fragment() {
     lateinit var app: App
     lateinit var parent: MainPage
     lateinit var viewModel: AddFragmentViewModel
+
+    @Inject
+    lateinit var walletsRepo: WalletsRepository
 
     init {
         i("ADD_FRAGMENT", "initialising AddFragment")
@@ -35,6 +40,10 @@ class AddFragment : Fragment() {
         app = activity!!.applicationContext as App
         parent = activity as MainPage
         viewModel = ViewModelProviders.of(parent).get(AddFragmentViewModel::class.java)
+
+        parent.appComponent.inject(this)
+        walletsRepo.tryLoad()
+
         i("ADD_FRAGMENT", "onCreate method was called")
     }
 
@@ -44,9 +53,17 @@ class AddFragment : Fragment() {
         if (app.tags.size != 0)
             tags.adapter =
                 ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, app.tags)
-        if (app.wallets.size != 0)
-            chooseWallet.adapter =
-                ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, app.wallets)
+
+        walletsRepo.wallets.observe(this, Observer {
+            if (it != null) {
+                val strs = ArrayList<String>()
+                it.forEach {
+                    strs.add(it.name)
+                }
+                chooseWallet.adapter =
+                    ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, strs)
+            }
+        })
 
         viewModel.error.observe(parent, Observer {
             headerText.setTextColor(ContextCompat.getColor(parent, R.color.errorColor))
