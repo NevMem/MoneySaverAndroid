@@ -1,5 +1,7 @@
 package com.nevmem.moneysaver.data.repositories
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.data.NetworkQueue
@@ -19,10 +21,10 @@ class WalletsRepository @Inject constructor(
 ) {
     var loading = MutableLiveData<Boolean>(true)
     var error = MutableLiveData<String>("")
+    var wallets = MutableLiveData<List<Wallet>>(ArrayList())
 
-    fun tryLoad() {
-        val params = userHolder.credentialsJson()
-        networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiWallets, params, {
+    private fun loadFromNet() {
+        networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiWallets, userHolder.credentialsJson(), {
             if (it.has("type")) {
                 if (it.getString("type") == "ok") {
                     val array = it.getJSONArray("data")
@@ -41,16 +43,31 @@ class WalletsRepository @Inject constructor(
         })
     }
 
-    private fun resolveConflicts(wallets: List<Wallet>) {
+    private fun loadFromDatabase() {
+        executor.execute {
+            val fromDatabase = appDatabase.walletsDao().get()
+            Handler(Looper.getMainLooper()).post {
+                wallets.postValue(fromDatabase)
+            }
+        }
+    }
+
+    fun tryLoad() {
+        loadFromNet()
+        loadFromDatabase()
+    }
+
+    private fun resolveConflicts(values: List<Wallet>) {
         executor.execute {
             with (appDatabase.walletsDao()) {
-                wallets.forEach {
+                values.forEach {
                     val inDatabase = findByName(it.name)
                     if (inDatabase == null) {
                         insert(it)
                     }
                 }
             }
+            loadFromDatabase()
         }
     }
 }
