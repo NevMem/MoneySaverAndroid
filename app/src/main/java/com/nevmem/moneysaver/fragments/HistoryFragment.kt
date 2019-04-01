@@ -52,7 +52,7 @@ class HistoryFragment : Fragment() {
             )
         )
 
-        (activity as MainPage).appComponent.inject(this)
+        app.appComponent.inject(this)
 
         historySwipeRefreshLayout.setOnRefreshListener {
             historyRepo.tryUpdate()

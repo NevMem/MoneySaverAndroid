@@ -7,6 +7,10 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.nevmem.moneysaver.dagger.components.AppComponent
+import com.nevmem.moneysaver.dagger.components.DaggerAppComponent
+import com.nevmem.moneysaver.dagger.modules.DataModule
+import com.nevmem.moneysaver.dagger.modules.NetworkModule
 import com.nevmem.moneysaver.data.*
 import com.nevmem.moneysaver.structure.Callback
 import io.reactivex.subjects.BehaviorSubject
@@ -33,6 +37,8 @@ class App() : Application() {
     var changeFlow: BehaviorSubject<RecordChangeableWrapper>
     lateinit var requestQueue: RequestQueue
 
+    lateinit var appComponent: AppComponent
+
     init {
         i("APP_CLASS", "App() init method was called")
         info = Info()
@@ -41,6 +47,11 @@ class App() : Application() {
         recordsFlow = BehaviorSubject.create()
         templatesFlow = BehaviorSubject.create()
         changeFlow = BehaviorSubject.create()
+
+        appComponent = DaggerAppComponent.builder()
+            .dataModule(DataModule(this))
+            .networkModule(NetworkModule(this))
+            .build()
     }
 
     fun loadTags() {

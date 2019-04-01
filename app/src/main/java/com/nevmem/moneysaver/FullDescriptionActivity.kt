@@ -11,9 +11,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.nevmem.moneysaver.data.NetworkQueue
 import com.nevmem.moneysaver.data.Record
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.full_description.*
+import javax.inject.Inject
 
 
 class FullDescriptionActivity : FragmentActivity() {
@@ -24,6 +26,9 @@ class FullDescriptionActivity : FragmentActivity() {
     private var index: Int = 0
     private lateinit var app: App
     private lateinit var viewModel: FullDescriptionActivityViewModel
+
+    @Inject
+    lateinit var networkQueue: NetworkQueue
 
     private lateinit var changeFlow: Disposable
 
@@ -39,6 +44,8 @@ class FullDescriptionActivity : FragmentActivity() {
         index = intent.extras["index"].toString().toInt()
 
         window.sharedElementEnterTransition.duration = 200
+
+        app.appComponent.inject(this)
 
         setupLiveDateObservers()
         setupListeners()
@@ -270,7 +277,7 @@ class FullDescriptionActivity : FragmentActivity() {
         }
 
         infoAnchor.setOnClickListener {
-            var bufferChangeable = app.changeFlow.value
+            val bufferChangeable = app.changeFlow.value
             if (bufferChangeable != null && !bufferChangeable.loading) {
                 bufferChangeable.success = ""
                 bufferChangeable.error = ""

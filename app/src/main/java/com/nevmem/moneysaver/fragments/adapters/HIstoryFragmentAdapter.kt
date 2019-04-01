@@ -1,6 +1,9 @@
 package com.nevmem.moneysaver.fragments.adapters
 
+import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Context
+import android.content.Intent
 import android.util.Log.i
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -10,17 +13,20 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import com.nevmem.moneysaver.FullDescriptionActivity
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.repositories.HistoryRepository
 import com.nevmem.moneysaver.views.ConfirmationDialog
+import kotlinx.android.synthetic.main.record_layout.view.*
 
 
 class HistoryFragmentAdapter(
-    private val context: Context,
+    private val activity: Activity,
     private val lifeCycleOwner: LifecycleOwner,
     private val historyRepo: HistoryRepository
 ) :
@@ -58,6 +64,7 @@ class HistoryFragmentAdapter(
             holder.itemViewType == ViewHolderType.HEADER.type -> {
                 val header = holder as HeaderViewHolder
                 header.headerText.text = "Browse your spendings"
+                holder.itemView.setOnClickListener {}
             }
             holder.itemViewType == ViewHolderType.ELEMENT.type -> {
                 with(holder as ElementViewHolder) {
@@ -66,7 +73,7 @@ class HistoryFragmentAdapter(
                     recordWallet.text = history[position - 1].wallet
                     recordDate.text = history[position - 1].date.toString()
                     deleteButton.setOnClickListener {
-                        val popupView = ConfirmationDialog(context, "Do you really want delete this record?")
+                        val popupView = ConfirmationDialog(activity, "Do you really want delete this record?")
                         val popup = PopupWindow(
                             popupView,
                             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -82,14 +89,27 @@ class HistoryFragmentAdapter(
                             popup.dismiss()
                         }
                     }
+
+                    itemView.setOnClickListener {
+                        openFullDesciptionActivity(it, position - 1)
+                    }
                 }
             }
         }
         if (animationPosition < position) {
-            val animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left)
+            val animation = AnimationUtils.loadAnimation(activity, android.R.anim.slide_in_left)
             holder.itemView.startAnimation(animation)
             animationPosition = position
         }
+    }
+
+    private fun openFullDesciptionActivity(view: View, index: Int) {
+        /* val intent = Intent(activity, FullDescriptionActivity::class.java)
+        intent.putExtra("index", index)
+        val options = ActivityOptions.makeSceneTransitionAnimation(activity,
+            android.util.Pair<View, String>(view.recordNameField, "recordNameTransition"),
+            android.util.Pair<View, String>(view.recordValue, "recordValueTransition"))
+        startActivity(activity, intent, options.toBundle()) */
     }
 
     override fun getItemViewType(position: Int): Int {
