@@ -29,7 +29,7 @@ class RecordDate {
     }
 
     private fun format(value: Int): String {
-        var ans = Integer.valueOf(value)!!.toString()
+        var ans = Integer.valueOf(value).toString()
         while (ans.length != 2) {
             ans = "0$ans"
         }

@@ -28,7 +28,6 @@ class HistoryFragment : Fragment() {
         i("HistoryFragment", "onCreate")
         try {
             app = activity!!.applicationContext as App
-            app.loadData()
         } catch (_: KotlinNullPointerException) {
             System.out.println("Null pointer")
         }
