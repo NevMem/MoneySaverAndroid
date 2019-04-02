@@ -76,4 +76,12 @@ class WalletsRepository @Inject constructor(
             loadFromDatabase()
         }
     }
+
+    fun getWalletsAsList(): List<String> {
+        val result = ArrayList<String>()
+        wallets.value?.forEach {
+            result.add(it.name)
+        }
+        return result
+    }
 }

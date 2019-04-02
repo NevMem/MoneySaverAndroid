@@ -290,15 +290,6 @@ class FullDescriptionActivity : FragmentActivity() {
                 Toast.makeText(this, "Record value is null", Toast.LENGTH_LONG).show()
             }
         }
-
-        infoAnchor.setOnClickListener {
-            val bufferChangeable = app.changeFlow.value
-            if (bufferChangeable != null && !bufferChangeable.loading) {
-                bufferChangeable.success = ""
-                bufferChangeable.error = ""
-                app.changeFlow.onNext(bufferChangeable)
-            }
-        }
     }
 
     private fun fillToFormat(current: String): String {

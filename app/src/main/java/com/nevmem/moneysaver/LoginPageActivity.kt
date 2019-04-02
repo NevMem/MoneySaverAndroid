@@ -39,7 +39,7 @@ class LoginPageActivity : FragmentActivity() {
         })
 
         try {
-            User.loadUserCredintials(this)
+            User.loadUserCredentials(this)
             saveUserToApplication()
             goToHomePage()
         } catch (e: UserCredentialsNotFound) {
@@ -48,7 +48,7 @@ class LoginPageActivity : FragmentActivity() {
     }
 
     private fun saveUserToApplication() {
-        val savedUser = User.loadUserCredintials(this)
+        val savedUser = User.loadUserCredentials(this)
         val application = applicationContext as App
         application.user = savedUser
         application.loadAll()

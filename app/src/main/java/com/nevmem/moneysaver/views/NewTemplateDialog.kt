@@ -6,20 +6,26 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.TemplateBase
+import com.nevmem.moneysaver.data.repositories.WalletsRepository
 import kotlinx.android.synthetic.main.new_template_dialog.view.*
+import javax.inject.Inject
 
 class NewTemplateDialog(ctx: Context) : ConstraintLayout(ctx) {
     lateinit var okCallback: (TemplateBase) -> Unit
     lateinit var dismissCallback: () -> Unit
 
+    @Inject
+    lateinit var walletsRepo: WalletsRepository
+
     init {
         inflate(ctx, R.layout.new_template_dialog, this)
 
         val app = ctx.applicationContext as App
+        app.appComponent.inject(this)
 
         newTemplateTag.adapter = ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, app.tags)
         newTemplateWallet.adapter =
-            ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, app.wallets)
+            ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, walletsRepo.getWalletsAsList())
 
         okButton.setOnClickListener {
             var value = 0.0

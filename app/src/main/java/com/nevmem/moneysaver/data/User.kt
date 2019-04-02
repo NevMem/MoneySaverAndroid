@@ -9,12 +9,12 @@ class User(var login: String, var token: String, var first_name: String, var las
     }
 
     companion object {
-        fun loadUserCredintials(context: Context): User {
+        fun loadUserCredentials(context: Context): User {
             val sharedPrefs = context.getSharedPreferences("com.nevmem.glob", Context.MODE_PRIVATE)
-            val login = sharedPrefs.getString("user.login", "empty")
-            val token = sharedPrefs.getString("user.token", "empty")
-            val firstName = sharedPrefs.getString("user.first_name", "empty")
-            val lastName = sharedPrefs.getString("user.last_name", "empty")
+            val login = sharedPrefs.getString("user.login", "empty")!!
+            val token = sharedPrefs.getString("user.token", "empty")!!
+            val firstName = sharedPrefs.getString("user.first_name", "empty")!!
+            val lastName = sharedPrefs.getString("user.last_name", "empty")!!
             if (login == "empty" || token == "empty" || firstName == "empty" || lastName == "empty")
                 throw UserCredentialsNotFound()
             return User(login, token, firstName, lastName)

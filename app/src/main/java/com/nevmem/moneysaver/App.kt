@@ -20,19 +20,15 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
 
-class App() : Application() {
+class App : Application() {
     lateinit var user: User
     var info: Info
 
     var tags: ArrayList<String> = ArrayList()
-    var wallets: ArrayList<String> = ArrayList()
-
-    var templates: Templates
 
     var infoFlow: BehaviorSubject<Info>
     var templatesFlow: BehaviorSubject<Templates>
 
-    var changeFlow: BehaviorSubject<RecordChangeableWrapper>
     lateinit var requestQueue: RequestQueue
 
     var appComponent: AppComponent
@@ -40,10 +36,8 @@ class App() : Application() {
     init {
         i("APP_CLASS", "App() init method was called")
         info = Info()
-        templates = Templates()
         infoFlow = BehaviorSubject.create()
         templatesFlow = BehaviorSubject.create()
-        changeFlow = BehaviorSubject.create()
 
         appComponent = DaggerAppComponent.builder()
             .dataModule(DataModule(this))
@@ -89,7 +83,7 @@ class App() : Application() {
         i("APP_CLASS", "onCreate method was called")
     }
 
-    fun isValidUserInfo(json: JSONObject): Boolean {
+    private fun isValidUserInfo(json: JSONObject): Boolean {
         if (json.has("token") && json.has("first_name") &&
             json.has("last_name") && json.has("login")
         )
