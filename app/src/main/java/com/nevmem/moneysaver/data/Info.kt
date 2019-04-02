@@ -12,7 +12,7 @@ class Info {
     var trackedDays: Int? = null
     var totalSpend: Double? = null
     var average: Double? = null
-    lateinit var sumDay: ArrayList<Double>
+    var sumDay: ArrayList<Double>
 
     init {
         i("INFO", "init()")

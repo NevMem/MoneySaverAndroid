@@ -11,6 +11,7 @@ import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Template
@@ -33,7 +34,8 @@ class TemplatesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity as MainPage).appComponent.inject(this)
+        val app: App = (activity as MainPage).applicationContext as App
+        app.appComponent.inject(this)
     }
 
     private fun clearTemplates() {

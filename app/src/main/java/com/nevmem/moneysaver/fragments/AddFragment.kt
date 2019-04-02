@@ -13,14 +13,28 @@ import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.data.Record
+import com.nevmem.moneysaver.data.RecordDate
+import com.nevmem.moneysaver.data.repositories.HistoryRepository
+import com.nevmem.moneysaver.data.repositories.TagsRepository
+import com.nevmem.moneysaver.data.repositories.WalletsRepository
 import com.nevmem.moneysaver.structure.Callback
 import kotlinx.android.synthetic.main.add_record_activity.*
+import kotlinx.android.synthetic.main.new_template_dialog.*
+import javax.inject.Inject
 
 
 class AddFragment : Fragment() {
     lateinit var app: App
     lateinit var parent: MainPage
     lateinit var viewModel: AddFragmentViewModel
+
+    @Inject
+    lateinit var walletsRepo: WalletsRepository
+    @Inject
+    lateinit var tagsRepo: TagsRepository
+    @Inject
+    lateinit var historyRepo: HistoryRepository
 
     init {
         i("ADD_FRAGMENT", "initialising AddFragment")
@@ -35,18 +49,38 @@ class AddFragment : Fragment() {
         app = activity!!.applicationContext as App
         parent = activity as MainPage
         viewModel = ViewModelProviders.of(parent).get(AddFragmentViewModel::class.java)
+
+        app.appComponent.inject(this)
+        walletsRepo.tryUpdate()
+
         i("ADD_FRAGMENT", "onCreate method was called")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         headerText.text = "Add new record"
-        if (app.tags.size != 0)
-            tags.adapter =
-                ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, app.tags)
-        if (app.wallets.size != 0)
-            chooseWallet.adapter =
-                ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, app.wallets)
+
+        tagsRepo.tags.observe(this, Observer {
+            if (it != null) {
+                val strs = ArrayList<String>()
+                it.forEach {
+                    strs.add(it.name)
+                }
+                tags.adapter =
+                    ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, strs)
+            }
+        })
+
+        walletsRepo.wallets.observe(this, Observer {
+            if (it != null) {
+                val strs = ArrayList<String>()
+                it.forEach {
+                    strs.add(it.name)
+                }
+                chooseWallet.adapter =
+                    ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, strs)
+            }
+        })
 
         viewModel.error.observe(parent, Observer {
             headerText.setTextColor(ContextCompat.getColor(parent, R.color.errorColor))
@@ -73,22 +107,38 @@ class AddFragment : Fragment() {
             val tag = tags.selectedItem.toString()
             System.out.println("$name $value $wallet $tag")
 
-            viewModel.success.value = ""
-            viewModel.error.value = ""
-            viewModel.loading.value = true
+            viewModel.success.postValue("")
+            viewModel.error.postValue("")
+            viewModel.loading.postValue(true)
 
             try {
                 val doubleValue = value.toDouble()
-                app.makeAddRequest(name, doubleValue, tag, wallet, Callback {
-                    viewModel.success.value = "Success"
-                    viewModel.loading.value = false
-                }, Callback {
-                    viewModel.error.value = it
-                    viewModel.loading.value = false
-                })
+                val record = Record()
+
+                record.daily = true
+                record.name = name
+                record.value = doubleValue
+                record.wallet = wallet
+                record.tag = tag
+                record.date = RecordDate.currentDate()
+
+                sendAddRequest(record)
             } catch (e: NumberFormatException) {
                 viewModel.error.value = "Your value is bad"
                 viewModel.loading.value = false
+            }
+        }
+    }
+
+    private fun sendAddRequest(record: Record) {
+        viewModel.loading.postValue(true)
+        viewModel.error.postValue("")
+        viewModel.success.postValue("")
+        historyRepo.addRecord(record) {
+            viewModel.loading.postValue(false)
+            when {
+                it == null -> viewModel.success.postValue("Record was added")
+                else -> viewModel.error.postValue(it)
             }
         }
     }

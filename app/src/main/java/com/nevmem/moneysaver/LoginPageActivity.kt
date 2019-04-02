@@ -2,7 +2,10 @@ package com.nevmem.moneysaver
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -10,6 +13,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.exceptions.UserCredentialsNotFound
 import com.nevmem.moneysaver.structure.Callback
+import com.nevmem.moneysaver.views.ConfirmationDialog
+import com.nevmem.moneysaver.views.InfoDialog
 import kotlinx.android.synthetic.main.login_page.*
 
 class LoginPageActivity : FragmentActivity() {
@@ -34,7 +39,7 @@ class LoginPageActivity : FragmentActivity() {
         })
 
         try {
-            User.loadUserCredintials(this)
+            User.loadUserCredentials(this)
             saveUserToApplication()
             goToHomePage()
         } catch (e: UserCredentialsNotFound) {
@@ -43,10 +48,9 @@ class LoginPageActivity : FragmentActivity() {
     }
 
     private fun saveUserToApplication() {
-        val savedUser = User.loadUserCredintials(this)
+        val savedUser = User.loadUserCredentials(this)
         val application = applicationContext as App
         application.user = savedUser
-        application.loadAll()
     }
 
     fun goToHomePage() {

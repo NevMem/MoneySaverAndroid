@@ -19,7 +19,7 @@ class NetworkQueue {
 
     constructor(ctx: Context) {
         requestQueue = Volley.newRequestQueue(ctx)
-        i("NQ", "NetworkQueue constructor was called")
+        i("NQCONSTRUCTOR", "NetworkQueue constructor was called")
     }
 
     fun infinitePostJsonObjectRequest(

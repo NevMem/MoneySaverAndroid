@@ -28,7 +28,6 @@ class HistoryFragment : Fragment() {
         i("HistoryFragment", "onCreate")
         try {
             app = activity!!.applicationContext as App
-            app.loadData()
         } catch (_: KotlinNullPointerException) {
             System.out.println("Null pointer")
         }
@@ -52,7 +51,7 @@ class HistoryFragment : Fragment() {
             )
         )
 
-        (activity as MainPage).appComponent.inject(this)
+        app.appComponent.inject(this)
 
         historySwipeRefreshLayout.setOnRefreshListener {
             historyRepo.tryUpdate()

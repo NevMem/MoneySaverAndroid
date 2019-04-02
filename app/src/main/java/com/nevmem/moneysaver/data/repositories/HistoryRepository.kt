@@ -123,7 +123,7 @@ class HistoryRepository @Inject constructor(
         return result
     }
 
-    fun loadFromNet() {
+    private fun loadFromNet() {
         loading.value = true
         i("HREP", "Requesting")
         error.value = ""
@@ -142,12 +142,40 @@ class HistoryRepository @Inject constructor(
         })
     }
 
-    fun loadFromDatabase() {
+    fun addRecord(record: Record, cb: (String?) -> Unit) {
+        val params = userHolder.credentialsJson()
+        params.put("name", record.name)
+        params.put("value", record.value)
+        params.put("wallet", record.wallet)
+        params.put("daily", record.daily)
+        params.put("tag", record.tag)
+        params.put("date", record.date.toJSON())
+        networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiAdd, params, {
+            when {
+                it.has("type") -> when {
+                    it.getString("type") == "ok" -> cb(null)
+                    it.getString("type") == "error" -> cb(it.getString("error"))
+                    else -> cb("Server response has unknown format")
+                }
+                else -> cb("Server response has unknown format")
+            }
+        })
+    }
+
+    private fun loadFromDatabase() {
         executor.execute {
             val list: ArrayList<Record> = ArrayList(appDatabase.historyDao().loadAll())
             Handler(Looper.getMainLooper()).post {
                 history.value = list
             }
+        }
+    }
+
+    fun getRecordOnIndex(index: Int): Record {
+        val buffer = history.value
+        return when {
+            buffer != null && index <= buffer.size -> buffer[index]
+            else -> Record()
         }
     }
 }

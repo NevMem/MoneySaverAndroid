@@ -35,18 +35,18 @@ class BarChart(val cntx: Context, val attrs: AttributeSet) : View(cntx, attrs) {
         gt.recycle()
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) { // TODO: (use dimension modes)
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
+        // val heightMode = MeasureSpec.getMode(heightMeasureSpec)
         val heightSize = MeasureSpec.getSize(heightMeasureSpec)
 
-        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
+        // val widthMode = MeasureSpec.getMode(widthMeasureSpec)
         val widthSize = MeasureSpec.getSize(widthMeasureSpec)
 
         setMeasuredDimension(widthSize, heightSize)
     }
 
-    fun drawBar(canvas: Canvas?, dx: Int, dy: Int, barWidth: Int, barHeight: Int) {
+    private fun drawBar(canvas: Canvas?, dx: Int, dy: Int, barWidth: Int, barHeight: Int) {
         val paint = Paint()
         paint.color = baseColor
         if (!rounded) {

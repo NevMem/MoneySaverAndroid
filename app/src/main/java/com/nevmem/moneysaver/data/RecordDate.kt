@@ -1,6 +1,7 @@
 package com.nevmem.moneysaver.data
 
 import org.json.JSONObject
+import java.util.*
 
 class RecordDate {
     var year: Int = 0
@@ -16,6 +17,16 @@ class RecordDate {
                 jsonObject.getInt("day"), jsonObject.getInt("hour"), jsonObject.getInt("minute")
             )
         }
+
+        fun currentDate(): RecordDate {
+            val curCalendar = Calendar.getInstance()
+            return RecordDate(
+                curCalendar.get(Calendar.YEAR),
+                curCalendar.get(Calendar.MONTH) + 1,
+                curCalendar.get(Calendar.DATE),
+                curCalendar.get(Calendar.HOUR_OF_DAY),
+                curCalendar.get(Calendar.MINUTE))
+        }
     }
 
     constructor()
@@ -29,7 +40,7 @@ class RecordDate {
     }
 
     private fun format(value: Int): String {
-        var ans = Integer.valueOf(value)!!.toString()
+        var ans = Integer.valueOf(value).toString()
         while (ans.length != 2) {
             ans = "0$ans"
         }

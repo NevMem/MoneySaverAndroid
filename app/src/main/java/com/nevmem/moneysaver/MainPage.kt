@@ -23,23 +23,15 @@ class MainPage : AppCompatActivity() {
     lateinit var app: App
     lateinit var viewModel: MainPageViewModel
 
-    lateinit var appComponent: AppComponent
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        appComponent = DaggerAppComponent.builder()
-            .networkModule(NetworkModule(this))
-            .dataModule(DataModule(this))
-            .build()
-        appComponent.inject(this)
 
         setContentView(R.layout.main_page_layout)
         viewModel = ViewModelProviders.of(this).get(MainPageViewModel::class.java)
         window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
         app = applicationContext as App
 
-        app.loadAll()
+        app.appComponent.inject(this)
 
         mainPageNavigation.setOnNavigationItemSelectedListener {
             System.out.println(it.toString())
