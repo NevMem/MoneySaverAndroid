@@ -55,7 +55,7 @@ class WalletsRepository @Inject constructor(
         }
     }
 
-    fun tryLoad() {
+    fun tryUpdate() {
         loadFromNet()
         loadFromDatabase()
     }

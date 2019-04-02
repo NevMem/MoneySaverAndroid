@@ -42,7 +42,7 @@ class AddFragment : Fragment() {
         viewModel = ViewModelProviders.of(parent).get(AddFragmentViewModel::class.java)
 
         app.appComponent.inject(this)
-        walletsRepo.tryLoad()
+        walletsRepo.tryUpdate()
 
         i("ADD_FRAGMENT", "onCreate method was called")
     }
