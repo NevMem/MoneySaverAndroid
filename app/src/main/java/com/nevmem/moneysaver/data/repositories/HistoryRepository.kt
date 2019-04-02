@@ -142,6 +142,26 @@ class HistoryRepository @Inject constructor(
         })
     }
 
+    fun addRecord(record: Record, cb: (String?) -> Unit) {
+        val params = userHolder.credentialsJson()
+        params.put("name", record.name)
+        params.put("value", record.value)
+        params.put("wallet", record.wallet)
+        params.put("daily", record.daily)
+        params.put("tag", record.tag)
+        params.put("date", record.date.toJSON())
+        networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiAdd, params, {
+            when {
+                it.has("type") -> when {
+                    it.getString("type") == "ok" -> cb(null)
+                    it.getString("type") == "error" -> cb(it.getString("error"))
+                    else -> cb("Server response has unknown format")
+                }
+                else -> cb("Server response has unknown format")
+            }
+        })
+    }
+
     private fun loadFromDatabase() {
         executor.execute {
             val list: ArrayList<Record> = ArrayList(appDatabase.historyDao().loadAll())

@@ -13,10 +13,14 @@ import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.data.Record
+import com.nevmem.moneysaver.data.RecordDate
+import com.nevmem.moneysaver.data.repositories.HistoryRepository
 import com.nevmem.moneysaver.data.repositories.TagsRepository
 import com.nevmem.moneysaver.data.repositories.WalletsRepository
 import com.nevmem.moneysaver.structure.Callback
 import kotlinx.android.synthetic.main.add_record_activity.*
+import kotlinx.android.synthetic.main.new_template_dialog.*
 import javax.inject.Inject
 
 
@@ -29,6 +33,8 @@ class AddFragment : Fragment() {
     lateinit var walletsRepo: WalletsRepository
     @Inject
     lateinit var tagsRepo: TagsRepository
+    @Inject
+    lateinit var historyRepo: HistoryRepository
 
     init {
         i("ADD_FRAGMENT", "initialising AddFragment")
@@ -101,22 +107,38 @@ class AddFragment : Fragment() {
             val tag = tags.selectedItem.toString()
             System.out.println("$name $value $wallet $tag")
 
-            viewModel.success.value = ""
-            viewModel.error.value = ""
-            viewModel.loading.value = true
+            viewModel.success.postValue("")
+            viewModel.error.postValue("")
+            viewModel.loading.postValue(true)
 
             try {
                 val doubleValue = value.toDouble()
-                app.makeAddRequest(name, doubleValue, tag, wallet, Callback {
-                    viewModel.success.value = "Success"
-                    viewModel.loading.value = false
-                }, Callback {
-                    viewModel.error.value = it
-                    viewModel.loading.value = false
-                })
+                val record = Record()
+
+                record.daily = true
+                record.name = name
+                record.value = doubleValue
+                record.wallet = wallet
+                record.tag = tag
+                record.date = RecordDate.currentDate()
+
+                sendAddRequest(record)
             } catch (e: NumberFormatException) {
                 viewModel.error.value = "Your value is bad"
                 viewModel.loading.value = false
+            }
+        }
+    }
+
+    private fun sendAddRequest(record: Record) {
+        viewModel.loading.postValue(true)
+        viewModel.error.postValue("")
+        viewModel.success.postValue("")
+        historyRepo.addRecord(record) {
+            viewModel.loading.postValue(false)
+            when {
+                it == null -> viewModel.success.postValue("Record was added")
+                else -> viewModel.error.postValue(it)
             }
         }
     }
