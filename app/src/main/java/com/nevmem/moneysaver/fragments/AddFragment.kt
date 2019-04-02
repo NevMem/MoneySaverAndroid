@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.data.repositories.TagsRepository
 import com.nevmem.moneysaver.data.repositories.WalletsRepository
 import com.nevmem.moneysaver.structure.Callback
 import kotlinx.android.synthetic.main.add_record_activity.*
@@ -26,6 +27,8 @@ class AddFragment : Fragment() {
 
     @Inject
     lateinit var walletsRepo: WalletsRepository
+    @Inject
+    lateinit var tagsRepo: TagsRepository
 
     init {
         i("ADD_FRAGMENT", "initialising AddFragment")
@@ -50,9 +53,17 @@ class AddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         headerText.text = "Add new record"
-        if (app.tags.size != 0)
-            tags.adapter =
-                ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, app.tags)
+
+        tagsRepo.tags.observe(this, Observer {
+            if (it != null) {
+                val strs = ArrayList<String>()
+                it.forEach {
+                    strs.add(it.name)
+                }
+                tags.adapter =
+                    ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, strs)
+            }
+        })
 
         walletsRepo.wallets.observe(this, Observer {
             if (it != null) {

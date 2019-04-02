@@ -24,8 +24,6 @@ class App : Application() {
     lateinit var user: User
     var info: Info
 
-    var tags: ArrayList<String> = ArrayList()
-
     var infoFlow: BehaviorSubject<Info>
     var templatesFlow: BehaviorSubject<Templates>
 
@@ -45,36 +43,11 @@ class App : Application() {
             .build()
     }
 
-    private fun loadTags() {
-        val request = JsonObjectRequest(Request.Method.POST, Vars.ServerApiTags, userCredentialsJSON(), {
-            System.out.println(it.toString())
-            if (it.has("type")) {
-                if (it.getString("type") == "ok") {
-                    val fromJson = it.getJSONArray("data")
-                    tags.clear()
-                    for (i in 0 until (fromJson.length()))
-                        tags.add(fromJson[i].toString())
-                } else if (it.getString("type") == "error") {
-                    System.out.println(it.getString("error"))
-                } else {
-                    System.out.println("Unknown server response format")
-                }
-            }
-        }, {
-            System.out.println(it.toString())
-        })
-        requestQueue.add(request)
-    }
-
     private fun userCredentialsJSON(): JSONObject {
         val json = JSONObject()
         json.put("login", user.login)
         json.put("token", user.token)
         return json
-    }
-
-    fun loadAll() {
-        loadTags()
     }
 
     override fun onCreate() {
@@ -161,16 +134,6 @@ class App : Application() {
         return date
     }
 
-    private fun createDateFromRecord(record: Record): JSONObject {
-        val date = JSONObject()
-        date.put("year", record.date.year)
-        date.put("month", record.date.month)
-        date.put("day", record.date.day)
-        date.put("hour", record.date.hour)
-        date.put("minute", record.date.minute)
-        return date
-    }
-
     fun makeAddRequest(
         name: String, value: Double, tag: String?, wallet: String?,
         onSuccess: Callback<String>, onError: Callback<String>
@@ -209,7 +172,5 @@ class App : Application() {
     fun checkData() {
         if (!info.ready)
             loadInfo(Callback {}, Callback {})
-        if (tags.size == 0)
-            loadTags()
     }
 }

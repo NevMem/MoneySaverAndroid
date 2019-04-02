@@ -56,8 +56,8 @@ class WalletsRepository @Inject constructor(
     }
 
     fun tryUpdate() {
-        loadFromNet()
         loadFromDatabase()
+        loadFromNet()
     }
 
     private fun resolveConflicts(values: List<Wallet>) {
@@ -68,8 +68,6 @@ class WalletsRepository @Inject constructor(
                     if (inDatabase == null) {
                         i("WREP", "Inserting")
                         insert(it)
-                    } else {
-                        i("WREP", inDatabase.name)
                     }
                 }
             }

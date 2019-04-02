@@ -33,8 +33,6 @@ class MainPage : AppCompatActivity() {
 
         app.appComponent.inject(this)
 
-        app.loadAll()
-
         mainPageNavigation.setOnNavigationItemSelectedListener {
             System.out.println(it.toString())
             when (it.itemId) {

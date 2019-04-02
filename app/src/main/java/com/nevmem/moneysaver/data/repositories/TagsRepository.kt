@@ -1,5 +1,6 @@
 package com.nevmem.moneysaver.data.repositories
 
+import android.util.Log.i
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.data.NetworkQueue
@@ -8,7 +9,9 @@ import com.nevmem.moneysaver.room.AppDatabase
 import com.nevmem.moneysaver.room.entity.Tag
 import java.util.concurrent.Executor
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class TagsRepository @Inject constructor(
     var networkQueue: NetworkQueue,
     var appDatabase: AppDatabase,
@@ -18,6 +21,11 @@ class TagsRepository @Inject constructor(
     var loading = MutableLiveData<Boolean>(false)
     var error = MutableLiveData<String>("")
     var tags = MutableLiveData<List<Tag>>(ArrayList())
+
+    init {
+        i("TREP", "init")
+        tryUpdate()
+    }
 
     fun tryUpdate() {
         loadFromDatabase()
@@ -48,8 +56,10 @@ class TagsRepository @Inject constructor(
     private fun resolveConflicts(list: List<Tag>) {
         executor.execute {
             list.forEach {
-                if (appDatabase.tagsDao().findByName(it.name) == null)
+                if (appDatabase.tagsDao().findByName(it.name) == null) {
                     appDatabase.tagsDao().insert(it)
+                    i("TREP", "Inserting")
+                }
             }
             loadFromDatabase()
         }
@@ -61,5 +71,13 @@ class TagsRepository @Inject constructor(
                 tags.postValue(getAll())
             }
         }
+    }
+
+    fun getTagsAsList(): List<String> {
+        val result = ArrayList<String>()
+        tags.value?.forEach {
+            result.add(it.name)
+        }
+        return result
     }
 }
