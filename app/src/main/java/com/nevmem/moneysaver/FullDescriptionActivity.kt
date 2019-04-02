@@ -41,7 +41,9 @@ class FullDescriptionActivity : FragmentActivity() {
 
         i("description", "Hello from on create method")
         app = applicationContext as App
-        index = intent.extras["index"].toString().toInt()
+        if (intent.extras != null) {
+            index = intent.extras["index"].toString().toInt()
+        }
 
         window.sharedElementEnterTransition.duration = 200
 
@@ -149,7 +151,7 @@ class FullDescriptionActivity : FragmentActivity() {
             picker.value = viewModel.currentYear.value!!.toInt()
             builder.setTitle("Choose year")
                 .setMessage("Please enter new year for this record")
-                .setPositiveButton(android.R.string.yes) { _, which ->
+                .setPositiveButton(android.R.string.yes) { _, _ ->
                     run {
                         viewModel.currentYear.value = picker.value.toString()
                     }
@@ -187,7 +189,7 @@ class FullDescriptionActivity : FragmentActivity() {
                     picker.value = index
             builder.setTitle("Choose month")
                 .setMessage("Please choose new month for this record")
-                .setPositiveButton(android.R.string.yes) { _, which ->
+                .setPositiveButton(android.R.string.yes) { _, _ ->
                     run {
                         val newMonth = picker.displayedValues[picker.value]
                         viewModel.currentMonth.value = newMonth
@@ -206,7 +208,7 @@ class FullDescriptionActivity : FragmentActivity() {
             picker.value = viewModel.currentDay.value!!.toInt()
             builder.setTitle("Choose day of month")
                 .setMessage("Please choose new day for this record")
-                .setPositiveButton(android.R.string.yes) { _, which ->
+                .setPositiveButton(android.R.string.yes) { _, _ ->
                     run {
                         viewModel.currentDay.value = fillToFormat(picker.value.toString())
                     }
@@ -223,7 +225,7 @@ class FullDescriptionActivity : FragmentActivity() {
             picker.value = viewModel.currentHour.value!!.toInt()
             builder.setTitle("Choose hour of a day")
                 .setMessage("Please choose new hour for this record")
-                .setPositiveButton(android.R.string.yes) { _, which ->
+                .setPositiveButton(android.R.string.yes) { _, _ ->
                     run {
                         viewModel.currentHour.value = fillToFormat(picker.value.toString())
                     }
@@ -240,7 +242,7 @@ class FullDescriptionActivity : FragmentActivity() {
             picker.value = viewModel.currentMinute.value!!.toInt()
             builder.setTitle("Choose minute of a hour")
                 .setMessage("Please choose new minute for this record")
-                .setPositiveButton(android.R.string.yes) { _, which ->
+                .setPositiveButton(android.R.string.yes) { _, _ ->
                     run {
                         viewModel.currentMinute.value = fillToFormat(picker.value.toString())
                     }
