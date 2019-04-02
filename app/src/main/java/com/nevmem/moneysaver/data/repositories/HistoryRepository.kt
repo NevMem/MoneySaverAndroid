@@ -123,7 +123,7 @@ class HistoryRepository @Inject constructor(
         return result
     }
 
-    fun loadFromNet() {
+    private fun loadFromNet() {
         loading.value = true
         i("HREP", "Requesting")
         error.value = ""
@@ -142,12 +142,20 @@ class HistoryRepository @Inject constructor(
         })
     }
 
-    fun loadFromDatabase() {
+    private fun loadFromDatabase() {
         executor.execute {
             val list: ArrayList<Record> = ArrayList(appDatabase.historyDao().loadAll())
             Handler(Looper.getMainLooper()).post {
                 history.value = list
             }
+        }
+    }
+
+    fun getRecordOnIndex(index: Int): Record {
+        val buffer = history.value
+        return when {
+            buffer != null && index <= buffer.size -> buffer[index]
+            else -> Record()
         }
     }
 }

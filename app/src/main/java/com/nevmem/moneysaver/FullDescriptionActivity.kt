@@ -7,13 +7,14 @@ import android.os.Handler
 import android.util.Log.i
 import android.view.View
 import android.widget.NumberPicker
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.data.NetworkQueue
 import com.nevmem.moneysaver.data.Record
-import io.reactivex.disposables.Disposable
+import com.nevmem.moneysaver.data.repositories.HistoryRepository
 import kotlinx.android.synthetic.main.full_description.*
 import javax.inject.Inject
 
@@ -29,8 +30,9 @@ class FullDescriptionActivity : FragmentActivity() {
 
     @Inject
     lateinit var networkQueue: NetworkQueue
-
-    private lateinit var changeFlow: Disposable
+    @Inject
+    lateinit var historyRepo: HistoryRepository
+    private lateinit var record: Record
 
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
@@ -39,7 +41,7 @@ class FullDescriptionActivity : FragmentActivity() {
 
         window.statusBarColor = Color.parseColor("#101010")
 
-        i("description", "Hello from on create method")
+        i("FDA", "Hello from on create method")
         app = applicationContext as App
         if (intent.extras != null) {
             index = intent.extras["index"].toString().toInt()
@@ -47,19 +49,32 @@ class FullDescriptionActivity : FragmentActivity() {
 
         window.sharedElementEnterTransition.duration = 200
 
+        /* Dagger2 injection */
         app.appComponent.inject(this)
 
-        setupLiveDateObservers()
-        setupListeners()
-        setupSubscriptions()
+        record = historyRepo.getRecordOnIndex(index)
+
+        fillValues()
 
         Handler().postDelayed({
             fadeInValues()
         }, 400)
     }
 
+    private fun fillValues() {
+        year.text = record.date.year.toString()
+        month.text = record.date.month.toString()
+        day.text = record.date.day.toString()
+        hour.text = record.date.hour.toString()
+        minute.text = record.date.minute.toString()
+        wallet.text = record.wallet
+        tag.text = record.tag
+        recordValueField.text = record.value.toString()
+        recordNameField.text = record.name
+    }
+
     private fun setupLiveDateObservers() {
-        viewModel.currentYear.observe(this, Observer {
+        /* viewModel.currentYear.observe(this, Observer {
             year.text = it
             if (viewModel.prevYear.value != it) {
                 year.setTextColor(ContextCompat.getColor(this, R.color.specialColor))
@@ -112,7 +127,7 @@ class FullDescriptionActivity : FragmentActivity() {
                 dailySwitch.isChecked = false
             }
             comparePrevCurrent()
-        })
+        }) */
 
         viewModel.needChange.observe(this, Observer {
             if (it!!) {
@@ -148,24 +163,28 @@ class FullDescriptionActivity : FragmentActivity() {
             val picker = NumberPicker(this)
             picker.maxValue = 2020
             picker.minValue = 2018
-            picker.value = viewModel.currentYear.value!!.toInt()
-            builder.setTitle("Choose year")
-                .setMessage("Please enter new year for this record")
-                .setPositiveButton(android.R.string.yes) { _, _ ->
-                    run {
-                        viewModel.currentYear.value = picker.value.toString()
+            val changeable = viewModel.record.value
+            if (changeable != null) {
+                picker.value = changeable.date.year
+                builder.setTitle("Choose year")
+                    .setMessage("Please enter new year for this record")
+                    .setPositiveButton(android.R.string.yes) { _, _ ->
+                        run {
+                            changeable.date.year = picker.value
+                            viewModel.record.postValue(changeable)
+                        }
                     }
-                }
-                .setNegativeButton(android.R.string.no) { _, which ->
-                    run {
-                        System.out.println(which)
+                    .setNegativeButton(android.R.string.no) { _, which ->
+                        run {
+                            System.out.println(which)
+                        }
                     }
-                }
-                .setView(picker)
-                .show()
+                    .setView(picker)
+                    .show()
+            }
         }
 
-        monthWrapper.setOnClickListener {
+        /* monthWrapper.setOnClickListener {
             val builder = AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
             val picker = NumberPicker(this)
             picker.minValue = 0
@@ -249,33 +268,27 @@ class FullDescriptionActivity : FragmentActivity() {
                 }
                 .setView(picker)
                 .show()
-        }
+        } */
 
         dailySwitch.setOnCheckedChangeListener { _, isChecked ->
             run {
-                viewModel.currentDaily.value = isChecked
+                val changeable = viewModel.record.value
+                if (changeable != null) {
+                    changeable.daily = isChecked
+                    viewModel.record.postValue(changeable)
+                }
             }
         }
 
         saveChangesButton.setOnClickListener {
-            val record = Record()
-            record.tag = tag.text.toString()
-            record.wallet = wallet.text.toString()
-            record.id = app.records[index].id
-            record.value = recordValueField.text.toString().toDouble()
-            record.name = recordNameField.text.toString()
-            record.daily = dailySwitch.isChecked
-
-            record.date.year = viewModel.currentYear.value!!.toInt()
-            record.date.month = getIntByMonth(viewModel.currentMonth.value!!)
-            record.date.day = viewModel.currentDay.value!!.toInt()
-            record.date.hour = viewModel.currentHour.value!!.toString().toInt()
-            record.date.minute = viewModel.currentMinute.value!!.toString().toInt()
-
-            viewModel.success.value = ""
-            viewModel.error.value = ""
-
-            app.editFromDescription(record)
+            val record = viewModel.record.value
+            if (record != null) {
+                viewModel.success.value = ""
+                viewModel.error.value = ""
+                // TODO: (real editions)
+            } else {
+                Toast.makeText(this, "Record value is null", Toast.LENGTH_LONG).show()
+            }
         }
 
         infoAnchor.setOnClickListener {
@@ -288,70 +301,11 @@ class FullDescriptionActivity : FragmentActivity() {
         }
     }
 
-    private fun setupSubscriptions() {
-        changeFlow = app.changeFlow.subscribe { value ->
-            run {
-                successImage.visibility = View.GONE
-                errorImage.visibility = View.GONE
-                if (value.loading) {
-                    infoAnchor.visibility = View.VISIBLE
-                    loadingBar.visibility = View.VISIBLE
-                    loadingMessage.text = "Loading..."
-                } else if (value.success.isNotEmpty()) {
-                    loadingMessage.text = value.success
-                    loadingBar.visibility = View.GONE
-                    successImage.visibility = View.VISIBLE
-                } else if (value.error.isNotEmpty()) {
-                    loadingMessage.text = value.error
-                    loadingBar.visibility = View.GONE
-                    errorImage.visibility = View.VISIBLE
-                } else {
-                    infoAnchor.visibility = View.GONE
-                    with(value.record) {
-                        recordNameField.text = name
-                        recordValueField.text = value.record.value.toString()
-
-                        viewModel.currentYear.value = date.year.toString()
-                        viewModel.prevYear.value = date.year.toString()
-
-                        viewModel.currentMonth.value = getMonth(date.month)
-                        viewModel.prevMonth.value = getMonth(date.month)
-
-                        viewModel.currentDay.value = fillToFormat(date.day.toString())
-                        viewModel.prevDay.value = fillToFormat(date.day.toString())
-
-                        viewModel.currentHour.value = fillToFormat(date.hour.toString())
-                        viewModel.prevHour.value = fillToFormat(date.hour.toString())
-
-                        viewModel.currentMinute.value = fillToFormat(date.minute.toString())
-                        viewModel.prevMinute.value = fillToFormat(date.minute.toString())
-                    }
-                    wallet.text = value.record.wallet
-                    tag.text = value.record.tag
-
-                    viewModel.currentDaily.value = value.record.daily
-                    viewModel.prevDaily.value = value.record.daily
-                }
-            }
-        }
-    }
-
     private fun fillToFormat(current: String): String {
         var res = current
         while (res.length < 2)
             res = "0$res"
         return current
-    }
-
-    private fun comparePrevCurrent() {
-        var diffCount = 0
-        if (viewModel.currentYear.value != viewModel.prevYear.value) diffCount++
-        if (viewModel.currentMonth.value != viewModel.prevMonth.value) diffCount++
-        if (viewModel.currentDay.value != viewModel.prevDay.value) diffCount++
-        if (viewModel.currentHour.value != viewModel.prevHour.value) diffCount++
-        if (viewModel.currentMinute.value != viewModel.prevMinute.value) diffCount++
-        if (viewModel.currentDaily.value != viewModel.prevDaily.value) diffCount++
-        viewModel.needChange.value = (diffCount != 0)
     }
 
     private fun isLeap(year: Int): Boolean {

@@ -246,6 +246,4 @@
             />
         </LinearLayout>
     </FrameLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
