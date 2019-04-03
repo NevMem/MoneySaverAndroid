@@ -24,9 +24,6 @@ class App : Application() {
     lateinit var user: User
     var info: Info
 
-    var infoFlow: BehaviorSubject<Info>
-    var templatesFlow: BehaviorSubject<Templates>
-
     lateinit var requestQueue: RequestQueue
 
     var appComponent: AppComponent
@@ -34,8 +31,6 @@ class App : Application() {
     init {
         i("APP_CLASS", "App() init method was called")
         info = Info()
-        infoFlow = BehaviorSubject.create()
-        templatesFlow = BehaviorSubject.create()
 
         appComponent = DaggerAppComponent.builder()
             .dataModule(DataModule(this))
@@ -96,7 +91,6 @@ class App : Application() {
 
     fun loadInfo(onSuccess: Callback<JSONObject>, onError: Callback<String>) {
         info = Info()
-        infoFlow.onNext(info)
         System.out.println("Hello from info loader")
         val options = userCredentialsJSON()
         options.put("daysDescription", "true")
@@ -110,7 +104,6 @@ class App : Application() {
                 } else {
                     if (it.getString("type") == "ok") {
                         info.fromJSON(it.getJSONObject("info"))
-                        infoFlow.onNext(info)
                         onSuccess.callback(it.getJSONObject("info"))
                     } else {
                         onError.callback("Server error")
@@ -121,10 +114,5 @@ class App : Application() {
                 onError.callback("Internet error")
             })
         requestQueue.add(jsonRequest)
-    }
-
-    fun checkData() {
-        if (!info.ready)
-            loadInfo(Callback {}, Callback {})
     }
 }

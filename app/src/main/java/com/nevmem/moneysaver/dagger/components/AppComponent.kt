@@ -5,6 +5,7 @@ import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.dagger.modules.DataModule
 import com.nevmem.moneysaver.dagger.modules.NetworkModule
 import com.nevmem.moneysaver.fragments.AddFragment
+import com.nevmem.moneysaver.fragments.DashboardFragment
 import com.nevmem.moneysaver.fragments.HistoryFragment
 import com.nevmem.moneysaver.fragments.TemplatesFragment
 import com.nevmem.moneysaver.views.NewTemplateDialog
@@ -20,4 +21,5 @@ interface AppComponent {
     fun inject(addFragment: AddFragment)
     fun inject(activity: FullDescriptionActivity)
     fun inject(newTemplateDialog: NewTemplateDialog)
+    fun inject(dashboardFragment: DashboardFragment)
 }
