@@ -55,8 +55,8 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
         labels = arr
     }
 
-    private fun setDescription(descr: String) {
-        description = descr
+    private fun setDescription(description: String) {
+        this.description = description
     }
 
     private fun generateColors() {

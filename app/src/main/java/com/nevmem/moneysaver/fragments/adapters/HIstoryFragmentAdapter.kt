@@ -63,7 +63,7 @@ class HistoryFragmentAdapter(
         when {
             holder.itemViewType == ViewHolderType.HEADER.type -> {
                 val header = holder as HeaderViewHolder
-                header.headerText.text = "Browse your spendings"
+                header.headerText.text = "Browse your outcomes"
                 holder.itemView.setOnClickListener {}
             }
             holder.itemViewType == ViewHolderType.ELEMENT.type -> {
@@ -91,7 +91,7 @@ class HistoryFragmentAdapter(
                     }
 
                     itemView.setOnClickListener {
-                        openFullDesciptionActivity(it, position - 1)
+                        openFullDescriptionActivity(it, position - 1)
                     }
                 }
             }
@@ -103,7 +103,7 @@ class HistoryFragmentAdapter(
         }
     }
 
-    private fun openFullDesciptionActivity(view: View, index: Int) {
+    private fun openFullDescriptionActivity(view: View, index: Int) {
         /* val intent = Intent(activity, FullDescriptionActivity::class.java)
         intent.putExtra("index", index)
         val options = ActivityOptions.makeSceneTransitionAnimation(activity,

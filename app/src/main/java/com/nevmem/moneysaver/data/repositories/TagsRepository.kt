@@ -22,8 +22,10 @@ class TagsRepository @Inject constructor(
     var error = MutableLiveData<String>("")
     var tags = MutableLiveData<List<Tag>>(ArrayList())
 
+    private var tag = "T_REP"
+
     init {
-        i("TREP", "init")
+        i(tag, "init")
         tryUpdate()
     }
 
@@ -58,7 +60,7 @@ class TagsRepository @Inject constructor(
             list.forEach {
                 if (appDatabase.tagsDao().findByName(it.name) == null) {
                     appDatabase.tagsDao().insert(it)
-                    i("TREP", "Inserting")
+                    i(tag, "Inserting")
                 }
             }
             loadFromDatabase()

@@ -62,23 +62,23 @@ class AddFragment : Fragment() {
 
         tagsRepo.tags.observe(this, Observer {
             if (it != null) {
-                val strs = ArrayList<String>()
+                val strings = ArrayList<String>()
                 it.forEach {
-                    strs.add(it.name)
+                    strings.add(it.name)
                 }
                 tags.adapter =
-                    ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, strs)
+                    ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, strings)
             }
         })
 
         walletsRepo.wallets.observe(this, Observer {
             if (it != null) {
-                val strs = ArrayList<String>()
+                val strings = ArrayList<String>()
                 it.forEach {
-                    strs.add(it.name)
+                    strings.add(it.name)
                 }
                 chooseWallet.adapter =
-                    ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, strs)
+                    ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, strings)
             }
         })
 

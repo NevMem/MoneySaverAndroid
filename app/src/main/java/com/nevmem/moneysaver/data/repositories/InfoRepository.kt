@@ -15,7 +15,7 @@ import javax.inject.Singleton
 class InfoRepository
 @Inject constructor(var networkQueue: NetworkQueue, var appDatabase: AppDatabase,
                     var executor: Executor, var userHolder: UserHolder) {
-    private var tag = "IREP"
+    private var tag = "I_REP"
     var info = MutableLiveData<Info>(Info())
     var error = MutableLiveData<String>("")
     var success = MutableLiveData<String>("")

@@ -24,7 +24,7 @@
             android:id="@+id/templateWallet" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/templateName" android:gravity="center|start"
             android:paddingStart="8dp" android:paddingEnd="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/useBlock" tools:text="Sberbank"
+            app:layout_constraintEnd_toStartOf="@+id/useBlock" tools:text="Some wallet"
             android:textColor="@color/secondaryFontColor"/>
     <FrameLayout android:layout_width="106dp" android:layout_height="50dp"
                  android:id="@+id/useBlock"
