@@ -18,9 +18,7 @@ import com.nevmem.moneysaver.data.RecordDate
 import com.nevmem.moneysaver.data.repositories.HistoryRepository
 import com.nevmem.moneysaver.data.repositories.TagsRepository
 import com.nevmem.moneysaver.data.repositories.WalletsRepository
-import com.nevmem.moneysaver.structure.Callback
 import kotlinx.android.synthetic.main.add_record_activity.*
-import kotlinx.android.synthetic.main.new_template_dialog.*
 import javax.inject.Inject
 
 
@@ -62,23 +60,23 @@ class AddFragment : Fragment() {
 
         tagsRepo.tags.observe(this, Observer {
             if (it != null) {
-                val strs = ArrayList<String>()
+                val strings = ArrayList<String>()
                 it.forEach {
-                    strs.add(it.name)
+                    strings.add(it.name)
                 }
                 tags.adapter =
-                    ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, strs)
+                    ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, strings)
             }
         })
 
         walletsRepo.wallets.observe(this, Observer {
             if (it != null) {
-                val strs = ArrayList<String>()
+                val strings = ArrayList<String>()
                 it.forEach {
-                    strs.add(it.name)
+                    strings.add(it.name)
                 }
                 chooseWallet.adapter =
-                    ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, strs)
+                    ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, strings)
             }
         })
 

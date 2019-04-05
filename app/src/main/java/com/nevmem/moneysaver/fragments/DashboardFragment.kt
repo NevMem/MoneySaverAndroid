@@ -7,19 +7,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.nevmem.moneysaver.App
-import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.R
-import com.nevmem.moneysaver.structure.Callback
-import io.reactivex.disposables.Disposable
+import com.nevmem.moneysaver.data.UserHolder
+import com.nevmem.moneysaver.data.repositories.InfoRepository
+import kotlinx.android.synthetic.main.home_page_fragment.*
 import kotlinx.android.synthetic.main.user_profile.*
+import javax.inject.Inject
 
 class DashboardFragment : Fragment() {
     lateinit var app: App
-    lateinit var parent: MainPage
 
-    lateinit var infoFlow: Disposable
+    @Inject
+    lateinit var infoRepo: InfoRepository
+
+    @Inject
+    lateinit var userHolder: UserHolder
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.home_page_fragment, container, false)
@@ -27,43 +33,44 @@ class DashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userProfileProgressBar.visibility = View.VISIBLE
-        try {
-            app = activity!!.applicationContext as App
-            parent = activity!! as MainPage
-            app.checkData()
-            infoFlow = app.infoFlow.subscribe { value ->
-                run {
-                    if (!value.ready)
-                        userProfileProgressBar.visibility = View.VISIBLE
-                    else
-                        userProfileProgressBar.visibility = View.GONE
-                    average30Days.text = value.average30Days.toString()
-                    average7Days.text = value.average7Days.toString()
-                    trackedDays.text = value.trackedDays.toString()
-                    totalSpend.text = value.totalSpend.toString()
-                    averageSpend.text = value.average.toString()
-                    sum30Days.text = value.sum30Days.toString()
-                    sum7Days.text = value.sum7Days.toString()
-                    sumDayChart.values = value.sumDay
+        refreshLayout.setColorSchemeColors(
+            ContextCompat.getColor(context!!, R.color.themeColor),
+            ContextCompat.getColor(context!!, R.color.specialColor),
+            ContextCompat.getColor(context!!, R.color.errorColor)
+        )
+        refreshLayout.setProgressBackgroundColorSchemeColor(
+            ContextCompat.getColor(
+                context!!,
+                R.color.backgroundColor
+            )
+        )
 
-                    val animator = ValueAnimator.ofFloat(0f, 1f)
-                    animator.interpolator = AccelerateDecelerateInterpolator()
-                    animator.addUpdateListener {
-                        if (sumDayChart != null) {
-                            sumDayChart.multiplier = it.animatedValue as Float
-                            sumDayChart.invalidate()
-                        }
-                    }
-                    animator.duration = 500
-                    animator.start()
+        app = activity!!.applicationContext as App
+        app.appComponent.inject(this)
+
+        infoRepo.info.observe(this, Observer {
+            average30Days.text = it.average30Days.toString()
+            average7Days.text = it.average7Days.toString()
+            trackedDays.text = it.trackedDays.toString()
+            totalSpend.text = it.totalSpend.toString()
+            averageSpend.text = it.average.toString()
+            sum30Days.text = it.sum30Days.toString()
+            sum7Days.text = it.sum7Days.toString()
+            sumDayChart.values = it.sumDay
+
+            val animator = ValueAnimator.ofFloat(0f, 1f)
+            animator.interpolator = AccelerateDecelerateInterpolator()
+            animator.addUpdateListener {
+                if (sumDayChart != null) {
+                    sumDayChart.multiplier = it.animatedValue as Float
                     sumDayChart.invalidate()
                 }
             }
-        } catch (_: KotlinNullPointerException) {
-            System.out.println("Kotlin Null Pointer Exceptions")
-        }
-        userName.text = app.user.first_name
+            animator.duration = 500
+            animator.start()
+            sumDayChart.invalidate()
+        })
+        userName.text = userHolder.user.firstName
         reloadButton.setOnClickListener {
             reload()
         }
@@ -72,10 +79,8 @@ class DashboardFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         i("Dashboard Fragment", "disposing from infoFlow")
-        infoFlow.dispose()
     }
 
-    fun reload() {
-        app.loadInfo(Callback { }, Callback { })
+    private fun reload() {
     }
 }

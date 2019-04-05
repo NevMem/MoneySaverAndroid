@@ -2,40 +2,21 @@ package com.nevmem.moneysaver
 
 import android.app.Application
 import android.util.Log.i
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.nevmem.moneysaver.dagger.components.AppComponent
 import com.nevmem.moneysaver.dagger.components.DaggerAppComponent
 import com.nevmem.moneysaver.dagger.modules.DataModule
 import com.nevmem.moneysaver.dagger.modules.NetworkModule
-import com.nevmem.moneysaver.data.*
-import com.nevmem.moneysaver.structure.Callback
-import io.reactivex.subjects.BehaviorSubject
-import org.json.JSONArray
-import org.json.JSONException
+import com.nevmem.moneysaver.data.Info
 import org.json.JSONObject
-import java.util.*
-import kotlin.collections.ArrayList
 
 class App : Application() {
-    lateinit var user: User
     var info: Info
-
-    var infoFlow: BehaviorSubject<Info>
-    var templatesFlow: BehaviorSubject<Templates>
-
-    lateinit var requestQueue: RequestQueue
 
     var appComponent: AppComponent
 
     init {
         i("APP_CLASS", "App() init method was called")
         info = Info()
-        infoFlow = BehaviorSubject.create()
-        templatesFlow = BehaviorSubject.create()
 
         appComponent = DaggerAppComponent.builder()
             .dataModule(DataModule(this))
@@ -43,16 +24,8 @@ class App : Application() {
             .build()
     }
 
-    private fun userCredentialsJSON(): JSONObject {
-        val json = JSONObject()
-        json.put("login", user.login)
-        json.put("token", user.token)
-        return json
-    }
-
     override fun onCreate() {
         super.onCreate()
-        requestQueue = Volley.newRequestQueue(this)
         i("APP_CLASS", "onCreate method was called")
     }
 
@@ -64,7 +37,7 @@ class App : Application() {
         return false
     }
 
-    fun tryLogin(login: String, password: String, onSuccess: Callback<String>, onError: Callback<String>) {
+    /* fun tryLogin(login: String, password: String, onSuccess: Callback<String>, onError: Callback<String>) {
         val params = JSONObject()
         params.put("login", login)
         params.put("password", password)
@@ -91,40 +64,5 @@ class App : Application() {
             }, {
                 onError.callback(it.toString())
             })
-        requestQueue.add(jsonRequest)
-    }
-
-    fun loadInfo(onSuccess: Callback<JSONObject>, onError: Callback<String>) {
-        info = Info()
-        infoFlow.onNext(info)
-        System.out.println("Hello from info loader")
-        val options = userCredentialsJSON()
-        options.put("daysDescription", "true")
-        options.put("info7", "true")
-        options.put("info30", "true")
-        options.put("months", "true")
-        val jsonRequest = JsonObjectRequest(Request.Method.POST, Vars.ServerApiInfo, options,
-            {
-                if (!it.has("type")) {
-                    onError.callback("Server response has unknown format")
-                } else {
-                    if (it.getString("type") == "ok") {
-                        info.fromJSON(it.getJSONObject("info"))
-                        infoFlow.onNext(info)
-                        onSuccess.callback(it.getJSONObject("info"))
-                    } else {
-                        onError.callback("Server error")
-                    }
-                }
-            }, {
-                System.out.println(it.toString())
-                onError.callback("Internet error")
-            })
-        requestQueue.add(jsonRequest)
-    }
-
-    fun checkData() {
-        if (!info.ready)
-            loadInfo(Callback {}, Callback {})
-    }
+    } */
 }

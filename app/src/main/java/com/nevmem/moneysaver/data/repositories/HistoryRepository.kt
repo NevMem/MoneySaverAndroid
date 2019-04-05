@@ -26,9 +26,10 @@ class HistoryRepository @Inject constructor(
     val loading = MutableLiveData<Boolean>(false)
     val history = MutableLiveData<ArrayList<Record>>(ArrayList())
     val error = MutableLiveData<String>("")
+    private val tag = "H_REP"
 
     init {
-        i("HREP", "Init was called")
+        i(tag, "Init was called")
         loadFromDatabase()
         loadFromNet()
     }
@@ -64,7 +65,7 @@ class HistoryRepository @Inject constructor(
                 }
             }
             i(
-                "HREP",
+                tag,
                 "All conflicts was resolved\ninserted: $inserted items, " +
                         "updated $updated items, removed $removed items"
             )
@@ -77,15 +78,15 @@ class HistoryRepository @Inject constructor(
 
     fun delete(record: Record) {
         val params = userHolder.credentialsJson()
-        i("HREP", record.id)
+        i(tag, record.id)
         params.put("record_id", record.id)
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiDeleteRecord, params, {
-            i("HREP", "Received $it")
+            i(tag, "Received $it")
             if (it.has("type")) {
                 if (it.getString("type") == "ok") {
                     executor.execute {
                         with(appDatabase.historyDao()) {
-                            i("HREP", "Delete request ${record.uid}")
+                            i(tag, "Delete request ${record.uid}")
                             val toDelete = findById(record.id)
                             if (toDelete != null)
                                 delete(toDelete)
@@ -125,10 +126,10 @@ class HistoryRepository @Inject constructor(
 
     private fun loadFromNet() {
         loading.value = true
-        i("HREP", "Requesting")
+        i(tag, "Requesting")
         error.value = ""
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiHistory, userHolder.credentialsJson(), {
-            i("HREP", "${it.toString()}")
+            i(tag, "${it.toString()}")
             if (it.has("type")) {
                 if (it.getString("type") == "ok") {
                     val parsed = parseHistory(it.getJSONArray("data"))

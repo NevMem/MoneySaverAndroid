@@ -3,9 +3,9 @@ package com.nevmem.moneysaver.data
 import android.content.Context
 import com.nevmem.moneysaver.exceptions.UserCredentialsNotFound
 
-class User(var login: String, var token: String, var first_name: String, var last_name: String) {
+class User(var login: String, var token: String, var firstName: String, var lastName: String) {
     override fun toString(): String {
-        return "${this.login}\n${this.first_name}\n${this.last_name}\n${this.token}"
+        return "${this.login}\n${this.firstName}\n${this.lastName}\n${this.token}"
     }
 
     companion object {
@@ -25,8 +25,8 @@ class User(var login: String, var token: String, var first_name: String, var las
             val editor = sharedPrefs.edit()
             editor.putString("user.login", user.login)
             editor.putString("user.token", user.token)
-            editor.putString("user.first_name", user.first_name)
-            editor.putString("user.last_name", user.last_name)
+            editor.putString("user.first_name", user.firstName)
+            editor.putString("user.last_name", user.lastName)
             editor.commit()
         }
 

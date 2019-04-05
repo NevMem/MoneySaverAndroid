@@ -8,22 +8,22 @@ import android.util.AttributeSet
 import android.view.View
 import com.nevmem.moneysaver.R
 
-class BarChart(val cntx: Context, val attrs: AttributeSet) : View(cntx, attrs) {
+class BarChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
+    private var showAmount = 20
+    private var rounded = false
+    private var barWidth = 20
+    private var baseColor: Int = Color.parseColor("#FFFFFF")
+    private var dividersFontColor: Int = Color.parseColor("#AAAAAA")
+    private var liningColor: Int = Color.parseColor("#15ffffff")
+    private var leftBarSize = 60
+    private var divCount = 5
+    private var showLabels = true
+    private val paint = Paint()
+
     var values = ArrayList<Double>()
-    var showAmount = 20
-    var rounded = false
-    var barWidth = 20
-    var baseColor: Int = Color.parseColor("#FFFFFF")
-    var dividersFontColor: Int = Color.parseColor("#AAAAAA")
-    var liningColor: Int = Color.parseColor("#15ffffff")
-    var leftBarSize = 60
-    var divCount = 5
-    var showLabels = true
     var multiplier = 1f
 
     init {
-        System.out.println("Hello from BarChart init() function")
-        System.out.println(attrs.toString())
         val gt = context.theme.obtainStyledAttributes(attrs, R.styleable.BarChart, 0, 0)
         showAmount = gt.getInteger(R.styleable.BarChart_amountOfBars, showAmount)
         rounded = gt.getBoolean(R.styleable.BarChart_rounded, rounded)
@@ -71,7 +71,6 @@ class BarChart(val cntx: Context, val attrs: AttributeSet) : View(cntx, attrs) {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        val paint = Paint()
         paint.color = Color.parseColor("#191919")
         canvas!!.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
 

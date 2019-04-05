@@ -43,8 +43,9 @@ class FullDescriptionActivity : FragmentActivity() {
 
         i("FDA", "Hello from on create method")
         app = applicationContext as App
-        if (intent.extras != null) {
-            index = intent.extras["index"].toString().toInt()
+        val intentBundle = intent.extras
+        if (intentBundle != null && intentBundle.containsKey("index")) {
+            index = intentBundle.toString().toInt()
         }
 
         window.sharedElementEnterTransition.duration = 200

@@ -2,24 +2,25 @@ package com.nevmem.moneysaver
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
-import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.nevmem.moneysaver.data.User
-import com.nevmem.moneysaver.exceptions.UserCredentialsNotFound
-import com.nevmem.moneysaver.structure.Callback
-import com.nevmem.moneysaver.views.ConfirmationDialog
-import com.nevmem.moneysaver.views.InfoDialog
+import com.nevmem.moneysaver.data.NetworkQueue
+import com.nevmem.moneysaver.data.UserHolder
 import kotlinx.android.synthetic.main.login_page.*
+import org.json.JSONObject
+import javax.inject.Inject
 
 class LoginPageActivity : FragmentActivity() {
-
     private lateinit var loginModel: LoginPageViewModel
+
+    @Inject
+    lateinit var networkQueue: NetworkQueue
+
+    @Inject
+    lateinit var userHolder: UserHolder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,40 +39,43 @@ class LoginPageActivity : FragmentActivity() {
                 loginPageLoadingBar.visibility = View.INVISIBLE
         })
 
-        try {
-            User.loadUserCredentials(this)
-            saveUserToApplication()
+        (applicationContext as App).appComponent.inject(this)
+        if (userHolder.ready) {
             goToHomePage()
-        } catch (e: UserCredentialsNotFound) {
-            System.out.println("There is no user credentials")
         }
     }
 
-    private fun saveUserToApplication() {
-        val savedUser = User.loadUserCredentials(this)
-        val application = applicationContext as App
-        application.user = savedUser
-    }
-
-    fun goToHomePage() {
+    private fun goToHomePage() {
         val intent = Intent(this, MainPage::class.java)
         startActivity(intent)
     }
 
-    fun onLoginButtonClick(view: View) {
+    fun onLoginButtonClick(@Suppress("UNUSED_PARAMETER") view: View) {
         val login = loginField.text.toString()
         val password = passwordField.text.toString()
+        val params = JSONObject()
+        params.put("login", login)
+        params.put("password", password)
 
-        loginModel.error.value = ""
-        loginModel.loading.value = true
+        loginModel.error.postValue("")
+        loginModel.loading.postValue(true)
 
-        val app = applicationContext as App
-        app.tryLogin(login, password, Callback {
-            loginModel.loading.value = false
-            goToHomePage()
-        }, Callback {
-            loginModel.loading.value = false
-            loginModel.error.value = it!!.toString()
+        networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiLogin, params, {
+            loginModel.loading.postValue(false)
+            if (it.has("type")) {
+                val type = it.getString("type")
+                if (type == "ok") {
+                    val json = it.getJSONObject("data")
+                    userHolder.initializeByJson(json)
+                    goToHomePage()
+                } else if (type == "error") {
+                    loginModel.error.postValue(it.getString("error"))
+                } else {
+                    loginModel.error.postValue("Sever response has unknown format")
+                }
+            } else {
+                loginModel.error.postValue("Sever response has unknown format")
+            }
         })
     }
 }

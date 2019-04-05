@@ -21,13 +21,11 @@ import kotlinx.android.synthetic.main.main_page_layout.*
 
 class MainPage : AppCompatActivity() {
     lateinit var app: App
-    lateinit var viewModel: MainPageViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.main_page_layout)
-        viewModel = ViewModelProviders.of(this).get(MainPageViewModel::class.java)
         window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
         app = applicationContext as App
 

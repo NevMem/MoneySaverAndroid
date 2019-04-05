@@ -24,6 +24,8 @@ class WalletsRepository @Inject constructor(
     var error = MutableLiveData<String>("")
     var wallets = MutableLiveData<List<Wallet>>(ArrayList())
 
+    private var tag = "W_REP"
+
     private fun loadFromNet() {
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiWallets, userHolder.credentialsJson(), {
             if (it.has("type")) {
@@ -32,7 +34,7 @@ class WalletsRepository @Inject constructor(
                     val list = ArrayList<Wallet>()
                     for (index in 0 until(array.length()))
                         list.add(Wallet(array.getString(index)))
-                    i("WREP", "From net received ${list.size} elements")
+                    i(tag, "From net received ${list.size} elements")
                     resolveConflicts(list)
                 } else if (it.getString("type") == "error") {
                     error.postValue(it.getString("type"))
@@ -48,7 +50,7 @@ class WalletsRepository @Inject constructor(
     private fun loadFromDatabase() {
         executor.execute {
             val fromDatabase = appDatabase.walletsDao().get()
-            i("WREP", "Loaded ${fromDatabase.size}")
+            i(tag, "Loaded ${fromDatabase.size}")
             Handler(Looper.getMainLooper()).post {
                 wallets.postValue(fromDatabase)
             }
@@ -66,7 +68,7 @@ class WalletsRepository @Inject constructor(
                 values.forEach {
                     val inDatabase = findByName(it.name)
                     if (inDatabase == null) {
-                        i("WREP", "Inserting")
+                        i(tag, "Inserting")
                         insert(it)
                     }
                 }

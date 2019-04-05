@@ -1,5 +1,6 @@
 package com.nevmem.moneysaver.data
 
+import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 
@@ -11,11 +12,22 @@ class RecordDate {
     var minute: Int = 0
 
     companion object {
-        fun fromJSON(jsonObject: JSONObject): RecordDate {
-            return RecordDate(
-                jsonObject.getInt("year"), jsonObject.getInt("month"),
-                jsonObject.getInt("day"), jsonObject.getInt("hour"), jsonObject.getInt("minute")
-            )
+        private fun ejectInt(json: JSONObject, name: String): Int {
+            return try {
+                json.getInt(name)
+            } catch (_: JSONException) {
+                0
+            }
+        }
+
+        fun fromJSON(json: JSONObject): RecordDate {
+            val date = RecordDate()
+            date.year = ejectInt(json, "year")
+            date.month = ejectInt(json, "month")
+            date.day = ejectInt(json, "day")
+            date.hour = ejectInt(json, "hour")
+            date.minute = ejectInt(json, "minute")
+            return date
         }
 
         fun currentDate(): RecordDate {
@@ -59,5 +71,18 @@ class RecordDate {
 
     override fun toString(): String {
         return format(day) + "." + format(month) + "." + year + " " + format(hour) + ":" + format(minute)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is RecordDate) {
+            return other.year == year && other.month == month && other.day == day &&
+                    other.hour == hour && other.minute == minute
+        } else {
+            return false
+        }
+    }
+
+    override fun hashCode(): Int {
+        return toString().hashCode()
     }
 }

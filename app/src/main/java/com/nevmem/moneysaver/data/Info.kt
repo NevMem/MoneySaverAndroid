@@ -1,10 +1,15 @@
 package com.nevmem.moneysaver.data
 
 import android.util.Log.i
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.nevmem.moneysaver.room.converters.InfoConverter
 import org.json.JSONObject
 
+@Entity
 class Info {
-    var ready: Boolean = false
+    @PrimaryKey var uid: Int = 0
     var average30Days: Double? = null
     var sum30Days: Double? = null
     var average7Days: Double? = null
@@ -12,6 +17,7 @@ class Info {
     var trackedDays: Int? = null
     var totalSpend: Double? = null
     var average: Double? = null
+    @TypeConverters(InfoConverter::class)
     var sumDay: ArrayList<Double>
 
     init {
@@ -43,12 +49,12 @@ class Info {
         if (data.has("average"))
             average = data.getDouble("average")
 
-        val sum = data.getJSONObject("daySum")
-        println(sum.toString())
-        for (key in sum.keys()) {
-            sumDay.add(sum.getDouble(key))
+        if (data.has("daySum")) {
+            val sum = data.getJSONObject("daySum")
+            println(sum.toString())
+            for (key in sum.keys()) {
+                sumDay.add(sum.getDouble(key))
+            }
         }
-
-        ready = true
     }
 }
