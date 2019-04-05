@@ -81,4 +81,8 @@ class RecordDate {
             return false
         }
     }
+
+    override fun hashCode(): Int {
+        return toString().hashCode()
+    }
 }

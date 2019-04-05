@@ -123,14 +123,14 @@ class HistoryFragmentAdapter(
     }
 
     class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val headerText = view.findViewById<TextView>(com.nevmem.moneysaver.R.id.history_fragment_header_text)
+        val headerText: TextView = view.findViewById(com.nevmem.moneysaver.R.id.history_fragment_header_text)
     }
 
     class ElementViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val recordName = view.findViewById<TextView>(R.id.recordNameField)
-        val recordDate = view.findViewById<TextView>(R.id.dateField)
-        val recordValue = view.findViewById<TextView>(R.id.recordValue)
-        val recordWallet = view.findViewById<TextView>(R.id.walletField)
-        val deleteButton = view.findViewById<ImageView>(R.id.deleteRecordButton)
+        val recordName: TextView = view.findViewById(R.id.recordNameField)
+        val recordDate: TextView = view.findViewById(R.id.dateField)
+        val recordValue: TextView = view.findViewById(R.id.recordValue)
+        val recordWallet: TextView = view.findViewById(R.id.walletField)
+        val deleteButton: ImageView = view.findViewById(R.id.deleteRecordButton)
     }
 }

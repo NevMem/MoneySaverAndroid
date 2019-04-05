@@ -1,6 +1,7 @@
 package com.nevmem.moneysaver.dagger.components
 
 import com.nevmem.moneysaver.FullDescriptionActivity
+import com.nevmem.moneysaver.LoginPageActivity
 import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.dagger.modules.DataModule
 import com.nevmem.moneysaver.dagger.modules.NetworkModule
@@ -22,4 +23,5 @@ interface AppComponent {
     fun inject(activity: FullDescriptionActivity)
     fun inject(newTemplateDialog: NewTemplateDialog)
     fun inject(dashboardFragment: DashboardFragment)
+    fun inject(loginPageActivity: LoginPageActivity)
 }

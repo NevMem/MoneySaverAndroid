@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.data.UserHolder
 import com.nevmem.moneysaver.data.repositories.InfoRepository
 import kotlinx.android.synthetic.main.home_page_fragment.*
 import kotlinx.android.synthetic.main.user_profile.*
@@ -22,6 +23,9 @@ class DashboardFragment : Fragment() {
 
     @Inject
     lateinit var infoRepo: InfoRepository
+
+    @Inject
+    lateinit var userHolder: UserHolder
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.home_page_fragment, container, false)
@@ -66,7 +70,7 @@ class DashboardFragment : Fragment() {
             animator.start()
             sumDayChart.invalidate()
         })
-        userName.text = app.user.first_name
+        userName.text = userHolder.user.firstName
         reloadButton.setOnClickListener {
             reload()
         }

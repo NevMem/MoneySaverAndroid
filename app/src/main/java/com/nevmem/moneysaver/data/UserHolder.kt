@@ -1,10 +1,31 @@
 package com.nevmem.moneysaver.data
 
 import android.content.Context
+import com.nevmem.moneysaver.exceptions.UserCredentialsNotFound
 import org.json.JSONObject
 
 class UserHolder(var context: Context) {
-    var user: User = User.loadUserCredentials(context)
+    var user: User
+    var ready = false
+
+    init {
+        try {
+            user = User.loadUserCredentials(context)
+            ready = true
+        } catch (_: UserCredentialsNotFound) {
+            user = User("", "", "", "")
+        }
+    }
+
+    fun initializeByJson(json: JSONObject) {
+        val login = json.getString("login")
+        val token = json.getString("token")
+        val firstName = json.getString("first_name")
+        val lastName = json.getString("last_name")
+        user = User(login, token, firstName, lastName)
+        User.saveUserCredentials(context, user)
+        ready = true
+    }
 
     fun credentialsJson(): JSONObject {
         val json = JSONObject()

@@ -9,7 +9,10 @@ import com.nevmem.moneysaver.room.entity.StoredTemplate
 import com.nevmem.moneysaver.room.entity.Tag
 import com.nevmem.moneysaver.room.entity.Wallet
 
-@Database(entities = [StoredTemplate::class, Record::class, Wallet::class, Tag::class, Info::class], version = 16)
+@Database(
+    entities = [StoredTemplate::class, Record::class, Wallet::class, Tag::class, Info::class],
+    exportSchema = false, version = 16
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun templateDao(): TemplateDao
     abstract fun historyDao(): HistoryDao

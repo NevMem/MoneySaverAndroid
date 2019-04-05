@@ -18,9 +18,7 @@ import com.nevmem.moneysaver.data.RecordDate
 import com.nevmem.moneysaver.data.repositories.HistoryRepository
 import com.nevmem.moneysaver.data.repositories.TagsRepository
 import com.nevmem.moneysaver.data.repositories.WalletsRepository
-import com.nevmem.moneysaver.structure.Callback
 import kotlinx.android.synthetic.main.add_record_activity.*
-import kotlinx.android.synthetic.main.new_template_dialog.*
 import javax.inject.Inject
 
 
