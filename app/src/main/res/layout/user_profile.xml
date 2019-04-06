@@ -7,7 +7,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:paddingBottom="70dp"
+        android:paddingBottom="80dp"
         android:clipToPadding="false"
 >
     <androidx.cardview.widget.CardView

@@ -121,7 +121,7 @@ class InfoRepository
         params.put("info30", true)
         params.put("daysDescription", true)
         params.put("months", true)
-        loading.postValue(false)
+        loading.postValue(true)
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiInfo, params, {
             loading.postValue(false)
             if (it.has("type")) {
