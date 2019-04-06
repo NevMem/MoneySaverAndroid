@@ -1,6 +1,7 @@
 package com.nevmem.moneysaver.room.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.nevmem.moneysaver.room.entity.Wallet
@@ -15,4 +16,7 @@ interface WalletsDao {
 
     @Query("SELECT * FROM wallet WHERE name = :name LIMIT 1")
     fun findByName(name: String): Wallet?
+
+    @Delete
+    fun delete(wallet: Wallet)
 }

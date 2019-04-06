@@ -57,10 +57,19 @@ class TagsRepository @Inject constructor(
 
     private fun resolveConflicts(list: List<Tag>) {
         executor.execute {
+            val names = HashSet<String>()
             list.forEach {
+                names.add(it.name)
                 if (appDatabase.tagsDao().findByName(it.name) == null) {
                     appDatabase.tagsDao().insert(it)
                     i(tag, "Inserting")
+                }
+            }
+            with (appDatabase.tagsDao()) {
+                getAll().forEach {
+                    if (!names.contains(it.name)) {
+                        delete(it)
+                    }
                 }
             }
             loadFromDatabase()
