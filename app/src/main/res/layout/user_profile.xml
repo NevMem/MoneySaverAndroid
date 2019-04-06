@@ -262,8 +262,9 @@
             />
         </LinearLayout>
     </LinearLayout>
-    <com.nevmem.moneysaver.views.PieChart android:layout_width="match_parent" android:layout_height="200dp"
-                                          app:chartPadding="30"
+    <com.nevmem.moneysaver.views.PieChart
+            android:layout_width="match_parent" android:layout_height="200dp"
+            app:chartPadding="30" android:id="@+id/monthDescription"
     />
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                   android:id="@+id/chartsAnchor" android:orientation="vertical"

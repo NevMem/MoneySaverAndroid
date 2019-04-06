@@ -55,7 +55,7 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
         labels = arr
     }
 
-    private fun setDescription(description: String) {
+    fun setDescription(description: String) {
         this.description = description
     }
 
@@ -140,6 +140,13 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
                 prevAngle += curAngle
             }
         }
+
+        paint.color = Color.parseColor("#191919")
+        canvas.drawArc(
+            chartPadding + 30, chartPadding + descriptionHeight + 30,
+            chartPadding + chartSize - 30, chartPadding + chartSize + descriptionHeight - 30,
+            0f, 360f, true, paint
+        )
 
         paint.textSize = 22f
 

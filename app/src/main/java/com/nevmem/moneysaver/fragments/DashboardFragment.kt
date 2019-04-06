@@ -70,6 +70,21 @@ class DashboardFragment : Fragment() {
             animator.start()
             sumDayChart.invalidate()
         })
+
+        infoRepo.lastMonthDescription.observe(this, Observer {
+            if (it != null) {
+                monthDescription.setDescription("Your last month description")
+                val values = ArrayList<Double>()
+                val labels = ArrayList<String>()
+                for (key in it.byTagTotal.keys) {
+                    labels.add(key)
+                    values.add(it.byTagTotal[key]!!)
+                }
+                monthDescription.setData(values, labels)
+                monthDescription.invalidate()
+            }
+        })
+
         userName.text = userHolder.user.firstName
         reloadButton.setOnClickListener {
             reload()
