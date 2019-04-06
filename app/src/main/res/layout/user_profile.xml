@@ -7,264 +7,290 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:paddingBottom="100dp"
+        android:paddingBottom="70dp"
         android:clipToPadding="false"
 >
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/totallySpend"
-            android:background="@drawable/profile_background"
-            android:elevation="@dimen/stdElevation" android:clipToPadding="false"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/profile_color"
     >
-        <TextView
-                tools:text="@string/defaultUserName"
-                android:layout_width="wrap_content"
-                android:layout_height="64dp"
-                android:id="@+id/userName" android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp" android:textColor="#fff"
-                android:gravity="center|start" android:textSize="24sp"/>
-        <Button
-                android:text="@string/logout"
-                android:layout_width="wrap_content"
-                android:layout_height="64dp"
-                android:id="@+id/logoutButton"
-                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp" style="@style/LogOutButton"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
-                android:onClick="logoutButtonClicked" android:gravity="center|end"/>
-        <ImageButton
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:id="@+id/reloadButton"
-                app:layout_constraintStart_toEndOf="@+id/userName" android:layout_marginStart="16dp"
-                android:src="@drawable/update_icon" android:background="#00000000"
-                app:layout_constraintBottom_toBottomOf="@+id/userName" app:layout_constraintTop_toTopOf="@+id/userName"
-                android:padding="8dp"/>
-        <TextView
-                tools:text="@string/defaultTotallySpend"
-                android:layout_width="0dp"
-                android:layout_height="34dp"
-                android:id="@+id/totalSpend"
-                android:gravity="center|end"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintStart_toEndOf="@+id/text_1"
-                android:layout_marginStart="8dp" android:textSize="18sp" android:textColor="@color/mainFontColor"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/userName"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/totallySpend"
+                android:clipToPadding="false"
+        >
+            <TextView
+                    tools:text="@string/defaultUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="64dp"
+                    android:id="@+id/userName" android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+                    android:textColor="#fff"
+                    android:gravity="center|start" android:textSize="24sp"/>
+            <Button
+                    android:text="@string/logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="64dp"
+                    android:id="@+id/logoutButton"
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
+                    style="@style/LogOutButton"
+                    android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+                    android:onClick="logoutButtonClicked" android:gravity="center|end"/>
+            <TextView
+                    tools:text="@string/defaultTotallySpend"
+                    android:layout_width="0dp"
+                    android:layout_height="34dp"
+                    android:id="@+id/totalSpend"
+                    android:gravity="center|end"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/text_1"
+                    android:layout_marginStart="8dp" android:textSize="18sp" android:textColor="@color/mainFontColor"
+                    android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/userName"/>
 
-        <TextView
-                android:text="@string/totalSpend"
-                android:layout_width="wrap_content"
-                android:layout_height="34dp"
-                android:id="@+id/text_1"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp" android:gravity="center|start" android:textSize="18sp"
-                android:textColor="@color/secondaryFontColor"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/userName"/>
-        <TextView
-                android:text="@string/averageSpending"
-                android:layout_width="wrap_content"
-                android:layout_height="34dp"
-                android:id="@+id/text_2"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp" android:gravity="center|start" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/text_1" android:textSize="18sp"
-                android:textColor="@color/secondaryFontColor"/>
-        <TextView
-                tools:text="@string/defaultAverage"
-                android:layout_width="0dp"
-                android:layout_height="34dp"
-                android:id="@+id/averageSpend"
-                android:gravity="center|end" app:layout_constraintTop_toBottomOf="@+id/totalSpend"
-                android:layout_marginTop="8dp" android:layout_marginBottom="8dp" android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/text_2"
-                android:layout_marginStart="8dp" android:textSize="18sp" android:textColor="@color/mainFontColor"/>
+            <TextView
+                    android:text="@string/totalSpend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:id="@+id/text_1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="16dp" android:gravity="center|start" android:textSize="18sp"
+                    android:textColor="@color/secondaryFontColor"
+                    android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/userName"/>
+            <TextView
+                    android:text="@string/averageSpending"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:id="@+id/text_2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="16dp" android:gravity="center|start" android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_1" android:textSize="18sp"
+                    android:textColor="@color/secondaryFontColor"/>
+            <TextView
+                    tools:text="@string/defaultAverage"
+                    android:layout_width="0dp"
+                    android:layout_height="34dp"
+                    android:id="@+id/averageSpend"
+                    android:gravity="center|end" app:layout_constraintTop_toBottomOf="@+id/totalSpend"
+                    android:layout_marginTop="8dp" android:layout_marginBottom="8dp" android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/text_2"
+                    android:layout_marginStart="8dp" android:textSize="18sp" android:textColor="@color/mainFontColor"/>
 
-        <TextView
-                android:text="@string/amountOfDays"
-                android:layout_width="wrap_content"
-                android:layout_height="34dp"
-                android:id="@+id/text_3"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp" android:gravity="center|start"
-                android:textSize="18sp"
-                android:textColor="@color/secondaryFontColor" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/sumDayChart" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-        <TextView
-                tools:text="@string/defaultTrackedDays"
-                android:layout_width="0dp"
-                android:layout_height="34dp"
-                android:id="@+id/trackedDays"
-                android:gravity="center|end"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/text_3"
-                android:layout_marginStart="8dp" android:textSize="18sp" android:textColor="@color/mainFontColor"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/sumDayChart"
-                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
+            <TextView
+                    android:text="@string/amountOfDays"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:id="@+id/text_3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="16dp" android:gravity="center|start"
+                    android:textSize="18sp"
+                    android:textColor="@color/secondaryFontColor" android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/sumDayChart" android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            <TextView
+                    tools:text="@string/defaultTrackedDays"
+                    android:layout_width="0dp"
+                    android:layout_height="34dp"
+                    android:id="@+id/trackedDays"
+                    android:gravity="center|end"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/text_3"
+                    android:layout_marginStart="8dp" android:textSize="18sp" android:textColor="@color/mainFontColor"
+                    android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/sumDayChart"
+                    android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <com.nevmem.moneysaver.views.BarChart
-                android:id="@+id/sumDayChart"
-                android:layout_height="120dp"
-                android:layout_width="0dp"
-                app:amountOfBars="30"
-                app:rounded="true"
-                app:barWidth="8"
-                app:baseColor="#f5b700"
-                app:labelsFontColor="@color/secondaryFontColor"
-                app:labelsLiningColor="#15ffffff"
-                app:showLabels="true"
-                android:paddingTop="10dp"
-                android:paddingStart="0dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="0dp"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintTop_toBottomOf="@+id/text_2" android:layout_marginTop="8dp"/>
+            <com.nevmem.moneysaver.views.BarChart
+                    android:id="@+id/sumDayChart"
+                    android:layout_height="120dp"
+                    android:layout_width="0dp"
+                    app:amountOfBars="30"
+                    app:rounded="true"
+                    app:barWidth="8"
+                    app:baseColor="#f5b700"
+                    app:labelsFontColor="@color/secondaryFontColor"
+                    app:labelsLiningColor="#15ffffff"
+                    app:showLabels="true"
+                    android:paddingTop="10dp"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintTop_toBottomOf="@+id/text_2" android:layout_marginTop="8dp"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:orientation="horizontal" android:clipToPadding="false"
             android:layout_gravity="fill_horizontal"
+            android:layout_marginTop="10dp"
     >
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:orientation="vertical"
-                      android:layout_marginTop="14dp" android:layout_marginBottom="14dp"
-                      android:elevation="@dimen/stdElevation"
-                      android:background="@drawable/profile_background"
-                      android:paddingTop="7dp"
-                      android:paddingBottom="7dp"
-                      android:layout_marginEnd="5dp"
-                      android:layout_weight="1"
-                      android:gravity="center"
+        <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:cardBackgroundColor="@color/profile_color"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:gravity="center"
         >
-            <TextView
-                    android:text="@string/sum7Days"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:id="@+id/text_6"
-                    android:gravity="center|start"
-                    android:textSize="18sp"
-                    android:textColor="@color/secondaryFontColor"
-            />
-            <TextView
-                    tools:text="Average 7 days"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/sum7Days"
-                    android:gravity="center|end"
-                    android:textSize="22sp" android:textColor="@color/mainFontColor"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-            />
-        </LinearLayout>
+            <LinearLayout
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center" android:gravity="center"
+            >
+                <TextView
+                        android:text="@string/sum7Days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:id="@+id/text_6"
+                        android:gravity="center|start"
+                        android:textSize="18sp"
+                        android:textColor="@color/secondaryFontColor"
+                />
+                <TextView
+                        tools:text="Average 7 days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/sum7Days"
+                        android:gravity="center|end"
+                        android:textSize="22sp" android:textColor="@color/mainFontColor"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:orientation="vertical"
-                      android:elevation="@dimen/stdElevation"
-                      android:background="@drawable/profile_background"
-                      android:layout_marginTop="14dp" android:layout_marginBottom="14dp"
-                      android:paddingTop="7dp"
-                      android:paddingBottom="7dp"
-                      android:layout_marginStart="5dp"
-                      android:layout_weight="1"
-                      android:gravity="center"
+        <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:cardBackgroundColor="@color/profile_color"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:gravity="center"
         >
-            <TextView
-                    android:text="@string/sum30Days"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:id="@+id/text_7"
-                    android:gravity="center|start"
-                    android:textSize="18sp"
-                    android:textColor="@color/secondaryFontColor"/>
-            <TextView
-                    tools:text="Average 30 days"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/sum30Days"
-                    android:gravity="center|end"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:textSize="22sp" android:textColor="@color/mainFontColor"
-            />
-        </LinearLayout>
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:orientation="vertical" android:layout_gravity="center" android:gravity="center"
+            >
+                <TextView
+                        android:text="@string/sum30Days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:id="@+id/text_7"
+                        android:gravity="center|start"
+                        android:textSize="18sp"
+                        android:textColor="@color/secondaryFontColor"/>
+                <TextView
+                        tools:text="Average 30 days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/sum30Days"
+                        android:gravity="center|end"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textSize="22sp" android:textColor="@color/mainFontColor"
+                />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
     <LinearLayout
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:orientation="horizontal" android:clipToPadding="false"
             android:layout_gravity="fill_horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
     >
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:orientation="vertical"
-                      android:layout_marginTop="4dp" android:layout_marginBottom="14dp"
-                      android:elevation="@dimen/stdElevation"
-                      android:background="@drawable/profile_background"
-                      android:paddingTop="7dp"
-                      android:paddingBottom="7dp"
-                      android:layout_marginEnd="5dp"
-                      android:layout_weight="1"
-                      android:gravity="center"
+        <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:cardBackgroundColor="@color/profile_color"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_marginEnd="6dp"
         >
-            <TextView
-                    android:text="@string/average7Days"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:id="@+id/text_5"
-                    android:gravity="center|start"
-                    android:textSize="18sp"
-                    android:textColor="@color/secondaryFontColor"
-            />
-            <TextView
-                    tools:text="Average 7 days"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/average7Days"
-                    android:gravity="center|end"
-                    android:textSize="22sp" android:textColor="@color/mainFontColor"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-            />
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:orientation="vertical"
-                      android:elevation="@dimen/stdElevation"
-                      android:background="@drawable/profile_background"
-                      android:layout_marginTop="4dp" android:layout_marginBottom="14dp"
-                      android:paddingTop="7dp"
-                      android:paddingBottom="7dp"
-                      android:layout_marginStart="5dp"
-                      android:layout_weight="1"
-                      android:gravity="center"
+            <LinearLayout
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center" android:layout_gravity="center"
+            >
+                <TextView
+                        android:text="@string/average7Days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:id="@+id/text_5"
+                        android:gravity="center|start"
+                        android:textSize="18sp"
+                        android:textColor="@color/secondaryFontColor"
+                />
+                <TextView
+                        tools:text="Average 7 days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/average7Days"
+                        android:gravity="center|end"
+                        android:textSize="22sp" android:textColor="@color/mainFontColor"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:cardBackgroundColor="@color/profile_color"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_marginStart="6dp"
         >
-            <TextView
-                    android:text="@string/average30Days"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:id="@+id/text_4"
-                    android:gravity="center|start"
-                    android:textSize="18sp"
-                    android:textColor="@color/secondaryFontColor"/>
-            <TextView
-                    tools:text="Average 30 days"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/average30Days"
-                    android:gravity="center|end"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:textSize="22sp" android:textColor="@color/mainFontColor"
-            />
-        </LinearLayout>
+            <LinearLayout
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:layout_gravity="center"
+                    android:gravity="center"
+            >
+                <TextView
+                        android:text="@string/average30Days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:id="@+id/text_4"
+                        android:gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/secondaryFontColor"/>
+                <TextView
+                        tools:text="Average 30 days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/average30Days"
+                        android:gravity="center|end"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textSize="22sp" android:textColor="@color/mainFontColor"
+                />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
-    <com.nevmem.moneysaver.views.PieChart android:layout_width="match_parent" android:layout_height="200dp"
-                                          app:chartPadding="30"
-    />
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/profile_color"
+    >
+        <com.nevmem.moneysaver.views.PieChart
+                android:layout_width="match_parent" android:layout_height="200dp"
+                app:chartPadding="30" android:id="@+id/monthDescription"
+        />
+    </androidx.cardview.widget.CardView>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                   android:id="@+id/chartsAnchor" android:orientation="vertical"
     />

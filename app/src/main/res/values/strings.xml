@@ -16,8 +16,8 @@
     <string name="addRecordHeader">Add new record</string>
     <string name="totalSpend">Total spend:</string>
     <string name="averageSpending">Average spending:</string>
-    <string name="average7Days">Average 7 days:</string>
-    <string name="average30Days">Average 30 days:</string>
+    <string name="average7Days">Avg. 7 days:</string>
+    <string name="average30Days">Avg. 30 days:</string>
     <string name="sum7Days">Sum 7 days:</string>
     <string name="sum30Days">Sum 30 days:</string>
     <string name="amountOfDays">Tracked days:</string>

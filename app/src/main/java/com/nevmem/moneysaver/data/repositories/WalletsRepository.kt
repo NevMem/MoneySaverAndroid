@@ -65,12 +65,18 @@ class WalletsRepository @Inject constructor(
     private fun resolveConflicts(values: List<Wallet>) {
         executor.execute {
             with (appDatabase.walletsDao()) {
+                val names = HashSet<String>()
                 values.forEach {
+                    names.add(it.name)
                     val inDatabase = findByName(it.name)
                     if (inDatabase == null) {
                         i(tag, "Inserting")
                         insert(it)
                     }
+                }
+                get().forEach {
+                    if (!names.contains(it.name))
+                        delete(it)
                 }
             }
             loadFromDatabase()
