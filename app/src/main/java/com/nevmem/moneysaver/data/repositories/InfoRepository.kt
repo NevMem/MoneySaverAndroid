@@ -1,7 +1,5 @@
 package com.nevmem.moneysaver.data.repositories
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log.i
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
@@ -17,8 +15,10 @@ import javax.inject.Singleton
 
 @Singleton
 class InfoRepository
-@Inject constructor(var networkQueue: NetworkQueue, var appDatabase: AppDatabase,
-                    var executor: Executor, var userHolder: UserHolder) {
+@Inject constructor(
+    var networkQueue: NetworkQueue, var appDatabase: AppDatabase,
+    var executor: Executor, var userHolder: UserHolder
+) {
     private var tag = "I_REP"
     var info = MutableLiveData<Info>(Info())
     var lastMonthDescription = MutableLiveData<MonthDescription>()
@@ -27,23 +27,23 @@ class InfoRepository
     var loading = MutableLiveData<Boolean>(false)
 
     init {
-        tryUpdate()
+        loadFromDatabase()
+        loadFromNet()
     }
 
     fun tryUpdate() {
-        loadFromDatabase()
         loadFromNet()
     }
 
     private fun loadFromDatabase() {
         executor.execute {
-            with (appDatabase.infoDao()) {
+            with(appDatabase.infoDao()) {
                 val saved = get()
                 if (saved != null) {
                     info.postValue(saved)
                 }
             }
-            with (appDatabase.monthDescriptionDao()) {
+            with(appDatabase.monthDescriptionDao()) {
                 val lastMonth = getLastMonth()
                 if (lastMonth != null)
                     lastMonthDescription.postValue(lastMonth)
@@ -91,9 +91,9 @@ class InfoRepository
 
     private fun resolveMonthsDescriptionsConflicts(monthsDescriptions: ArrayList<MonthDescription>) {
         executor.execute {
-            with (appDatabase.monthDescriptionDao()) {
+            with(appDatabase.monthDescriptionDao()) {
                 val usedIds = HashSet<String>()
-                for (index in 0 until(monthsDescriptions.size)) {
+                for (index in 0 until (monthsDescriptions.size)) {
                     val replica = getByMonthID(monthsDescriptions[index].monthId)
                     usedIds.add(monthsDescriptions[index].monthId)
                     if (replica == null) {
@@ -121,7 +121,9 @@ class InfoRepository
         params.put("info30", true)
         params.put("daysDescription", true)
         params.put("months", true)
+        loading.postValue(false)
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiInfo, params, {
+            loading.postValue(false)
             if (it.has("type")) {
                 val type = it.getString("type")
                 if (type == "ok") {

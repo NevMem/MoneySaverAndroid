@@ -86,16 +86,21 @@ class DashboardFragment : Fragment() {
         })
 
         userName.text = userHolder.user.firstName
-        reloadButton.setOnClickListener {
-            reload()
+
+        infoRepo.loading.observe(this, Observer {
+            when (it) {
+                null -> {
+                }
+                else -> refreshLayout.isRefreshing = it
+            }
+        })
+        refreshLayout.setOnRefreshListener {
+            infoRepo.tryUpdate()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         i("Dashboard Fragment", "disposing from infoFlow")
-    }
-
-    private fun reload() {
     }
 }
