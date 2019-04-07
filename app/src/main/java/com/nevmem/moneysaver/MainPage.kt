@@ -29,6 +29,8 @@ class MainPage : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
         app = applicationContext as App
 
+        window.enterTransition = null
+
         app.appComponent.inject(this)
 
         mainPageNavigation.setOnNavigationItemSelectedListener {

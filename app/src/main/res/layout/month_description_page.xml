@@ -15,7 +15,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:textSize="20sp"
             android:transitionName="headerTransition"
-            android:paddingBottom="16dp"
+            android:layout_marginBottom="16dp"
     />
     <com.nevmem.moneysaver.views.PieChart
             android:id="@+id/chart"
@@ -23,5 +23,6 @@
             android:layout_width="200dp" android:layout_height="200dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/headerText"
+            android:transitionName="chartTransition"
     />
 </androidx.constraintlayout.widget.ConstraintLayout>

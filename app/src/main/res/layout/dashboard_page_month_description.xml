@@ -34,6 +34,7 @@
                 android:id="@+id/chart"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
+                android:transitionName="chartTransition"
             />
             <ScrollView
                     android:nestedScrollingEnabled="true"

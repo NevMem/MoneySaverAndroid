@@ -2,7 +2,7 @@ package com.nevmem.moneysaver
 
 import android.graphics.Color
 import android.os.Bundle
-import android.transition.Explode
+import android.transition.Fade
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -38,8 +38,9 @@ class MonthDescriptionActivity : AppCompatActivity() {
 
         headerText.text = "Last month description"
 
-        window.sharedElementEnterTransition.duration = 200
-        window.enterTransition = Explode()
+        window.sharedElementEnterTransition.duration = 2000
+        window.enterTransition = Fade()
+        window.exitTransition = null
 
         infoRepo.lastMonthDescription.observe(this, Observer {
             if (it != null) {

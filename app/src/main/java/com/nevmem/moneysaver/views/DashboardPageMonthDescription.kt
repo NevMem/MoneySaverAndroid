@@ -88,7 +88,9 @@ class DashboardPageMonthDescription : Fragment() {
     private fun openMonthDescriptionActivity() {
         val intent = Intent(activity!!, MonthDescriptionActivity::class.java)
         val options = ActivityOptions.makeSceneTransitionAnimation(activity,
-                android.util.Pair<View, String>(descriptionHeading, "headerTransition"))
+                android.util.Pair<View, String>(descriptionHeading, "headerTransition"),
+                android.util.Pair<View, String>(chart, "chartTransition")
+            )
         startActivity(intent, options.toBundle())
     }
 }
