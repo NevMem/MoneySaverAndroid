@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        app:cardBackgroundColor="@color/profile_color"
+        android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+    >
+        <TextView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Your last month description"
+                android:id="@+id/descriptionHeading"
+                android:textSize="20sp"
+        />
+        <GridLayout
+                app:layout_constraintTop_toBottomOf="@id/descriptionHeading"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="match_parent" android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+        >
+            <com.nevmem.moneysaver.views.PieChart
+                android:id="@+id/chart"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+            />
+            <ScrollView
+                    android:nestedScrollingEnabled="true"
+                    android:layout_gravity="fill"
+            >
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:id="@+id/labelsAnchor">
+                </LinearLayout>
+            </ScrollView>
+        </GridLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

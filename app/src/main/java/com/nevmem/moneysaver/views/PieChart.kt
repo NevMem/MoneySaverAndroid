@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.Log.i
 import android.view.View
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.exceptions.WrongChartDataException
@@ -15,11 +16,7 @@ import kotlin.random.Random
 class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
     private var paint: Paint = Paint(0)
     private var values: ArrayList<Double> = ArrayList()
-    private var labels: ArrayList<String> = ArrayList()
     private var colors: ArrayList<Int> = ArrayList()
-    private var description: String = ""
-
-    private var sortedOrder: ArrayList<Int> = ArrayList()
 
     private var mul = 0.0
     private var chartPadding = 10.0f // Default value
@@ -40,6 +37,7 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
         val height = MeasureSpec.getSize(heightMeasureSpec)
         val widthMode = MeasureSpec.getMode(widthMeasureSpec)
         val width = MeasureSpec.getSize(widthMeasureSpec)
+        i("PIE_CHART", "onMeasure() ${width} ${height}")
         setMeasuredDimension(width, height)
     }
 
@@ -51,44 +49,13 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
         }
     }
 
-    private fun setLabels(arr: ArrayList<String>) {
-        labels = arr
+    fun setColors(colors: ArrayList<Int>) {
+        this.colors = colors
     }
 
-    fun setDescription(description: String) {
-        this.description = description
-    }
-
-    private fun generateColors() {
-        colors.clear()
-        val random = Random(System.currentTimeMillis()) // TODO: (color generator)
-        for (index in 0 until (values.size)) {
-            val red = random.nextFloat()
-            val green = random.nextFloat()
-            val blue = random.nextFloat()
-            val cur = -0x1000000 or
-                    ((red * 255.0f + 0.5f).toInt() shl 16) or
-                    ((green * 255.0f + 0.5f).toInt() shl 8) or
-                    (blue * 255.0f + 0.5f).toInt()
-            colors.add(cur)
-        }
-    }
-
-    private fun makeOrder() {
-        sortedOrder.clear()
-        for (index in 0 until (values.size))
-            sortedOrder.add(index)
-        Collections.sort(sortedOrder) { first: Int, second: Int -> values[second].compareTo(values[first]) }
-    }
-
-    fun setData(values: ArrayList<Double>, labels: ArrayList<String>) {
-        if (values.size != labels.size)
-            throw WrongChartDataException("Value and labels arrays has unequal sizes")
+    fun setData(values: ArrayList<Double>, colors: ArrayList<Int>) {
         setValues(values)
-        setLabels(labels)
-        generateColors()
-        makeOrder()
-
+        setColors(colors)
         invalidate()
     }
 
@@ -108,15 +75,14 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         if (canvas == null) return
-        val descriptionHeight = 70f
-        val chartSize = height - 2 * chartPadding - descriptionHeight
-        val textLeftBorder: Float = height.toFloat()
+        val chartSize = height - 2 * chartPadding
 
         clearCanvas(canvas)
 
+        i("PIE_CHART", width.toString() + " " + height.toString())
+
         paint.textSize = 30f
         paint.color = Color.parseColor("#ffffff")
-        canvas.drawText(description, chartPadding, descriptionHeight - 10f, paint)
 
         if (valuesSum == 0.0) {
             emptyValues(canvas)
@@ -129,11 +95,11 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
                 var curAngle = Math.PI * 2.0 * it / valuesSum
                 curAngle = Math.toDegrees(curAngle)
 
-                paint.color = colors[index]
+                paint.color = colors[index % colors.size]
 
                 canvas.drawArc(
-                    chartPadding, chartPadding + descriptionHeight,
-                    chartPadding + chartSize, chartPadding + chartSize + descriptionHeight,
+                    chartPadding, chartPadding,
+                    chartPadding + chartSize, chartPadding + chartSize,
                     prevAngle.toFloat(), curAngle.toFloat(), true, paint
                 )
 
@@ -143,24 +109,9 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
 
         paint.color = Color.parseColor("#191919")
         canvas.drawArc(
-            chartPadding + 30, chartPadding + descriptionHeight + 30,
-            chartPadding + chartSize - 30, chartPadding + chartSize + descriptionHeight - 30,
+            chartPadding + 60, chartPadding + 60,
+            chartPadding + chartSize - 60, chartPadding + chartSize - 60,
             0f, 360f, true, paint
         )
-
-        paint.textSize = 22f
-
-        val percentsWidth = 70f
-
-        for (i in 0 until (sortedOrder.size)) {
-            val index = sortedOrder[i]
-            paint.color = colors[index]
-            canvas.drawText(labels[index], textLeftBorder + percentsWidth, (i + 1) * 34f + descriptionHeight, paint)
-
-            canvas.drawText(
-                (values[index] * 100.0 / valuesSum).toInt().toString() + " %",
-                textLeftBorder, (i + 1) * 34f + descriptionHeight, paint
-            )
-        }
     }
 }
