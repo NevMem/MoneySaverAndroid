@@ -18,6 +18,8 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
     private var values: ArrayList<Double> = ArrayList()
     private var colors: ArrayList<Int> = ArrayList()
 
+    private var chartBackgroundColor = Color.parseColor("#191919")
+
     private var mul = 0.0
     private var chartPadding = 10.0f // Default value
 
@@ -28,6 +30,7 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
 
         val gt = context.theme.obtainStyledAttributes(attrs, R.styleable.PieChart, 0, 0)
         chartPadding = gt.getFloat(R.styleable.PieChart_chartPadding, chartPadding)
+        chartBackgroundColor = gt.getColor(R.styleable.PieChart_chartBackground, chartBackgroundColor)
         gt.recycle()
     }
 
@@ -37,7 +40,6 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
         val height = MeasureSpec.getSize(heightMeasureSpec)
         val widthMode = MeasureSpec.getMode(widthMeasureSpec)
         val width = MeasureSpec.getSize(widthMeasureSpec)
-        i("PIE_CHART", "onMeasure() ${width} ${height}")
         setMeasuredDimension(width, height)
     }
 
@@ -60,7 +62,7 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
     }
 
     private fun clearCanvas(canvas: Canvas) {
-        paint.color = Color.parseColor("#191919")
+        paint.color = chartBackgroundColor
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
     }
 
@@ -78,8 +80,6 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
         val chartSize = height - 2 * chartPadding
 
         clearCanvas(canvas)
-
-        i("PIE_CHART", width.toString() + " " + height.toString())
 
         paint.textSize = 30f
         paint.color = Color.parseColor("#ffffff")
@@ -107,7 +107,7 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
             }
         }
 
-        paint.color = Color.parseColor("#191919")
+        paint.color = chartBackgroundColor
         canvas.drawArc(
             chartPadding + 60, chartPadding + 60,
             chartPadding + chartSize - 60, chartPadding + chartSize - 60,

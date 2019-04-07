@@ -75,11 +75,11 @@ class DashboardFragment : Fragment() {
 
         infoRepo.loading.observe(this, Observer {
             when (it) {
-                null -> {
-                }
+                null -> {}
                 else -> refreshLayout.isRefreshing = it
             }
         })
+
         refreshLayout.setOnRefreshListener {
             infoRepo.tryUpdate()
         }

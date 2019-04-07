@@ -1,6 +1,8 @@
 package com.nevmem.moneysaver.views
 
+import android.app.ActivityOptions
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -10,6 +12,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.nevmem.moneysaver.App
+import com.nevmem.moneysaver.MonthDescriptionActivity
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.repositories.InfoRepository
 import kotlinx.android.synthetic.main.dashboard_page_month_description.*
@@ -46,6 +49,9 @@ class DashboardPageMonthDescription : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.setOnClickListener {
+            openMonthDescriptionActivity()
+        }
         infoRepo.lastMonthDescription.observe(this, Observer {
             if (it != null) {
                 descriptionHeading.text = "Last month description"
@@ -56,8 +62,15 @@ class DashboardPageMonthDescription : Fragment() {
                     values.add(it.byTagTotal[key]!!)
                 }
                 labelsAnchor.removeAllViews()
-                for (index in 0 until(labels.size)) {
-                    labelsAnchor.addView(createLabelRow(activity!!, labelsAnchor, labels[index], colors[index % colors.size]))
+                for (index in 0 until (labels.size)) {
+                    labelsAnchor.addView(
+                        createLabelRow(
+                            activity!!,
+                            labelsAnchor,
+                            labels[index],
+                            colors[index % colors.size]
+                        )
+                    )
                 }
                 chart.setData(values, colors)
             }
@@ -70,5 +83,12 @@ class DashboardPageMonthDescription : Fragment() {
         view.labelName.text = name
         view.labelBage.background.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
         return view
+    }
+
+    private fun openMonthDescriptionActivity() {
+        val intent = Intent(activity!!, MonthDescriptionActivity::class.java)
+        val options = ActivityOptions.makeSceneTransitionAnimation(activity,
+                android.util.Pair<View, String>(descriptionHeading, "headerTransition"))
+        startActivity(intent, options.toBundle())
     }
 }

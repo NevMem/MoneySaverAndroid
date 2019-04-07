@@ -12,5 +12,6 @@
 
     <declare-styleable name="PieChart">
         <attr name="chartPadding" format="float" />
+        <attr name="chartBackground" format="color" />
     </declare-styleable>
 </resources>

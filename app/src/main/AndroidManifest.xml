@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".FullDescriptionActivity" />
         <activity android:name=".MainPage" />
+        <activity android:name=".MonthDescriptionActivity" />
     </application>
 
 </manifest>
