@@ -17,6 +17,11 @@ import kotlinx.android.synthetic.main.main_page_layout.*
 class MainPage : AppCompatActivity() {
     lateinit var app: App
 
+    private var historyFragment: HistoryFragment? = null
+    private var addFragment: AddFragment? = null
+    private var templatesFragment: TemplatesFragment? = null
+    private var dashboardFragment: DashboardFragment? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -30,23 +35,35 @@ class MainPage : AppCompatActivity() {
             System.out.println(it.toString())
             when (it.itemId) {
                 R.id.historyNavigation -> {
-                    val fragment: Fragment = HistoryFragment()
-                    switchFragment(fragment)
+                    if (historyFragment == null)
+                        historyFragment = HistoryFragment()
+                    historyFragment?.let {
+                        switchFragment(it)
+                    }
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.dashBoardPageNavigation -> {
-                    val fragment: Fragment = DashboardFragment()
-                    switchFragment(fragment)
+                    if (dashboardFragment == null)
+                        dashboardFragment = DashboardFragment()
+                    dashboardFragment?.let {
+                        switchFragment(it)
+                    }
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.newRecordNavigation -> {
-                    val fragment: Fragment = AddFragment()
-                    switchFragment(fragment)
+                    if (addFragment == null)
+                        addFragment = AddFragment()
+                    addFragment?.let {
+                        switchFragment(it)
+                    }
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.templatesNavigation -> {
-                    val fragment = TemplatesFragment()
-                    switchFragment(fragment)
+                    if (templatesFragment == null)
+                        templatesFragment = TemplatesFragment()
+                    templatesFragment?.let {
+                        switchFragment(it)
+                    }
                     return@setOnNavigationItemSelectedListener true
                 }
             }
