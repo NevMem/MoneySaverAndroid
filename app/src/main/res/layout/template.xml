@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
                                                    android:layout_height="match_parent">
 
     <TextView
@@ -42,27 +44,32 @@
                 android:layout_marginEnd="8dp" android:layout_marginStart="8dp"
                 tools:visibility="gone"
         />
-        <ImageView android:id="@+id/templateSuccess"
-                   android:visibility="gone"
-                   android:layout_width="match_parent"
-                   android:layout_height="24dp"
-                   android:src="@drawable/check_mark"
-                   android:layout_marginTop="13dp"
-                   tools:visibility="gone"
+        <ImageView
+                android:id="@+id/templateSuccess"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:src="@drawable/check_mark"
+                android:layout_marginTop="13dp"
+                tools:visibility="gone"
+                android:contentDescription="@string/success_image_content_description_string"
         />
-        <ImageView android:id="@+id/templateError"
-                   android:visibility="gone"
-                   android:layout_width="match_parent"
-                   android:layout_height="24dp"
-                   android:src="@drawable/error_mark"
-                   android:layout_marginTop="13dp"
-                   tools:visibility="gone"
+        <ImageView
+                android:id="@+id/templateError"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:src="@drawable/error_mark"
+                android:layout_marginTop="13dp"
+                tools:visibility="gone"
+                android:contentDescription="@string/error_image_content_description_string"
         />
-        <ProgressBar android:layout_width="match_parent" android:layout_height="32dp"
-                     android:visibility="gone" android:id="@+id/templateSending"
-                     android:indeterminateTintMode="src_atop" android:indeterminateTint="#f5b700"
-                     android:layout_marginTop="9dp"
-                     tools:visibility="visible"
+        <ProgressBar
+                android:layout_width="match_parent" android:layout_height="32dp"
+                android:visibility="gone" android:id="@+id/templateSending"
+                android:indeterminateTintMode="src_atop" android:indeterminateTint="#f5b700"
+                android:layout_marginTop="9dp"
+                tools:visibility="visible"
         />
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

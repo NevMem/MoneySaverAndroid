@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nevmem.moneysaver.App
-import com.nevmem.moneysaver.MainPage
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.repositories.HistoryRepository
 import com.nevmem.moneysaver.fragments.adapters.HistoryFragmentAdapter

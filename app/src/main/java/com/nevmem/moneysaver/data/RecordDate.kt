@@ -74,11 +74,11 @@ class RecordDate {
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other is RecordDate) {
-            return other.year == year && other.month == month && other.day == day &&
+        return if (other is RecordDate) {
+            other.year == year && other.month == month && other.day == day &&
                     other.hour == hour && other.minute == minute
         } else {
-            return false
+            false
         }
     }
 

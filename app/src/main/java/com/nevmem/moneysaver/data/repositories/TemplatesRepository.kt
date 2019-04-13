@@ -22,29 +22,19 @@ import javax.inject.Singleton
 import kotlin.collections.ArrayList
 
 @Singleton
-class TemplatesRepository {
+class TemplatesRepository @Inject constructor(
+    private var networkQueue: NetworkQueue,
+    private var userHolder: UserHolder,
+    private var appDatabase: AppDatabase,
+    private var context: Context,
+    private var executor: Executor
+) {
     var templates: MutableLiveData<ArrayList<Template>> = MutableLiveData()
     var loading: MutableLiveData<Boolean> = MutableLiveData()
     var error: MutableLiveData<String> = MutableLiveData()
 
-    private var networkQueue: NetworkQueue
-    private var userHolder: UserHolder
-    private var appDatabase: AppDatabase
-    private var context: Context
-    private var executor: Executor
-
-    @Inject
-    constructor(
-        networkQueue: NetworkQueue, userHolder: UserHolder,
-        appDatabase: AppDatabase, context: Context,
-        executor: Executor
-    ) {
+    init {
         i("TR", "constructor was called")
-        this.networkQueue = networkQueue
-        this.userHolder = userHolder
-        this.appDatabase = appDatabase
-        this.context = context
-        this.executor = executor
         this.executor.execute {
             val list = appDatabase.templateDao().loadAll()
             val buffer = ArrayList<Template>()
@@ -137,13 +127,14 @@ class TemplatesRepository {
         params.put("tag", base.tag)
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiCreateTemplate, params, {
             if (it.has("type")) {
-                if (it.getString("type") == "ok") {
-                    Toast.makeText(context, "Template was successfully added", Toast.LENGTH_LONG).show()
-                    tryUpdate()
-                } else if (it.getString("type") == "error")
-                    Toast.makeText(context, it.getString("error"), Toast.LENGTH_LONG).show()
-                else
-                    Toast.makeText(context, "Server response has unknown format", Toast.LENGTH_LONG).show()
+                when {
+                    it.getString("type") == "ok" -> {
+                        Toast.makeText(context, "Template was successfully added", Toast.LENGTH_LONG).show()
+                        tryUpdate()
+                    }
+                    it.getString("type") == "error" -> Toast.makeText(context, it.getString("error"), Toast.LENGTH_LONG).show()
+                    else -> Toast.makeText(context, "Server response has unknown format", Toast.LENGTH_LONG).show()
+                }
             } else {
                 Toast.makeText(context, "Server response has unknown format", Toast.LENGTH_LONG).show()
             }
@@ -183,12 +174,10 @@ class TemplatesRepository {
             {
                 i("TR", it.toString())
                 if (it.has("type")) {
-                    if (it.getString("type") == "ok") {
-                        updateSuccess(templateIndex)
-                    } else if (it.getString("type") == "error") {
-                        updateError(templateIndex, it.getString("error"))
-                    } else {
-                        updateError(templateIndex, "Server response has unknown format")
+                    when {
+                        it.getString("type") == "ok" -> updateSuccess(templateIndex)
+                        it.getString("type") == "error" -> updateError(templateIndex, it.getString("error"))
+                        else -> updateError(templateIndex, "Server response has unknown format")
                     }
                 } else {
                     updateError(templateIndex, "Server response has unknown format")
@@ -215,15 +204,15 @@ class TemplatesRepository {
         error.value = ""
         val json = JSONObject(str)
         if (json.has("type")) {
-            if (json.getString("type") == "ok") {
-                val array = json.getJSONArray("data")
-                val parsed = parseLoadedTemplates(array)
-                templates.value = parsed
-                resolveDataConflicts(parsed)
-            } else if (json.getString("type") == "error") {
-                error.value = json.getString("error")
-            } else {
-                error.value = "Server response has unknown format"
+            when {
+                json.getString("type") == "ok" -> {
+                    val array = json.getJSONArray("data")
+                    val parsed = parseLoadedTemplates(array)
+                    templates.value = parsed
+                    resolveDataConflicts(parsed)
+                }
+                json.getString("type") == "error" -> error.value = json.getString("error")
+                else -> error.value = "Server response has unknown format"
             }
         } else {
             error.value = "Server response has unknown format"

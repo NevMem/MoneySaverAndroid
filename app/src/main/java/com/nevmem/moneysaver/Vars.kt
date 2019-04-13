@@ -1,6 +1,6 @@
 package com.nevmem.moneysaver
 
-public class Vars {
+class Vars {
     companion object {
         private const val ServerBase = "http://zverevkazan.com"
         const val ServerApiLogin = "$ServerBase/api/login"

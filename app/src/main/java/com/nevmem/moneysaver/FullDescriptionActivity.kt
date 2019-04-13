@@ -75,61 +75,6 @@ class FullDescriptionActivity : FragmentActivity() {
     }
 
     private fun setupLiveDateObservers() {
-        /* viewModel.currentYear.observe(this, Observer {
-            year.text = it
-            if (viewModel.prevYear.value != it) {
-                year.setTextColor(ContextCompat.getColor(this, R.color.specialColor))
-            } else {
-                year.setTextColor(ContextCompat.getColor(this, R.color.mainFontColor))
-            }
-            comparePrevCurrent()
-        })
-        viewModel.currentMonth.observe(this, Observer {
-            month.text = it
-            if (viewModel.prevMonth.value != it) {
-                month.setTextColor(ContextCompat.getColor(this, R.color.specialColor))
-            } else {
-                month.setTextColor(ContextCompat.getColor(this, R.color.mainFontColor))
-            }
-            comparePrevCurrent()
-        })
-        viewModel.currentDay.observe(this, Observer {
-            day.text = it
-            if (viewModel.prevDay.value != it) {
-                day.setTextColor(ContextCompat.getColor(this, R.color.specialColor))
-            } else {
-                day.setTextColor(ContextCompat.getColor(this, R.color.mainFontColor))
-            }
-            comparePrevCurrent()
-        })
-        viewModel.currentHour.observe(this, Observer {
-            hour.text = it
-            if (viewModel.prevHour.value != it) {
-                hour.setTextColor(ContextCompat.getColor(this, R.color.specialColor))
-            } else {
-                hour.setTextColor(ContextCompat.getColor(this, R.color.mainFontColor))
-            }
-            comparePrevCurrent()
-        })
-        viewModel.currentMinute.observe(this, Observer {
-            minute.text = it
-            if (viewModel.prevMinute.value != it) {
-                minute.setTextColor(ContextCompat.getColor(this, R.color.specialColor))
-            } else {
-                minute.setTextColor(ContextCompat.getColor(this, R.color.mainFontColor))
-            }
-            comparePrevCurrent()
-        })
-
-        viewModel.currentDaily.observe(this, Observer {
-            if (it != null) {
-                dailySwitch.isChecked = it == true
-            } else {
-                dailySwitch.isChecked = false
-            }
-            comparePrevCurrent()
-        }) */
-
         viewModel.needChange.observe(this, Observer {
             if (it!!) {
                 saveChangesButton.visibility = View.VISIBLE

@@ -17,6 +17,11 @@ import kotlinx.android.synthetic.main.main_page_layout.*
 class MainPage : AppCompatActivity() {
     lateinit var app: App
 
+    private var historyFragment: HistoryFragment? = null
+    private var addFragment: AddFragment? = null
+    private var templatesFragment: TemplatesFragment? = null
+    private var dashboardFragment: DashboardFragment? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -24,29 +29,43 @@ class MainPage : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
         app = applicationContext as App
 
+        window.enterTransition = null
+
         app.appComponent.inject(this)
 
         mainPageNavigation.setOnNavigationItemSelectedListener {
             System.out.println(it.toString())
             when (it.itemId) {
                 R.id.historyNavigation -> {
-                    val fragment: Fragment = HistoryFragment()
-                    switchFragment(fragment)
+                    if (historyFragment == null)
+                        historyFragment = HistoryFragment()
+                    historyFragment?.let { fragment ->
+                        switchFragment(fragment)
+                    }
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.dashBoardPageNavigation -> {
-                    val fragment: Fragment = DashboardFragment()
-                    switchFragment(fragment)
+                    if (dashboardFragment == null)
+                        dashboardFragment = DashboardFragment()
+                    dashboardFragment?.let { fragment ->
+                        switchFragment(fragment)
+                    }
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.newRecordNavigation -> {
-                    val fragment: Fragment = AddFragment()
-                    switchFragment(fragment)
+                    if (addFragment == null)
+                        addFragment = AddFragment()
+                    addFragment?.let { fragment ->
+                        switchFragment(fragment)
+                    }
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.templatesNavigation -> {
-                    val fragment = TemplatesFragment()
-                    switchFragment(fragment)
+                    if (templatesFragment == null)
+                        templatesFragment = TemplatesFragment()
+                    templatesFragment?.let { fragment ->
+                        switchFragment(fragment)
+                    }
                     return@setOnNavigationItemSelectedListener true
                 }
             }
@@ -56,7 +75,7 @@ class MainPage : AppCompatActivity() {
         mainPageNavigation.selectedItemId = R.id.dashBoardPageNavigation
     }
 
-    fun switchFragment(fragment: Fragment) {
+    private fun switchFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.anchor, fragment)
         transaction.addToBackStack(null)

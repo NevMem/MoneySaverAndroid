@@ -11,13 +11,7 @@ import java.util.concurrent.Executors
 import javax.inject.Singleton
 
 @Module
-class DataModule {
-    private var context: Context
-
-    constructor(context: Context) {
-        this.context = context
-    }
-
+class DataModule(private var context: Context) {
     @Provides
     @Singleton
     fun providesUser(): UserHolder {

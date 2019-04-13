@@ -29,17 +29,17 @@ class WalletsRepository @Inject constructor(
     private fun loadFromNet() {
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiWallets, userHolder.credentialsJson(), {
             if (it.has("type")) {
-                if (it.getString("type") == "ok") {
-                    val array = it.getJSONArray("data")
-                    val list = ArrayList<Wallet>()
-                    for (index in 0 until(array.length()))
-                        list.add(Wallet(array.getString(index)))
-                    i(tag, "From net received ${list.size} elements")
-                    resolveConflicts(list)
-                } else if (it.getString("type") == "error") {
-                    error.postValue(it.getString("type"))
-                } else {
-                    error.postValue("Server error has unknown format")
+                when {
+                    it.getString("type") == "ok" -> {
+                        val array = it.getJSONArray("data")
+                        val list = ArrayList<Wallet>()
+                        for (index in 0 until(array.length()))
+                            list.add(Wallet(array.getString(index)))
+                        i(tag, "From net received ${list.size} elements")
+                        resolveConflicts(list)
+                    }
+                    it.getString("type") == "error" -> error.postValue(it.getString("type"))
+                    else -> error.postValue("Server error has unknown format")
                 }
             } else {
                 error.postValue("Server error has unknown format")

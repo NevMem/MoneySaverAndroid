@@ -64,14 +64,14 @@ class LoginPageActivity : FragmentActivity() {
             loginModel.loading.postValue(false)
             if (it.has("type")) {
                 val type = it.getString("type")
-                if (type == "ok") {
-                    val json = it.getJSONObject("data")
-                    userHolder.initializeByJson(json)
-                    goToHomePage()
-                } else if (type == "error") {
-                    loginModel.error.postValue(it.getString("error"))
-                } else {
-                    loginModel.error.postValue("Sever response has unknown format")
+                when (type) {
+                    "ok" -> {
+                        val json = it.getJSONObject("data")
+                        userHolder.initializeByJson(json)
+                        goToHomePage()
+                    }
+                    "error" -> loginModel.error.postValue(it.getString("error"))
+                    else -> loginModel.error.postValue("Sever response has unknown format")
                 }
             } else {
                 loginModel.error.postValue("Sever response has unknown format")

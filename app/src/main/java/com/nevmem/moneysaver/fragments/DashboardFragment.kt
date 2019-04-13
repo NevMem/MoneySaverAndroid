@@ -60,9 +60,9 @@ class DashboardFragment : Fragment() {
 
             val animator = ValueAnimator.ofFloat(0f, 1f)
             animator.interpolator = AccelerateDecelerateInterpolator()
-            animator.addUpdateListener {
+            animator.addUpdateListener { anim ->
                 if (sumDayChart != null) {
-                    sumDayChart.multiplier = it.animatedValue as Float
+                    sumDayChart.multiplier = anim.animatedValue as Float
                     sumDayChart.invalidate()
                 }
             }
@@ -71,29 +71,15 @@ class DashboardFragment : Fragment() {
             sumDayChart.invalidate()
         })
 
-        infoRepo.lastMonthDescription.observe(this, Observer {
-            if (it != null) {
-                monthDescription.setDescription("Your last month description")
-                val values = ArrayList<Double>()
-                val labels = ArrayList<String>()
-                for (key in it.byTagTotal.keys) {
-                    labels.add(key)
-                    values.add(it.byTagTotal[key]!!)
-                }
-                monthDescription.setData(values, labels)
-                monthDescription.invalidate()
-            }
-        })
-
         userName.text = userHolder.user.firstName
 
         infoRepo.loading.observe(this, Observer {
             when (it) {
-                null -> {
-                }
+                null -> {}
                 else -> refreshLayout.isRefreshing = it
             }
         })
+
         refreshLayout.setOnRefreshListener {
             infoRepo.tryUpdate()
         }

@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="horizontal"
-              android:id="@+id/addNewTemplateView"
-              android:visibility="gone"
-              tools:visibility="visible"
-              android:background="@drawable/add_template_background"
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/addNewTemplateView"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:background="@drawable/add_template_background"
 >
-    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
-                  android:orientation="vertical"
-                  android:gravity="center"
-                  android:paddingTop="10dp" android:paddingBottom="10dp"
-                  android:paddingStart="10dp" android:paddingEnd="10dp"
+    <LinearLayout
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingTop="10dp" android:paddingBottom="10dp"
+            android:paddingStart="10dp" android:paddingEnd="10dp"
     >
-        <ImageView android:layout_height="40dp" android:layout_width="40dp"
-                   android:src="@drawable/add_image" />
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                  android:text="Add new template"
+        <ImageView
+                android:layout_height="40dp" android:layout_width="40dp"
+                android:src="@drawable/add_image" android:contentDescription="@string/add_image_content_description_string"
+        />
+        <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/add_new_template_string"
         />
     </LinearLayout>
 </LinearLayout>

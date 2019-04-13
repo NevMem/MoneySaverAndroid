@@ -55,24 +55,23 @@ class TemplatesFragment : Fragment() {
             templateSuccess.visibility = View.GONE
             templateSending.visibility = View.GONE
             templateError.visibility = View.GONE
-            if (template.sending) {
-                templateSending.visibility = View.VISIBLE
-            } else if (template.success) {
-                templateSuccess.visibility = View.VISIBLE
-            } else if (template.error != null) {
-                templateError.visibility = View.VISIBLE
+            when {
+                template.sending -> templateSending.visibility = View.VISIBLE
+                template.success -> templateSuccess.visibility = View.VISIBLE
+                template.error != null -> {
+                    templateError.visibility = View.VISIBLE
 
-                templateError.setOnClickListener {
-                    val popupView = InfoDialog(activity!!, template.error.toString())
-                    val popup =
-                        PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-                    popup.showAtLocation(templatesHeader, Gravity.CENTER, 0, 0)
-                    popupView.setOkListener {
-                        popup.dismiss()
+                    templateError.setOnClickListener {
+                        val popupView = InfoDialog(activity!!, template.error.toString())
+                        val popup =
+                            PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                        popup.showAtLocation(templatesHeader, Gravity.CENTER, 0, 0)
+                        popupView.setOkListener {
+                            popup.dismiss()
+                        }
                     }
                 }
-            } else {
-                useIt.visibility = View.VISIBLE
+                else -> useIt.visibility = View.VISIBLE
             }
             setOnLongClickListener {
                 val popupView = ConfirmationDialog(activity!!, "Do you really want delete this template?")
@@ -153,9 +152,5 @@ class TemplatesFragment : Fragment() {
         }
 
         popup.showAtLocation(templatesHeader, Gravity.CENTER, 0, 0)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
     }
 }

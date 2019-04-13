@@ -27,7 +27,7 @@ class User(var login: String, var token: String, var firstName: String, var last
             editor.putString("user.token", user.token)
             editor.putString("user.first_name", user.firstName)
             editor.putString("user.last_name", user.lastName)
-            editor.commit()
+            editor.apply()
         }
 
         fun clearCredentials(context: Context) {
@@ -37,7 +37,7 @@ class User(var login: String, var token: String, var firstName: String, var last
                 remove("user.token")
                 remove("user.first_name")
                 remove("user.last_name")
-                commit()
+                apply()
             }
         }
     }

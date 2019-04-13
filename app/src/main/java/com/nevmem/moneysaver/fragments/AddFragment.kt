@@ -25,7 +25,7 @@ import javax.inject.Inject
 class AddFragment : Fragment() {
     lateinit var app: App
     lateinit var parent: MainPage
-    lateinit var viewModel: AddFragmentViewModel
+    private lateinit var viewModel: AddFragmentViewModel
 
     @Inject
     lateinit var walletsRepo: WalletsRepository
@@ -61,8 +61,8 @@ class AddFragment : Fragment() {
         tagsRepo.tags.observe(this, Observer {
             if (it != null) {
                 val strings = ArrayList<String>()
-                it.forEach {
-                    strings.add(it.name)
+                it.forEach {tag -> 
+                    strings.add(tag.name)
                 }
                 tags.adapter =
                     ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, strings)
@@ -72,8 +72,8 @@ class AddFragment : Fragment() {
         walletsRepo.wallets.observe(this, Observer {
             if (it != null) {
                 val strings = ArrayList<String>()
-                it.forEach {
-                    strings.add(it.name)
+                it.forEach {wallet ->
+                    strings.add(wallet.name)
                 }
                 chooseWallet.adapter =
                     ArrayAdapter<String>(parent, android.R.layout.simple_spinner_dropdown_item, strings)
@@ -134,8 +134,8 @@ class AddFragment : Fragment() {
         viewModel.success.postValue("")
         historyRepo.addRecord(record) {
             viewModel.loading.postValue(false)
-            when {
-                it == null -> viewModel.success.postValue("Record was added")
+            when (it) {
+                null -> viewModel.success.postValue("Record was added")
                 else -> viewModel.error.postValue(it)
             }
         }

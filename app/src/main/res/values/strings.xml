@@ -24,4 +24,12 @@
     <string name="defaultTrackedDays">Over 9000 years</string>
     <string name="info_text_1">Time info(click to change):</string>
     <string name="noTemplates">You haven\'t templates</string>
+    <string name="add_image_content_description_string">Add image</string>
+    <string name="add_new_template_string">Add new template</string>
+    <string name="search_icon_content_description_string">Search icon</string>
+    <string name="search_string">Search</string>
+    <string name="badge_for_label_content_description_string">Just a badge for label</string>
+    <string name="delete_record_icon_content_description_string">Delete record icon</string>
+    <string name="success_image_content_description_string">Success image</string>
+    <string name="error_image_content_description_string">Error image</string>
 </resources>

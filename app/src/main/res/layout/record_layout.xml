@@ -31,11 +31,13 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/deleteRecordButton"/>
 
-            <ImageView android:layout_width="wrap_content" android:layout_height="60dp"
-                       android:src="@drawable/delete_image" app:layout_constraintEnd_toEndOf="parent"
-                       app:layout_constraintTop_toTopOf="parent"
-                       android:padding="20dp" android:id="@+id/deleteRecordButton" android:paddingEnd="10dp"
-                       android:paddingStart="10dp"/>
+            <ImageView
+                    android:layout_width="wrap_content" android:layout_height="60dp"
+                    android:src="@drawable/delete_image" app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/delete_record_icon_content_description_string"
+                    android:padding="20dp" android:id="@+id/deleteRecordButton" android:paddingEnd="10dp"
+                    android:paddingStart="10dp"/>
 
             <TextView
                     tools:text="@string/defaultRecordValue"
