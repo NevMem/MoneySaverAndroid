@@ -10,16 +10,15 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 
-class NetworkQueue {
-    var requestQueue: RequestQueue
+class NetworkQueue(ctx: Context) {
+    private var requestQueue: RequestQueue = Volley.newRequestQueue(ctx)
     private val tag = "NET_QUEUE"
 
     companion object {
         const val DEFAULT_TIMEOUT: Long = 5000
     }
 
-    constructor(ctx: Context) {
-        requestQueue = Volley.newRequestQueue(ctx)
+    init {
         i(tag, "NetworkQueue constructor was called")
     }
 

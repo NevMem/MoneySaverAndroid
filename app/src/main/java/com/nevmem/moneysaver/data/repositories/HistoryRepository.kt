@@ -34,7 +34,7 @@ class HistoryRepository @Inject constructor(
         loadFromNet()
     }
 
-    public fun tryUpdate() {
+    fun tryUpdate() {
         loadFromNet()
     }
 
@@ -83,8 +83,8 @@ class HistoryRepository @Inject constructor(
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiDeleteRecord, params, {
             i(tag, "Received $it")
             if (it.has("type")) {
-                if (it.getString("type") == "ok") {
-                    executor.execute {
+                when {
+                    it.getString("type") == "ok" -> executor.execute {
                         with(appDatabase.historyDao()) {
                             i(tag, "Delete request ${record.uid}")
                             val toDelete = findById(record.id)
@@ -93,10 +93,8 @@ class HistoryRepository @Inject constructor(
                             history.postValue(ArrayList(loadAll()))
                         }
                     }
-                } else if (it.getString("type") == "error") {
-                    error.postValue(it.getString("error"))
-                } else {
-                    error.postValue("Server response has unknown format")
+                    it.getString("type") == "error" -> error.postValue(it.getString("error"))
+                    else -> error.postValue("Server response has unknown format")
                 }
             }
         })
@@ -129,15 +127,15 @@ class HistoryRepository @Inject constructor(
         i(tag, "Requesting")
         error.value = ""
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiHistory, userHolder.credentialsJson(), {
-            i(tag, "${it.toString()}")
+            i(tag, "$it")
             if (it.has("type")) {
-                if (it.getString("type") == "ok") {
-                    val parsed = parseHistory(it.getJSONArray("data"))
-                    resolveConflicts(parsed)
-                } else if (it.getString("type") == "error") {
-                    error.value = it.getString("type")
-                } else {
-                    error.value = "Server response has unknown format"
+                when {
+                    it.getString("type") == "ok" -> {
+                        val parsed = parseHistory(it.getJSONArray("data"))
+                        resolveConflicts(parsed)
+                    }
+                    it.getString("type") == "error" -> error.value = it.getString("type")
+                    else -> error.value = "Server response has unknown format"
                 }
             }
         })

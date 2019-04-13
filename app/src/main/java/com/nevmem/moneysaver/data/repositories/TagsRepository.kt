@@ -29,7 +29,7 @@ class TagsRepository @Inject constructor(
         tryUpdate()
     }
 
-    fun tryUpdate() {
+    private fun tryUpdate() {
         loadFromDatabase()
         loadFromNet()
     }
@@ -39,16 +39,16 @@ class TagsRepository @Inject constructor(
         loading.postValue(true)
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiTags, userHolder.credentialsJson(), {
             if (it.has("type")) {
-                if (it.getString("type") == "ok") {
-                    val loaded = ArrayList<Tag>()
-                    val fromJson = it.getJSONArray("data")
-                    for (i in 0 until (fromJson.length()))
-                        loaded.add(Tag(fromJson[i].toString()))
-                    resolveConflicts(loaded)
-                } else if (it.getString("type") == "error") {
-                    error.postValue(it.getString("error"))
-                } else {
-                    error.postValue("Unknown server response format")
+                when {
+                    it.getString("type") == "ok" -> {
+                        val loaded = ArrayList<Tag>()
+                        val fromJson = it.getJSONArray("data")
+                        for (i in 0 until (fromJson.length()))
+                            loaded.add(Tag(fromJson[i].toString()))
+                        resolveConflicts(loaded)
+                    }
+                    it.getString("type") == "error" -> error.postValue(it.getString("error"))
+                    else -> error.postValue("Unknown server response format")
                 }
             }
             loading.postValue(false)

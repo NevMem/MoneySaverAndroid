@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools"
         android:padding="10dp"
 >
 
@@ -24,10 +24,11 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/searchIcon"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/search_icon_content_description_string"
             />
             <TextView
                     android:layout_width="0dp" android:layout_height="40dp"
-                    android:text="Hello from header"
+                    tools:text="Hello from header"
                     android:id="@+id/history_fragment_header_text"
                     android:textSize="24sp"
                     app:layout_constraintTop_toTopOf="parent"
@@ -35,10 +36,10 @@
                     app:layout_constraintStart_toEndOf="@id/searchIcon"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
-                    android:gravity="left|center"
+                    android:gravity="start|center"
             />
             <EditText
-                    android:hint="Search"
+                    android:hint="@string/search_string"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/history_fragment_header_text"
                     app:layout_constraintEnd_toEndOf="parent"

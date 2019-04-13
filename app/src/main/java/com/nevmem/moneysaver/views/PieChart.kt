@@ -5,13 +5,9 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log.i
 import android.view.View
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.exceptions.WrongChartDataException
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.random.Random
 
 class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
     private var paint: Paint = Paint(0)
@@ -20,7 +16,6 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
 
     private var chartBackgroundColor = Color.parseColor("#191919")
 
-    private var mul = 0.0
     private var chartPadding = 10.0f // Default value
 
     private var valuesSum: Double = 0.0
@@ -51,11 +46,15 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
         }
     }
 
-    fun setColors(colors: ArrayList<Int>) {
+    private fun setColors(colors: ArrayList<Int>) {
         this.colors = colors
     }
 
     fun setData(values: ArrayList<Double>, colors: ArrayList<Int>) {
+        values.forEach {
+            if (it < 0.0)
+                throw WrongChartDataException("Values in chart cannot be null")
+        }
         setValues(values)
         setColors(colors)
         invalidate()
@@ -66,7 +65,7 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
     }
 
-    fun emptyValues(canvas: Canvas) {
+    private fun emptyValues(canvas: Canvas) {
         // TODO: (handling empty values)
         paint.color = Color.parseColor("#afafaf")
         val message = "There is nothing to show"

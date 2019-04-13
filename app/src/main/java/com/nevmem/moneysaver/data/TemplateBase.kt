@@ -1,15 +1,8 @@
 package com.nevmem.moneysaver.data
 
-class TemplateBase {
-    var name: String
-    var value: Double
-    var tag: String
-    var wallet: String
-
-    constructor(fromName: String, fromValue: Double, fromTag: String, fromWallet: String) {
-        name = fromName
-        value = fromValue
-        tag = fromTag
-        wallet = fromWallet
-    }
+class TemplateBase(fromName: String, fromValue: Double, fromTag: String, fromWallet: String) {
+    var name: String = fromName
+    var value: Double = fromValue
+    var tag: String = fromTag
+    var wallet: String = fromWallet
 }

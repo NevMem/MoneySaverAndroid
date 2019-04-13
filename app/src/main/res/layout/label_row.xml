@@ -7,8 +7,9 @@
         android:padding="3dp"
 >
     <ImageView
-            android:id="@+id/labelBage"
-            android:layout_marginTop="2dp"
+            android:id="@+id/labelBadge"
+            android:layout_marginTop="3dp"
+            android:contentDescription="@string/badge_for_label_content_description_string"
             android:layout_width="10dp" android:layout_height="10dp" android:background="@drawable/rounder"
     />
     <TextView
@@ -17,5 +18,6 @@
             android:layout_weight="1"
             android:id="@+id/labelName" android:layout_height="14dp"
             android:layout_width="0dp" android:textColor="#FFFFFF" tools:text="Some label"
-            android:textSize="10sp"/>
+            android:textSize="12sp"
+    />
 </LinearLayout>

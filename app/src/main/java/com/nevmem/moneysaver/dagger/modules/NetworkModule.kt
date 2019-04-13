@@ -7,14 +7,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class NetworkModule {
-
-    private var context: Context
-
-    constructor(context: Context) {
-        this.context = context
-    }
-
+class NetworkModule(private var context: Context) {
     @Provides
     @Singleton
     fun providesNetworkQueue(): NetworkQueue {

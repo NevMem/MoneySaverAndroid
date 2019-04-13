@@ -39,32 +39,32 @@ class MainPage : AppCompatActivity() {
                 R.id.historyNavigation -> {
                     if (historyFragment == null)
                         historyFragment = HistoryFragment()
-                    historyFragment?.let {
-                        switchFragment(it)
+                    historyFragment?.let { fragment ->
+                        switchFragment(fragment)
                     }
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.dashBoardPageNavigation -> {
                     if (dashboardFragment == null)
                         dashboardFragment = DashboardFragment()
-                    dashboardFragment?.let {
-                        switchFragment(it)
+                    dashboardFragment?.let { fragment ->
+                        switchFragment(fragment)
                     }
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.newRecordNavigation -> {
                     if (addFragment == null)
                         addFragment = AddFragment()
-                    addFragment?.let {
-                        switchFragment(it)
+                    addFragment?.let { fragment ->
+                        switchFragment(fragment)
                     }
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.templatesNavigation -> {
                     if (templatesFragment == null)
                         templatesFragment = TemplatesFragment()
-                    templatesFragment?.let {
-                        switchFragment(it)
+                    templatesFragment?.let { fragment ->
+                        switchFragment(fragment)
                     }
                     return@setOnNavigationItemSelectedListener true
                 }
@@ -75,7 +75,7 @@ class MainPage : AppCompatActivity() {
         mainPageNavigation.selectedItemId = R.id.dashBoardPageNavigation
     }
 
-    fun switchFragment(fragment: Fragment) {
+    private fun switchFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.anchor, fragment)
         transaction.addToBackStack(null)

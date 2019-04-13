@@ -23,7 +23,7 @@ class DashboardPageMonthDescription : Fragment() {
     @Inject
     lateinit var infoRepo: InfoRepository
 
-    var colors = arrayListOf(
+    private var colors = arrayListOf(
         Color.parseColor("#03f7eb"),
         Color.parseColor("#18ff6d"),
         Color.parseColor("#ff9505"),
@@ -81,7 +81,7 @@ class DashboardPageMonthDescription : Fragment() {
         val inflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.label_row, parent, false)
         view.labelName.text = name
-        view.labelBage.background.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
+        view.labelBadge.background.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
         return view
     }
 

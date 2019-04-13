@@ -23,7 +23,6 @@ class InfoRepository
     var info = MutableLiveData<Info>(Info())
     var lastMonthDescription = MutableLiveData<MonthDescription>()
     var error = MutableLiveData<String>("")
-    var success = MutableLiveData<String>("")
     var loading = MutableLiveData<Boolean>(false)
 
     init {
@@ -126,21 +125,21 @@ class InfoRepository
             loading.postValue(false)
             if (it.has("type")) {
                 val type = it.getString("type")
-                if (type == "ok") {
-                    val info = Info()
-                    val infoJson = it.getJSONObject("info")
-                    info.fromJSON(infoJson)
+                when (type) {
+                    "ok" -> {
+                        val info = Info()
+                        val infoJson = it.getJSONObject("info")
+                        info.fromJSON(infoJson)
 
-                    val monthSum = infoJson.getJSONObject("monthSum")
-                    val monthsDescriptions = parseMonthsDescriptions(monthSum)
+                        val monthSum = infoJson.getJSONObject("monthSum")
+                        val monthsDescriptions = parseMonthsDescriptions(monthSum)
 
-                    resolveInfoConflicts(info)
-                    resolveMonthsDescriptionsConflicts(monthsDescriptions)
-                    loadFromDatabase()
-                } else if (type == "error") {
-                    error.postValue(it.getString("error"))
-                } else {
-                    error.postValue("Server response has unknown format")
+                        resolveInfoConflicts(info)
+                        resolveMonthsDescriptionsConflicts(monthsDescriptions)
+                        loadFromDatabase()
+                    }
+                    "error" -> error.postValue(it.getString("error"))
+                    else -> error.postValue("Server response has unknown format")
                 }
             } else {
                 error.postValue("Sever response has unknown format")

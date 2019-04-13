@@ -68,24 +68,28 @@
                      android:id="@+id/newTemplateWallet" android:spinnerMode="dialog"/>
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="48dp"
-                      android:orientation="horizontal"
-                      app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-                      app:layout_constraintTop_toBottomOf="@id/pickers"
-                      android:layout_marginTop="10dp"
-                      android:id="@+id/linearLayout4">
-            <Button android:id="@+id/okButton" android:layout_width="120dp" android:layout_height="wrap_content"
-                    android:background="@drawable/ok_button_background"
-                    android:layout_weight="1"
-                    android:text="Ok"
-            />
-            <Space android:layout_width="wrap_content" android:layout_height="wrap_content"
-                   android:layout_weight="2"
-            />
-            <Button android:id="@+id/dismissButton" android:layout_width="120dp" android:layout_height="wrap_content"
+        <LinearLayout
+                android:layout_width="0dp" android:layout_height="48dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pickers"
+                android:layout_marginTop="10dp"
+                android:id="@+id/linearLayout4">
+            <Button
+                    android:id="@+id/dismissButton" android:layout_width="120dp" android:layout_height="wrap_content"
                     android:background="@drawable/dismiss_button_background"
                     android:layout_weight="1"
                     android:text="Cancel"
+            />
+            <Space
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_weight="2"
+            />
+            <Button
+                    android:id="@+id/okButton" android:layout_width="120dp" android:layout_height="wrap_content"
+                    android:background="@drawable/ok_button_background"
+                    android:layout_weight="1"
+                    android:text="Ok"
             />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

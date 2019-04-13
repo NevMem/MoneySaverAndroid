@@ -60,9 +60,9 @@ class DashboardFragment : Fragment() {
 
             val animator = ValueAnimator.ofFloat(0f, 1f)
             animator.interpolator = AccelerateDecelerateInterpolator()
-            animator.addUpdateListener {
+            animator.addUpdateListener { anim ->
                 if (sumDayChart != null) {
-                    sumDayChart.multiplier = it.animatedValue as Float
+                    sumDayChart.multiplier = anim.animatedValue as Float
                     sumDayChart.invalidate()
                 }
             }

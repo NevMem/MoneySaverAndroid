@@ -1,9 +1,6 @@
 package com.nevmem.moneysaver.fragments.adapters
 
 import android.app.Activity
-import android.app.ActivityOptions
-import android.content.Context
-import android.content.Intent
 import android.util.Log.i
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -13,21 +10,18 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.nevmem.moneysaver.FullDescriptionActivity
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.repositories.HistoryRepository
 import com.nevmem.moneysaver.views.ConfirmationDialog
-import kotlinx.android.synthetic.main.record_layout.view.*
 
 
 class HistoryFragmentAdapter(
     private val activity: Activity,
-    private val lifeCycleOwner: LifecycleOwner,
+    lifeCycleOwner: LifecycleOwner,
     private val historyRepo: HistoryRepository
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -47,14 +41,14 @@ class HistoryFragmentAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        when {
-            viewType == ViewHolderType.HEADER.type -> {
+        return when (viewType) {
+            ViewHolderType.HEADER.type -> {
                 val header = LayoutInflater.from(parent.context).inflate(R.layout.history_page_header, parent, false)
-                return HeaderViewHolder(header)
+                HeaderViewHolder(header)
             }
             else -> {
                 val header = LayoutInflater.from(parent.context).inflate(R.layout.record_layout, parent, false)
-                return ElementViewHolder(header)
+                ElementViewHolder(header)
             }
         }
     }
