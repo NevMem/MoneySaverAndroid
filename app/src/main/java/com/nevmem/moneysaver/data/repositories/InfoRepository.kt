@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.data.Info
 import com.nevmem.moneysaver.data.MonthDescription
-import com.nevmem.moneysaver.data.NetworkQueue
+import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.UserHolder
 import com.nevmem.moneysaver.room.AppDatabase
 import org.json.JSONObject
@@ -16,7 +16,7 @@ import javax.inject.Singleton
 @Singleton
 class InfoRepository
 @Inject constructor(
-    var networkQueue: NetworkQueue, var appDatabase: AppDatabase,
+    var networkQueue: NetworkQueueBase, var appDatabase: AppDatabase,
     var executor: Executor, var userHolder: UserHolder
 ) {
     private var tag = "I_REP"

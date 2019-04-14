@@ -8,23 +8,20 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import dagger.Binds
 import org.json.JSONObject
 
-class NetworkQueue(ctx: Context) {
+class NetworkQueue(ctx: Context) : NetworkQueueBase {
     private var requestQueue: RequestQueue = Volley.newRequestQueue(ctx)
     private val tag = "NET_QUEUE"
-
-    companion object {
-        const val DEFAULT_TIMEOUT: Long = 5000
-    }
 
     init {
         i(tag, "NetworkQueue constructor was called")
     }
 
-    fun infinitePostJsonObjectRequest(
+    override fun infinitePostJsonObjectRequest(
         url: String, params: JSONObject,
-        resolve: (JSONObject) -> Unit, timeout: Long = DEFAULT_TIMEOUT
+        resolve: (JSONObject) -> Unit, timeout: Long
     ) {
         i(tag, "Starting loading json object from $url")
         val request = JsonObjectRequest(Request.Method.POST, url, params, {
@@ -40,12 +37,12 @@ class NetworkQueue(ctx: Context) {
         requestQueue.add(request)
     }
 
-    fun infinitePostStringRequest(
+    override fun infinitePostStringRequest(
         url: String, params: JSONObject,
-        resolve: (String) -> Unit, timeout: Long = DEFAULT_TIMEOUT
+        resolve: (String) -> Unit, timeout: Long
     ) {
         i(tag, "Starting loading string from $url")
-        val request = object : StringRequest(Request.Method.POST, url, {
+        val request = object : StringRequest(Method.POST, url, {
             i(tag, "Successfully loaded string from $url")
             resolve(it)
         }, {

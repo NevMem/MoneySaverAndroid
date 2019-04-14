@@ -5,7 +5,7 @@ import android.os.Looper
 import android.util.Log.i
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
-import com.nevmem.moneysaver.data.NetworkQueue
+import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.RecordDate
 import com.nevmem.moneysaver.data.UserHolder
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 
 @Singleton
 class HistoryRepository @Inject constructor(
-    private var networkQueue: NetworkQueue,
+    private var networkQueue: NetworkQueueBase,
     private var userHolder: UserHolder,
     private var executor: Executor,
     private var appDatabase: AppDatabase

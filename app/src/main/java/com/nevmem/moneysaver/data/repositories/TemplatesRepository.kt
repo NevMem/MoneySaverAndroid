@@ -7,7 +7,7 @@ import android.util.Log.i
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
-import com.nevmem.moneysaver.data.NetworkQueue
+import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.Template
 import com.nevmem.moneysaver.data.TemplateBase
 import com.nevmem.moneysaver.data.UserHolder
@@ -23,7 +23,7 @@ import kotlin.collections.ArrayList
 
 @Singleton
 class TemplatesRepository @Inject constructor(
-    private var networkQueue: NetworkQueue,
+    private var networkQueue: NetworkQueueBase,
     private var userHolder: UserHolder,
     private var appDatabase: AppDatabase,
     private var context: Context,

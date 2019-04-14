@@ -3,7 +3,7 @@ package com.nevmem.moneysaver.data.repositories
 import android.util.Log.i
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
-import com.nevmem.moneysaver.data.NetworkQueue
+import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.UserHolder
 import com.nevmem.moneysaver.room.AppDatabase
 import com.nevmem.moneysaver.room.entity.Tag
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TagsRepository @Inject constructor(
-    var networkQueue: NetworkQueue,
+    var networkQueue: NetworkQueueBase,
     var appDatabase: AppDatabase,
     var executor: Executor,
     var userHolder: UserHolder

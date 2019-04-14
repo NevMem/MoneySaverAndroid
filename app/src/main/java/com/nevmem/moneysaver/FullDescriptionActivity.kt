@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.nevmem.moneysaver.data.NetworkQueue
+import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.repositories.HistoryRepository
 import kotlinx.android.synthetic.main.full_description.*
@@ -29,7 +29,7 @@ class FullDescriptionActivity : FragmentActivity() {
     private lateinit var viewModel: FullDescriptionActivityViewModel
 
     @Inject
-    lateinit var networkQueue: NetworkQueue
+    lateinit var networkQueue: NetworkQueueBase
     @Inject
     lateinit var historyRepo: HistoryRepository
     private lateinit var record: Record

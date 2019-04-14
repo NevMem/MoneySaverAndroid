@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.nevmem.moneysaver.data.NetworkQueue
+import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.UserHolder
 import kotlinx.android.synthetic.main.login_page.*
 import org.json.JSONObject
@@ -17,7 +17,7 @@ class LoginPageActivity : FragmentActivity() {
     private lateinit var loginModel: LoginPageViewModel
 
     @Inject
-    lateinit var networkQueue: NetworkQueue
+    lateinit var networkQueue: NetworkQueueBase
 
     @Inject
     lateinit var userHolder: UserHolder

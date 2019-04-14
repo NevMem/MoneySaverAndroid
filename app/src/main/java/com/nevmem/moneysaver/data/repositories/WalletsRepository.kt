@@ -5,18 +5,18 @@ import android.os.Looper
 import android.util.Log.i
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
-import com.nevmem.moneysaver.data.NetworkQueue
+import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.UserHolder
 import com.nevmem.moneysaver.room.AppDatabase
 import com.nevmem.moneysaver.room.entity.Wallet
 import java.util.concurrent.Executor
-import javax.inject.Singleton
 import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 class WalletsRepository @Inject constructor(
     var appDatabase: AppDatabase,
-    var networkQueue: NetworkQueue,
+    var networkQueue: NetworkQueueBase,
     var userHolder: UserHolder,
     var executor: Executor
 ) {
