@@ -96,6 +96,9 @@ class HistoryRepository @Inject constructor(
                     it.getString("type") == "error" -> error.postValue(it.getString("error"))
                     else -> error.postValue("Server response has unknown format")
                 }
+            } else {
+                error.postValue("Server response has unknown format")
+                loading.postValue(false)
             }
         })
     }
@@ -123,9 +126,9 @@ class HistoryRepository @Inject constructor(
     }
 
     private fun loadFromNet() {
-        loading.value = true
+        loading.postValue(true)
         i(tag, "Requesting")
-        error.value = ""
+        error.postValue("")
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiHistory, userHolder.credentialsJson(), {
             i(tag, "$it")
             if (it.has("type")) {
@@ -137,6 +140,10 @@ class HistoryRepository @Inject constructor(
                     it.getString("type") == "error" -> error.value = it.getString("type")
                     else -> error.value = "Server response has unknown format"
                 }
+            } else {
+                i(tag, "Server response with wrong format")
+                error.postValue("Server response has unknown format")
+                loading.postValue(false)
             }
         })
     }
