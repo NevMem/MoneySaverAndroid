@@ -8,10 +8,10 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class NetworkModule(private var context: Context) {
+class NetworkModule(private var context: Context) : NetworkModuleBase {
     @Provides
     @Singleton
-    fun providesNetworkQueueBase(): NetworkQueueBase {
+    override fun providesNetworkQueueBase(): NetworkQueueBase {
         return NetworkQueue(context)
     }
 }
