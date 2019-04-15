@@ -7,12 +7,11 @@ import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.Record
-import com.nevmem.moneysaver.data.RecordDate
 import com.nevmem.moneysaver.data.UserHolder
+import com.nevmem.moneysaver.data.util.HistoryRepositoryParsers
+import com.nevmem.moneysaver.data.util.ParseError
+import com.nevmem.moneysaver.data.util.ParsedValue
 import com.nevmem.moneysaver.room.AppDatabase
-import org.json.JSONArray
-import org.json.JSONException
-import java.lang.Math.abs
 import java.util.concurrent.Executor
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -104,58 +103,22 @@ class HistoryRepository @Inject constructor(
         })
     }
 
-    private fun parseHistory(array: JSONArray): ArrayList<Record> {
-        val result = ArrayList<Record>()
-        for (index in 0 until (array.length())) {
-            try { // TODO: (refactor)
-                val json = array.getJSONObject(index)
-                val record = Record()
-                record.name = json.getString("name")
-                record.value = abs(json.getDouble("value"))
-                record.tag = json.getString("tag")
-                record.wallet = json.getString("wallet")
-                record.daily = json.getBoolean("daily")
-                record.id = json.getString("_id")
-                record.date = RecordDate.fromJSON(json.getJSONObject("date"))
-                record.timestamp = json.getLong("timestamp")
-
-                result.add(record)
-            } catch (_: Exception) {
-            }
-        }
-        return result
-    }
-
     private fun loadFromNet() {
         loading.postValue(true)
         i(tag, "Requesting")
         error.postValue("")
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiHistory, userHolder.credentialsJson(), {
-            i(tag, "$it")
-            if (it.has("type")) {
-                when {
-                    it.getString("type") == "ok" -> {
-                        if (it.has("data")) {
-                            try {
-                                val jsonArray = it.getJSONArray("data")
-                                val parsed = parseHistory(jsonArray)
-                                resolveConflicts(parsed)
-                            } catch (e: JSONException) {
-                                loading.postValue(false)
-                                error.postValue("Server response has unknown format")
-                            }
-                        } else {
-                            resolveConflicts(ArrayList())
-                            loading.postValue(false)
-                        }
+            val parsed = HistoryRepositoryParsers.parseServerLoadedResponse(it)
+            if (parsed is ParseError) {
+                error.postValue(parsed.reason)
+            } else if (parsed is ParsedValue<*>) {
+                resolveConflicts(
+                    try {
+                        parsed.parsed as ArrayList<Record>
+                    } catch (e: ClassCastException) {
+                        ArrayList<Record>()
                     }
-                    it.getString("type") == "error" -> error.value = it.getString("type")
-                    else -> error.value = "Server response has unknown format"
-                }
-            } else {
-                i(tag, "Server response with wrong format")
-                error.postValue("Server response has unknown format")
-                loading.postValue(false)
+                )
             }
         })
     }
