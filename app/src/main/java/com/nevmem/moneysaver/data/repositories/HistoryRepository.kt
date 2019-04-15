@@ -11,6 +11,7 @@ import com.nevmem.moneysaver.data.RecordDate
 import com.nevmem.moneysaver.data.UserHolder
 import com.nevmem.moneysaver.room.AppDatabase
 import org.json.JSONArray
+import org.json.JSONException
 import java.lang.Math.abs
 import java.util.concurrent.Executor
 import javax.inject.Inject
@@ -134,8 +135,19 @@ class HistoryRepository @Inject constructor(
             if (it.has("type")) {
                 when {
                     it.getString("type") == "ok" -> {
-                        val parsed = parseHistory(it.getJSONArray("data"))
-                        resolveConflicts(parsed)
+                        if (it.has("data")) {
+                            try {
+                                val jsonArray = it.getJSONArray("data")
+                                val parsed = parseHistory(jsonArray)
+                                resolveConflicts(parsed)
+                            } catch (e: JSONException) {
+                                loading.postValue(false)
+                                error.postValue("Server response has unknown format")
+                            }
+                        } else {
+                            resolveConflicts(ArrayList())
+                            loading.postValue(false)
+                        }
                     }
                     it.getString("type") == "error" -> error.value = it.getString("type")
                     else -> error.value = "Server response has unknown format"
