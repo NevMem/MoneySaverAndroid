@@ -29,7 +29,7 @@ abstract class HistoryRepositoryParsers {
             val array = json.optJSONArray("data") ?: return ParseError(unspecifiedData)
 
             for (index in 0 until (array.length())) {
-                val row = array.getJSONObject(index) ?: return ParseError(corruptedRecord)
+                val row = array.optJSONObject(index) ?: return ParseError(corruptedRecord)
                 val record = Record()
 
                 record.name = row.optString("name", "unset")
