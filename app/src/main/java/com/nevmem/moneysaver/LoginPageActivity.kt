@@ -2,13 +2,17 @@ package com.nevmem.moneysaver
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.UserHolder
+import com.nevmem.moneysaver.views.InfoDialog
 import kotlinx.android.synthetic.main.login_page.*
 import org.json.JSONObject
 import javax.inject.Inject
@@ -25,12 +29,19 @@ class LoginPageActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_page)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.mPurple)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
 
         loginModel = ViewModelProviders.of(this).get(LoginPageViewModel::class.java)
 
         loginModel.error.observe(this, Observer {
-            errors.text = it
+            if (it != null && it.isNotEmpty()) {
+                val popup = InfoDialog(this, it)
+                val popupWindow = PopupWindow(popup, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                popupWindow.showAtLocation(loginField, Gravity.CENTER, 0, 0)
+                popup.setOkListener {
+                    popupWindow.dismiss()
+                }
+            }
         })
         loginModel.loading.observe(this, Observer {
             if (it == true)

@@ -32,4 +32,5 @@
     <string name="delete_record_icon_content_description_string">Delete record icon</string>
     <string name="success_image_content_description_string">Success image</string>
     <string name="error_image_content_description_string">Error image</string>
+    <string name="login_page_register_string">Register</string>
 </resources>
