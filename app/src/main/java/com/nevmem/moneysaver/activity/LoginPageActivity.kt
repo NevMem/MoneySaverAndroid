@@ -1,11 +1,14 @@
 package com.nevmem.moneysaver.activity
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.transition.Slide
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -18,7 +21,7 @@ import kotlinx.android.synthetic.main.login_page.*
 import org.json.JSONObject
 import javax.inject.Inject
 
-class LoginPageActivity : FragmentActivity() {
+class LoginPageActivity : AppCompatActivity() {
     private lateinit var loginModel: LoginPageViewModel
 
     @Inject
@@ -55,11 +58,20 @@ class LoginPageActivity : FragmentActivity() {
         if (userHolder.ready) {
             goToHomePage()
         }
+
+        registerButton.setOnClickListener {
+            openRegisterPage()
+        }
+    }
+
+    private fun openRegisterPage() {
+        val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
     }
 
     private fun goToHomePage() {
         val intent = Intent(this, MainPage::class.java)
-        startActivity(intent)
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
     }
 
     fun onLoginButtonClick(@Suppress("UNUSED_PARAMETER") view: View) {

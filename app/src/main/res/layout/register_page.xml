@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        tools:context="com.nevmem.moneysaver.activity.RegisterActivity"
+        android:clipToPadding="false"
+>
+
+    <TextView
+            android:text="@string/app_name"
+            android:layout_width="0dp"
+            android:layout_height="77dp"
+            android:id="@+id/appName" android:textSize="26sp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center|start"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/themeColor"/>
+    <FrameLayout
+            android:id="@+id/fragmentsAnchor"
+            android:layout_width="match_parent" android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/appName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/buttons"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+    />
+
+    <GridLayout
+            android:id="@+id/buttons"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:orientation="horizontal"
+            android:columnCount="4"
+    >
+        <Button
+            android:id="@+id/prevButton"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:text="@string/prev_button_string"
+            android:textColor="@color/themeGrayedColor"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_column="0"
+        />
+        <Button
+            android:id="@+id/nextButton"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:text="@string/next_button_string"
+            android:textColor="@color/themeColor"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_column="3"
+        />
+
+    </GridLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

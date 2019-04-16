@@ -33,4 +33,11 @@
     <string name="success_image_content_description_string">Success image</string>
     <string name="error_image_content_description_string">Error image</string>
     <string name="login_page_register_string">Register</string>
+    <string name="register_page_name_hint_string">Name</string>
+    <string name="register_page_surname_hint_string">Surname</string>
+    <string name="prev_button_string">Prev</string>
+    <string name="next_button_string">Next</string>
+    <string name="main_info_register_page_label_string">Please enter your name and surname</string>
+    <string name="choose_confirm_password_string">Please choose and confirm your password</string>
+    <string name="confirm_password_string">Confirm password</string>
 </resources>
