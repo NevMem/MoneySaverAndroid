@@ -1,4 +1,4 @@
-package com.nevmem.moneysaver
+package com.nevmem.moneysaver.activity
 
 import android.app.AlertDialog
 import android.graphics.Color
@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.nevmem.moneysaver.App
+import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.repositories.HistoryRepository

@@ -1,4 +1,4 @@
-package com.nevmem.moneysaver
+package com.nevmem.moneysaver.activity
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

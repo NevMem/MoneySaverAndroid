@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.nevmem.moneysaver.App
-import com.nevmem.moneysaver.MainPage
+import com.nevmem.moneysaver.activity.MainPage
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Template
 import com.nevmem.moneysaver.data.repositories.TemplatesRepository
