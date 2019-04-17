@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.transition.Fade
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.fragments.RegisterDialogChooseLoginFragment
 import com.nevmem.moneysaver.fragments.RegisterDialogMainInfoFragment
@@ -11,12 +12,19 @@ import com.nevmem.moneysaver.fragments.RegisterDialogPasswordFragment
 import kotlinx.android.synthetic.main.register_page.*
 
 class RegisterActivity : AppCompatActivity() {
+    lateinit var viewModel: RegisterPageViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register_page)
         window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
         window.enterTransition = Fade()
         window.exitTransition = Fade()
+        viewModel = ViewModelProviders.of(this).get(RegisterPageViewModel::class.java)
+
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.add(R.id.fragmentsAnchor, dialogFragments[index])
+        transaction.commit()
     }
 
     var index = 0
@@ -28,10 +36,6 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.fragmentsAnchor, dialogFragments[index])
-        transaction.commit()
 
         nextButton.setOnClickListener {
             next()

@@ -19,18 +19,43 @@
                 android:paddingTop="16dp" android:paddingBottom="16dp"
                 android:textColor="@color/themeGrayedColor"
         />
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/loginField"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" android:hint="@string/Login"
-                android:textColor="@color/themeColor" android:textColorHint="@color/themeGrayedColor"
-                app:layout_constraintTop_toBottomOf="@id/nameField"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/edit_text_themed"
-        />
+        <FrameLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="32dp">
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:padding="4dp"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/loginField"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" android:hint="@string/Login"
+                    android:textColor="@color/themeColor" android:textColorHint="@color/themeGrayedColor"
+                    app:layout_constraintTop_toBottomOf="@id/nameField"
+                    android:background="@drawable/edit_text_themed"
+            />
+            <ProgressBar
+                    android:layout_width="30dp" android:layout_height="30dp"
+                    android:layout_gravity="end|center"
+                    android:indeterminateTint="@color/themeColor"
+                    android:id="@+id/checkingLogin"
+                    android:visibility="gone"
+            />
+            <ImageView
+                    android:id="@+id/successIcon"
+                    android:layout_gravity="end|center"
+                    android:src="@drawable/check_mark"
+                    android:layout_width="30dp" android:layout_height="30dp"
+                    android:visibility="gone"
+            />
+            <ImageView
+                    android:id="@+id/errorIcon"
+                    android:layout_width="30dp" android:layout_height="30dp"
+                    android:layout_gravity="end|center"
+                    android:src="@drawable/ic_cross"
+                    android:visibility="gone"
+            />
+        </FrameLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
