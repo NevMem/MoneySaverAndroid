@@ -14,4 +14,8 @@
         <attr name="chartPadding" format="float" />
         <attr name="chartBackground" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="CheckableEditText">
+        <attr name="hint" format="string" />
+    </declare-styleable>
 </resources>

@@ -9,9 +9,14 @@ import android.widget.FrameLayout
 import com.nevmem.moneysaver.R
 import kotlinx.android.synthetic.main.checkable_edit_text.view.*
 
-class CheckableEditText(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs) {
+class CheckableEditText(private var ctx: Context, private var attrs: AttributeSet) : FrameLayout(ctx, attrs) {
+    private var hint = ""
+
     init {
         inflate(ctx, R.layout.checkable_edit_text, this)
+        val gt = ctx.theme.obtainStyledAttributes(attrs, R.styleable.CheckableEditText, 0, 0)
+        hint = gt.getString(R.styleable.CheckableEditText_hint) ?: ""
+        gt.recycle()
     }
 
     var changeHandler: ((String) -> Unit)? = null
@@ -59,11 +64,15 @@ class CheckableEditText(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, at
 
     override fun onFinishInflate() {
         super.onFinishInflate()
+
+        editText.hint = hint
+
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 changeHandler?.let { it(s.toString()) }
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
     }

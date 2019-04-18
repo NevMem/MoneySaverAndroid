@@ -22,6 +22,7 @@
 
         <com.nevmem.moneysaver.views.CheckableEditText
                 android:id="@+id/loginField"
+                app:hint="@string/Login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
     </LinearLayout>
