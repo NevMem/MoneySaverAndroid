@@ -40,4 +40,6 @@
     <string name="main_info_register_page_label_string">Please enter your name and surname</string>
     <string name="choose_confirm_password_string">Please choose and confirm your password</string>
     <string name="confirm_password_string">Confirm password</string>
+    <string name="success_icon_string">Success icon</string>
+    <string name="error_icon_string">Error icon</string>
 </resources>

@@ -27,29 +27,26 @@ class RegisterDialogChooseLoginFragment : Fragment() {
             }
         }
         viewModel.loginChecking.observe(this, Observer {
-            checkingLogin.visibility = View.GONE
-            successIcon.visibility = View.GONE
-            errorIcon.visibility = View.GONE
             when (it) {
                 null, RegisterPageViewModel.Status.NONE -> {}
                 RegisterPageViewModel.Status.CHECKING -> {
-                    checkingLogin.visibility = View.VISIBLE
+                    loginField.loading = true
                 }
                 RegisterPageViewModel.Status.SUCCESS -> {
-                    successIcon.visibility = View.VISIBLE
+                    loginField.success = true
+                    loginField.error = ""
+                    loginField.loading = false
                 }
                 RegisterPageViewModel.Status.ERROR -> {
-                    errorIcon.visibility = View.VISIBLE
+                    loginField.error = "Error happened"
+                    loginField.loading = false
+                    loginField.success = false
                 }
             }
         })
 
-        loginField.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.checkLogin(loginField.text.toString())
-            }
-        })
+        loginField.changeHandler = {
+            viewModel.checkLogin(it)
+        }
     }
 }
