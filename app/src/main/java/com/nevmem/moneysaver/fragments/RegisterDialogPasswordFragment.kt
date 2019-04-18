@@ -32,10 +32,14 @@ class RegisterDialogPasswordFragment : Fragment() {
                     passwordField.error = ""
                 }
             }
+            if (it != confirmPasswordField.text) {
+                confirmPasswordField.success = false
+                confirmPasswordField.error = "Passwords are not equal"
+            }
         }
         confirmPasswordField.changeHandler = {
             if (it == passwordField.text && it.length >= 6) {
-                viewModel.choosedPassword = it
+                viewModel.chosenPassword = it
                 confirmPasswordField.success = true
                 confirmPasswordField.error = ""
             } else if (it.isNotEmpty()) {
