@@ -1,4 +1,4 @@
-package com.nevmem.moneysaver
+package com.nevmem.moneysaver.activity
 
 import android.os.Bundle
 import android.view.Gravity
@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.nevmem.moneysaver.App
+import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.fragments.AddFragment
 import com.nevmem.moneysaver.fragments.DashboardFragment

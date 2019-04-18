@@ -2,15 +2,16 @@ package com.nevmem.moneysaver.dagger.modules
 
 import android.content.Context
 import com.nevmem.moneysaver.data.NetworkQueue
+import com.nevmem.moneysaver.data.NetworkQueueBase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class NetworkModule(private var context: Context) {
+class NetworkModule(private var context: Context) : NetworkModuleBase {
     @Provides
     @Singleton
-    fun providesNetworkQueue(): NetworkQueue {
+    override fun providesNetworkQueueBase(): NetworkQueueBase {
         return NetworkQueue(context)
     }
 }

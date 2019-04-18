@@ -4,7 +4,7 @@
                                                    xmlns:tools="http://schemas.android.com/tools"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent"
-                                                   tools:context=".FullDescriptionActivity"
+                                                   tools:context=".activity.FullDescriptionActivity"
                                                    android:background="#101010"
                                                    android:clipToPadding="false"
 >

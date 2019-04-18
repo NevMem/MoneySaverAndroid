@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.nevmem.moneysaver.App
-import com.nevmem.moneysaver.MonthDescriptionActivity
+import com.nevmem.moneysaver.activity.MonthDescriptionActivity
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.repositories.InfoRepository
 import kotlinx.android.synthetic.main.dashboard_page_month_description.*

@@ -1,23 +1,31 @@
-package com.nevmem.moneysaver
+package com.nevmem.moneysaver.activity
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.transition.Slide
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.widget.PopupWindow
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.nevmem.moneysaver.data.NetworkQueue
+import com.nevmem.moneysaver.*
+import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.UserHolder
+import com.nevmem.moneysaver.views.InfoDialog
 import kotlinx.android.synthetic.main.login_page.*
 import org.json.JSONObject
 import javax.inject.Inject
 
-class LoginPageActivity : FragmentActivity() {
+class LoginPageActivity : AppCompatActivity() {
     private lateinit var loginModel: LoginPageViewModel
 
     @Inject
-    lateinit var networkQueue: NetworkQueue
+    lateinit var networkQueue: NetworkQueueBase
 
     @Inject
     lateinit var userHolder: UserHolder
@@ -25,12 +33,19 @@ class LoginPageActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_page)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.mPurple)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
 
         loginModel = ViewModelProviders.of(this).get(LoginPageViewModel::class.java)
 
         loginModel.error.observe(this, Observer {
-            errors.text = it
+            if (it != null && it.isNotEmpty()) {
+                val popup = InfoDialog(this, it)
+                val popupWindow = PopupWindow(popup, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                popupWindow.showAtLocation(loginField, Gravity.CENTER, 0, 0)
+                popup.setOkListener {
+                    popupWindow.dismiss()
+                }
+            }
         })
         loginModel.loading.observe(this, Observer {
             if (it == true)
@@ -43,11 +58,20 @@ class LoginPageActivity : FragmentActivity() {
         if (userHolder.ready) {
             goToHomePage()
         }
+
+        registerButton.setOnClickListener {
+            openRegisterPage()
+        }
+    }
+
+    private fun openRegisterPage() {
+        val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
     }
 
     private fun goToHomePage() {
         val intent = Intent(this, MainPage::class.java)
-        startActivity(intent)
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
     }
 
     fun onLoginButtonClick(@Suppress("UNUSED_PARAMETER") view: View) {

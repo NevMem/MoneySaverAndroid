@@ -12,21 +12,13 @@ class RecordDate {
     var minute: Int = 0
 
     companion object {
-        private fun ejectInt(json: JSONObject, name: String): Int {
-            return try {
-                json.getInt(name)
-            } catch (_: JSONException) {
-                0
-            }
-        }
-
         fun fromJSON(json: JSONObject): RecordDate {
             val date = RecordDate()
-            date.year = ejectInt(json, "year")
-            date.month = ejectInt(json, "month")
-            date.day = ejectInt(json, "day")
-            date.hour = ejectInt(json, "hour")
-            date.minute = ejectInt(json, "minute")
+            date.year = json.optInt("year")
+            date.month = json.optInt("month")
+            date.day = json.optInt("day")
+            date.hour = json.optInt("hour")
+            date.minute = json.optInt("minute")
             return date
         }
 

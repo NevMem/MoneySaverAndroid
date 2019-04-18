@@ -1,4 +1,4 @@
-package com.nevmem.moneysaver
+package com.nevmem.moneysaver.activity
 
 import android.graphics.Color
 import android.os.Bundle
@@ -6,6 +6,8 @@ import android.transition.Fade
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import com.nevmem.moneysaver.App
+import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.repositories.InfoRepository
 import kotlinx.android.synthetic.main.month_description_page.*
 import javax.inject.Inject

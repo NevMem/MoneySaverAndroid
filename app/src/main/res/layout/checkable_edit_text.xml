@@ -1,0 +1,41 @@
+<FrameLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent" android:layout_height="wrap_content">
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="4dp"
+            android:ems="10"
+            android:id="@+id/editText"
+            android:inputType="time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" tools:hint="sample text"
+            android:textColor="@color/themeColor" android:textColorHint="@color/themeGrayedColor"
+            app:layout_constraintTop_toBottomOf="@id/nameField"
+            android:background="@drawable/edit_text_themed"
+    />
+    <ProgressBar
+            android:layout_width="30dp" android:layout_height="30dp"
+            android:layout_gravity="end|center"
+            android:indeterminateTint="@color/themeColor"
+            android:id="@+id/processBar"
+            android:visibility="gone"
+    />
+    <ImageView
+            android:id="@+id/successIcon"
+            android:layout_gravity="end|center"
+            android:src="@drawable/check_mark"
+            android:layout_width="30dp" android:layout_height="30dp"
+            android:visibility="gone"
+            android:contentDescription="@string/success_icon_string"
+    />
+    <ImageView
+            android:id="@+id/errorIcon"
+            android:layout_width="30dp" android:layout_height="30dp"
+            android:layout_gravity="end|center"
+            android:src="@drawable/ic_cross"
+            android:visibility="gone"
+            android:contentDescription="@string/error_icon_string"
+    />
+</FrameLayout>
