@@ -35,6 +35,7 @@ class RegisterDialogChooseLoginFragment : Fragment() {
                     loginField.loading = true
                 }
                 RegisterPageViewModel.Status.SUCCESS -> {
+                    viewModel.login = loginField.text
                     loginField.success = true
                     loginField.error = ""
                     loginField.loading = false

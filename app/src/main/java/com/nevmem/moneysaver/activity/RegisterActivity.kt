@@ -30,11 +30,12 @@ class RegisterActivity : AppCompatActivity() {
             transaction.commit()
         }
     }
+
     private val dialogFragments = arrayListOf(
         RegisterDialogMainInfoFragment(),
         RegisterDialogChooseLoginFragment(),
         RegisterDialogPasswordFragment()
-        )
+    )
 
     override fun onStart() {
         super.onStart()
@@ -49,7 +50,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun switchFragmentLeft(index: Int) {
-        with (supportFragmentManager.beginTransaction()) {
+        with(supportFragmentManager.beginTransaction()) {
             setCustomAnimations(R.animator.slide_in_right, R.animator.slide_out_left)
             replace(R.id.fragmentsAnchor, dialogFragments[index])
             commit()
@@ -57,7 +58,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun switchFragmentRight(index: Int) {
-        with (supportFragmentManager.beginTransaction()) {
+        with(supportFragmentManager.beginTransaction()) {
             setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
             replace(R.id.fragmentsAnchor, dialogFragments[index])
             commit()

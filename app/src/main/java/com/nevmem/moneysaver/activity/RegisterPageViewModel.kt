@@ -21,6 +21,11 @@ class RegisterPageViewModel(app: Application) : AndroidViewModel(app) {
     val loginChecking = MutableLiveData<Status>(Status.NONE)
     val sending = MutableLiveData<Boolean>(false)
 
+    var choosedPassword: String? = null
+    var firstName: String? = null
+    var lastName: String? = null
+    var login: String? = null
+
     @Inject
     lateinit var networkQueue: NetworkQueueBase
 
