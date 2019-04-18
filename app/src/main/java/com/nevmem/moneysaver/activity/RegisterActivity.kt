@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.register_page.*
 
 class RegisterActivity : AppCompatActivity() {
     lateinit var viewModel: RegisterPageViewModel
+    var index = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,12 +23,13 @@ class RegisterActivity : AppCompatActivity() {
         window.exitTransition = Fade()
         viewModel = ViewModelProviders.of(this).get(RegisterPageViewModel::class.java)
 
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.fragmentsAnchor, dialogFragments[index])
-        transaction.commit()
+        if (index == -1) {
+            index = 0
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.add(R.id.fragmentsAnchor, dialogFragments[index])
+            transaction.commit()
+        }
     }
-
-    var index = 0
     private val dialogFragments = arrayListOf(
         RegisterDialogMainInfoFragment(),
         RegisterDialogChooseLoginFragment(),
