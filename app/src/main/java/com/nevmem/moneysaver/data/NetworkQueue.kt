@@ -8,11 +8,10 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import dagger.Binds
 import org.json.JSONObject
 
 class NetworkQueue(ctx: Context) : NetworkQueueBase {
-    private var requestQueue: RequestQueue = Volley.newRequestQueue(ctx)
+    private var volleyRequestQueue: RequestQueue = Volley.newRequestQueue(ctx)
     private val tag = "NET_QUEUE"
 
     init {
@@ -20,36 +19,56 @@ class NetworkQueue(ctx: Context) : NetworkQueueBase {
     }
 
     override fun infinitePostJsonObjectRequest(
-        url: String, params: JSONObject,
-        resolve: (JSONObject) -> Unit, timeout: Long
-    ) {
+        url: String, params: JSONObject, timeout: Long
+    ): RequestBase<JSONObject> {
         i(tag, "Starting loading json object from $url")
-        val request = JsonObjectRequest(Request.Method.POST, url, params, {
+        val request = Request<JSONObject>()
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, params, {
             i(tag, "Successfully loaded")
-            resolve(it)
+            if (!request.isCanceled()) {
+                request.resolve(it)
+            }
         }, {
             i(tag, "Bad result of loading")
             i(tag, it.toString())
-            Handler().postDelayed({
-                infinitePostJsonObjectRequest(url, params, resolve, timeout)
-            }, timeout)
+            if (!request.isCanceled()) {
+                Handler().postDelayed({
+                    infinitePostJsonObjectRequest(url, params, timeout)
+                }, timeout)
+            }
         })
-        requestQueue.add(request)
+        volleyRequestQueue.add(jsonObjectRequest)
+        return request
+    }
+
+    override fun infinitePostJsonObjectRequest(
+        url: String,
+        params: JSONObject,
+        resolve: (JSONObject) -> Unit,
+        timeout: Long
+    ): RequestBase<JSONObject> {
+        val request = infinitePostJsonObjectRequest(url, params, timeout)
+        request.success(resolve)
+        return request
     }
 
     override fun infinitePostStringRequest(
-        url: String, params: JSONObject,
-        resolve: (String) -> Unit, timeout: Long
-    ) {
+        url: String, params: JSONObject, timeout: Long
+    ): RequestBase<String> {
         i(tag, "Starting loading string from $url")
-        val request = object : StringRequest(Method.POST, url, {
+        val request = Request<String>()
+        val stringRequest = object : StringRequest(Method.POST, url, {
             i(tag, "Successfully loaded string from $url")
-            resolve(it)
+            if (!request.isCanceled()) {
+                request.resolve(it)
+            }
         }, {
             i(tag, "Error happened while loading string from $url")
-            Handler().postDelayed({
-                infinitePostStringRequest(url, params, resolve, timeout)
-            }, timeout)
+            if (!request.isCanceled()) {
+                Handler().postDelayed({
+                    infinitePostStringRequest(url, params, timeout)
+                }, timeout)
+            }
         }) {
             override fun getBodyContentType(): String {
                 return "application/json"
@@ -59,6 +78,18 @@ class NetworkQueue(ctx: Context) : NetworkQueueBase {
                 return params.toString().toByteArray()
             }
         }
-        requestQueue.add(request)
+        volleyRequestQueue.add(stringRequest)
+        return request
+    }
+
+    override fun infinitePostStringRequest(
+        url: String,
+        params: JSONObject,
+        resolve: (String) -> Unit,
+        timeout: Long
+    ): RequestBase<String> {
+        val request = infinitePostStringRequest(url, params, timeout)
+        request.success(resolve)
+        return request
     }
 }

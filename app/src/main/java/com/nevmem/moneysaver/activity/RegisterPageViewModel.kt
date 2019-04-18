@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.data.NetworkQueueBase
+import com.nevmem.moneysaver.data.RequestBase
 import com.nevmem.moneysaver.data.util.ParseError
 import com.nevmem.moneysaver.data.util.ParseResult
 import com.nevmem.moneysaver.data.util.ParsedValue
@@ -22,6 +23,8 @@ class RegisterPageViewModel(app: Application) : AndroidViewModel(app) {
 
     @Inject
     lateinit var networkQueue: NetworkQueueBase
+
+    private var loginCheckRequest: RequestBase<JSONObject>? = null
 
     init {
         (app as App).appComponent.inject(this)
@@ -43,12 +46,15 @@ class RegisterPageViewModel(app: Application) : AndroidViewModel(app) {
 
     fun checkLogin(login: String) {
         if (login.isEmpty()) {
+            loginCheckRequest?.cancel()
             loginChecking.postValue(Status.NONE)
         } else {
+            loginCheckRequest?.cancel()
             val params = JSONObject()
             params.put("login", login)
             loginChecking.postValue(Status.CHECKING)
-            networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiCheckLogin, params, {
+            loginCheckRequest = networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiCheckLogin, params)
+            loginCheckRequest?.success {
                 val parse = parseCheckLoginRequest(it)
                 loginChecking.postValue(Status.NONE)
                 if (parse is ParseError) {
@@ -61,7 +67,7 @@ class RegisterPageViewModel(app: Application) : AndroidViewModel(app) {
                         loginChecking.postValue(Status.SUCCESS)
                     }
                 }
-            })
+            }
         }
     }
 }

@@ -1,8 +1,6 @@
 package com.nevmem.moneysaver.fragments
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,13 +20,17 @@ class RegisterDialogChooseLoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.let {
-            with (it as RegisterActivity) {
+            with(it as RegisterActivity) {
                 this@RegisterDialogChooseLoginFragment.viewModel = viewModel
             }
         }
         viewModel.loginChecking.observe(this, Observer {
             when (it) {
-                null, RegisterPageViewModel.Status.NONE -> {}
+                null, RegisterPageViewModel.Status.NONE -> {
+                    loginField.loading = false
+                    loginField.error = ""
+                    loginField.success = false
+                }
                 RegisterPageViewModel.Status.CHECKING -> {
                     loginField.loading = true
                 }
