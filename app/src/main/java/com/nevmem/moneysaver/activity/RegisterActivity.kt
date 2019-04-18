@@ -2,13 +2,18 @@ package com.nevmem.moneysaver.activity
 
 import android.os.Bundle
 import android.transition.Fade
+import android.view.Gravity
+import android.view.ViewGroup
+import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.fragments.RegisterDialogChooseLoginFragment
 import com.nevmem.moneysaver.fragments.RegisterDialogMainInfoFragment
 import com.nevmem.moneysaver.fragments.RegisterDialogPasswordFragment
+import com.nevmem.moneysaver.views.InfoDialog
 import kotlinx.android.synthetic.main.register_page.*
 
 class RegisterActivity : AppCompatActivity() {
@@ -29,6 +34,26 @@ class RegisterActivity : AppCompatActivity() {
             transaction.add(R.id.fragmentsAnchor, dialogFragments[index])
             transaction.commit()
         }
+
+        viewModel.registerSuccess.observe(this, Observer {
+            if (it != null) {
+                val popup = InfoDialog(this, "Success: $it")
+                val popupWindow =
+                    PopupWindow(popup, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                popupWindow.showAtLocation(appName, Gravity.CENTER, 0, 0)
+                popup.setOkListener { popupWindow.dismiss() }
+            }
+        })
+
+        viewModel.registerError.observe(this, Observer {
+            if (it != null) {
+                val popup = InfoDialog(this, "Error: $it")
+                val popupWindow =
+                    PopupWindow(popup, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                popupWindow.showAtLocation(appName, Gravity.CENTER, 0, 0)
+                popup.setOkListener { popupWindow.dismiss() }
+            }
+        })
     }
 
     private val dialogFragments = arrayListOf(
@@ -74,7 +99,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun proceedRegistration() {
-
+        viewModel.register()
     }
 
     private fun next() {
