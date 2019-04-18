@@ -2,6 +2,7 @@ package com.nevmem.moneysaver.views
 
 import android.content.Context
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.View
@@ -11,11 +12,13 @@ import kotlinx.android.synthetic.main.checkable_edit_text.view.*
 
 class CheckableEditText(private var ctx: Context, private var attrs: AttributeSet) : FrameLayout(ctx, attrs) {
     private var hint = ""
+    private var inputType: Int = 0
 
     init {
         inflate(ctx, R.layout.checkable_edit_text, this)
         val gt = ctx.theme.obtainStyledAttributes(attrs, R.styleable.CheckableEditText, 0, 0)
         hint = gt.getString(R.styleable.CheckableEditText_hint) ?: ""
+        inputType = gt.getInt(R.styleable.CheckableEditText_inputType, inputType)
         gt.recycle()
     }
 
@@ -36,6 +39,8 @@ class CheckableEditText(private var ctx: Context, private var attrs: AttributeSe
             field = value
             sync()
         }
+    val text: String
+        get() = editText.text.toString()
 
     private fun sync() {
         when {
@@ -66,6 +71,11 @@ class CheckableEditText(private var ctx: Context, private var attrs: AttributeSe
         super.onFinishInflate()
 
         editText.hint = hint
+        if (inputType == 1) {
+            editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        } else {
+            editText.inputType = InputType.TYPE_CLASS_TEXT
+        }
 
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

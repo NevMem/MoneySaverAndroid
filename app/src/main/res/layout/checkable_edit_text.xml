@@ -8,6 +8,7 @@
             android:padding="4dp"
             android:ems="10"
             android:id="@+id/editText"
+            android:inputType="time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" tools:hint="sample text"
             android:textColor="@color/themeColor" android:textColorHint="@color/themeGrayedColor"
