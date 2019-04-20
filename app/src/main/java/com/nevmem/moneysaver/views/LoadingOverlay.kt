@@ -6,15 +6,47 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.nevmem.moneysaver.R
 import kotlinx.android.synthetic.main.loading_overlay.view.*
-import kotlinx.android.synthetic.main.loading_overlay.view.errorImage
-import kotlinx.android.synthetic.main.loading_overlay.view.successImage
 
-class LoadingOverlay(private var ctx: Context, attrs: AttributeSet) : ConstraintLayout(ctx, attrs) {
+class LoadingOverlay(ctx: Context) : ConstraintLayout(ctx) {
+    constructor(ctx: Context, attrs: AttributeSet) : this(ctx)
+
+    enum class State { LOADING, ERROR, SUCCESS, NONE }
+
+    var currentState = State.NONE
+
+    private var afterSuccess: (() -> Unit)? = null
+    private var afterError: (() -> Unit)? = null
+    private var onInterrupt: (() -> Unit)? = null
+
     init {
         inflate(ctx, R.layout.loading_overlay, this)
+
+        back.setOnClickListener {
+            when (currentState) {
+                State.SUCCESS -> { afterSuccess?.invoke() }
+                State.ERROR -> { afterError?.invoke() }
+                State.LOADING -> { onInterrupt?.invoke() }
+                else -> {
+                    throw IllegalStateException("Bad loading overlay state")
+                }
+            }
+        }
+    }
+
+    fun setAfterSuccess(cb: () -> Unit) {
+        afterSuccess = cb
+    }
+
+    fun setOnInterrupt(cb: () -> Unit) {
+        onInterrupt = cb
+    }
+
+    fun setAfterError(cb: () -> Unit) {
+        afterError = cb
     }
 
     fun setLoading(message: String = "loading") {
+        currentState = State.LOADING
         hideError()
         hideSuccess()
         showLoading()
@@ -22,6 +54,7 @@ class LoadingOverlay(private var ctx: Context, attrs: AttributeSet) : Constraint
     }
 
     fun setError(message: String = "Error occurred") {
+        currentState = State.ERROR
         hideSuccess()
         hideLoading()
         showError()
@@ -29,9 +62,10 @@ class LoadingOverlay(private var ctx: Context, attrs: AttributeSet) : Constraint
     }
 
     fun setSuccess(message: String = "Success") {
+        currentState = State.SUCCESS
         hideError()
         hideLoading()
-        showLoading()
+        showSuccess()
         setMessage(message)
     }
 

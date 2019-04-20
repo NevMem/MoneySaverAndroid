@@ -4,7 +4,10 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#51000000"
+        android:background="#b0000000"
+        android:id="@+id/back"
+        android:clickable="true"
+        android:focusable="true"
 >
     <LinearLayout
             app:layout_constraintTop_toTopOf="parent"
@@ -16,7 +19,8 @@
             android:gravity="center"
             android:layout_height="wrap_content">
         <FrameLayout
-                android:layout_width="wrap_content" android:layout_height="wrap_content">
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+        >
             <ProgressBar android:visibility="gone" android:id="@+id/loading"
                          android:indeterminateTint="@color/themeColor"
                          android:layout_width="100dp"
@@ -30,7 +34,7 @@
                        android:layout_width="100dp"
                        android:layout_height="100dp"/>
         </FrameLayout>
-        <TextView android:id="@+id/overlayMessage" android:textColor="@color/themeGrayedColor"
+        <TextView android:id="@+id/overlayMessage" android:textColor="@color/themeColor"
                   android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:textSize="20sp" android:padding="4dp"
                   tools:text="Loading"

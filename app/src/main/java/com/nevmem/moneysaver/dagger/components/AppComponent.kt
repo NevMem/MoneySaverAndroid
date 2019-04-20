@@ -26,4 +26,5 @@ interface AppComponent {
     fun inject(dashboardPageMonthDescription: DashboardPageMonthDescription)
     fun inject(monthDescription: MonthDescriptionActivity)
     fun inject(registerPageViewModel: RegisterPageViewModel)
+    fun inject(registerActivity: RegisterActivity)
 }
