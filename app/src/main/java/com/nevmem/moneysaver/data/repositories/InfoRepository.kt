@@ -7,8 +7,13 @@ import com.nevmem.moneysaver.data.Info
 import com.nevmem.moneysaver.data.MonthDescription
 import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.UserHolder
+import com.nevmem.moneysaver.data.util.InfoRepositoryParsers
+import com.nevmem.moneysaver.data.util.ParseError
+import com.nevmem.moneysaver.data.util.ParseResult
+import com.nevmem.moneysaver.data.util.ParsedValue
 import com.nevmem.moneysaver.room.AppDatabase
 import org.json.JSONObject
+import java.lang.IllegalStateException
 import java.util.concurrent.Executor
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -66,28 +71,6 @@ class InfoRepository
         }
     }
 
-    private fun parseMonthsDescriptions(json: JSONObject): ArrayList<MonthDescription> {
-        val parsed = ArrayList<MonthDescription>()
-        for (key in json.keys()) {
-            val monthJson = json.getJSONObject(key)
-            val monthDescription = MonthDescription()
-            monthDescription.monthId = key
-            monthDescription.total = monthJson.getDouble("total")
-            monthDescription.average = monthJson.getDouble("average")
-            monthDescription.totalDaily = monthJson.getDouble("totalDaily")
-            monthDescription.averageDaily = monthJson.getDouble("averageDaily")
-            monthDescription.monthTimestamp = monthJson.getInt("monthTimestamp")
-
-            val byTag = monthJson.getJSONObject("byTag")
-            for (tagName in byTag.keys()) {
-                monthDescription.byTagDaily[tagName] = byTag.getJSONObject(tagName).getDouble("daily")
-                monthDescription.byTagTotal[tagName] = byTag.getJSONObject(tagName).getDouble("total")
-            }
-            parsed.add(monthDescription)
-        }
-        return parsed
-    }
-
     private fun resolveMonthsDescriptionsConflicts(monthsDescriptions: ArrayList<MonthDescription>) {
         executor.execute {
             with(appDatabase.monthDescriptionDao()) {
@@ -123,26 +106,18 @@ class InfoRepository
         loading.postValue(true)
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiInfo, params, {
             loading.postValue(false)
-            if (it.has("type")) {
-                val type = it.getString("type")
-                when (type) {
-                    "ok" -> {
-                        val info = Info()
-                        val infoJson = it.getJSONObject("info")
-                        info.fromJSON(infoJson)
-
-                        val monthSum = infoJson.getJSONObject("monthSum")
-                        val monthsDescriptions = parseMonthsDescriptions(monthSum)
-
-                        resolveInfoConflicts(info)
-                        resolveMonthsDescriptionsConflicts(monthsDescriptions)
+            when (val parseResult = InfoRepositoryParsers.parseServerLoadedResponse(it)) {
+                is ParseError -> { error.postValue(parseResult.reason) }
+                is ParsedValue<*> -> {
+                    val parsed = parseResult.parsed
+                    if (parsed is InfoRepositoryParsers.Companion.InfoMonthDescriptionsPair) {
+                        resolveInfoConflicts(parsed.info)
+                        resolveMonthsDescriptionsConflicts(parsed.monthDescription)
                         loadFromDatabase()
+                    } else {
+                        throw IllegalStateException("Returned not a info month description pair from parse method")
                     }
-                    "error" -> error.postValue(it.getString("error"))
-                    else -> error.postValue("Server response has unknown format")
                 }
-            } else {
-                error.postValue("Sever response has unknown format")
             }
         })
     }

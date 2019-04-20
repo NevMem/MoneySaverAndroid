@@ -6,10 +6,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.Vars
+import com.nevmem.moneysaver.Vars.Companion.unknownFormat
 import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.RequestBase
 import com.nevmem.moneysaver.data.User
-import com.nevmem.moneysaver.data.util.HistoryRepositoryParsers.Companion.unknownFormat
 import com.nevmem.moneysaver.data.util.ParseError
 import com.nevmem.moneysaver.data.util.ParseResult
 import com.nevmem.moneysaver.data.util.ParsedValue

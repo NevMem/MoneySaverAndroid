@@ -18,5 +18,10 @@ class Vars {
         const val ServerApiDeleteRecord = "$ServerBase/api/remove"
         const val ServerApiCheckLogin = "$ServerBase/api/checkLogin"
         const val ServerApiRegister = "$ServerBase/api/register"
+
+        /* Special constants */
+        const val unknownFormat = "Server response has unknown format"
+        const val unspecifiedData = "Server response has bad format(data array is missing)"
+        const val corruptedRecord = "One or more record were corrupted"
     }
 }

@@ -18,12 +18,7 @@ class Info {
     var totalSpend: Double? = null
     var average: Double? = null
     @TypeConverters(InfoConverter::class)
-    var sumDay: ArrayList<Double>
-
-    init {
-        i("INFO", "init()")
-        sumDay = ArrayList()
-    }
+    var sumDay: ArrayList<Double> = ArrayList()
 
     fun fromJSON(data: JSONObject) {
         average30Days = null

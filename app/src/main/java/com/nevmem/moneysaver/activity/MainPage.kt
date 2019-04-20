@@ -1,6 +1,7 @@
 package com.nevmem.moneysaver.activity
 
 import android.os.Bundle
+import android.transition.Fade
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
@@ -31,7 +32,8 @@ class MainPage : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
         app = applicationContext as App
 
-        window.enterTransition = null
+        window.enterTransition = Fade()
+        window.exitTransition = Fade()
 
         app.appComponent.inject(this)
 
