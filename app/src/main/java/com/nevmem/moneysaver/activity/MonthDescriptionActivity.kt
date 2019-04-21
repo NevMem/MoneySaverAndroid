@@ -40,7 +40,7 @@ class MonthDescriptionActivity : AppCompatActivity() {
 
         headerText.text = "Last month description"
 
-        window.sharedElementEnterTransition.duration = 2000
+        window.sharedElementEnterTransition.duration = 200
         window.enterTransition = Fade()
         window.exitTransition = null
 

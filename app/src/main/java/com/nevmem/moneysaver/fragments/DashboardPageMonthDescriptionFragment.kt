@@ -1,4 +1,4 @@
-package com.nevmem.moneysaver.views
+package com.nevmem.moneysaver.fragments
 
 import android.app.ActivityOptions
 import android.content.Context
@@ -9,17 +9,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.nevmem.moneysaver.App
-import com.nevmem.moneysaver.activity.MonthDescriptionActivity
 import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.activity.MonthDescriptionActivity
 import com.nevmem.moneysaver.data.repositories.InfoRepository
 import kotlinx.android.synthetic.main.dashboard_page_month_description.*
 import kotlinx.android.synthetic.main.label_row.view.*
 import javax.inject.Inject
 
-class DashboardPageMonthDescription : Fragment() {
+class DashboardPageMonthDescriptionFragment : Fragment() {
     @Inject
     lateinit var infoRepo: InfoRepository
 
@@ -87,10 +88,16 @@ class DashboardPageMonthDescription : Fragment() {
 
     private fun openMonthDescriptionActivity() {
         val intent = Intent(activity!!, MonthDescriptionActivity::class.java)
-        val options = ActivityOptions.makeSceneTransitionAnimation(activity,
+        if (descriptionCard != null) {
+            val options = ActivityOptions.makeSceneTransitionAnimation(
+                activity,
                 android.util.Pair<View, String>(descriptionHeading, "headerTransition"),
-                android.util.Pair<View, String>(chart, "chartTransition")
+                android.util.Pair<View, String>(chart, "chartTransition"),
+                android.util.Pair<View, String>(descriptionCard, "cardTransition")
             )
-        startActivity(intent, options.toBundle())
+            startActivity(intent, options.toBundle())
+        } else {
+            Toast.makeText(activity, "Card is null", Toast.LENGTH_LONG).show()
+        }
     }
 }

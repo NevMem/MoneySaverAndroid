@@ -83,7 +83,7 @@ class LoginPageActivity : AppCompatActivity() {
 
     private fun goToHomePage() {
         val intent = Intent(this, MainPage::class.java)
-        startActivity(intent)
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
     }
 
     fun onLoginButtonClick(@Suppress("UNUSED_PARAMETER") view: View) {
@@ -99,8 +99,7 @@ class LoginPageActivity : AppCompatActivity() {
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiLogin, params, {
             loginModel.loading.postValue(false)
             if (it.has("type")) {
-                val type = it.getString("type")
-                when (type) {
+                when (it.getString("type")) {
                     "ok" -> {
                         val json = it.getJSONObject("data")
                         userHolder.initializeByJson(json)
