@@ -6,10 +6,26 @@ import com.nevmem.moneysaver.data.MonthDescription
 import com.nevmem.moneysaver.data.util.ParseUtils.Companion.optDouble
 import com.nevmem.moneysaver.data.util.ParseUtils.Companion.optUInt
 import org.json.JSONObject
+import java.lang.NumberFormatException
 
 abstract class InfoRepositoryParsers {
     companion object {
         data class InfoMonthDescriptionsPair(var info: Info, var monthDescription: ArrayList<MonthDescription>)
+
+        private fun createDateTimestamp(date: String): Int? {
+            val tmp = date.split("-")
+            if (tmp.size != 3) return null
+            var timestamp = 0
+            for (value in tmp) {
+                timestamp *= 10000
+                try {
+                    timestamp += value.toInt()
+                } catch (e: NumberFormatException) {
+                    return null
+                }
+            }
+            return timestamp
+        }
 
         fun parseInfo(json: JSONObject): Info? {
             val info = Info()
@@ -23,10 +39,15 @@ abstract class InfoRepositoryParsers {
 
             val sumDayJson = json.optJSONObject("daySum")
             info.sumDay.clear()
+            val tmp = ArrayList<Pair<Int, Double>>()
             for (key in sumDayJson.keys()) {
                 val current = optDouble(sumDayJson, key) ?: return null
-                info.sumDay.add(current)
+                val dateTimestamp = createDateTimestamp(key) ?: return null
+                tmp.add(Pair(dateTimestamp, current))
             }
+
+            tmp.sortBy { value -> value.first }
+            tmp.forEach { value -> info.sumDay.add(value.second) }
 
             return info
         }
