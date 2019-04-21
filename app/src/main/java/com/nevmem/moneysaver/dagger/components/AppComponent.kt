@@ -27,4 +27,5 @@ interface AppComponent {
     fun inject(monthDescription: MonthDescriptionActivity)
     fun inject(registerPageViewModel: RegisterPageViewModel)
     fun inject(registerActivity: RegisterActivity)
+    fun inject(splashScreen: SplashScreen)
 }
