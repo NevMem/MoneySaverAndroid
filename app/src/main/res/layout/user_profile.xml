@@ -283,7 +283,7 @@
     </LinearLayout>
     <fragment
             android:name="com.nevmem.moneysaver.fragments.DashboardPageMonthDescriptionFragment"
-            android:layout_width="match_parent" android:layout_height="280dp"
+            android:layout_width="match_parent" android:layout_height="290dp"
             app:chartPadding="30" android:id="@+id/monthDescription"
     />
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"

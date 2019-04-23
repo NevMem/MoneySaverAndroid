@@ -28,6 +28,8 @@
                     android:id="@+id/descriptionHeading"
                     android:textSize="20sp"
                     android:transitionName="headerTransition"
+                    android:gravity="center"
+                    android:padding="8dp"
             />
             <GridLayout
                     app:layout_constraintTop_toBottomOf="@id/descriptionHeading"

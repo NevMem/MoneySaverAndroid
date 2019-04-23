@@ -3,6 +3,7 @@ package com.nevmem.moneysaver.activity
 import android.graphics.Color
 import android.os.Bundle
 import android.transition.Fade
+import android.transition.TransitionInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -34,27 +35,35 @@ class MonthDescriptionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.month_description_page)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
-
         (applicationContext as App).appComponent.inject(this)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.cardColor)
 
         headerText.text = "Last month description"
 
-        window.sharedElementEnterTransition.duration = 200
         window.enterTransition = Fade()
-        window.exitTransition = null
+        window.exitTransition = Fade()
+
+//        window.sharedElementEnterTransition = TransitionInflater.from(this)
+//            .inflateTransition(R.transition.month_description_enter_shared_element)
+//        window.sharedElementExitTransition = TransitionInflater.from(this)
+//            .inflateTransition(R.transition.month_description_exit_shared_element)
 
         infoRepo.lastMonthDescription.observe(this, Observer {
             if (it != null) {
-                val labels = ArrayList<String>()
-                val values = ArrayList<Double>()
-
-                for (key in it.byTagTotal.keys) {
-                    labels.add(key)
-                    values.add(it.byTagTotal[key]!!)
-                }
-                chart.setData(values, colors)
+                setupChart(it.byTagTotal)
+                monthSpend.text = it.total.toString()
+                monthDailySpend.text = it.totalDaily.toString()
             }
         })
+    }
+
+    private fun setupChart(byTagTotal: HashMap<String, Double>) {
+        val labels = ArrayList<String>()
+        val values = ArrayList<Double>()
+        for (key in byTagTotal.keys) {
+            labels.add(key)
+            values.add(byTagTotal[key]!!)
+        }
+        chart.setData(values, colors)
     }
 }
