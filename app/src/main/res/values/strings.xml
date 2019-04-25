@@ -44,4 +44,6 @@
     <string name="error_icon_string">Error icon</string>
     <string name="splash_screen_app_logo_string">Splash screen app logo</string>
     <string name="splash_screen_greeting_string">Welcome to MoneySaver</string>
+    <string name="month_description_page_total_string">Total:</string>
+    <string name="month_description_page_daily_string">Daily:</string>
 </resources>

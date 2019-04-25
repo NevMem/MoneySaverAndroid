@@ -14,6 +14,23 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
     private var values: ArrayList<Double> = ArrayList()
     private var colors: ArrayList<Int> = ArrayList()
 
+    companion object {
+        var baseColors: ArrayList<Int> = arrayListOf(
+            Color.parseColor("#03f7eb"),
+            Color.parseColor("#18ff6d"),
+            Color.parseColor("#ff9505"),
+            Color.parseColor("#5b2a86"),
+            Color.parseColor("#f2545b"),
+            Color.parseColor("#fffd82"),
+            Color.parseColor("#a9e5bb"),
+            Color.parseColor("#eee82c"),
+            Color.parseColor("#32908f"),
+            Color.parseColor("#26c485"),
+            Color.parseColor("#ff6542"),
+            Color.parseColor("#7d8cc4")
+        )
+    }
+
     private var chartBackgroundColor = Color.parseColor("#191919")
 
     private var chartPadding = 10.0f // Default value

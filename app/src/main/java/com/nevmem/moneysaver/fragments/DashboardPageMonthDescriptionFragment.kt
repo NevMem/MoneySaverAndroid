@@ -16,6 +16,7 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.activity.MonthDescriptionActivity
 import com.nevmem.moneysaver.data.repositories.InfoRepository
+import com.nevmem.moneysaver.views.PieChart
 import kotlinx.android.synthetic.main.dashboard_page_month_description.*
 import kotlinx.android.synthetic.main.label_row.view.*
 import javax.inject.Inject
@@ -23,21 +24,6 @@ import javax.inject.Inject
 class DashboardPageMonthDescriptionFragment : Fragment() {
     @Inject
     lateinit var infoRepo: InfoRepository
-
-    private var colors = arrayListOf(
-        Color.parseColor("#03f7eb"),
-        Color.parseColor("#18ff6d"),
-        Color.parseColor("#ff9505"),
-        Color.parseColor("#5b2a86"),
-        Color.parseColor("#f2545b"),
-        Color.parseColor("#fffd82"),
-        Color.parseColor("#a9e5bb"),
-        Color.parseColor("#eee82c"),
-        Color.parseColor("#32908f"),
-        Color.parseColor("#26c485"),
-        Color.parseColor("#ff6542"),
-        Color.parseColor("#7d8cc4")
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,11 +55,11 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
                             activity!!,
                             labelsAnchor,
                             labels[index],
-                            colors[index % colors.size]
+                            PieChart.baseColors[index % PieChart.baseColors.size]
                         )
                     )
                 }
-                chart.setData(values, colors)
+                chart.setData(values, PieChart.baseColors)
             }
         })
     }
