@@ -1,17 +1,20 @@
 package com.nevmem.moneysaver.activity
 
 import android.app.Application
+import android.util.Log.d
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.Vars
+import com.nevmem.moneysaver.Vars.Companion.unknownFormat
 import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.RequestBase
-import com.nevmem.moneysaver.data.util.HistoryRepositoryParsers.Companion.unknownFormat
+import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.data.util.ParseError
 import com.nevmem.moneysaver.data.util.ParseResult
 import com.nevmem.moneysaver.data.util.ParsedValue
 import org.json.JSONObject
+import java.lang.ClassCastException
 import javax.inject.Inject
 
 class RegisterPageViewModel(private var app: Application) : AndroidViewModel(app) {
@@ -29,6 +32,8 @@ class RegisterPageViewModel(private var app: Application) : AndroidViewModel(app
     var firstName: String? = null
     var lastName: String? = null
     var login: String? = null
+
+    var user: User?= null
 
     @Inject
     lateinit var networkQueue: NetworkQueueBase
@@ -59,8 +64,21 @@ class RegisterPageViewModel(private var app: Application) : AndroidViewModel(app
             val error = json.optString("error") ?: return ParseError(unknownFormat)
             return ParseError(error)
         }
-        val result = json.optString("data") ?: return ParseError(unknownFormat)
-        return ParsedValue(result)
+        val resp = json.optJSONObject("data") ?: return ParseError(unknownFormat)
+        val token = resp.optString("token") ?: return ParseError(unknownFormat)
+        val login = resp.optString("login") ?: return ParseError(unknownFormat)
+        val firstName = resp.optString("first_name") ?: return ParseError(unknownFormat)
+        val lastName = resp.optString("last_name") ?: return ParseError(unknownFormat)
+        return ParsedValue(User(login, token, firstName, lastName))
+    }
+
+    private fun postError(error: String) {
+        registerError.postValue(error)
+    }
+
+    private fun postSuccess(user: User) {
+        this.user = user
+        registerSuccess.postValue("Successfully registered")
     }
 
     fun register() {
@@ -76,10 +94,15 @@ class RegisterPageViewModel(private var app: Application) : AndroidViewModel(app
         request.success {
             when (val parsed = parseRegisterResponse(it)) {
                 is ParseError -> {
-                    registerError.postValue(parsed.reason)
+                    postError(parsed.reason)
                 }
                 is ParsedValue<*> -> {
-                    registerSuccess.postValue(parsed.parsed.toString())
+                    try {
+                        postSuccess(parsed.parsed as User)
+                    } catch (e: ClassCastException) {
+                        d("REG page VM", e.message)
+                        postError("Bad server response")
+                    }
                 }
             }
         }

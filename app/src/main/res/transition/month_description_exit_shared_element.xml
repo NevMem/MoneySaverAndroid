@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:duration="300"
+        android:interpolator="@android:interpolator/linear_out_slow_in"
+        android:transitionOrdering="together"
+>
+    <transitionSet>
+        <targets>
+            <target android:targetId="@+id/chart"/>
+            <target android:targetId="@+id/headerText"/>
+        </targets>
+        <changeBounds/>
+    </transitionSet>
+</transitionSet>

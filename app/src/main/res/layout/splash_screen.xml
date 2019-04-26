@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@color/backgroundColor"
+        android:animateLayoutChanges="true"
+>
+    <ImageView
+            android:contentDescription="@string/splash_screen_app_logo_string"
+            android:layout_width="170dp" android:layout_height="170dp"
+            android:src="@drawable/app_logo"
+            android:id="@+id/app_logo"
+    />
+    <TextView
+            android:paddingTop="24dp"
+            android:paddingBottom="24dp"
+            android:textSize="24sp"
+            android:id="@+id/greeting"
+            android:text="@string/splash_screen_greeting_string"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textColor="@color/themeColor"
+            android:textStyle="normal"
+    />
+</LinearLayout>

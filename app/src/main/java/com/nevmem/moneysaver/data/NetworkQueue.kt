@@ -19,21 +19,24 @@ class NetworkQueue(ctx: Context) : NetworkQueueBase {
     }
 
     override fun infinitePostJsonObjectRequest(
-        url: String, params: JSONObject, timeout: Long
+        url: String, params: JSONObject, timeout: Long, savedRequest: RequestBase<JSONObject>?
     ): RequestBase<JSONObject> {
         i(tag, "Starting loading json object from $url")
-        val request = Request<JSONObject>()
+        val request = savedRequest ?: Request()
         val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, params, {
-            i(tag, "Successfully loaded")
+            i(tag, "Successfully loaded json object from $url")
             if (!request.isCanceled()) {
+                i(tag, "Resolving")
                 request.resolve(it)
+            } else {
+                i(tag, "Request was canceled")
             }
         }, {
-            i(tag, "Bad result of loading")
+            i(tag, "Bad result of loading from $url")
             i(tag, it.toString())
             if (!request.isCanceled()) {
                 Handler().postDelayed({
-                    infinitePostJsonObjectRequest(url, params, timeout)
+                    infinitePostJsonObjectRequest(url, params, timeout, request)
                 }, timeout)
             }
         })
@@ -53,10 +56,10 @@ class NetworkQueue(ctx: Context) : NetworkQueueBase {
     }
 
     override fun infinitePostStringRequest(
-        url: String, params: JSONObject, timeout: Long
+        url: String, params: JSONObject, timeout: Long, savedRequest: RequestBase<String>?
     ): RequestBase<String> {
         i(tag, "Starting loading string from $url")
-        val request = Request<String>()
+        val request = savedRequest ?: Request<String>()
         val stringRequest = object : StringRequest(Method.POST, url, {
             i(tag, "Successfully loaded string from $url")
             if (!request.isCanceled()) {

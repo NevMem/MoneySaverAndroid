@@ -17,6 +17,12 @@ class UserHolder(var context: Context) {
         }
     }
 
+    fun initializeByUser(user: User) {
+        this.user = user
+        User.saveUserCredentials(context, user)
+        ready = true
+    }
+
     fun initializeByJson(json: JSONObject) {
         val login = json.getString("login")
         val token = json.getString("token")

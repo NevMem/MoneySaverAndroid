@@ -42,4 +42,11 @@
     <string name="confirm_password_string">Confirm password</string>
     <string name="success_icon_string">Success icon</string>
     <string name="error_icon_string">Error icon</string>
+    <string name="splash_screen_app_logo_string">Splash screen app logo</string>
+    <string name="splash_screen_greeting_string">Welcome to MoneySaver</string>
+    <string name="month_description_page_total_string">Total:</string>
+    <string name="month_description_page_daily_string">Daily:</string>
+    <string name="cancel_string">Cancel</string>
+    <string name="save_string">Save</string>
+    <string name="edit_icon_edit_date_description_string">Edit icon for edit button</string>
 </resources>

@@ -7,7 +7,7 @@ import com.nevmem.moneysaver.fragments.AddFragment
 import com.nevmem.moneysaver.fragments.DashboardFragment
 import com.nevmem.moneysaver.fragments.HistoryFragment
 import com.nevmem.moneysaver.fragments.TemplatesFragment
-import com.nevmem.moneysaver.views.DashboardPageMonthDescription
+import com.nevmem.moneysaver.fragments.DashboardPageMonthDescriptionFragment
 import com.nevmem.moneysaver.views.NewTemplateDialog
 import dagger.Component
 import javax.inject.Singleton
@@ -23,7 +23,10 @@ interface AppComponent {
     fun inject(newTemplateDialog: NewTemplateDialog)
     fun inject(dashboardFragment: DashboardFragment)
     fun inject(loginPageActivity: LoginPageActivity)
-    fun inject(dashboardPageMonthDescription: DashboardPageMonthDescription)
+    fun inject(dashboardPageMonthDescriptionFragment: DashboardPageMonthDescriptionFragment)
     fun inject(monthDescription: MonthDescriptionActivity)
     fun inject(registerPageViewModel: RegisterPageViewModel)
+    fun inject(registerActivity: RegisterActivity)
+    fun inject(splashScreen: SplashScreen)
+    fun inject(fullDescriptionActivityViewModel: FullDescriptionActivityViewModel)
 }

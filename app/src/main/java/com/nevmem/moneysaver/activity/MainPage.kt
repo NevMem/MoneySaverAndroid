@@ -1,15 +1,14 @@
 package com.nevmem.moneysaver.activity
 
 import android.os.Bundle
+import android.transition.Fade
 import android.view.Gravity
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
-import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.fragments.AddFragment
 import com.nevmem.moneysaver.fragments.DashboardFragment
 import com.nevmem.moneysaver.fragments.HistoryFragment
@@ -26,12 +25,9 @@ class MainPage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.main_page_layout)
         window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
         app = applicationContext as App
-
-        window.enterTransition = null
 
         app.appComponent.inject(this)
 
@@ -77,16 +73,15 @@ class MainPage : AppCompatActivity() {
         mainPageNavigation.selectedItemId = R.id.dashBoardPageNavigation
     }
 
+    fun onLogout() {
+        finish()
+    }
+
     private fun switchFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.anchor, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
-    }
-
-    fun logoutButtonClicked(view: View) {
-        User.clearCredentials(this)
-        finish()
     }
 
     private fun showDefaultToast(message: String) {

@@ -25,7 +25,8 @@ interface NetworkQueueBase {
      * Same as previous function but you have subscribe on success event by yourself
      */
     fun infinitePostJsonObjectRequest(
-        url: String, params: JSONObject, timeout: Long = DEFAULT_TIMEOUT
+        url: String, params: JSONObject,
+        timeout: Long = DEFAULT_TIMEOUT, savedRequest: RequestBase<JSONObject>? = null
     ): RequestBase<JSONObject>
 
     /**
@@ -40,6 +41,7 @@ interface NetworkQueueBase {
      * Same as previous function but you have subscribe on success event by yourself
      */
     fun infinitePostStringRequest(
-        url: String, params: JSONObject, timeout: Long = DEFAULT_TIMEOUT
+        url: String, params: JSONObject,
+        timeout: Long = DEFAULT_TIMEOUT, savedRequest: RequestBase<String>? = null
     ): RequestBase<String>
 }

@@ -1,15 +1,14 @@
 package com.nevmem.moneysaver.data.util
 
+import com.nevmem.moneysaver.Vars.Companion.corruptedRecord
+import com.nevmem.moneysaver.Vars.Companion.unknownFormat
+import com.nevmem.moneysaver.Vars.Companion.unspecifiedData
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.RecordDate
 import org.json.JSONObject
 
 abstract class HistoryRepositoryParsers {
     companion object {
-        const val unknownFormat = "Server response has unknown format"
-        const val unspecifiedData = "Server response has bad format(data array is missing)"
-        const val corruptedRecord = "One or more record were corrupted"
-
         fun parseServerLoadedResponse(json: JSONObject): ParseResult {
             val parsed: ArrayList<Record> = ArrayList()
 
@@ -48,6 +47,18 @@ abstract class HistoryRepositoryParsers {
             }
 
             return ParsedValue(parsed)
+        }
+
+        fun parseServerEditRequest(json: JSONObject): ParseResult {
+            return when (json.optString("type") ?: return ParseError(unknownFormat)) {
+                "ok" -> ParsedValue(null)
+                "error" -> {
+                    val error = json.optString("error")
+                    if (error == null) ParseError(unknownFormat)
+                    else ParseError(error)
+                }
+                else -> ParseError(unknownFormat)
+            }
         }
     }
 }

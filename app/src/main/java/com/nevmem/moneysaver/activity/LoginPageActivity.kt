@@ -3,17 +3,20 @@ package com.nevmem.moneysaver.activity
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.transition.Slide
+import android.os.Handler
+import android.os.Looper
+import android.transition.Fade
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.nevmem.moneysaver.*
+import com.nevmem.moneysaver.App
+import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.UserHolder
 import com.nevmem.moneysaver.views.InfoDialog
@@ -34,13 +37,16 @@ class LoginPageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_page)
         window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
+        window.exitTransition = Fade()
+        window.enterTransition = Fade()
 
         loginModel = ViewModelProviders.of(this).get(LoginPageViewModel::class.java)
 
         loginModel.error.observe(this, Observer {
             if (it != null && it.isNotEmpty()) {
                 val popup = InfoDialog(this, it)
-                val popupWindow = PopupWindow(popup, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                val popupWindow =
+                    PopupWindow(popup, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                 popupWindow.showAtLocation(loginField, Gravity.CENTER, 0, 0)
                 popup.setOkListener {
                     popupWindow.dismiss()
@@ -55,12 +61,18 @@ class LoginPageActivity : AppCompatActivity() {
         })
 
         (applicationContext as App).appComponent.inject(this)
-        if (userHolder.ready) {
-            goToHomePage()
-        }
 
         registerButton.setOnClickListener {
             openRegisterPage()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Handler(Looper.getMainLooper()).post {
+            if (userHolder.ready) {
+                goToHomePage()
+            }
         }
     }
 
@@ -87,8 +99,7 @@ class LoginPageActivity : AppCompatActivity() {
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiLogin, params, {
             loginModel.loading.postValue(false)
             if (it.has("type")) {
-                val type = it.getString("type")
-                when (type) {
+                when (it.getString("type")) {
                     "ok" -> {
                         val json = it.getJSONObject("data")
                         userHolder.initializeByJson(json)
