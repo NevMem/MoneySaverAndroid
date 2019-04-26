@@ -28,4 +28,5 @@ interface AppComponent {
     fun inject(registerPageViewModel: RegisterPageViewModel)
     fun inject(registerActivity: RegisterActivity)
     fun inject(splashScreen: SplashScreen)
+    fun inject(fullDescriptionActivityViewModel: FullDescriptionActivityViewModel)
 }

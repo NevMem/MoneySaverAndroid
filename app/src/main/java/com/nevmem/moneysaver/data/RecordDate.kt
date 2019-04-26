@@ -61,6 +61,14 @@ class RecordDate {
         return json
     }
 
+    fun injectJson(json: JSONObject) {
+        json.put("year", year)
+        json.put("month", month)
+        json.put("day", day)
+        json.put("hour", hour)
+        json.put("minute", minute)
+    }
+
     override fun toString(): String {
         return format(day) + "." + format(month) + "." + year + " " + format(hour) + ":" + format(minute)
     }

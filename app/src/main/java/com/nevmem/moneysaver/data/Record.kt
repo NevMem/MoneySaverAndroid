@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.nevmem.moneysaver.room.converters.HistoryConverter
+import org.json.JSONObject
 
 @Entity
 class Record {
@@ -31,5 +32,17 @@ class Record {
         this.daily = other.daily
         this.wallet = other.wallet
         this.date = other.date
+    }
+
+    fun injectJson(json: JSONObject) {
+        json.put("name", name)
+        json.put("value", value)
+        json.put("tag", tag)
+        json.put("wallet", wallet)
+        json.put("daily", daily)
+        json.put("id", id)
+        val dateJson = JSONObject()
+        date.injectJson(dateJson)
+        json.put("date", dateJson)
     }
 }

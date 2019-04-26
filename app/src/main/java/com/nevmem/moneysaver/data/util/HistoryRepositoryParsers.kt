@@ -48,5 +48,17 @@ abstract class HistoryRepositoryParsers {
 
             return ParsedValue(parsed)
         }
+
+        fun parseServerEditRequest(json: JSONObject): ParseResult {
+            return when (json.optString("type") ?: return ParseError(unknownFormat)) {
+                "ok" -> ParsedValue(null)
+                "error" -> {
+                    val error = json.optString("error")
+                    if (error == null) ParseError(unknownFormat)
+                    else ParseError(error)
+                }
+                else -> ParseError(unknownFormat)
+            }
+        }
     }
 }

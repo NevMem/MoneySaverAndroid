@@ -25,13 +25,9 @@ class MainPage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.main_page_layout)
         window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
         app = applicationContext as App
-
-        window.enterTransition = Fade()
-        window.exitTransition = Fade()
 
         app.appComponent.inject(this)
 

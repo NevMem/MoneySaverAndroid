@@ -8,9 +8,7 @@ import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.UserHolder
-import com.nevmem.moneysaver.data.util.HistoryRepositoryParsers
-import com.nevmem.moneysaver.data.util.ParseError
-import com.nevmem.moneysaver.data.util.ParsedValue
+import com.nevmem.moneysaver.data.util.*
 import com.nevmem.moneysaver.room.AppDatabase
 import java.util.concurrent.Executor
 import javax.inject.Inject
@@ -26,6 +24,9 @@ class HistoryRepository @Inject constructor(
     val loading = MutableLiveData<Boolean>(false)
     val history = MutableLiveData<ArrayList<Record>>(ArrayList())
     val error = MutableLiveData<String>("")
+
+    val editingState = MutableLiveData<RequestState>(NoneState)
+
     private val tag = "H_REP"
 
     init {
@@ -39,6 +40,7 @@ class HistoryRepository @Inject constructor(
     }
 
     private fun resolveConflicts(data: ArrayList<Record>) {
+        i(tag, "Resolving conflicts")
         executor.execute {
             var inserted = 0
             var updated = 0
@@ -70,8 +72,9 @@ class HistoryRepository @Inject constructor(
                         "updated $updated items, removed $removed items"
             )
             Handler(Looper.getMainLooper()).post {
+                i(tag, "Posting data and loading false to live data")
                 history.postValue(data)
-                loading.value = false
+                loading.postValue(false)
             }
         }
     }
@@ -107,11 +110,16 @@ class HistoryRepository @Inject constructor(
         loading.postValue(true)
         i(tag, "Requesting")
         error.postValue("")
-        networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiHistory, userHolder.credentialsJson(), {
+        val request =
+            networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiHistory, userHolder.credentialsJson())
+        request.success {
             val parsed = HistoryRepositoryParsers.parseServerLoadedResponse(it)
+            i(tag, "Received some data")
             if (parsed is ParseError) {
+                i(tag, "Error ${parsed.reason}")
                 error.postValue(parsed.reason)
             } else if (parsed is ParsedValue<*>) {
+                i(tag, "Parsed some info")
                 resolveConflicts(
                     try {
                         parsed.parsed as ArrayList<Record>
@@ -120,7 +128,7 @@ class HistoryRepository @Inject constructor(
                     }
                 )
             }
-        })
+        }
     }
 
     fun addRecord(record: Record, cb: (String?) -> Unit) {
@@ -157,6 +165,19 @@ class HistoryRepository @Inject constructor(
         return when {
             buffer != null && index <= buffer.size -> buffer[index]
             else -> Record()
+        }
+    }
+
+    fun editRecord(record: Record) {
+        val params = userHolder.credentialsJson()
+        record.injectJson(params)
+        val request = networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiEdit, params)
+        editingState.postValue(LoadingState)
+        request.success {
+            when (val parsed = HistoryRepositoryParsers.parseServerEditRequest(it)) {
+                is ParseError -> editingState.postValue(ErrorState(parsed.reason))
+                is ParsedValue<*> -> editingState.postValue(SuccessState("Successfully changed"))
+            }
         }
     }
 }

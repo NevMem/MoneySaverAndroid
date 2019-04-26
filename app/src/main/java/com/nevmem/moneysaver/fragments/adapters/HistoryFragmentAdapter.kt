@@ -1,6 +1,8 @@
 package com.nevmem.moneysaver.fragments.adapters
 
 import android.app.Activity
+import android.app.ActivityOptions
+import android.content.Intent
 import android.util.Log.i
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -10,13 +12,17 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.activity.FullDescriptionActivity
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.repositories.HistoryRepository
 import com.nevmem.moneysaver.views.ConfirmationDialog
+import kotlinx.android.synthetic.main.record_layout.view.*
 
 
 class HistoryFragmentAdapter(
@@ -47,8 +53,8 @@ class HistoryFragmentAdapter(
                 HeaderViewHolder(header)
             }
             else -> {
-                val header = LayoutInflater.from(parent.context).inflate(R.layout.record_layout, parent, false)
-                ElementViewHolder(header)
+                val element = LayoutInflater.from(parent.context).inflate(R.layout.record_layout, parent, false)
+                ElementViewHolder(element)
             }
         }
     }
@@ -98,12 +104,14 @@ class HistoryFragmentAdapter(
     }
 
     private fun openFullDescriptionActivity(view: View, index: Int) {
-        /* val intent = Intent(activity, FullDescriptionActivity::class.java)
+        val intent = Intent(activity, FullDescriptionActivity::class.java)
         intent.putExtra("index", index)
+        view.card.transitionName = "descriptionPageEnterTransition"
         val options = ActivityOptions.makeSceneTransitionAnimation(activity,
-            android.util.Pair<View, String>(view.recordNameField, "recordNameTransition"),
-            android.util.Pair<View, String>(view.recordValue, "recordValueTransition"))
-        startActivity(activity, intent, options.toBundle()) */
+//            android.util.Pair<View, String>(view.recordNameField, "recordNameTransition"),
+//            android.util.Pair<View, String>(view.recordValue, "recordValueTransition"),
+            android.util.Pair<View, String>(view.card, "descriptionPageEnterTransition"))
+        startActivity(activity, intent, options.toBundle())
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -117,7 +125,7 @@ class HistoryFragmentAdapter(
     }
 
     class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val headerText: TextView = view.findViewById(com.nevmem.moneysaver.R.id.history_fragment_header_text)
+        val headerText: TextView = view.findViewById(R.id.history_fragment_header_text)
     }
 
     class ElementViewHolder(view: View) : RecyclerView.ViewHolder(view) {

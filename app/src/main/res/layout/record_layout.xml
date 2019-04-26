@@ -12,6 +12,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:cardBackgroundColor="@color/profile_color"
+            android:id="@+id/card"
     >
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
