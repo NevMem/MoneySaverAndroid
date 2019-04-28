@@ -56,7 +56,7 @@ abstract class DateHelper {
         }
 
         fun getAmountOfDaysInMonth(year: Int, month: Int): Int {
-            return Companion.getAmountOfDaysInMonth(year, getMonthName(month - 1))
+            return getAmountOfDaysInMonth(year, getMonthName(month))
         }
     }
 }

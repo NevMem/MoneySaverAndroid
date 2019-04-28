@@ -23,7 +23,7 @@ class CustomDatePicker(ctx: Context, date: RecordDate? = null) : ConstraintLayou
         year.setOnValueChangedListener { _, _, _ -> run { recalcDays() } }
 
         day.minValue = 1
-        day.maxValue = DateHelper.getAmountOfDaysInMonth(year.value, month.value)
+        day.maxValue = 31
 
         minute.minValue = 0
         minute.maxValue = 59
@@ -45,6 +45,7 @@ class CustomDatePicker(ctx: Context, date: RecordDate? = null) : ConstraintLayou
             day.value = date.day
             hour.value = date.hour
             minute.value = date.minute
+            recalcDays()
         }
     }
 
