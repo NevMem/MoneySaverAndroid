@@ -11,9 +11,6 @@ import javax.inject.Inject
 
 class FullDescriptionActivityViewModel(app: Application) : AndroidViewModel(app) {
     var record = MutableLiveData<Record>(Record())
-    var needChange = MutableLiveData<Boolean>(false)
-
-    var changeableRecord = Record()
 
     fun editingState() = historyRepo.editingState
 
@@ -30,40 +27,55 @@ class FullDescriptionActivityViewModel(app: Application) : AndroidViewModel(app)
         (app as App).appComponent.inject(this)
     }
 
-    fun setName(name: String) {
-        changeableRecord.name = name
-    }
-
-    fun setValue(value: Double) {
-        changeableRecord.value = value
-    }
-
-    fun setWallet(wallet: String) {
-        changeableRecord.wallet = wallet
-    }
-
-    fun setTag(tag: String) {
-        changeableRecord.tag = tag
-    }
-
-    fun setDate(date: RecordDate) {
-        changeableRecord.date = date
-    }
-
     fun setDaily(daily: Boolean) {
-        changeableRecord.daily = daily
+        val currentRecord = record.value ?: return
+        currentRecord.daily = daily
+        record.postValue(currentRecord)
+    }
+
+    fun setYear(year: Int) {
+        val currentRecord = record.value ?: return
+        currentRecord.date.year = year
+        record.postValue(currentRecord)
+    }
+
+    fun setMonth(month: Int) {
+        val currentRecord = record.value ?: return
+        currentRecord.date.month = month
+        record.postValue(currentRecord)
+    }
+
+    fun setDay(day: Int) {
+        val currentRecord = record.value ?: return
+        currentRecord.date.day = day
+        record.postValue(currentRecord)
+    }
+
+    fun setHour(hour: Int) {
+        val currentRecord = record.value ?: return
+        currentRecord.date.hour = hour
+        record.postValue(currentRecord)
+    }
+
+    fun setMinute(minute: Int) {
+        val currentRecord = record.value ?: return
+        currentRecord.date.minute = minute
+        record.postValue(currentRecord)
     }
 
     fun save() {
-        historyRepo.editRecord(changeableRecord)
+        val currentRecord = record.value ?: return
+        historyRepo.editRecord(currentRecord)
     }
 
-    private fun postRecord(record: Record) {
-        changeableRecord = record
-        this.record.postValue(record)
+    private fun postRecord(updRecord: Record) {
+        record.postValue(updRecord)
     }
 
-    fun currentDate(): RecordDate = changeableRecord.date
+    fun currentDate(): RecordDate {
+        val currentRecord = record.value ?: return RecordDate()
+        return currentRecord.date
+    }
 
     private fun indexChanged() {
         val allHistory = historyRepo.history.value ?: run {

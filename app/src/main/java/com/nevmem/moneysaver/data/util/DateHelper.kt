@@ -4,6 +4,8 @@ abstract class DateHelper {
     companion object {
         fun fillTo2Length(current: String): String = current.padStart(2, '0')
 
+        fun fillTo2Length(current: Int): String = fillTo2Length(current.toString())
+
         fun isLeapYear(year: Int): Boolean {
             return (year % 4) == 0 && (year % 100 != 0 || year % 400 == 0)
         }
@@ -56,7 +58,7 @@ abstract class DateHelper {
         }
 
         fun getAmountOfDaysInMonth(year: Int, month: Int): Int {
-            return Companion.getAmountOfDaysInMonth(year, getMonthName(month - 1))
+            return getAmountOfDaysInMonth(year, getMonthName(month))
         }
     }
 }

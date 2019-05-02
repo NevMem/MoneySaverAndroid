@@ -1,6 +1,6 @@
 package com.nevmem.moneysaver.data
 
-import org.json.JSONException
+import com.nevmem.moneysaver.data.util.DateHelper
 import org.json.JSONObject
 import java.util.*
 
@@ -29,7 +29,8 @@ class RecordDate {
                 curCalendar.get(Calendar.MONTH) + 1,
                 curCalendar.get(Calendar.DATE),
                 curCalendar.get(Calendar.HOUR_OF_DAY),
-                curCalendar.get(Calendar.MINUTE))
+                curCalendar.get(Calendar.MINUTE)
+            )
         }
     }
 
@@ -41,14 +42,6 @@ class RecordDate {
         this.day = day
         this.hour = hour
         this.minute = minute
-    }
-
-    private fun format(value: Int): String {
-        var ans = Integer.valueOf(value).toString()
-        while (ans.length != 2) {
-            ans = "0$ans"
-        }
-        return ans
     }
 
     fun toJSON(): JSONObject {
@@ -69,9 +62,11 @@ class RecordDate {
         json.put("minute", minute)
     }
 
-    override fun toString(): String {
-        return format(day) + "." + format(month) + "." + year + " " + format(hour) + ":" + format(minute)
-    }
+    fun dateString(): String = DateHelper.fillTo2Length(day) + "." + DateHelper.fillTo2Length(month) + "." + year
+
+    fun timeString(): String = DateHelper.fillTo2Length(hour) + ":" + DateHelper.fillTo2Length(minute)
+
+    override fun toString(): String = dateString() + " " + timeString()
 
     override fun equals(other: Any?): Boolean {
         return if (other is RecordDate) {
