@@ -49,4 +49,9 @@
     <string name="cancel_string">Cancel</string>
     <string name="save_string">Save</string>
     <string name="edit_icon_edit_date_description_string">Edit icon for edit button</string>
+    <string name="semicolon_string">:</string>
+    <string name="small_cancel_string">cancel</string>
+    <string name="small_ok_string">ok</string>
+    <string name="am_string">AM</string>
+    <string name="pm_string">PM</string>
 </resources>

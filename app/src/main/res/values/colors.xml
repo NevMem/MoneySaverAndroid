@@ -13,4 +13,6 @@
     <color name="themeColor">#f5b700</color>
     <color name="themeGrayedColor">#8DF5B700</color>
     <color name="profile_color">#191919</color>
+    <color name="secondary_white_color">#A0FFFFFF</color>
+    <color name="default_white_color">#fff</color>
 </resources>

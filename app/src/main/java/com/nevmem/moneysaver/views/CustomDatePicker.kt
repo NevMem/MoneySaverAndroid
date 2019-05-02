@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.date_picker.view.*
 
 class CustomDatePicker(ctx: Context, date: RecordDate? = null) : ConstraintLayout(ctx) {
     private var onCancel: (() -> Unit)? = null
-    private var onOk: ((RecordDate) -> Unit)? = null
+    private var onOk: ((Int, Int, Int) -> Unit)? = null
 
     init {
         inflate(ctx, R.layout.date_picker, this)
@@ -25,14 +25,8 @@ class CustomDatePicker(ctx: Context, date: RecordDate? = null) : ConstraintLayou
         day.minValue = 1
         day.maxValue = 31
 
-        minute.minValue = 0
-        minute.maxValue = 59
-
-        hour.minValue = 0
-        hour.maxValue = 23
-
         ok.setOnClickListener {
-            onOk?.invoke(RecordDate(year.value, month.value, day.value, hour.value, minute.value))
+            onOk?.invoke(year.value, month.value, day.value)
         }
 
         cancel.setOnClickListener {
@@ -43,8 +37,6 @@ class CustomDatePicker(ctx: Context, date: RecordDate? = null) : ConstraintLayou
             year.value = date.year
             month.value = date.month
             day.value = date.day
-            hour.value = date.hour
-            minute.value = date.minute
             recalcDays()
         }
     }
@@ -57,7 +49,7 @@ class CustomDatePicker(ctx: Context, date: RecordDate? = null) : ConstraintLayou
         this.onCancel = cb
     }
 
-    fun setOnOk(cb: (RecordDate) -> Unit) {
+    fun setOnOk(cb: (Int, Int, Int) -> Unit) {
         this.onOk = cb
     }
 }

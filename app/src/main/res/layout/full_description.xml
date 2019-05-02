@@ -89,13 +89,18 @@
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="start|center"
+                    android:id="@+id/dateLayout"
+                    android:alpha="0" tools:alpha="1"
             >
+                <TextView
+                        android:layout_width="100dp" android:layout_height="wrap_content" android:text="Date: "
+                />
                 <TextView
                         android:layout_height="60dp" android:layout_width="wrap_content"
                         android:gravity="start|center"
                         android:id="@+id/date"
                         android:textColor="@android:color/white"
-                        tools:text="23.04.2019 21:34"
+                        tools:text="23.04.2019"
                         android:textSize="20sp"
                 />
 
@@ -104,6 +109,37 @@
                         android:src="@drawable/edit_icon" style="@style/Widget.AppCompat.Button.Borderless.Colored"
                         android:layout_width="50dp" android:layout_height="wrap_content"
                         android:id="@+id/editDateButton"
+                />
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dateLayout"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="start|center"
+                    android:id="@+id/timeLayout"
+                    android:alpha="0" tools:alpha="1"
+            >
+                <TextView
+                        android:layout_width="100dp" android:layout_height="wrap_content" android:text="Time: "
+                />
+                <TextView
+                        android:layout_height="60dp" android:layout_width="wrap_content"
+                        android:gravity="start|center"
+                        android:id="@+id/time"
+                        android:textColor="@android:color/white"
+                        tools:text="21:34"
+                        android:textSize="20sp"
+                />
+
+                <ImageButton
+                        android:contentDescription="@string/edit_icon_edit_date_description_string"
+                        android:src="@drawable/edit_icon" style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="50dp" android:layout_height="wrap_content"
+                        android:id="@+id/editTimeButton"
                 />
             </LinearLayout>
 

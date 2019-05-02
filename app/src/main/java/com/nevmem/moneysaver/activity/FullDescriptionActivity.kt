@@ -1,5 +1,6 @@
 package com.nevmem.moneysaver.activity
 
+import android.animation.AnimatorInflater
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -20,6 +21,7 @@ import com.nevmem.moneysaver.data.util.ErrorState
 import com.nevmem.moneysaver.data.util.LoadingState
 import com.nevmem.moneysaver.data.util.SuccessState
 import com.nevmem.moneysaver.views.CustomDatePicker
+import com.nevmem.moneysaver.views.CustomTimePicker
 import kotlinx.android.synthetic.main.full_description.*
 
 
@@ -34,6 +36,8 @@ class FullDescriptionActivity : FragmentActivity() {
     private var index: Int = 0
     private lateinit var app: App
     private lateinit var viewModel: FullDescriptionActivityViewModel
+
+    private var popupWindow: PopupWindow? = null
 
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
@@ -62,28 +66,76 @@ class FullDescriptionActivity : FragmentActivity() {
         }, 100)
     }
 
+    private fun animateInPopupContent() {
+        popupWindow?.let {
+            val animator = AnimatorInflater.loadAnimator(this, R.animator.slide_in_up)
+            animator.setTarget(it.contentView)
+            animator.duration = 200
+            animator.start()
+        }
+    }
+
+    private fun animateOutPopupContentAndDismissPopupWindow() {
+        popupWindow?.let {
+            val animator = AnimatorInflater.loadAnimator(this, R.animator.slide_out_down)
+            animator.setTarget(it.contentView)
+            animator.duration = 200
+            animator.start()
+            Handler(Looper.getMainLooper()).postDelayed({
+                popupWindow?.dismiss()
+            }, 200)
+        }
+    }
+
     private fun setupDate() {
         editDateButton.setOnClickListener {
             val datePicker = CustomDatePicker(this, viewModel.currentDate())
-            val popupWindow = PopupWindow(datePicker, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            popupWindow.showAtLocation(saveChangesButton, Gravity.BOTTOM, 0, 0)
-            datePicker.setOnCancel {
-                popupWindow.dismiss()
+            if (popupWindow == null) {
+                popupWindow =
+                    PopupWindow(datePicker, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             }
-            datePicker.setOnOk {
-                viewModel.setDate(it)
-                date.text = it.toString()
-                popupWindow.dismiss()
+            popupWindow?.let {
+                it.showAtLocation(saveChangesButton, Gravity.BOTTOM, 0, 0)
+                animateInPopupContent()
+            }
+            datePicker.setOnCancel {
+                animateOutPopupContentAndDismissPopupWindow()
+            }
+            datePicker.setOnOk { year, month, day ->
+                run {
+                    viewModel.setYear(year)
+                    viewModel.setMonth(month)
+                    viewModel.setDay(day)
+                    animateOutPopupContentAndDismissPopupWindow()
+                }
+            }
+        }
+
+        editTimeButton.setOnClickListener {
+            val timePicker = CustomTimePicker(this, viewModel.currentDate())
+            if (popupWindow == null) {
+                popupWindow =
+                    PopupWindow(timePicker, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            }
+            popupWindow?.let {
+                it.isClippingEnabled = false
+                it.elevation = 100f
+                it.showAtLocation(saveChangesButton, Gravity.CENTER, 0, 0)
+                animateInPopupContent()
+            }
+            timePicker.setOnOk {
+                viewModel.setHour(it.hour)
+                viewModel.setMinute(it.minute)
+                animateOutPopupContentAndDismissPopupWindow()
+            }
+            timePicker.setOnCancel {
+                animateOutPopupContentAndDismissPopupWindow()
             }
         }
     }
 
     private fun setupSaveButtonListener() {
         saveChangesButton.setOnClickListener {
-            viewModel.setName(recordNameField.text.toString())
-            viewModel.setWallet(wallet.text.toString())
-            viewModel.setTag(tag.text.toString())
-            viewModel.setDaily(dailySwitch.isChecked)
             viewModel.save()
         }
     }
@@ -100,7 +152,8 @@ class FullDescriptionActivity : FragmentActivity() {
         dailySwitch.isChecked = record.daily
         wallet.text = record.wallet
         tag.text = record.tag
-        date.text = record.date.toString()
+        date.text = record.date.dateString()
+        time.text = record.date.timeString()
     }
 
     private fun showError(error: String) {
@@ -109,19 +162,24 @@ class FullDescriptionActivity : FragmentActivity() {
         Toast.makeText(this, error, Toast.LENGTH_LONG).show()
     }
 
-    private fun showSuccess(success: String){
+    private fun showSuccess(success: String) {
         // TODO: (do some work stuff)
         Snackbar.make(coordinator, success, Snackbar.LENGTH_LONG)
         Toast.makeText(this, success, Toast.LENGTH_LONG).show()
     }
 
     private fun end() {
+        popupWindow?.dismiss()
         fadeOutFields()
         Handler(Looper.getMainLooper()).postDelayed({ finishAfterTransition() }, 0)
     }
 
     override fun onBackPressed() {
-        end()
+        if (popupWindow == null) {
+            end()
+        } else {
+            animateOutPopupContentAndDismissPopupWindow()
+        }
     }
 
     private fun hideSaveButton() {
@@ -162,6 +220,15 @@ class FullDescriptionActivity : FragmentActivity() {
             }
         })
         viewModel.record.observe(this, Observer {
+            recordNameField.text = it.name
+            recordValueField.text = it.value.toString()
+            date.text = it.date.dateString()
+            time.text = it.date.timeString()
+            wallet.text = it.tag
+            tag.text = it.wallet
+            dailySwitch.isChecked = it.daily
+        })
+        viewModel.record.observe(this, Observer {
             if (it != null)
                 setupRecord(it)
         })
@@ -177,6 +244,8 @@ class FullDescriptionActivity : FragmentActivity() {
         cancelButton.animate().alpha(0f).setDuration(fadeOutTime).start()
         saveChangesButton.animate().alpha(0f).setDuration(fadeOutTime).start()
         loading.animate().alpha(0f).setDuration(fadeOutTime).start()
+        dateLayout.animate().alpha(0f).setDuration(fadeOutTime).start()
+        timeLayout.animate().alpha(0f).setDuration(fadeOutTime).start()
     }
 
     private fun fadeInFields() {
@@ -189,5 +258,7 @@ class FullDescriptionActivity : FragmentActivity() {
         cancelButton.animate().alpha(1f).setDuration(fadeInTime).start()
         saveChangesButton.animate().alpha(1f).setDuration(fadeInTime).start()
         loading.animate().alpha(1f).setDuration(fadeInTime).start()
+        dateLayout.animate().alpha(1f).setDuration(fadeInTime).start()
+        timeLayout.animate().alpha(1f).setDuration(fadeInTime).start()
     }
 }

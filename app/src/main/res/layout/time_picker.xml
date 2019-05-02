@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="220dp"
+        android:weightSum="5"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:elevation="@dimen/stdElevation"
+        android:layout_gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+>
+    <LinearLayout
+            android:id="@+id/leftBar" android:layout_height="match_parent" android:layout_width="0dp"
+            android:background="@color/themeColor" android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_weight="2"
+            android:gravity="center"
+    >
+        <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:padding="10dp" android:gravity="center"
+        >
+            <TextView
+                    android:id="@+id/currentHour"
+                    android:textColor="@color/default_white_color"
+                    android:textSize="44sp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    tools:text="20"
+                    android:gravity="center"
+            />
+            <TextView
+                    android:textColor="@color/secondary_white_color"
+                    android:textSize="44sp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    tools:text=":"
+                    android:text="@string/semicolon_string"
+                    android:gravity="center"
+            />
+            <TextView
+                    android:id="@+id/currentMinute"
+                    android:textColor="@color/secondary_white_color"
+                    android:textSize="44sp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    tools:text="34"
+                    android:gravity="center"
+            />
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal" android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <Button
+                    android:layout_width="60dp" android:layout_height="wrap_content"
+                    android:id="@+id/AMBtn" android:text="@string/am_string"
+                    android:textColor="@color/default_white_color"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            />
+            <Button
+                    android:layout_width="60dp" android:layout_height="wrap_content"
+                    android:id="@+id/PMBtn" android:text="@string/pm_string"
+                    android:textColor="@color/secondary_white_color"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            />
+        </LinearLayout>
+    </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_weight="3"
+            android:id="@+id/rightBar" android:orientation="vertical"
+            android:layout_width="0dp" android:layout_height="match_parent" android:gravity="bottom">
+        <FrameLayout
+                android:layout_width="match_parent" android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@color/backgroundColor"
+                app:layout_constraintBottom_toTopOf="@id/buttonsHolder">
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:id="@+id/pickerHolder"
+                    android:visibility="visible"
+                    tools:visibility="gone"
+                    android:gravity="end" android:layout_width="match_parent" android:layout_height="match_parent"
+            >
+                <com.nevmem.moneysaver.views.RadialPicker
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/hourPicker"
+                />
+            </LinearLayout>
+            <NumberPicker
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:id="@+id/minutePicker" android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+        </FrameLayout>
+        <LinearLayout
+                android:background="@color/backgroundColor"
+                android:id="@+id/buttonsHolder"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="end" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <Button
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:id="@+id/cancelButton" android:text="@string/small_cancel_string"
+                    android:textColor="@color/themeGrayedColor"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
+            <Button
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:id="@+id/okButton" android:text="@string/small_ok_string"
+                    android:textColor="@color/themeColor"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
