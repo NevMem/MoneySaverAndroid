@@ -10,12 +10,13 @@
             android:layout_width="match_parent" android:layout_height="match_parent"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:paddingStart="0dp"
-            android:paddingEnd="0dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
             android:visibility="invisible"
             android:inputType="text"
             android:gravity="center|start"
             tools:text="Some editable text"
+            tools:visibility="visible"
     />
     <TextView
             android:id="@+id/textView"
@@ -23,10 +24,11 @@
             android:drawableEnd="@drawable/edit_icon"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:paddingStart="0dp"
-            android:paddingEnd="0dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
             android:visibility="visible"
             android:gravity="center|start"
             tools:text="Some text"
+            tools:visibility="invisible"
     />
 </FrameLayout>

@@ -5,7 +5,7 @@ import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.util.Log.i
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.widget.FrameLayout
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.changeable_text_field.view.*
 
 class ChangeableTextField(private var ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs) {
     companion object {
-        const val defaultTextSize = 24
+        const val defaultTextSize = 10
     }
 
     private var onTextChanged: ((String) -> Unit)? = null
@@ -35,21 +35,28 @@ class ChangeableTextField(private var ctx: Context, attrs: AttributeSet) : Frame
     }
 
     private fun setupAttributes(attrs: AttributeSet) {
-        val attributeGetter = ctx.theme.obtainStyledAttributes(attrs, R.styleable.CustomText,  0, 0)
+        val attributeGetter = ctx.theme.obtainStyledAttributes(attrs, R.styleable.CustomText, 0, 0)
         val hint = attributeGetter.getString(R.styleable.CustomText_hint) ?: ""
         editText.hint = hint
         textView.hint = hint
         val inputType = attributeGetter.getInt(R.styleable.CustomText_inputType, 0)
         when (inputType) {
-            0 -> { editText.inputType = InputType.TYPE_CLASS_TEXT } // text
-            1 -> { editText.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD } // password
-            2 -> { editText.inputType = InputType.TYPE_CLASS_NUMBER } // number
-            else -> { editText.inputType = InputType.TYPE_CLASS_TEXT }
+            0 -> {
+                editText.inputType = InputType.TYPE_CLASS_TEXT
+            } // text
+            1 -> {
+                editText.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
+            } // password
+            2 -> {
+                editText.inputType = InputType.TYPE_CLASS_NUMBER
+            } // number
+            else -> {
+                editText.inputType = InputType.TYPE_CLASS_TEXT
+            }
         }
-
-        val textSize = attributeGetter.getDimensionPixelSize(R.styleable.CustomText_textSize, defaultTextSize)
-        editText.textSize = textSize.toFloat()
-        textView.textSize = textSize.toFloat()
+        val textSize = attributeGetter.getDimensionPixelSize(R.styleable.CustomText_textSize, defaultTextSize).toFloat()
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
+        editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
     }
 
     private fun setupListeners() {
@@ -64,7 +71,10 @@ class ChangeableTextField(private var ctx: Context, attrs: AttributeSet) : Frame
             anim.start()
         }
         editText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) { valueChanged() }
+            override fun afterTextChanged(s: Editable?) {
+                valueChanged()
+            }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
