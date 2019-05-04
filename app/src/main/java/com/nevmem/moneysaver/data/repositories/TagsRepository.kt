@@ -29,7 +29,7 @@ class TagsRepository @Inject constructor(
         tryUpdate()
     }
 
-    private fun tryUpdate() {
+    fun tryUpdate() {
         loadFromDatabase()
         loadFromNet()
     }

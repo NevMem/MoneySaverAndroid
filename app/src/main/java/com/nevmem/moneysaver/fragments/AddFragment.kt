@@ -53,6 +53,7 @@ class AddFragment : Fragment() {
 
         app.appComponent.inject(this)
         walletsRepo.tryUpdate()
+        tagsRepo.tryUpdate()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -104,9 +105,23 @@ class AddFragment : Fragment() {
             }
         })
 
+        createTagButton.setOnClickListener {
+            createTag()
+        }
+
+        createWalletButton.setOnClickListener {
+            createWallet()
+        }
+
         addRecord.setOnClickListener {
             add()
         }
+    }
+
+    private fun createTag() {
+    }
+
+    private fun createWallet() {
     }
 
     private fun showLoading() {
