@@ -48,26 +48,50 @@
             android:id="@+id/text_1"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="32dp"
             android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/recordValueField"
-            android:gravity="center|start" android:text="@string/chooseTag"/>
-    <Spinner android:layout_width="0dp" android:layout_height="50dp"
-             android:layout_marginTop="24dp"
-             app:layout_constraintTop_toBottomOf="@+id/recordValueField"
-             app:layout_constraintEnd_toEndOf="parent"
-             android:layout_marginEnd="32dp" android:id="@+id/tags"
-             app:layout_constraintStart_toEndOf="@+id/text_1" android:layout_marginStart="16dp"/>
+            android:gravity="center|start" android:text="@string/chooseTag"
+    />
+    <Spinner
+            android:layout_width="0dp" android:layout_height="50dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/recordValueField"
+            app:layout_constraintEnd_toStartOf="@id/createTagButton"
+            android:layout_marginEnd="8dp" android:id="@+id/tags"
+            app:layout_constraintStart_toEndOf="@+id/text_1" android:layout_marginStart="16dp"
+    />
+    <ImageButton
+            android:layout_width="50dp" android:layout_height="50dp"
+            android:id="@+id/createTagButton"
+            app:layout_constraintTop_toBottomOf="@+id/recordValueField"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="24dp" android:layout_marginEnd="32dp"
+            android:src="@drawable/add_image"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+    />
     <TextView
             android:layout_width="60dp"
             android:layout_height="50dp"
             android:id="@+id/text_"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="32dp"
             android:gravity="center|start" android:text="@string/chooseWallet" android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/text_1"/>
-    <Spinner android:layout_width="0dp" android:layout_height="49dp"
-             app:layout_constraintEnd_toEndOf="parent"
-             android:layout_marginEnd="32dp" android:id="@+id/chooseWallet"
-             android:layout_marginTop="24dp"
-             app:layout_constraintTop_toBottomOf="@+id/tags" app:layout_constraintStart_toEndOf="@+id/text_"
-             android:layout_marginStart="16dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/text_1"
+    />
+    <Spinner
+            android:layout_width="0dp" android:layout_height="49dp"
+            app:layout_constraintEnd_toStartOf="@id/createWalletButton"
+            android:layout_marginEnd="8dp" android:id="@+id/chooseWallet"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/tags" app:layout_constraintStart_toEndOf="@+id/text_"
+            android:layout_marginStart="16dp"
+    />
+    <ImageButton
+            android:layout_width="50dp" android:layout_height="50dp"
+            android:id="@+id/createWalletButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tags"
+            android:layout_marginTop="24dp" android:layout_marginEnd="32dp"
+            android:src="@drawable/add_image"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+    />
     <FrameLayout
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="24dp"
