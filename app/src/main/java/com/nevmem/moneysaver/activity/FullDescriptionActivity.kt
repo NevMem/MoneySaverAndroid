@@ -187,6 +187,7 @@ class FullDescriptionActivity : FragmentActivity() {
     }
 
     private fun end() {
+        viewModel.stopEditing()
         popupWindow?.dismiss()
         fadeOutFields()
         Handler(Looper.getMainLooper()).postDelayed({ finishAfterTransition() }, 0)

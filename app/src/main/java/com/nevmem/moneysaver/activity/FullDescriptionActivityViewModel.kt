@@ -96,6 +96,10 @@ class FullDescriptionActivityViewModel(app: Application) : AndroidViewModel(app)
         return currentRecord.date
     }
 
+    fun stopEditing() {
+        historyRepo.stopEditing()
+    }
+
     private fun indexChanged() {
         val allHistory = historyRepo.history.value ?: run {
             return
