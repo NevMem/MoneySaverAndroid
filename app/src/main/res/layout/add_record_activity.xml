@@ -8,6 +8,20 @@
         android:background="#101010"
         android:paddingBottom="60dp">
     <TextView
+            android:layout_height="wrap_content"
+            android:id="@+id/header" tools:text="@string/addRecordHeader"
+            android:padding="20dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            android:textColor="@color/default_white_color"
+            android:text="@string/addRecordHeader" android:textSize="24sp" android:layout_width="0dp"
+            android:layout_alignParentTop="true" android:layout_alignParentEnd="true"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintStart_toStartOf="parent"
+    />
+    <TextView
             android:layout_width="60dp"
             android:layout_height="50dp"
             android:id="@+id/text_"
@@ -40,15 +54,7 @@
             android:padding="8dp" android:textSize="20sp" android:hint="Name" android:textColorHint="#aaa"
             android:layout_width="0dp"
             android:background="@drawable/edit_text" app:layout_constraintHorizontal_bias="0.0"
-            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
-    <Button
-            android:text="Add"
-            android:elevation="@dimen/stdElevation"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/addRecord" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toBottomOf="parent" android:background="@drawable/add_button"/>
+            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/header"/>
     <Spinner android:layout_width="0dp" android:layout_height="50dp"
              android:layout_marginTop="24dp"
              app:layout_constraintTop_toBottomOf="@+id/recordValueField"
@@ -62,36 +68,26 @@
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="32dp"
             android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/recordValueField"
             android:gravity="center|start" android:text="@string/chooseTag"/>
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/profile_background"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:clipToPadding="false" android:elevation="@dimen/stdElevation"
-            android:id="@+id/linearLayout" android:gravity="center|start" android:layout_marginEnd="32dp"
-            android:layout_marginStart="32dp" android:layout_marginTop="16dp">
+    <FrameLayout
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="24dp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <Button
+                android:text="Create"
+                android:elevation="@dimen/stdElevation"
+                android:layout_width="160dp"
+                android:layout_height="50dp"
+                android:id="@+id/addRecord"
+                android:background="@drawable/add_button"
+                tools:visibility="gone"
+        />
         <ProgressBar
-                style="?android:attr/progressBarStyle"
+                android:background="@drawable/add_button"
+                android:layout_width="160dp" android:layout_height="50dp"
+                android:padding="7dp" tools:visibility="visible"
                 android:visibility="gone"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/loadingBar" android:layout_weight="1"
-                android:layout_alignParentTop="true" android:layout_alignParentStart="true"
-                android:layout_marginStart="8dp" android:layout_toStartOf="@+id/headerText"
-                android:layout_alignBottom="@+id/headerText" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
-        <TextView
-                android:layout_height="wrap_content"
-                android:id="@+id/headerText" tools:text="@string/addRecordHeader"
-                android:padding="20dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" android:gravity="center|start"
-                android:text="@string/addRecordHeader" android:textSize="20sp" android:layout_width="0dp"
-                android:layout_alignParentTop="true" android:layout_alignParentEnd="true"
-                app:layout_constraintStart_toEndOf="@+id/loadingBar" android:layout_marginStart="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:indeterminateTint="@color/default_white_color"
+                android:id="@+id/loading"
+        />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

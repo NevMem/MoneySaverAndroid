@@ -13,7 +13,7 @@
     <string name="defaultAverage">Average: 1200.12 per day</string>
     <string name="chooseTag">Tag: </string>
     <string name="chooseWallet">Wallet:</string>
-    <string name="addRecordHeader">Add new record</string>
+    <string name="addRecordHeader">New record</string>
     <string name="totalSpend">Total spend:</string>
     <string name="averageSpending">Average spending:</string>
     <string name="average7Days">Avg. 7 days:</string>
