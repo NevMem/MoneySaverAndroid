@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+        android:clipToPadding="false"
+        tools:layout_height="60dp"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+>
+    <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:visibility="invisible"
+            android:inputType="text"
+            android:gravity="center|start"
+            tools:text="Some editable text"
+    />
+    <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:drawableEnd="@drawable/edit_icon"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:visibility="visible"
+            android:gravity="center|start"
+            tools:text="Some text"
+    />
+</FrameLayout>

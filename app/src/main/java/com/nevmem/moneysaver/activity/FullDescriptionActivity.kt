@@ -66,6 +66,19 @@ class FullDescriptionActivity : FragmentActivity() {
         }, 100)
     }
 
+    private fun setupChangers() {
+        recordNameField.setOnTextChanged {
+            viewModel.setName(it)
+        }
+        recordValueField.setOnTextChanged {
+            try {
+                val value = it.toDouble()
+                viewModel.setValue(value)
+            } catch (e: NumberFormatException) {
+            }
+        }
+    }
+
     private fun animateInPopupContent() {
         popupWindow?.let {
             val animator = AnimatorInflater.loadAnimator(this, R.animator.slide_in_up)
@@ -93,6 +106,8 @@ class FullDescriptionActivity : FragmentActivity() {
             if (popupWindow == null) {
                 popupWindow =
                     PopupWindow(datePicker, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            } else {
+                popupWindow?.contentView = datePicker
             }
             popupWindow?.let {
                 it.showAtLocation(saveChangesButton, Gravity.BOTTOM, 0, 0)
@@ -116,6 +131,8 @@ class FullDescriptionActivity : FragmentActivity() {
             if (popupWindow == null) {
                 popupWindow =
                     PopupWindow(timePicker, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            } else {
+                popupWindow?.contentView = timePicker
             }
             popupWindow?.let {
                 it.isClippingEnabled = false
@@ -147,13 +164,14 @@ class FullDescriptionActivity : FragmentActivity() {
     }
 
     private fun setupRecord(record: Record) {
-        recordNameField.text = record.name
-        recordValueField.text = record.value.toString()
+        recordNameField.value = record.name
+        recordValueField.value = record.value.toString()
         dailySwitch.isChecked = record.daily
         wallet.text = record.wallet
         tag.text = record.tag
         date.text = record.date.dateString()
         time.text = record.date.timeString()
+        setupChangers()
     }
 
     private fun showError(error: String) {
@@ -201,7 +219,8 @@ class FullDescriptionActivity : FragmentActivity() {
     private fun setupViewModelObservers() {
         viewModel.editingState().observe(this, Observer {
             when (it) {
-                null -> {}
+                null -> {
+                }
                 is LoadingState -> {
                     hideSaveButton()
                     showLoading()
@@ -218,15 +237,6 @@ class FullDescriptionActivity : FragmentActivity() {
                         showSuccess(it.success)
                 }
             }
-        })
-        viewModel.record.observe(this, Observer {
-            recordNameField.text = it.name
-            recordValueField.text = it.value.toString()
-            date.text = it.date.dateString()
-            time.text = it.date.timeString()
-            wallet.text = it.tag
-            tag.text = it.wallet
-            dailySwitch.isChecked = it.daily
         })
         viewModel.record.observe(this, Observer {
             if (it != null)
@@ -246,6 +256,7 @@ class FullDescriptionActivity : FragmentActivity() {
         loading.animate().alpha(0f).setDuration(fadeOutTime).start()
         dateLayout.animate().alpha(0f).setDuration(fadeOutTime).start()
         timeLayout.animate().alpha(0f).setDuration(fadeOutTime).start()
+        header.animate().alpha(0f).setDuration(fadeOutTime).start()
     }
 
     private fun fadeInFields() {
@@ -260,5 +271,6 @@ class FullDescriptionActivity : FragmentActivity() {
         loading.animate().alpha(1f).setDuration(fadeInTime).start()
         dateLayout.animate().alpha(1f).setDuration(fadeInTime).start()
         timeLayout.animate().alpha(1f).setDuration(fadeInTime).start()
+        header.animate().alpha(1f).setDuration(fadeInTime).start()
     }
 }

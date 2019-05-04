@@ -54,4 +54,5 @@
     <string name="small_ok_string">ok</string>
     <string name="am_string">AM</string>
     <string name="pm_string">PM</string>
+    <string name="edit_record_string">Edit record</string>
 </resources>

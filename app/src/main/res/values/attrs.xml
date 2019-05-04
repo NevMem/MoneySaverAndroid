@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="BarChart">
-        <attr name="amountOfBars" format="integer" />
-        <attr name="rounded" format="boolean" />
-        <attr name="barWidth" format="integer" />
-        <attr name="baseColor" format="color" />
-        <attr name="labelsFontColor" format="color" />
-        <attr name="showLabels" format="boolean" />
-        <attr name="labelsLiningColor" format="color" />
+        <attr name="amountOfBars" format="integer"/>
+        <attr name="rounded" format="boolean"/>
+        <attr name="barWidth" format="integer"/>
+        <attr name="baseColor" format="color"/>
+        <attr name="labelsFontColor" format="color"/>
+        <attr name="showLabels" format="boolean"/>
+        <attr name="labelsLiningColor" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="PieChart">
-        <attr name="chartPadding" format="float" />
-        <attr name="chartBackground" format="color" />
+        <attr name="chartPadding" format="float"/>
+        <attr name="chartBackground" format="color"/>
     </declare-styleable>
 
-    <declare-styleable name="CheckableEditText">
-        <attr name="hint" format="string" />
+    <declare-styleable name="CustomText">
+        <attr name="hint" format="string"/>
         <attr name="inputType" format="enum">
-            <enum name="text" value="0" />
-            <enum name="password" value="1" />
+            <enum name="text" value="0"/>
+            <enum name="password" value="1"/>
+            <enum name="number" value="2" />
         </attr>
+        <attr name="textSize" format="dimension" />
     </declare-styleable>
 </resources>
