@@ -168,6 +168,10 @@ class HistoryRepository @Inject constructor(
         }
     }
 
+    fun stopEditing() {
+        editingState.postValue(NoneState)
+    }
+
     fun editRecord(record: Record) {
         val params = userHolder.credentialsJson()
         record.injectJson(params)

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.UserHolder
+import com.nevmem.moneysaver.data.util.*
 import com.nevmem.moneysaver.room.AppDatabase
 import com.nevmem.moneysaver.room.entity.Wallet
 import java.util.concurrent.Executor
@@ -23,6 +24,8 @@ class WalletsRepository @Inject constructor(
     var loading = MutableLiveData<Boolean>(true)
     var error = MutableLiveData<String>("")
     var wallets = MutableLiveData<List<Wallet>>(ArrayList())
+
+    var addingState = MutableLiveData<RequestState>(NoneState)
 
     private var tag = "W_REP"
 
@@ -89,5 +92,24 @@ class WalletsRepository @Inject constructor(
             result.add(it.name)
         }
         return result
+    }
+
+    fun addWallet(wallet: String) {
+        addingState.postValue(LoadingState)
+        val params = userHolder.credentialsJson()
+        params.put("walletName", wallet)
+        val request = networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiAddWallet, params)
+        request.success {
+            val parsed = WalletsRepositoryParsers.parseAddWalletRequest(it)
+            when (parsed) {
+                is ParsedValue<*> -> {
+                    addingState.postValue(SuccessState(parsed.parsed as String))
+                }
+                is ParseError -> {
+                    addingState.postValue(ErrorState(parsed.reason))
+                }
+            }
+            tryUpdate()
+        }
     }
 }

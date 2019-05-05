@@ -16,9 +16,9 @@ class CheckableEditText(private var ctx: Context, private var attrs: AttributeSe
 
     init {
         inflate(ctx, R.layout.checkable_edit_text, this)
-        val gt = ctx.theme.obtainStyledAttributes(attrs, R.styleable.CheckableEditText, 0, 0)
-        hint = gt.getString(R.styleable.CheckableEditText_hint) ?: ""
-        inputType = gt.getInt(R.styleable.CheckableEditText_inputType, inputType)
+        val gt = ctx.theme.obtainStyledAttributes(attrs, R.styleable.CustomText, 0, 0)
+        hint = gt.getString(R.styleable.CustomText_hint) ?: ""
+        inputType = gt.getInt(R.styleable.CustomText_inputType, inputType)
         gt.recycle()
     }
 
