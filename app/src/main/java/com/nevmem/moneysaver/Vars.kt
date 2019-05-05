@@ -18,6 +18,8 @@ class Vars {
         const val ServerApiDeleteRecord = "$ServerBase/api/remove"
         const val ServerApiCheckLogin = "$ServerBase/api/checkLogin"
         const val ServerApiRegister = "$ServerBase/api/register"
+        const val ServerApiAddTag = "$ServerBase/api/addTag"
+        const val ServerApiAddWallet = "$ServerBase/api/addWallet"
 
         /* Special constants */
         const val unknownFormat = "Server response has unknown format"

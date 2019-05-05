@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.UserHolder
+import com.nevmem.moneysaver.data.util.*
 import com.nevmem.moneysaver.room.AppDatabase
 import com.nevmem.moneysaver.room.entity.Tag
 import java.util.concurrent.Executor
@@ -22,6 +23,8 @@ class TagsRepository @Inject constructor(
     var error = MutableLiveData<String>("")
     var tags = MutableLiveData<List<Tag>>(ArrayList())
 
+    var addingState = MutableLiveData<RequestState>(NoneState)
+
     private var tag = "T_REP"
 
     init {
@@ -32,6 +35,27 @@ class TagsRepository @Inject constructor(
     fun tryUpdate() {
         loadFromDatabase()
         loadFromNet()
+    }
+
+    fun addTag(tag: String) {
+        addingState.postValue(LoadingState)
+        val params = userHolder.credentialsJson()
+        params.put("tagName", tag)
+        val request = networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiAddTag, params)
+        request.success {
+            addingState.postValue(NoneState)
+            val parsed = TagsRepositoryParsers.parseAddTagResponse(it)
+            when (parsed) {
+                is ParseError -> {
+                    addingState.postValue(ErrorState(parsed.reason))
+                }
+                is ParsedValue<*> -> {
+                    val data = parsed.parsed as String
+                    addingState.postValue(SuccessState(data))
+                }
+            }
+            tryUpdate()
+        }
     }
 
     private fun loadFromNet() {

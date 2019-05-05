@@ -1,6 +1,7 @@
 package com.nevmem.moneysaver.fragments
 
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log.i
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -23,6 +24,7 @@ import com.nevmem.moneysaver.data.util.LoadingState
 import com.nevmem.moneysaver.data.util.NoneState
 import com.nevmem.moneysaver.data.util.SuccessState
 import com.nevmem.moneysaver.views.InfoDialog
+import com.nevmem.moneysaver.views.OneStringDialog
 import kotlinx.android.synthetic.main.add_record_activity.*
 import javax.inject.Inject
 
@@ -31,12 +33,12 @@ class AddFragment : Fragment() {
     lateinit var app: App
     private lateinit var viewModel: AddFragmentViewModel
 
+    private var popupWindow: PopupWindow? = null
+
     @Inject
     lateinit var walletsRepo: WalletsRepository
     @Inject
     lateinit var tagsRepo: TagsRepository
-    @Inject
-    lateinit var historyRepo: HistoryRepository
 
     init {
         i("ADD_FRAGMENT", "initialising AddFragment")
@@ -105,6 +107,26 @@ class AddFragment : Fragment() {
             }
         })
 
+        tagsRepo.addingState.observe(this, Observer {
+            when (it) {
+                null, is NoneState, is SuccessState -> {
+                    processingTags.visibility = View.GONE
+                    createTagError.visibility = View.GONE
+                    createTagButton.visibility = View.VISIBLE
+                }
+                is LoadingState -> {
+                    createTagButton.visibility = View.GONE
+                    createTagError.visibility = View.GONE
+                    processingTags.visibility = View.VISIBLE
+                }
+                is ErrorState -> {
+                    createTagButton.visibility = View.GONE
+                    processingTags.visibility = View.GONE
+                    createTagError.visibility = View.VISIBLE
+                }
+            }
+        })
+
         createTagButton.setOnClickListener {
             createTag()
         }
@@ -119,6 +141,21 @@ class AddFragment : Fragment() {
     }
 
     private fun createTag() {
+        popupWindow?.let {
+            it.dismiss()
+        }
+        val createTag = OneStringDialog(app)
+        createTag.headerString = "Create tag"
+        createTag.descriptionString = "Please choose special unique name for new tag"
+        popupWindow = PopupWindow(createTag, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+        popupWindow?.showAtLocation(createTagButton, Gravity.CENTER, 0, 0)
+        createTag.setOnDismissListener {
+            popupWindow?.dismiss()
+        }
+        createTag.setOnOkListener {
+            tagsRepo.addTag(it)
+            popupWindow?.dismiss()
+        }
     }
 
     private fun createWallet() {
