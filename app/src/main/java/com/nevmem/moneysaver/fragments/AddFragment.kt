@@ -127,6 +127,26 @@ class AddFragment : Fragment() {
             }
         })
 
+        walletsRepo.addingState.observe(this, Observer {
+            when (it) {
+                null, is NoneState, is SuccessState -> {
+                    processingWallets.visibility = View.GONE
+                    createWalletError.visibility = View.GONE
+                    createWalletButton.visibility = View.VISIBLE
+                }
+                is LoadingState -> {
+                    createWalletButton.visibility = View.GONE
+                    createWalletError.visibility = View.GONE
+                    processingWallets.visibility = View.VISIBLE
+                }
+                is ErrorState -> {
+                    createWalletButton.visibility = View.GONE
+                    processingWallets.visibility = View.GONE
+                    createWalletError.visibility = View.VISIBLE
+                }
+            }
+        })
+
         createTagButton.setOnClickListener {
             createTag()
         }
@@ -141,9 +161,7 @@ class AddFragment : Fragment() {
     }
 
     private fun createTag() {
-        popupWindow?.let {
-            it.dismiss()
-        }
+        popupWindow?.dismiss()
         val createTag = OneStringDialog(app)
         createTag.headerString = "Create tag"
         createTag.descriptionString = "Please choose special unique name for new tag"
@@ -159,6 +177,19 @@ class AddFragment : Fragment() {
     }
 
     private fun createWallet() {
+        popupWindow?.dismiss()
+        val createTag = OneStringDialog(app)
+        createTag.headerString = "Create wallet"
+        createTag.descriptionString = "Please choose special unique name for new wallet"
+        popupWindow = PopupWindow(createTag, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+        popupWindow?.showAtLocation(createTagButton, Gravity.CENTER, 0, 0)
+        createTag.setOnDismissListener {
+            popupWindow?.dismiss()
+        }
+        createTag.setOnOkListener {
+            walletsRepo.addWallet(it)
+            popupWindow?.dismiss()
+        }
     }
 
     private fun showLoading() {

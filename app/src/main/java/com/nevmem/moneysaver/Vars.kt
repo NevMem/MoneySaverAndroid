@@ -25,5 +25,6 @@ class Vars {
         const val unknownFormat = "Server response has unknown format"
         const val unspecifiedData = "Server response has bad format(data array is missing)"
         const val corruptedRecord = "One or more record were corrupted"
+        const val inconsistentState = "Inconsistent state"
     }
 }
