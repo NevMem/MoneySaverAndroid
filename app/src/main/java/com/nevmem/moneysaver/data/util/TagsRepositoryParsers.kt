@@ -3,7 +3,7 @@ package com.nevmem.moneysaver.data.util
 import com.nevmem.moneysaver.Vars
 import org.json.JSONObject
 
-class TagsRepositoryParsers {
+abstract class TagsRepositoryParsers {
     companion object {
         fun parseAddTagResponse(json: JSONObject): ParseResult {
             val type = json.optString("type") ?: return ParseError(Vars.unknownFormat)
