@@ -138,7 +138,7 @@ class TemplatesFragment : Fragment() {
     }
 
     private fun newTemplate() {
-        val popupView = NewTemplateDialog(activity!!)
+        val popupView = NewTemplateDialog(activity!!, this)
         val popup =
             PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true)
 

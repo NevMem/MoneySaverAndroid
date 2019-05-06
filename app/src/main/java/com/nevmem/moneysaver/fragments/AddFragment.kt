@@ -1,7 +1,6 @@
 package com.nevmem.moneysaver.fragments
 
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log.i
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -16,7 +15,6 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.RecordDate
-import com.nevmem.moneysaver.data.repositories.HistoryRepository
 import com.nevmem.moneysaver.data.repositories.TagsRepository
 import com.nevmem.moneysaver.data.repositories.WalletsRepository
 import com.nevmem.moneysaver.data.util.ErrorState
@@ -25,7 +23,7 @@ import com.nevmem.moneysaver.data.util.NoneState
 import com.nevmem.moneysaver.data.util.SuccessState
 import com.nevmem.moneysaver.views.InfoDialog
 import com.nevmem.moneysaver.views.OneStringDialog
-import kotlinx.android.synthetic.main.add_record_activity.*
+import kotlinx.android.synthetic.main.add_record_fragment.*
 import javax.inject.Inject
 
 
@@ -45,7 +43,7 @@ class AddFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.add_record_activity, container, false)
+        return inflater.inflate(R.layout.add_record_fragment, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +65,7 @@ class AddFragment : Fragment() {
                     strings.add(tag.name)
                 }
                 tags.adapter =
-                    ArrayAdapter<String>(app, android.R.layout.simple_spinner_dropdown_item, strings)
+                    ArrayAdapter<String>(app, R.layout.default_spinner_item_layout, strings)
             }
         })
 
@@ -78,7 +76,7 @@ class AddFragment : Fragment() {
                     strings.add(wallet.name)
                 }
                 chooseWallet.adapter =
-                    ArrayAdapter<String>(app, android.R.layout.simple_spinner_dropdown_item, strings)
+                    ArrayAdapter<String>(app, R.layout.default_spinner_item_layout, strings)
             }
         })
 

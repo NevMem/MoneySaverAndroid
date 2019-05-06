@@ -9,13 +9,16 @@
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="vertical" android:gravity="center"
                       android:paddingBottom="70dp"
-                      android:paddingEnd="10dp" android:paddingStart="10dp" android:paddingTop="10dp">
+                      android:paddingEnd="10dp" android:paddingStart="10dp" android:paddingTop="0dp">
             <TextView android:layout_height="wrap_content" android:layout_width="match_parent"
-                      android:padding="17dp" android:elevation="@dimen/stdElevation"
-                      android:background="@drawable/profile_background"
+                      android:elevation="@dimen/stdElevation"
+                      android:gravity="center"
                       android:id="@+id/templatesHeader"
-                      android:textSize="20sp"
-                      android:text="Here is all your templates"
+                      android:textSize="24sp"
+                      android:text="@string/browse_templates_string"
+                      android:layout_marginBottom="10dp"
+                      android:padding="20dp"
+                      android:layout_marginTop="24dp"
             />
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                           android:orientation="vertical" android:id="@+id/templatesAnchor"
