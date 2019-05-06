@@ -16,8 +16,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:elevation="@dimen/stdElevation"
     >
@@ -58,14 +58,14 @@
                       android:layout_width="0dp" android:layout_height="wrap_content"
                       app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
                       app:layout_constraintTop_toBottomOf="@id/newTemplateValue" android:orientation="horizontal"
-                      android:weightSum="5"
                       android:padding="10dp"
         >
-            <Spinner android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2"
-                     android:id="@+id/newTemplateTag" android:spinnerMode="dialog"/>
-            <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
-            <Spinner android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2"
-                     android:id="@+id/newTemplateWallet" android:spinnerMode="dialog"/>
+            <Spinner android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                     android:id="@+id/newTemplateTag" android:spinnerMode="dialog" android:layout_marginEnd="5dp"
+            />
+            <Spinner android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                     android:id="@+id/newTemplateWallet" android:spinnerMode="dialog" android:layout_marginEnd="5dp"
+            />
         </LinearLayout>
 
         <LinearLayout
@@ -79,7 +79,7 @@
                     android:id="@+id/dismissButton" android:layout_width="120dp" android:layout_height="wrap_content"
                     android:background="@drawable/dismiss_button_background"
                     android:layout_weight="1"
-                    android:text="Cancel"
+                    android:text="@string/small_cancel_string"
             />
             <Space
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                     android:id="@+id/okButton" android:layout_width="120dp" android:layout_height="wrap_content"
                     android:background="@drawable/ok_button_background"
                     android:layout_weight="1"
-                    android:text="Ok"
+                    android:text="@string/small_ok_string"
             />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

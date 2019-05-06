@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools"
+        android:paddingTop="14dp" android:paddingBottom="14dp"
+        android:paddingStart="7dp" android:paddingEnd="7dp"
+        android:textColor="@color/default_white_color"
+        tools:text="Some text"
+/>

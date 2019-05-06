@@ -67,7 +67,7 @@ class AddFragment : Fragment() {
                     strings.add(tag.name)
                 }
                 tags.adapter =
-                    ArrayAdapter<String>(app, android.R.layout.simple_spinner_dropdown_item, strings)
+                    ArrayAdapter<String>(app, R.layout.default_spinner_item_layout, strings)
             }
         })
 
@@ -78,7 +78,7 @@ class AddFragment : Fragment() {
                     strings.add(wallet.name)
                 }
                 chooseWallet.adapter =
-                    ArrayAdapter<String>(app, android.R.layout.simple_spinner_dropdown_item, strings)
+                    ArrayAdapter<String>(app, R.layout.default_spinner_item_layout, strings)
             }
         })
 
