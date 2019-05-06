@@ -46,7 +46,7 @@
                     android:id="@+id/okButton" android:layout_width="0dp" android:layout_height="wrap_content"
                     android:background="@drawable/ok_button_background"
                     android:layout_weight="1"
-                    android:text="Ok"
+                    android:text="@string/small_ok_string"
             />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
