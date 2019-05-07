@@ -29,6 +29,10 @@ class WalletsRepository @Inject constructor(
 
     private var tag = "W_REP"
 
+    init {
+        tryUpdate()
+    }
+
     private fun loadFromNet() {
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiWallets, userHolder.credentialsJson(), {
             if (it.has("type")) {
