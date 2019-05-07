@@ -56,4 +56,6 @@
     <string name="pm_string">PM</string>
     <string name="edit_record_string">Edit record</string>
     <string name="browse_templates_string">Browse your templates</string>
+    <string name="new_template_dialog_tname_string">Name</string>
+    <string name="new_template_dialog_tvalue_string">Value</string>
 </resources>
