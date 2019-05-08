@@ -6,8 +6,10 @@ import android.transition.Fade
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.activity.adapters.MonthDescriptionLabelsAdapter
 import com.nevmem.moneysaver.data.repositories.InfoRepository
 import com.nevmem.moneysaver.views.PieChart
 import kotlinx.android.synthetic.main.month_description_page.*
@@ -28,16 +30,14 @@ class MonthDescriptionActivity : AppCompatActivity() {
         window.enterTransition = Fade()
         window.exitTransition = Fade()
 
-//        window.sharedElementEnterTransition = TransitionInflater.from(this)
-//            .inflateTransition(R.transition.month_description_enter_shared_element)
-//        window.sharedElementExitTransition = TransitionInflater.from(this)
-//            .inflateTransition(R.transition.month_description_exit_shared_element)
+        labelsInfoRecycler.layoutManager = LinearLayoutManager(this)
 
         infoRepo.lastMonthDescription.observe(this, Observer {
             if (it != null) {
                 setupChart(it.byTagTotal)
                 monthSpend.text = it.total.toString()
                 monthDailySpend.text = it.totalDaily.toString()
+                labelsInfoRecycler.adapter = MonthDescriptionLabelsAdapter(this, it.byTagTotal)
             }
         })
     }
