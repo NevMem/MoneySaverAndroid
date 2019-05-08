@@ -1,82 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_height="match_parent"
-        android:background="@color/cardColor"
-        android:padding="16dp"
-        android:transitionName="cardTransition"
-        android:nestedScrollingEnabled="true"
->
-    <TextView
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:id="@+id/headerText" tools:text="Month overview"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="20sp"
-            android:transitionName="headerTransition"
-            android:gravity="center"
-            android:padding="8dp"
-            android:textColor="#fff"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-    />
-    <com.nevmem.moneysaver.views.PieChart
-            android:id="@+id/chart"
-            app:chartBackground="@color/cardColor"
-            android:layout_width="170dp" android:layout_height="170dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headerText"
-            android:transitionName="chartTransition"
-    />
-    <LinearLayout
-            android:id="@+id/anchor"
-            app:layout_constraintTop_toBottomOf="@id/chart"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="visible"
-            tools:visibility="visible"
-            android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
-        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
-                      android:layout_height="wrap_content" android:weightSum="4"
-                      android:paddingTop="17dp" android:paddingBottom="17dp"
-        >
-            <TextView android:layout_width="0dp" android:layout_weight="3" android:layout_height="wrap_content"
-                      android:text="@string/month_description_page_total_string" android:textSize="18sp"
-            />
-            <TextView
-                    android:layout_weight="1"
-                    android:id="@+id/monthSpend" android:textSize="18sp"
-                    android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:gravity="end"
-            />
-        </LinearLayout>
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                      android:weightSum="4"
-                      android:paddingTop="17dp" android:paddingBottom="17dp"
-        >
-            <TextView android:layout_width="0dp" android:layout_weight="3" android:layout_height="wrap_content"
-                      android:text="@string/month_description_page_daily_string" android:textSize="18sp"
-            />
-            <TextView
-                    android:layout_weight="1"
-                    android:id="@+id/monthDailySpend" android:textSize="18sp"
-                    android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:gravity="end"
-            />
-        </LinearLayout>
-        <LinearLayout
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:id="@+id/legend" android:orientation="vertical"/>
-    </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/labelsInfoRecycler"
-            app:layout_constraintTop_toBottomOf="@id/anchor"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:nestedScrollingEnabled="true">
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-    />
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="match_parent"
+            android:background="@color/cardColor"
+            android:padding="16dp"
+            android:transitionName="cardTransition"
+            android:nestedScrollingEnabled="true"
+    >
+        <TextView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:id="@+id/headerText" tools:text="Month overview"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="20sp"
+                android:transitionName="headerTransition"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="#fff"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+        />
+        <com.nevmem.moneysaver.views.PieChart
+                android:id="@+id/chart"
+                app:chartBackground="@color/cardColor"
+                android:layout_width="170dp" android:layout_height="170dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/headerText"
+                android:transitionName="chartTransition"
+        />
+        <LinearLayout
+                android:id="@+id/anchor"
+                app:layout_constraintTop_toBottomOf="@id/chart"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="visible"
+                tools:visibility="visible"
+                android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+                          android:layout_height="wrap_content" android:weightSum="4"
+                          android:paddingTop="17dp" android:paddingBottom="17dp"
+            >
+                <TextView android:layout_width="0dp" android:layout_weight="3" android:layout_height="wrap_content"
+                          android:text="@string/month_description_page_total_string" android:textSize="18sp"
+                />
+                <TextView
+                        android:layout_weight="1"
+                        android:id="@+id/monthSpend" android:textSize="18sp"
+                        android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:gravity="end"
+                />
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                          android:weightSum="4"
+                          android:paddingTop="17dp" android:paddingBottom="17dp"
+            >
+                <TextView android:layout_width="0dp" android:layout_weight="3" android:layout_height="wrap_content"
+                          android:text="@string/month_description_page_daily_string" android:textSize="18sp"
+                />
+                <TextView
+                        android:layout_weight="1"
+                        android:id="@+id/monthDailySpend" android:textSize="18sp"
+                        android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:gravity="end"
+                />
+            </LinearLayout>
+            <LinearLayout
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:id="@+id/legend" android:orientation="vertical"/>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/labelsInfoRecycler"
+                app:layout_constraintTop_toBottomOf="@id/anchor"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
