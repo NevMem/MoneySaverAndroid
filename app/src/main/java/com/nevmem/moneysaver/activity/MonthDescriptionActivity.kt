@@ -25,7 +25,7 @@ class MonthDescriptionActivity : AppCompatActivity() {
         (applicationContext as App).appComponent.inject(this)
         window.statusBarColor = ContextCompat.getColor(this, R.color.cardColor)
 
-        headerText.text = "Last month description"
+        headerText.text = "Current month description"
 
         window.enterTransition = Fade()
         window.exitTransition = Fade()
