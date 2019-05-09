@@ -50,12 +50,14 @@
     <string name="save_string">Save</string>
     <string name="edit_icon_edit_date_description_string">Edit icon for edit button</string>
     <string name="semicolon_string">:</string>
-    <string name="small_cancel_string">cancel</string>
-    <string name="small_ok_string">ok</string>
+    <string name="small_cancel_string">Cancel</string>
+    <string name="small_ok_string">OK</string>
     <string name="am_string">AM</string>
     <string name="pm_string">PM</string>
     <string name="edit_record_string">Edit record</string>
     <string name="browse_templates_string">Browse your templates</string>
     <string name="new_template_dialog_tname_string">Name</string>
     <string name="new_template_dialog_tvalue_string">Value</string>
+    <string name="month_description_page_prev_button_content_description_string">Previous month button</string>
+    <string name="month_description_page_next_button_content_description_string">Next month button</string>
 </resources>
