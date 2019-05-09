@@ -20,6 +20,6 @@ interface MonthDescriptionDao {
     @Query("SELECT * FROM monthdescription ORDER BY monthTimestamp DESC LIMIT 1")
     fun getLastMonth(): MonthDescription?
 
-    @Query("SELECT * FROM monthdescription ORDER BY monthTimestamp DESC")
+    @Query("SELECT * FROM monthdescription ORDER BY monthTimestamp")
     fun getAll(): List<MonthDescription>
 }

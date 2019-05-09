@@ -163,7 +163,7 @@ class AddFragment : Fragment() {
         val createTag = OneStringDialog(app)
         createTag.headerString = "Create tag"
         createTag.descriptionString = "Please choose special unique name for new tag"
-        popupWindow = PopupWindow(createTag, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+        popupWindow = PopupWindow(createTag, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
         popupWindow?.showAtLocation(createTagButton, Gravity.CENTER, 0, 0)
         createTag.setOnDismissListener {
             popupWindow?.dismiss()
@@ -179,7 +179,7 @@ class AddFragment : Fragment() {
         val createTag = OneStringDialog(app)
         createTag.headerString = "Create wallet"
         createTag.descriptionString = "Please choose special unique name for new wallet"
-        popupWindow = PopupWindow(createTag, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+        popupWindow = PopupWindow(createTag, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
         popupWindow?.showAtLocation(createTagButton, Gravity.CENTER, 0, 0)
         createTag.setOnDismissListener {
             popupWindow?.dismiss()

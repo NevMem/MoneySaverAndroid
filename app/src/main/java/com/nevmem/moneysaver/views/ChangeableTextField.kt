@@ -48,7 +48,7 @@ class ChangeableTextField(private var ctx: Context, attrs: AttributeSet) : Frame
                 editText.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
             } // password
             2 -> {
-                editText.inputType = InputType.TYPE_CLASS_NUMBER
+                editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             } // number
             else -> {
                 editText.inputType = InputType.TYPE_CLASS_TEXT

@@ -2,7 +2,7 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@color/cardColor"
@@ -10,6 +10,7 @@
         android:paddingTop="16dp" android:paddingBottom="16dp"
         android:paddingStart="24dp" android:paddingEnd="24dp"
         android:clickable="true" android:focusable="true"
+        android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
 >
     <TextView
             android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -32,6 +33,7 @@
             android:inputType="text"
             android:id="@+id/editText" android:focusable="true"
             android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:textColor="@color/default_white_color"
     />
     <RelativeLayout
             android:layout_marginTop="10dp"
@@ -43,6 +45,7 @@
                 android:text="@string/small_cancel_string"
                 android:layout_marginEnd="10dp"
                 android:layout_gravity="start"
+                android:textColor="@color/dismiss_button_text_color"
         />
         <Button
                 android:layout_height="wrap_content" android:layout_width="110dp"
@@ -50,6 +53,7 @@
                 android:text="@string/small_ok_string"
                 android:layout_marginStart="10dp"
                 android:layout_alignParentEnd="true"
+                android:textColor="@color/default_white_color"
         />
     </RelativeLayout>
 </LinearLayout>
