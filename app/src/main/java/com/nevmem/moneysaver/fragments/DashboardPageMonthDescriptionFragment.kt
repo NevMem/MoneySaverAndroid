@@ -39,7 +39,7 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
         view.setOnClickListener {
             openMonthDescriptionActivity()
         }
-        infoRepo.lastMonthDescription.observe(this, Observer {
+        /* infoRepo.lastMonthDescription.observe(this, Observer {
             if (it != null) {
                 descriptionHeading.text = "Last month description"
                 val labels = ArrayList<String>()
@@ -61,7 +61,7 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
                 }
                 chart.setData(values, PieChart.baseColors)
             }
-        })
+        }) */
     }
 
     private fun createLabelRow(ctx: Context, parent: ViewGroup, name: String, color: Int): View {

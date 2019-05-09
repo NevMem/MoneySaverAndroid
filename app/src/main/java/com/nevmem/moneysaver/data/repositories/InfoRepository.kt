@@ -9,11 +9,8 @@ import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.UserHolder
 import com.nevmem.moneysaver.data.util.InfoRepositoryParsers
 import com.nevmem.moneysaver.data.util.ParseError
-import com.nevmem.moneysaver.data.util.ParseResult
 import com.nevmem.moneysaver.data.util.ParsedValue
 import com.nevmem.moneysaver.room.AppDatabase
-import org.json.JSONObject
-import java.lang.IllegalStateException
 import java.util.concurrent.Executor
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,9 +23,9 @@ class InfoRepository
 ) {
     private var tag = "I_REP"
     var info = MutableLiveData<Info>(Info())
-    var lastMonthDescription = MutableLiveData<MonthDescription>()
     var error = MutableLiveData<String>("")
     var loading = MutableLiveData<Boolean>(false)
+    var monthDescriptions = MutableLiveData<List<MonthDescription>>()
 
     init {
         loadFromDatabase()
@@ -41,23 +38,21 @@ class InfoRepository
 
     private fun loadFromDatabase() {
         executor.execute {
-            with(appDatabase.infoDao()) {
+            with (appDatabase.infoDao()) {
                 val saved = get()
                 if (saved != null) {
                     info.postValue(saved)
                 }
             }
-            with(appDatabase.monthDescriptionDao()) {
-                val lastMonth = getLastMonth()
-                if (lastMonth != null)
-                    lastMonthDescription.postValue(lastMonth)
+            with (appDatabase.monthDescriptionDao()) {
+                monthDescriptions.postValue(getAll())
             }
         }
     }
 
     private fun resolveInfoConflicts(info: Info) {
         executor.execute {
-            with(appDatabase.infoDao()) {
+            with (appDatabase.infoDao()) {
                 val saved = get()
                 if (saved != null) {
                     info.uid = saved.uid
@@ -107,7 +102,9 @@ class InfoRepository
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiInfo, params, {
             loading.postValue(false)
             when (val parseResult = InfoRepositoryParsers.parseServerLoadedResponse(it)) {
-                is ParseError -> { error.postValue(parseResult.reason) }
+                is ParseError -> {
+                    error.postValue(parseResult.reason)
+                }
                 is ParsedValue<*> -> {
                     val parsed = parseResult.parsed
                     if (parsed is InfoRepositoryParsers.Companion.InfoMonthDescriptionsPair) {

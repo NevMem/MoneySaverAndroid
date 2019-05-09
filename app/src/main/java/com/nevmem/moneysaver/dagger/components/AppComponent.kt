@@ -26,4 +26,5 @@ interface AppComponent {
     fun inject(splashScreen: SplashScreen)
     fun inject(fullDescriptionActivityViewModel: FullDescriptionActivityViewModel)
     fun inject(addFragmentViewModel: AddFragmentViewModel)
+    fun inject(monthDescriptionViewModel: MonthDescriptionViewModel)
 }
