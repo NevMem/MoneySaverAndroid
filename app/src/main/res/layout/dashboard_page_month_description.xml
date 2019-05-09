@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -19,20 +19,43 @@
                 android:layout_height="match_parent"
                 android:padding="16dp"
         >
-            <TextView
-                    android:layout_width="match_parent" android:layout_height="wrap_content"
+            <LinearLayout
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Your last month description"
-                    android:id="@+id/descriptionHeading"
-                    android:textSize="20sp"
-                    android:transitionName="headerTransition"
+                    android:id="@+id/headerWrapper"
                     android:gravity="center"
-                    android:padding="8dp"
-            />
+                    android:layout_width="match_parent" android:layout_height="wrap_content">
+                <ImageButton
+                        android:contentDescription="@string/previous_month_string"
+                        android:id="@+id/prevButton" android:src="@drawable/prev_nav_icon"
+                        android:layout_width="40dp" android:layout_height="40dp"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:padding="4dp"
+                        android:scaleType="fitCenter"
+                />
+                <TextView
+                        android:layout_weight="1"
+                        android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:id="@+id/descriptionHeading"
+                        android:textSize="20sp"
+                        android:transitionName="headerTransition"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:textColor="@color/default_white_color"
+                        tools:text="Your last month description"
+                />
+                <ImageButton
+                        android:contentDescription="@string/next_month_string"
+                        android:id="@+id/nextButton" android:src="@drawable/next_nav_icon"
+                        android:layout_width="40dp" android:layout_height="40dp"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:padding="4dp"
+                        android:scaleType="fitCenter"
+                />
+            </LinearLayout>
             <GridLayout
-                    app:layout_constraintTop_toBottomOf="@id/descriptionHeading"
+                    app:layout_constraintTop_toBottomOf="@id/headerWrapper"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"

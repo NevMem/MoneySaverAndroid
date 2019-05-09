@@ -65,6 +65,8 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
                 chart.setData(values, PieChart.baseColors)
             }
         })
+        prevButton.setOnClickListener { viewModel.prev() }
+        nextButton.setOnClickListener { viewModel.next() }
     }
 
     private fun createLabelRow(ctx: Context, parent: ViewGroup, name: String, color: Int): View {

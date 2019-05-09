@@ -60,4 +60,6 @@
     <string name="new_template_dialog_tvalue_string">Value</string>
     <string name="month_description_page_prev_button_content_description_string">Previous month button</string>
     <string name="month_description_page_next_button_content_description_string">Next month button</string>
+    <string name="previous_month_string">Previous month</string>
+    <string name="next_month_string">Next month</string>
 </resources>
