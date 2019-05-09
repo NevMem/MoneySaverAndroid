@@ -10,7 +10,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/cardColor"
-            android:padding="16dp"
+            android:paddingStart="16dp" android:paddingEnd="16dp"
+            android:paddingBottom="16dp"
             android:transitionName="cardTransition"
             android:nestedScrollingEnabled="true"
     >
@@ -23,10 +24,9 @@
                 android:textSize="20sp"
                 android:transitionName="headerTransition"
                 android:gravity="center"
-                android:padding="8dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="24dp"
                 android:textColor="#fff"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
         />
         <com.nevmem.moneysaver.views.PieChart
                 android:id="@+id/chart"
@@ -86,6 +86,7 @@
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layoutAnimation="@anim/cascade"
         />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
