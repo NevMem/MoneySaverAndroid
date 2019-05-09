@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.activity.MonthDescriptionActivity
@@ -25,9 +27,12 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
     @Inject
     lateinit var infoRepo: InfoRepository
 
+    lateinit var viewModel: DashboardPageMonthDescriptionFragmentViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity?.applicationContext as App).appComponent.inject(this)
+        viewModel = ViewModelProviders.of(this).get(DashboardPageMonthDescriptionFragmentViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,9 +44,9 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
         view.setOnClickListener {
             openMonthDescriptionActivity()
         }
-        /* infoRepo.lastMonthDescription.observe(this, Observer {
+        viewModel.monthDescription.observe(this, Observer {
             if (it != null) {
-                descriptionHeading.text = "Last month description"
+                descriptionHeading.text = it.monthId
                 val labels = ArrayList<String>()
                 val values = ArrayList<Double>()
                 for (key in it.byTagTotal.keys) {
@@ -61,7 +66,7 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
                 }
                 chart.setData(values, PieChart.baseColors)
             }
-        }) */
+        })
     }
 
     private fun createLabelRow(ctx: Context, parent: ViewGroup, name: String, color: Int): View {
