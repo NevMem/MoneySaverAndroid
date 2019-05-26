@@ -41,7 +41,7 @@ abstract class HistoryRepositoryParsers {
                 if (timestamp == 0L) return ParseError(corruptedRecord)
                 record.timestamp = timestamp
                 record.date = RecordDate.fromJSON(row.optJSONObject("date") ?: return ParseError(corruptedRecord))
-                record.daily = json.optBoolean("daily", true)
+                record.daily = row.optBoolean("daily", true)
 
                 parsed.add(record)
             }
