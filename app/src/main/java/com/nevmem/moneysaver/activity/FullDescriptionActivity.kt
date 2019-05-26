@@ -66,6 +66,10 @@ class FullDescriptionActivity : FragmentActivity() {
         }, 100)
     }
 
+    private fun setupListeners() {
+        dailySwitch.setOnCheckedChangeListener { _, isChecked -> viewModel.setDaily(isChecked) }
+    }
+
     private fun setupChangers() {
         recordNameField.setOnTextChanged {
             viewModel.setName(it)
@@ -164,6 +168,7 @@ class FullDescriptionActivity : FragmentActivity() {
     }
 
     private fun setupRecord(record: Record) {
+        println("Setup record $record")
         recordNameField.value = record.name
         recordValueField.value = record.value.toString()
         dailySwitch.isChecked = record.daily
@@ -171,6 +176,7 @@ class FullDescriptionActivity : FragmentActivity() {
         tag.text = record.tag
         date.text = record.date.dateString()
         time.text = record.date.timeString()
+        setupListeners()
         setupChangers()
     }
 
@@ -240,8 +246,9 @@ class FullDescriptionActivity : FragmentActivity() {
             }
         })
         viewModel.record.observe(this, Observer {
-            if (it != null)
+            if (it != null) {
                 setupRecord(it)
+            }
         })
     }
 
