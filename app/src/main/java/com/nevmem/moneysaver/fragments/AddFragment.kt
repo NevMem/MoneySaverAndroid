@@ -163,7 +163,8 @@ class AddFragment : Fragment() {
         val createTag = OneStringDialog(app)
         createTag.headerString = "Create tag"
         createTag.descriptionString = "Please choose special unique name for new tag"
-        popupWindow = PopupWindow(createTag, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+        popupWindow =
+            PopupWindow(createTag, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
         popupWindow?.showAtLocation(createTagButton, Gravity.CENTER, 0, 0)
         createTag.setOnDismissListener {
             popupWindow?.dismiss()
@@ -179,7 +180,8 @@ class AddFragment : Fragment() {
         val createTag = OneStringDialog(app)
         createTag.headerString = "Create wallet"
         createTag.descriptionString = "Please choose special unique name for new wallet"
-        popupWindow = PopupWindow(createTag, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+        popupWindow =
+            PopupWindow(createTag, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
         popupWindow?.showAtLocation(createTagButton, Gravity.CENTER, 0, 0)
         createTag.setOnDismissListener {
             popupWindow?.dismiss()
@@ -231,8 +233,18 @@ class AddFragment : Fragment() {
     private fun add() {
         val name = recordNameField.text.toString()
         val value = recordValueField.text.toString()
-        val wallet = chooseWallet.selectedItem.toString()
-        val tag = tags.selectedItem.toString()
+        val walletItem = chooseWallet.selectedItem
+        val tagItem = tags.selectedItem
+        if (walletItem == null || tagItem == null) {
+            val infoDialog = InfoDialog(activity!!, "Tag or wallet is empty, please create at least one before")
+            val popupWindow =
+                PopupWindow(infoDialog, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            popupWindow.showAtLocation(addRecord, Gravity.CENTER, 0, 0)
+            infoDialog.setOkListener { popupWindow.dismiss() }
+            return
+        }
+        val wallet = walletItem.toString()
+        val tag = tagItem.toString()
         try {
             val doubleValue = value.toDouble()
             val record = Record()
