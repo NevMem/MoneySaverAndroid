@@ -18,6 +18,10 @@
         <item name="android:background">@color/mainColor</item>
     </style>
 
+    <style name="SwitchTheme" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/themeColor</item>
+    </style>
+
     <style name="LogOutButton" parent = "Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:textColor">@color/dangerColor</item>
     </style>
