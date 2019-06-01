@@ -40,6 +40,7 @@ class MonthDescriptionActivity : AppCompatActivity() {
                 monthSpend.text = it.total.toString()
                 monthDailySpend.text = it.totalDaily.toString()
                 labelsInfoRecycler.adapter = MonthDescriptionLabelsAdapter(this, it.byTagTotal)
+                labelsInfoRecycler.scheduleLayoutAnimation()
                 headerText.text = it.monthId
             }
         })
