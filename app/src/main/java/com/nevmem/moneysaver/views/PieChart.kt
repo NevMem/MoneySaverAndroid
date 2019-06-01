@@ -85,7 +85,7 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
     private fun emptyValues(canvas: Canvas) {
         // TODO: (handling empty values)
         paint.color = Color.parseColor("#afafaf")
-        val message = "There is nothing to show"
+        val message = "Empty"
         paint.textSize = 50f
         canvas.drawText(message, width / 2f - paint.measureText(message) / 2f, height / 2f + 25f, paint)
     }
