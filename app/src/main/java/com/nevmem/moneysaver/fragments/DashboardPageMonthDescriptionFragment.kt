@@ -32,7 +32,7 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
         transition = true
     }
 
-    private fun unlockTranstitions() {
+    private fun unlockTransitions() {
         transition = false
     }
 
@@ -112,7 +112,7 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        unlockTranstitions()
+        unlockTransitions()
         when (requestCode) {
             OVERVIEW_SYNC -> {
                 if (data != null) {
