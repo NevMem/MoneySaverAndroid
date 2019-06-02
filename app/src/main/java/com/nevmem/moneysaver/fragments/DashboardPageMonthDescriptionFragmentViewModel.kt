@@ -37,6 +37,11 @@ class DashboardPageMonthDescriptionFragmentViewModel(application: Application) :
         monthDescription.addSource(currentLiveData) { value -> monthDescription.postValue(value) }
     }
 
+    fun setMonthIndex(newIndex: Int) {
+        index = newIndex
+        indexChanged()
+    }
+
     fun prev() {
         index -= 1
         indexChanged()

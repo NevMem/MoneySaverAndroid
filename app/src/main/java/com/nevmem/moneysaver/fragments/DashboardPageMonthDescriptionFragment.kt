@@ -22,6 +22,10 @@ import kotlinx.android.synthetic.main.label_row.view.*
 import javax.inject.Inject
 
 class DashboardPageMonthDescriptionFragment : Fragment() {
+    companion object {
+        const val OVERVIEW_SYNC = 0
+    }
+
     @Inject
     lateinit var infoRepo: InfoRepository
 
@@ -87,9 +91,24 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
                 android.util.Pair<View, String>(chart, "chartTransition"),
                 android.util.Pair<View, String>(descriptionCard, "cardTransition")
             )
-            startActivity(intent, options.toBundle())
+            startActivityForResult(intent, OVERVIEW_SYNC, options.toBundle())
         } else {
             Toast.makeText(activity, "Card is null", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            OVERVIEW_SYNC -> {
+                if (data != null) {
+                    val extras = data.extras
+                    if (extras != null) {
+                        val index = extras.getInt("monthIndex", Int.MAX_VALUE)
+                        viewModel.setMonthIndex(index)
+                    }
+                }
+            }
+            else -> {}
         }
     }
 }

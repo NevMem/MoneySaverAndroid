@@ -42,6 +42,8 @@ class MonthDescriptionViewModel(application: Application) : AndroidViewModel(app
         indexChanged()
     }
 
+    fun getMonthIndex() = index
+
     fun prev() {
         index -= 1
         indexChanged()

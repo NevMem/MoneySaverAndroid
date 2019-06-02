@@ -1,5 +1,7 @@
 package com.nevmem.moneysaver.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.transition.Fade
@@ -52,6 +54,14 @@ class MonthDescriptionActivity : AppCompatActivity() {
 
         prevButton.setOnClickListener { viewModel.prev() }
         nextButton.setOnClickListener { viewModel.next() }
+    }
+
+    override fun onBackPressed() {
+        val index = viewModel.getMonthIndex()
+        val intent = Intent()
+        intent.putExtra("monthIndex", index)
+        setResult(Activity.RESULT_OK, intent)
+        finishAfterTransition()
     }
 
     private fun setupChart(byTagTotal: HashMap<String, Double>) {
