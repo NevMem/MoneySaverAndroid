@@ -34,6 +34,11 @@ class MonthDescriptionActivity : AppCompatActivity() {
         labelsInfoRecycler.layoutManager = LinearLayoutManager(this)
 
         viewModel = ViewModelProviders.of(this).get(MonthDescriptionViewModel::class.java)
+
+        val extras = intent.extras
+        if (extras != null)
+            viewModel.setIndex(extras.getInt("monthIndex", Int.MAX_VALUE))
+
         viewModel.monthDescription.observe(this, Observer {
             if (it != null) {
                 setupChart(it.byTagTotal)

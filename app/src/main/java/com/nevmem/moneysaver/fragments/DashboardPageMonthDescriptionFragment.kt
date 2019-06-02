@@ -79,6 +79,7 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
 
     private fun openMonthDescriptionActivity() {
         val intent = Intent(activity!!, MonthDescriptionActivity::class.java)
+        intent.putExtra("monthIndex", viewModel.getMonthIndex())
         if (descriptionCard != null) {
             val options = ActivityOptions.makeSceneTransitionAnimation(
                 activity,
