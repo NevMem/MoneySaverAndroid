@@ -26,6 +26,18 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
         const val OVERVIEW_SYNC = 0
     }
 
+    private var transition = false
+
+    private fun lockTransitions() {
+        transition = true
+    }
+
+    private fun unlockTranstitions() {
+        transition = false
+    }
+
+    private fun canRunTransition() = !transition
+
     @Inject
     lateinit var infoRepo: InfoRepository
 
@@ -82,6 +94,8 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
     }
 
     private fun openMonthDescriptionActivity() {
+        if (!canRunTransition()) return
+        lockTransitions()
         val intent = Intent(activity!!, MonthDescriptionActivity::class.java)
         intent.putExtra("monthIndex", viewModel.getMonthIndex())
         if (descriptionCard != null) {
@@ -98,6 +112,7 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        unlockTranstitions()
         when (requestCode) {
             OVERVIEW_SYNC -> {
                 if (data != null) {
