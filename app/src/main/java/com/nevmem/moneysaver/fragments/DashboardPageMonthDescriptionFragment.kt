@@ -16,6 +16,7 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.activity.MonthDescriptionActivity
 import com.nevmem.moneysaver.data.repositories.InfoRepository
+import com.nevmem.moneysaver.utils.TransitionsLocker
 import com.nevmem.moneysaver.views.PieChart
 import kotlinx.android.synthetic.main.dashboard_page_month_description.*
 import kotlinx.android.synthetic.main.label_row.view.*
@@ -26,17 +27,7 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
         const val OVERVIEW_SYNC = 0
     }
 
-    private var transition = false
-
-    private fun lockTransitions() {
-        transition = true
-    }
-
-    private fun unlockTransitions() {
-        transition = false
-    }
-
-    private fun canRunTransition() = !transition
+    private val transitionsLocker = TransitionsLocker()
 
     @Inject
     lateinit var infoRepo: InfoRepository
@@ -94,8 +85,8 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
     }
 
     private fun openMonthDescriptionActivity() {
-        if (!canRunTransition()) return
-        lockTransitions()
+        if (!transitionsLocker.canRunTransition()) return
+        transitionsLocker.lockTransitions()
         val intent = Intent(activity!!, MonthDescriptionActivity::class.java)
         intent.putExtra("monthIndex", viewModel.getMonthIndex())
         if (descriptionCard != null) {
@@ -112,7 +103,7 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        unlockTransitions()
+        transitionsLocker.unlockTransitions()
         when (requestCode) {
             OVERVIEW_SYNC -> {
                 if (data != null) {
