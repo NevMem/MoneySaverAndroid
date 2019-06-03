@@ -12,8 +12,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.view.ViewCompat
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -21,18 +20,23 @@ import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.activity.FullDescriptionActivity
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.repositories.HistoryRepository
+import com.nevmem.moneysaver.fragments.HistoryFragment
+import com.nevmem.moneysaver.utils.TransitionsLocker
 import com.nevmem.moneysaver.views.ConfirmationDialog
 import kotlinx.android.synthetic.main.record_layout.view.*
 
 
 class HistoryFragmentAdapter(
     private val activity: Activity,
+    private val fragment: HistoryFragment,
     lifeCycleOwner: LifecycleOwner,
     private val historyRepo: HistoryRepository
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var history: ArrayList<Record> = ArrayList()
     private var animationPosition: Int = 0
+
+    private val transitionsLocker = TransitionsLocker()
 
     init {
         historyRepo.history.observe(lifeCycleOwner, Observer {
@@ -104,14 +108,23 @@ class HistoryFragmentAdapter(
     }
 
     private fun openFullDescriptionActivity(view: View, index: Int) {
+        if (!transitionsLocker.canRunTransition()) return
+        transitionsLocker.lockTransitions()
         val intent = Intent(activity, FullDescriptionActivity::class.java)
         intent.putExtra("index", index)
         view.card.transitionName = "descriptionPageEnterTransition"
-        val options = ActivityOptions.makeSceneTransitionAnimation(activity,
+        val options = ActivityOptions.makeSceneTransitionAnimation(
+            activity,
 //            android.util.Pair<View, String>(view.recordNameField, "recordNameTransition"),
 //            android.util.Pair<View, String>(view.recordValue, "recordValueTransition"),
-            android.util.Pair<View, String>(view.card, "descriptionPageEnterTransition"))
-        startActivity(activity, intent, options.toBundle())
+            android.util.Pair<View, String>(view.card, "descriptionPageEnterTransition")
+        )
+        fragment.startActivityForResult(intent, HistoryFragment.FULL_DESCRIPTION_PAGE_CALL, options.toBundle())
+    }
+
+    fun handleReturn() {
+        println("Handling return")
+        transitionsLocker.unlockTransitions()
     }
 
     override fun getItemViewType(position: Int): Int {

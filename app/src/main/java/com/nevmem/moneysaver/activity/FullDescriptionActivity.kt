@@ -1,6 +1,7 @@
 package com.nevmem.moneysaver.activity
 
 import android.animation.AnimatorInflater
+import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -196,6 +197,7 @@ class FullDescriptionActivity : FragmentActivity() {
         viewModel.stopEditing()
         popupWindow?.dismiss()
         fadeOutFields()
+        setResult(Activity.RESULT_OK)
         Handler(Looper.getMainLooper()).postDelayed({ finishAfterTransition() }, 0)
     }
 
