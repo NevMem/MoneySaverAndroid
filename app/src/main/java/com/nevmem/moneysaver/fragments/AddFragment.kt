@@ -121,6 +121,12 @@ class AddFragment : Fragment() {
                     createTagButton.visibility = View.GONE
                     processingTags.visibility = View.GONE
                     createTagError.visibility = View.VISIBLE
+                    createTagError.setOnClickListener { _ ->
+                        run {
+                            showError(it.error)
+                            tagsRepo.receivedAddingError()
+                        }
+                    }
                 }
             }
         })
@@ -141,6 +147,12 @@ class AddFragment : Fragment() {
                     createWalletButton.visibility = View.GONE
                     processingWallets.visibility = View.GONE
                     createWalletError.visibility = View.VISIBLE
+                    createWalletError.setOnClickListener { _ ->
+                        run {
+                            showError(it.error)
+                            walletsRepo.receivedAddingError()
+                        }
+                    }
                 }
             }
         })

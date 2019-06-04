@@ -116,4 +116,8 @@ class WalletsRepository @Inject constructor(
             tryUpdate()
         }
     }
+
+    fun receivedAddingError() {
+        addingState.postValue(NoneState)
+    }
 }
