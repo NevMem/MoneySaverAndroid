@@ -33,11 +33,6 @@ class AddFragment : Fragment() {
 
     private var popupWindow: PopupWindow? = null
 
-    @Inject
-    lateinit var walletsRepo: WalletsRepository
-    @Inject
-    lateinit var tagsRepo: TagsRepository
-
     init {
         i("ADD_FRAGMENT", "initialising AddFragment")
     }
@@ -52,13 +47,11 @@ class AddFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(AddFragmentViewModel::class.java)
 
         app.appComponent.inject(this)
-        walletsRepo.tryUpdate()
-        tagsRepo.tryUpdate()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tagsRepo.tags.observe(this, Observer {
+        viewModel.tags.observe(this, Observer {
             if (it != null) {
                 val strings = ArrayList<String>()
                 it.forEach { tag ->
@@ -69,7 +62,7 @@ class AddFragment : Fragment() {
             }
         })
 
-        walletsRepo.wallets.observe(this, Observer {
+        viewModel.wallets.observe(this, Observer {
             if (it != null) {
                 val strings = ArrayList<String>()
                 it.forEach { wallet ->
@@ -105,7 +98,7 @@ class AddFragment : Fragment() {
             }
         })
 
-        tagsRepo.addingState.observe(this, Observer {
+        viewModel.tagAddingState.observe(this, Observer {
             when (it) {
                 null, is NoneState, is SuccessState -> {
                     processingTags.visibility = View.GONE
@@ -124,14 +117,14 @@ class AddFragment : Fragment() {
                     createTagError.setOnClickListener { _ ->
                         run {
                             showError(it.error)
-                            tagsRepo.receivedAddingError()
+                            viewModel.receivedTagAddingError()
                         }
                     }
                 }
             }
         })
 
-        walletsRepo.addingState.observe(this, Observer {
+        viewModel.walletAddingState.observe(this, Observer {
             when (it) {
                 null, is NoneState, is SuccessState -> {
                     processingWallets.visibility = View.GONE
@@ -150,7 +143,7 @@ class AddFragment : Fragment() {
                     createWalletError.setOnClickListener { _ ->
                         run {
                             showError(it.error)
-                            walletsRepo.receivedAddingError()
+                            viewModel.receivedWalletAddingError()
                         }
                     }
                 }
@@ -182,7 +175,7 @@ class AddFragment : Fragment() {
             popupWindow?.dismiss()
         }
         createTag.setOnOkListener {
-            tagsRepo.addTag(it)
+            viewModel.addTag(it)
             popupWindow?.dismiss()
         }
     }
@@ -199,7 +192,7 @@ class AddFragment : Fragment() {
             popupWindow?.dismiss()
         }
         createTag.setOnOkListener {
-            walletsRepo.addWallet(it)
+            viewModel.addWallet(it)
             popupWindow?.dismiss()
         }
     }
