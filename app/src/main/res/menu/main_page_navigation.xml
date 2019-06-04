@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="Dashboard"
-          android:id="@+id/dashBoardPageNavigation"
+          android:id="@+id/dashboardPageNavigation"
           android:icon="@drawable/home_icon"
     />
     <item android:title="Templates"

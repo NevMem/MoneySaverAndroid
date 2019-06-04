@@ -6,8 +6,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.activity.adapters.MainPageViewPager2Adapter
 import com.nevmem.moneysaver.fragments.AddFragment
 import com.nevmem.moneysaver.fragments.DashboardFragment
 import com.nevmem.moneysaver.fragments.HistoryFragment
@@ -30,46 +32,42 @@ class MainPage : AppCompatActivity() {
 
         app.appComponent.inject(this)
 
+        val adapter = MainPageViewPager2Adapter(lifecycle, supportFragmentManager)
+        anchor.adapter = adapter
+        anchor.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                when (position) {
+                    0 -> mainPageNavigation.selectedItemId = R.id.dashboardPageNavigation
+                    1 -> mainPageNavigation.selectedItemId = R.id.templatesNavigation
+                    2 -> mainPageNavigation.selectedItemId = R.id.newRecordNavigation
+                    else -> mainPageNavigation.selectedItemId = R.id.historyNavigation
+                }
+            }
+        })
+
         mainPageNavigation.setOnNavigationItemSelectedListener {
-            System.out.println(it.toString())
             when (it.itemId) {
-                R.id.historyNavigation -> {
-                    if (historyFragment == null)
-                        historyFragment = HistoryFragment()
-                    historyFragment?.let { fragment ->
-                        switchFragment(fragment)
-                    }
-                    return@setOnNavigationItemSelectedListener true
-                }
-                R.id.dashBoardPageNavigation -> {
-                    if (dashboardFragment == null)
-                        dashboardFragment = DashboardFragment()
-                    dashboardFragment?.let { fragment ->
-                        switchFragment(fragment)
-                    }
-                    return@setOnNavigationItemSelectedListener true
-                }
-                R.id.newRecordNavigation -> {
-                    if (addFragment == null)
-                        addFragment = AddFragment()
-                    addFragment?.let { fragment ->
-                        switchFragment(fragment)
-                    }
+                R.id.dashboardPageNavigation -> {
+                    anchor.currentItem = 0
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.templatesNavigation -> {
-                    if (templatesFragment == null)
-                        templatesFragment = TemplatesFragment()
-                    templatesFragment?.let { fragment ->
-                        switchFragment(fragment)
-                    }
+                    anchor.currentItem = 1
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.newRecordNavigation -> {
+                    anchor.currentItem = 2
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.historyNavigation -> {
+                    anchor.currentItem = 3
                     return@setOnNavigationItemSelectedListener true
                 }
             }
             false
         }
 
-        mainPageNavigation.selectedItemId = R.id.dashBoardPageNavigation
+        mainPageNavigation.selectedItemId = R.id.dashboardPageNavigation
     }
 
     fun onLogout() {
