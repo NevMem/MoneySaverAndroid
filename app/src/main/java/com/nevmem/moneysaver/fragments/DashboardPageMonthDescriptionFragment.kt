@@ -16,12 +16,19 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.activity.MonthDescriptionActivity
 import com.nevmem.moneysaver.data.repositories.InfoRepository
+import com.nevmem.moneysaver.utils.TransitionsLocker
 import com.nevmem.moneysaver.views.PieChart
 import kotlinx.android.synthetic.main.dashboard_page_month_description.*
 import kotlinx.android.synthetic.main.label_row.view.*
 import javax.inject.Inject
 
 class DashboardPageMonthDescriptionFragment : Fragment() {
+    companion object {
+        const val OVERVIEW_SYNC = 0
+    }
+
+    private val transitionsLocker = TransitionsLocker()
+
     @Inject
     lateinit var infoRepo: InfoRepository
 
@@ -78,7 +85,10 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
     }
 
     private fun openMonthDescriptionActivity() {
+        if (!transitionsLocker.canRunTransition()) return
+        transitionsLocker.lockTransitions()
         val intent = Intent(activity!!, MonthDescriptionActivity::class.java)
+        intent.putExtra("monthIndex", viewModel.getMonthIndex())
         if (descriptionCard != null) {
             val options = ActivityOptions.makeSceneTransitionAnimation(
                 activity,
@@ -86,9 +96,25 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
                 android.util.Pair<View, String>(chart, "chartTransition"),
                 android.util.Pair<View, String>(descriptionCard, "cardTransition")
             )
-            startActivity(intent, options.toBundle())
+            startActivityForResult(intent, OVERVIEW_SYNC, options.toBundle())
         } else {
             Toast.makeText(activity, "Card is null", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        transitionsLocker.unlockTransitions()
+        when (requestCode) {
+            OVERVIEW_SYNC -> {
+                if (data != null) {
+                    val extras = data.extras
+                    if (extras != null) {
+                        val index = extras.getInt("monthIndex", Int.MAX_VALUE)
+                        viewModel.setMonthIndex(index)
+                    }
+                }
+            }
+            else -> {}
         }
     }
 }

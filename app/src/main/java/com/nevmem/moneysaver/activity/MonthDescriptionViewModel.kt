@@ -19,7 +19,7 @@ class MonthDescriptionViewModel(application: Application) : AndroidViewModel(app
     var monthDescription = MediatorLiveData<MonthDescription>()
     private var currentLiveData: LiveData<MonthDescription>
 
-    var index = Int.MAX_VALUE
+    private var index = Int.MAX_VALUE
 
     init {
         app.appComponent.inject(this)
@@ -36,6 +36,13 @@ class MonthDescriptionViewModel(application: Application) : AndroidViewModel(app
         } }
         monthDescription.addSource(currentLiveData) { value -> monthDescription.postValue(value) }
     }
+
+    fun setIndex(newIndex: Int) {
+        index = newIndex
+        indexChanged()
+    }
+
+    fun getMonthIndex() = index
 
     fun prev() {
         index -= 1

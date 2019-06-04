@@ -2,6 +2,7 @@ package com.nevmem.moneysaver.views
 
 import android.content.Context
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -51,14 +52,20 @@ class NewTemplateDialog(ctx: Context, lifecycleOwner: LifecycleOwner) : Constrai
                 value = newTemplateValue.text.toString().toDouble()
             } catch (e: NumberFormatException) {
             }
-            okCallback(
-                TemplateBase(
-                    newTemplateName.text.toString(),
-                    value,
-                    newTemplateTag.selectedItem.toString(),
-                    newTemplateWallet.selectedItem.toString()
+            val tagItem = newTemplateTag.selectedItem
+            val walletItem = newTemplateWallet.selectedItem
+            if (tagItem != null && walletItem != null) {
+                okCallback(
+                    TemplateBase(
+                        newTemplateName.text.toString(),
+                        value,
+                        newTemplateTag.selectedItem.toString(),
+                        newTemplateWallet.selectedItem.toString()
+                    )
                 )
-            )
+            } else {
+                Toast.makeText(ctx, "You has not set any valid wallet or tag", Toast.LENGTH_LONG).show()
+            }
         }
 
         dismissButton.setOnClickListener {

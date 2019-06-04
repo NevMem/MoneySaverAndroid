@@ -1,5 +1,6 @@
 package com.nevmem.moneysaver.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log.i
 import android.view.LayoutInflater
@@ -17,10 +18,16 @@ import kotlinx.android.synthetic.main.history_layout.*
 import javax.inject.Inject
 
 class HistoryFragment : Fragment() {
+    companion object {
+        const val FULL_DESCRIPTION_PAGE_CALL = 0
+    }
+
     lateinit var app: App
 
     @Inject
     lateinit var historyRepo: HistoryRepository
+
+    private lateinit var adapter: HistoryFragmentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +68,15 @@ class HistoryFragment : Fragment() {
             }
         })
 
-        wrapper.adapter = HistoryFragmentAdapter(activity!!, this, historyRepo)
+        adapter = HistoryFragmentAdapter(activity!!, this, this, historyRepo)
+        wrapper.adapter = adapter
         wrapper.layoutManager = LinearLayoutManager(activity)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        println("On activity result: $requestCode")
+        if (requestCode == FULL_DESCRIPTION_PAGE_CALL) {
+            adapter.handleReturn()
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.nevmem.moneysaver.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.transition.Fade
@@ -34,6 +36,11 @@ class MonthDescriptionActivity : AppCompatActivity() {
         labelsInfoRecycler.layoutManager = LinearLayoutManager(this)
 
         viewModel = ViewModelProviders.of(this).get(MonthDescriptionViewModel::class.java)
+
+        val extras = intent.extras
+        if (extras != null)
+            viewModel.setIndex(extras.getInt("monthIndex", Int.MAX_VALUE))
+
         viewModel.monthDescription.observe(this, Observer {
             if (it != null) {
                 setupChart(it.byTagTotal)
@@ -47,6 +54,14 @@ class MonthDescriptionActivity : AppCompatActivity() {
 
         prevButton.setOnClickListener { viewModel.prev() }
         nextButton.setOnClickListener { viewModel.next() }
+    }
+
+    override fun onBackPressed() {
+        val index = viewModel.getMonthIndex()
+        val intent = Intent()
+        intent.putExtra("monthIndex", index)
+        setResult(Activity.RESULT_OK, intent)
+        finishAfterTransition()
     }
 
     private fun setupChart(byTagTotal: HashMap<String, Double>) {

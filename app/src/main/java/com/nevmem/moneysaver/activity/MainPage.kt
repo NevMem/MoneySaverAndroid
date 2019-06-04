@@ -1,7 +1,6 @@
 package com.nevmem.moneysaver.activity
 
 import android.os.Bundle
-import android.transition.Fade
 import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity

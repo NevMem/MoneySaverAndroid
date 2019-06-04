@@ -115,4 +115,8 @@ class TagsRepository @Inject constructor(
         }
         return result
     }
+
+    fun receivedAddingError() {
+        addingState.postValue(NoneState)
+    }
 }
