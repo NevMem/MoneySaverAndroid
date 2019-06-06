@@ -26,6 +26,5 @@
             android:elevation="@dimen/stdElevation"
             android:layout_marginBottom="7dp"
             android:layout_marginStart="7dp"
-            android:layout_marginEnd="7dp"
-    />
+            android:layout_marginEnd="7dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

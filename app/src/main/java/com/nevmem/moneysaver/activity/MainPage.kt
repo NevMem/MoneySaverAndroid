@@ -19,11 +19,6 @@ import kotlinx.android.synthetic.main.main_page_layout.*
 class MainPage : AppCompatActivity() {
     lateinit var app: App
 
-    private var historyFragment: HistoryFragment? = null
-    private var addFragment: AddFragment? = null
-    private var templatesFragment: TemplatesFragment? = null
-    private var dashboardFragment: DashboardFragment? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_page_layout)
@@ -72,13 +67,6 @@ class MainPage : AppCompatActivity() {
 
     fun onLogout() {
         finish()
-    }
-
-    private fun switchFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.anchor, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
     }
 
     private fun showDefaultToast(message: String) {
