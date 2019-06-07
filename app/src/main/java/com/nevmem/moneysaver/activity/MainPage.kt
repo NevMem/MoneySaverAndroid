@@ -56,6 +56,8 @@ class MainPage : AppCompatActivity() {
             false
         }
 
+        anchor.isUserInputEnabled = false
+
         mainPageNavigation.selectedItemId = R.id.dashboardPageNavigation
     }
 
