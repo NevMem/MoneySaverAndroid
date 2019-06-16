@@ -4,12 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.activity.RegisterActivity
+import com.nevmem.moneysaver.data.RegistrationArgs
+import com.nevmem.moneysaver.data.util.BadFilled
+import com.nevmem.moneysaver.data.util.FillInfo
+import com.nevmem.moneysaver.data.util.FilledWell
+import com.nevmem.moneysaver.fragments.interfaces.Injecter
 import kotlinx.android.synthetic.main.register_dialog_password.*
 
-class RegisterDialogPasswordFragment : Fragment() {
+class RegisterDialogPasswordFragment : WellFilledCheckableFragment(), Injecter<RegistrationArgs> {
+    private var chosenPassword: String? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.register_dialog_password, container, false)
     }
@@ -39,7 +45,7 @@ class RegisterDialogPasswordFragment : Fragment() {
         }
         confirmPasswordField.changeHandler = {
             if (it == passwordField.text && it.length >= 6) {
-                viewModel.chosenPassword = it
+                chosenPassword = it
                 confirmPasswordField.success = true
                 confirmPasswordField.error = ""
             } else if (it.isNotEmpty()) {
@@ -50,5 +56,18 @@ class RegisterDialogPasswordFragment : Fragment() {
                 confirmPasswordField.success = false
             }
         }
+    }
+
+    override fun inject(objectInjectTo: RegistrationArgs) {
+        if (chosenPassword != null) {
+            objectInjectTo.chosenPassword = chosenPassword
+        }
+    }
+
+    override fun isWellFilled(): FillInfo {
+        chosenPassword.let {
+            if (it == null || it.isEmpty()) return BadFilled("Password is incorrect")
+        }
+        return FilledWell
     }
 }

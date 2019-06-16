@@ -13,10 +13,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.data.RegistrationArgs
 import com.nevmem.moneysaver.data.UserHolder
+import com.nevmem.moneysaver.data.util.BadFilled
+import com.nevmem.moneysaver.data.util.FilledWell
 import com.nevmem.moneysaver.fragments.RegisterDialogChooseLoginFragment
 import com.nevmem.moneysaver.fragments.RegisterDialogMainInfoFragment
 import com.nevmem.moneysaver.fragments.RegisterDialogPasswordFragment
+import com.nevmem.moneysaver.fragments.WellFilledCheckableFragment
+import com.nevmem.moneysaver.fragments.interfaces.Injecter
 import com.nevmem.moneysaver.views.LoadingOverlay
 import kotlinx.android.synthetic.main.register_page.*
 import javax.inject.Inject
@@ -67,6 +72,15 @@ class RegisterActivity : AppCompatActivity() {
         })
     }
 
+    private val dialogFragments = arrayListOf<WellFilledCheckableFragment>(
+        RegisterDialogMainInfoFragment(),
+        RegisterDialogChooseLoginFragment(),
+        RegisterDialogPasswordFragment()
+    )
+
+    private fun currentDialog() = dialogFragments[index]
+
+
     private fun tryGoToHomePage() {
         if (viewModel.user == null) throw IllegalStateException("User in view model cannot be null after on success calling")
         val curUser = viewModel.user
@@ -77,6 +91,7 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
     }
+
 
     private fun initOverlay() {
         if (overlay == null) {
@@ -102,7 +117,6 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-
     private fun disposeOverlay() {
         if (popup != null) popup?.dismiss()
         popup = null
@@ -124,17 +138,15 @@ class RegisterActivity : AppCompatActivity() {
         overlay.let { it?.setSuccess(success) }
     }
 
-    private val dialogFragments = arrayListOf(
-        RegisterDialogMainInfoFragment(),
-        RegisterDialogChooseLoginFragment(),
-        RegisterDialogPasswordFragment()
-    )
-
     override fun onStart() {
         super.onStart()
 
         nextButton.setOnClickListener {
-            next()
+            val filled = currentDialog().isWellFilled()
+            if (filled is FilledWell)
+                next()
+            else if (filled is BadFilled)
+                showError(filled.reason)
         }
 
         prevButton.setOnClickListener {
@@ -167,6 +179,15 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun proceedRegistration() {
+        for (i in 0 until (dialogFragments.size)) {
+            val current = dialogFragments[i].isWellFilled()
+            if (current is BadFilled) {
+                showError(current.reason)
+                return
+            }
+            if (dialogFragments[i] is Injecter<*>)
+                (dialogFragments[i] as? Injecter<RegistrationArgs>)?.inject(viewModel.registrationArgs)
+        }
         viewModel.register()
     }
 

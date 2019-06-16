@@ -8,6 +8,7 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.Vars.Companion.unknownFormat
 import com.nevmem.moneysaver.data.NetworkQueueBase
+import com.nevmem.moneysaver.data.RegistrationArgs
 import com.nevmem.moneysaver.data.RequestBase
 import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.data.util.ParseError
@@ -17,7 +18,7 @@ import org.json.JSONObject
 import java.lang.ClassCastException
 import javax.inject.Inject
 
-class RegisterPageViewModel(private var app: Application) : AndroidViewModel(app) {
+class RegisterPageViewModel(app: Application) : AndroidViewModel(app) {
     val tag: String = "REG_PAGE_VIEW_MODEL"
 
     enum class Status { CHECKING, SUCCESS, ERROR, NONE }
@@ -28,10 +29,7 @@ class RegisterPageViewModel(private var app: Application) : AndroidViewModel(app
     var registerError = MutableLiveData<String?>()
     var registerSuccess = MutableLiveData<String?>()
 
-    var chosenPassword: String? = null
-    var firstName: String? = null
-    var lastName: String? = null
-    var login: String? = null
+    val registrationArgs = RegistrationArgs()
 
     var user: User?= null
 
@@ -83,10 +81,10 @@ class RegisterPageViewModel(private var app: Application) : AndroidViewModel(app
 
     fun register() {
         val params = JSONObject()
-        params.put("login", login)
-        params.put("firstName", firstName)
-        params.put("lastName", lastName)
-        params.put("password", chosenPassword)
+        params.put("login", registrationArgs.login)
+        params.put("firstName", registrationArgs.firstName)
+        params.put("lastName", registrationArgs.lastName)
+        params.put("password", registrationArgs.chosenPassword)
         loading.postValue(true)
         registerError.postValue(null)
         registerSuccess.postValue(null)
