@@ -13,7 +13,7 @@
             app:layout_constraintEnd_toEndOf="parent" tools:hint="sample text"
             android:textColor="@color/themeColor" android:textColorHint="@color/themeGrayedColor"
             app:layout_constraintTop_toBottomOf="@id/nameField"
-            android:background="@drawable/edit_text_themed"
+            android:backgroundTint="@color/themeColor"
     />
     <ProgressBar
             android:layout_width="30dp" android:layout_height="30dp"

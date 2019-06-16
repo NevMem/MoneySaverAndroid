@@ -49,7 +49,7 @@
                 app:layout_constraintEnd_toEndOf="parent" android:hint="@string/Login"
                 android:textColor="@color/themeColor" android:textColorHint="@color/themeGrayedColor"
                 app:layout_constraintTop_toTopOf="parent"
-                android:background="@drawable/edit_text_themed"
+                android:backgroundTint="@color/themeColor"
         />
         <EditText
                 android:layout_width="0dp"
@@ -63,7 +63,7 @@
                 android:textColor="@color/themeColor"
                 android:textColorHighlight="@color/themeGrayedColor"
                 android:textColorHint="@color/themeGrayedColor"
-                android:background="@drawable/edit_text_themed"
+                android:backgroundTint="@color/themeColor"
         />
         <GridLayout
                 android:layout_width="match_parent"
