@@ -29,4 +29,5 @@ interface AppComponent {
     fun inject(monthDescriptionViewModel: MonthDescriptionViewModel)
     fun inject(dashboardPageMonthDescriptionFragmentViewModel: DashboardPageMonthDescriptionFragmentViewModel)
     fun inject(registerDialogChooseLoginFragmentViewModel: RegisterDialogChooseLoginFragmentViewModel)
+    fun inject(registerDialogPrivacyFragmentViewModel: RegisterDialogPrivacyFragmentViewModel)
 }

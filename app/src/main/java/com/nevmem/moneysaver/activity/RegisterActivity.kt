@@ -17,10 +17,7 @@ import com.nevmem.moneysaver.data.RegistrationArgs
 import com.nevmem.moneysaver.data.UserHolder
 import com.nevmem.moneysaver.data.util.BadFilled
 import com.nevmem.moneysaver.data.util.FilledWell
-import com.nevmem.moneysaver.fragments.RegisterDialogChooseLoginFragment
-import com.nevmem.moneysaver.fragments.RegisterDialogMainInfoFragment
-import com.nevmem.moneysaver.fragments.RegisterDialogPasswordFragment
-import com.nevmem.moneysaver.fragments.WellFilledCheckableFragment
+import com.nevmem.moneysaver.fragments.*
 import com.nevmem.moneysaver.fragments.interfaces.Injector
 import com.nevmem.moneysaver.views.LoadingOverlay
 import kotlinx.android.synthetic.main.register_page.*
@@ -75,7 +72,8 @@ class RegisterActivity : AppCompatActivity() {
     private val dialogFragments = arrayListOf<WellFilledCheckableFragment>(
         RegisterDialogMainInfoFragment(),
         RegisterDialogChooseLoginFragment(),
-        RegisterDialogPasswordFragment()
+        RegisterDialogPasswordFragment(),
+        RegisterDialogPrivacyFragment()
     )
 
     private fun currentDialog() = dialogFragments[index]

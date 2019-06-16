@@ -63,4 +63,5 @@
     <string name="previous_month_string">Previous month</string>
     <string name="next_month_string">Next month</string>
     <string name="please_choose_login_string">Please choose your login, it will be used to log into application</string>
+    <string name="privacy_convention_string">I read and agreed this convention</string>
 </resources>

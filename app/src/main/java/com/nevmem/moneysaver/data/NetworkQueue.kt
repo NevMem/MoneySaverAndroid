@@ -58,15 +58,12 @@ class NetworkQueue(ctx: Context) : NetworkQueueBase {
     override fun infinitePostStringRequest(
         url: String, params: JSONObject, timeout: Long, savedRequest: RequestBase<String>?
     ): RequestBase<String> {
-        i(tag, "Starting loading string from $url")
         val request = savedRequest ?: Request<String>()
         val stringRequest = object : StringRequest(Method.POST, url, {
-            i(tag, "Successfully loaded string from $url")
             if (!request.isCanceled()) {
                 request.resolve(it)
             }
         }, {
-            i(tag, "Error happened while loading string from $url")
             if (!request.isCanceled()) {
                 Handler().postDelayed({
                     infinitePostStringRequest(url, params, timeout)

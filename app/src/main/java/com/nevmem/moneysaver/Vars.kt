@@ -21,6 +21,8 @@ class Vars {
         const val ServerApiAddTag = "$ServerBase/api/addTag"
         const val ServerApiAddWallet = "$ServerBase/api/addWallet"
 
+        const val ServerPrivacy = "$ServerBase/privacy"
+
         /* Special constants */
         const val unknownFormat = "Server response has unknown format"
         const val unspecifiedData = "Server response has bad format(data array is missing)"
