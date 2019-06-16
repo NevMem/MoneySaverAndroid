@@ -1,5 +1,5 @@
 package com.nevmem.moneysaver.fragments.interfaces
 
-interface Injecter<T> {
+interface Injector<T> {
     fun inject(objectInjectTo: T)
 }

@@ -12,10 +12,10 @@ import com.nevmem.moneysaver.data.RegistrationArgs
 import com.nevmem.moneysaver.data.util.BadFilled
 import com.nevmem.moneysaver.data.util.FillInfo
 import com.nevmem.moneysaver.data.util.FilledWell
-import com.nevmem.moneysaver.fragments.interfaces.Injecter
+import com.nevmem.moneysaver.fragments.interfaces.Injector
 import kotlinx.android.synthetic.main.register_dialog_choose_login.*
 
-class RegisterDialogChooseLoginFragment : WellFilledCheckableFragment(), Injecter<RegistrationArgs> {
+class RegisterDialogChooseLoginFragment : WellFilledCheckableFragment(), Injector<RegistrationArgs> {
     lateinit var viewModel: RegisterPageViewModel
 
     private var login: String? = null

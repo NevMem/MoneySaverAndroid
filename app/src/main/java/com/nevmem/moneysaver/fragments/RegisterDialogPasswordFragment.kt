@@ -10,10 +10,10 @@ import com.nevmem.moneysaver.data.RegistrationArgs
 import com.nevmem.moneysaver.data.util.BadFilled
 import com.nevmem.moneysaver.data.util.FillInfo
 import com.nevmem.moneysaver.data.util.FilledWell
-import com.nevmem.moneysaver.fragments.interfaces.Injecter
+import com.nevmem.moneysaver.fragments.interfaces.Injector
 import kotlinx.android.synthetic.main.register_dialog_password.*
 
-class RegisterDialogPasswordFragment : WellFilledCheckableFragment(), Injecter<RegistrationArgs> {
+class RegisterDialogPasswordFragment : WellFilledCheckableFragment(), Injector<RegistrationArgs> {
     private var chosenPassword: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

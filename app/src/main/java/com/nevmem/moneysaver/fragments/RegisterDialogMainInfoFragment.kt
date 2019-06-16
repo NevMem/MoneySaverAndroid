@@ -12,10 +12,10 @@ import com.nevmem.moneysaver.data.RegistrationArgs
 import com.nevmem.moneysaver.data.util.BadFilled
 import com.nevmem.moneysaver.data.util.FillInfo
 import com.nevmem.moneysaver.data.util.FilledWell
-import com.nevmem.moneysaver.fragments.interfaces.Injecter
+import com.nevmem.moneysaver.fragments.interfaces.Injector
 import kotlinx.android.synthetic.main.register_main_info.*
 
-class RegisterDialogMainInfoFragment : WellFilledCheckableFragment(), Injecter<RegistrationArgs> {
+class RegisterDialogMainInfoFragment : WellFilledCheckableFragment(), Injector<RegistrationArgs> {
     private var firstName: String? = null
     private var lastName: String? = null
 

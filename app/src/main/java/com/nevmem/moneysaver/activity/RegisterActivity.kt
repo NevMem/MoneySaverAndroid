@@ -21,7 +21,7 @@ import com.nevmem.moneysaver.fragments.RegisterDialogChooseLoginFragment
 import com.nevmem.moneysaver.fragments.RegisterDialogMainInfoFragment
 import com.nevmem.moneysaver.fragments.RegisterDialogPasswordFragment
 import com.nevmem.moneysaver.fragments.WellFilledCheckableFragment
-import com.nevmem.moneysaver.fragments.interfaces.Injecter
+import com.nevmem.moneysaver.fragments.interfaces.Injector
 import com.nevmem.moneysaver.views.LoadingOverlay
 import kotlinx.android.synthetic.main.register_page.*
 import javax.inject.Inject
@@ -185,8 +185,8 @@ class RegisterActivity : AppCompatActivity() {
                 showError(current.reason)
                 return
             }
-            if (dialogFragments[i] is Injecter<*>)
-                (dialogFragments[i] as? Injecter<RegistrationArgs>)?.inject(viewModel.registrationArgs)
+            if (dialogFragments[i] is Injector<*>)
+                (dialogFragments[i] as? Injector<RegistrationArgs>)?.inject(viewModel.registrationArgs)
         }
         viewModel.register()
     }
