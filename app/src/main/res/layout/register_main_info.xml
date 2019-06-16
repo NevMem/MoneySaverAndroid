@@ -18,19 +18,19 @@
                 android:text="@string/main_info_register_page_label_string"
                 android:textSize="20sp"
                 android:paddingTop="16dp" android:paddingBottom="16dp"
-                android:textColor="@color/themeGrayedColor"
+                android:paddingStart="4dp" android:paddingEnd="4dp"
+                android:textColor="@color/themeColor"
         />
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:inputType="textPersonName"
-                android:ems="10"
                 android:id="@+id/nameField"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" android:hint="@string/register_page_name_hint_string"
                 android:textColor="@color/themeColor" android:textColorHint="@color/themeGrayedColor"
                 app:layout_constraintTop_toTopOf="parent"
-                android:background="@drawable/edit_text_themed"
+                android:backgroundTint="@color/themeColor"
         />
         <EditText
                 android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                 android:textColor="@color/themeColor" android:textColorHint="@color/themeGrayedColor"
                 app:layout_constraintTop_toBottomOf="@id/nameField"
                 android:layout_marginTop="32dp"
-                android:background="@drawable/edit_text_themed"
+                android:backgroundTint="@color/themeColor"
         />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
