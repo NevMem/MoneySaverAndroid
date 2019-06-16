@@ -101,7 +101,7 @@ class HistoryFragmentAdapter(
             }
         }
         if (animationPosition < position) {
-            val animation = AnimationUtils.loadAnimation(activity, android.R.anim.slide_in_left)
+            val animation = AnimationUtils.loadAnimation(activity, R.anim.cascade_anim)
             holder.itemView.startAnimation(animation)
             animationPosition = position
         }
@@ -115,15 +115,12 @@ class HistoryFragmentAdapter(
         view.card.transitionName = "descriptionPageEnterTransition"
         val options = ActivityOptions.makeSceneTransitionAnimation(
             activity,
-//            android.util.Pair<View, String>(view.recordNameField, "recordNameTransition"),
-//            android.util.Pair<View, String>(view.recordValue, "recordValueTransition"),
             android.util.Pair<View, String>(view.card, "descriptionPageEnterTransition")
         )
         fragment.startActivityForResult(intent, HistoryFragment.FULL_DESCRIPTION_PAGE_CALL, options.toBundle())
     }
 
     fun handleReturn() {
-        println("Handling return")
         transitionsLocker.unlockTransitions()
     }
 
@@ -133,7 +130,6 @@ class HistoryFragmentAdapter(
     }
 
     override fun getItemCount(): Int {
-        i("HFA", "Size was asked")
         return history.size + 1
     }
 

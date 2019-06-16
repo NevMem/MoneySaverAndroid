@@ -21,5 +21,4 @@ class MainPageViewPager2Adapter(lifecycle: Lifecycle, fragmentManager: FragmentM
     }
 
     override fun getItemCount() = 4
-
 }

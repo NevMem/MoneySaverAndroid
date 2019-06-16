@@ -5,24 +5,14 @@ import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.activity.adapters.MainPageViewPager2Adapter
-import com.nevmem.moneysaver.fragments.AddFragment
-import com.nevmem.moneysaver.fragments.DashboardFragment
-import com.nevmem.moneysaver.fragments.HistoryFragment
-import com.nevmem.moneysaver.fragments.TemplatesFragment
 import kotlinx.android.synthetic.main.main_page_layout.*
 
 class MainPage : AppCompatActivity() {
     lateinit var app: App
-
-    private var historyFragment: HistoryFragment? = null
-    private var addFragment: AddFragment? = null
-    private var templatesFragment: TemplatesFragment? = null
-    private var dashboardFragment: DashboardFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +21,6 @@ class MainPage : AppCompatActivity() {
         app = applicationContext as App
 
         app.appComponent.inject(this)
-
         val adapter = MainPageViewPager2Adapter(lifecycle, supportFragmentManager)
         anchor.adapter = adapter
         anchor.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -67,18 +56,13 @@ class MainPage : AppCompatActivity() {
             false
         }
 
+        anchor.isUserInputEnabled = false
+
         mainPageNavigation.selectedItemId = R.id.dashboardPageNavigation
     }
 
     fun onLogout() {
         finish()
-    }
-
-    private fun switchFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.anchor, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
     }
 
     private fun showDefaultToast(message: String) {

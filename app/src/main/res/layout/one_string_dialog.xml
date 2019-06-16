@@ -34,6 +34,7 @@
             android:id="@+id/editText" android:focusable="true"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:textColor="@color/default_white_color"
+            android:textColorHint="@color/secondary_white_color"
     />
     <RelativeLayout
             android:layout_marginTop="10dp"
