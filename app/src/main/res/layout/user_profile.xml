@@ -5,11 +5,10 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center"
         android:paddingBottom="80dp"
         android:clipToPadding="false"
->
+        android:orientation="vertical">
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,15 +27,20 @@
                     app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
                     android:textColor="#fff"
                     android:gravity="center|start" android:textSize="24sp"/>
-            <Button
-                    android:text="@string/logout"
-                    android:layout_width="wrap_content"
+            <androidx.appcompat.widget.AppCompatImageButton
+                    android:layout_width="24dp"
                     android:layout_height="64dp"
-                    android:id="@+id/logoutButton"
+                    android:id="@+id/settingsButton"
                     app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
                     style="@style/LogOutButton"
                     android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
-                    android:gravity="center|end"/>
+                    android:gravity="center|end"
+                    android:src="@drawable/settings_icon"
+                    android:adjustViewBounds="true"
+                    android:scaleType="center"
+                    android:cropToPadding="false"
+                    android:background="@color/profile_color"
+            />
             <TextView
                     tools:text="@string/defaultTotallySpend"
                     android:layout_width="0dp"
@@ -285,6 +289,7 @@
             android:name="com.nevmem.moneysaver.fragments.DashboardPageMonthDescriptionFragment"
             android:layout_width="match_parent" android:layout_height="295dp"
             app:chartPadding="30" android:id="@+id/monthDescription"
+            tools:visibility="gone"
     />
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                   android:id="@+id/chartsAnchor" android:orientation="vertical"

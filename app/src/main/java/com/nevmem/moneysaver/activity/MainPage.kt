@@ -1,6 +1,7 @@
 package com.nevmem.moneysaver.activity
 
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ class MainPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_page_layout)
+        window.exitTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_slide_left)
         window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
         app = applicationContext as App
 
