@@ -47,7 +47,7 @@
                     android:inputType="text"
                     android:layout_marginTop="16dp" android:backgroundTint="@color/themeColor"
                     android:textColor="@color/themeColor"
-                    android:enabled="false"
+                    android:id="@+id/searchField"
             />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
