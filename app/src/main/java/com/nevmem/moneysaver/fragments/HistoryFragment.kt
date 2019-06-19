@@ -68,7 +68,7 @@ class HistoryFragment : Fragment() {
             }
         })
 
-        adapter = HistoryFragmentAdapter(activity!!, this, this, historyRepo)
+        adapter = HistoryFragmentAdapter(activity!!, this, this)
         wrapper.adapter = adapter
         wrapper.layoutManager = LinearLayoutManager(activity)
     }

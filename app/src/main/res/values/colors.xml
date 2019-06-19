@@ -13,9 +13,12 @@
     <color name="themeColor">#f5b700</color>
     <color name="themeGrayedColor">#8DF5B700</color>
     <color name="profile_color">#191919</color>
+    <color name="profile_gray_color">#242424</color>
     <color name="secondary_white_color">#A0FFFFFF</color>
     <color name="default_white_color">#fff</color>
     <color name="dismiss_button_text_color">#f0FF4662</color>
     <color name="dismiss_button_border_color">#36FF4662</color>
     <color name="dismiss_button_background_color">#22FF4662</color>
+    <color name="blue_dismiss_button_border_color">#36466EFF</color>
+    <color name="blue_dismiss_button_background_color">#22466EFF</color>
 </resources>

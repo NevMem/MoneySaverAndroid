@@ -34,7 +34,7 @@ class FullDescriptionActivity : FragmentActivity() {
     private val fadeOutTime: Long = 100
     private val fadeInTime: Long = 200
 
-    private var index: Int = 0
+    private var id: String = ""
     private lateinit var app: App
     private lateinit var viewModel: FullDescriptionActivityViewModel
 
@@ -48,14 +48,14 @@ class FullDescriptionActivity : FragmentActivity() {
         i("FDA", "Hello from on create method")
         app = applicationContext as App
         val intentBundle = intent.extras
-        if (intentBundle != null && intentBundle.containsKey("index")) {
-            index = intentBundle["index"].toString().toInt()
+        if (intentBundle != null && intentBundle.containsKey("id")) {
+            id = intentBundle["id"].toString()
         }
 
         /* Dagger2 injection */
         app.appComponent.inject(this)
 
-        viewModel.index = index
+        viewModel.id = id
 
         setupViewModelObservers()
         setupSaveButtonListener()
@@ -169,7 +169,6 @@ class FullDescriptionActivity : FragmentActivity() {
     }
 
     private fun setupRecord(record: Record) {
-        println("Setup record $record")
         recordNameField.value = record.name
         recordValueField.value = record.value.toString()
         dailySwitch.isChecked = record.daily
