@@ -20,10 +20,10 @@ class FullDescriptionActivityViewModel(app: Application) : AndroidViewModel(app)
     @Inject
     lateinit var historyRepo: HistoryRepository
 
-    var index: Int = -1
+    var id: String = ""
         set(value) {
             field = value
-            indexChanged()
+            idChanged()
         }
 
     init {
@@ -100,12 +100,11 @@ class FullDescriptionActivityViewModel(app: Application) : AndroidViewModel(app)
         historyRepo.stopEditing()
     }
 
-    private fun indexChanged() {
-        val allHistory = historyRepo.history.value ?: run {
-            return
-        }
-        if (index != -1 && index >= 0 && index < allHistory.size) {
-            record.postValue(allHistory[index])
+    private fun idChanged() {
+        val allHistory = historyRepo.history.value ?: return
+        allHistory.forEach {
+            if (it.id == id)
+                record.postValue(it)
         }
     }
 }

@@ -2,6 +2,7 @@ package com.nevmem.moneysaver.fragments.adapters
 
 import android.app.Activity
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,22 +19,25 @@ import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
+import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.activity.FullDescriptionActivity
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.repositories.HistoryRepository
+import com.nevmem.moneysaver.data.repositories.TagsRepository
 import com.nevmem.moneysaver.fragments.HistoryFragment
 import com.nevmem.moneysaver.utils.TransitionsLocker
+import com.nevmem.moneysaver.views.ChooseOneFromListDialog
 import com.nevmem.moneysaver.views.ConfirmationDialog
-import kotlinx.android.synthetic.main.history_page_header.view.*
 import kotlinx.android.synthetic.main.record_layout.view.*
-
+import javax.inject.Inject
 
 class HistoryFragmentAdapter(
     private val activity: Activity,
     private val fragment: HistoryFragment,
-    lifeCycleOwner: LifecycleOwner,
-    private val historyRepo: HistoryRepository
+    lifeCycleOwner: LifecycleOwner
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var history: ArrayList<Record> = ArrayList()
@@ -42,19 +46,88 @@ class HistoryFragmentAdapter(
 
     private val transitionsLocker = TransitionsLocker()
 
+    @Inject
+    lateinit var tagsRepo: TagsRepository
+
+    @Inject
+    lateinit var historyRepo: HistoryRepository
+
+    class ListenableToggleableArray(fromArray: List<String>) {
+        private var array = ArrayList<String>()
+        private var toggled = ArrayList<Boolean>()
+        private var listener: (() -> Unit)? = null
+
+        init {
+            fromArray.forEach {
+                array.add(it)
+                toggled.add(false)
+            }
+        }
+
+        fun enable(str: String) {
+            val index = array.indexOf(str)
+            if (index == -1)
+                return
+            toggled[index] = true
+            updated()
+        }
+
+        fun disable(str: String) {
+            val index = array.indexOf(str)
+            if (index == -1)
+                return
+            toggled[index] = false
+            updated()
+        }
+
+        fun getToggled(): List<String> {
+            val res = ArrayList<String>()
+            for (i in 0 until (array.size)) {
+                if (toggled[i]) {
+                    res.add(array[i])
+                }
+            }
+            return res
+        }
+
+        fun getUnToggled(): List<String> {
+            val res = ArrayList<String>()
+            for (i in 0 until (array.size)) {
+                if (!toggled[i]) {
+                    res.add(array[i])
+                }
+            }
+            return res
+        }
+
+        private fun updated() {
+            listener?.invoke()
+        }
+
+        fun setListener(cb: () -> Unit) {
+            listener = cb
+        }
+    }
+
     var filter = ""
         set(value) {
             if (field == value) return
             field = value
             applyFilter()
         }
+    private var filterTag: ListenableToggleableArray
 
     init {
+        (activity.application as App).appComponent.inject(this)
         historyRepo.history.observe(lifeCycleOwner, Observer {
             history = it
             applyFilter()
             i("HFA", "Changes observed")
         })
+        filterTag = ListenableToggleableArray(tagsRepo.getTagsAsList())
+        filterTag.setListener {
+            applyFilter()
+        }
     }
 
     enum class ViewHolderType(val type: Int) {
@@ -65,7 +138,7 @@ class HistoryFragmentAdapter(
         return when (viewType) {
             ViewHolderType.HEADER.type -> {
                 val header = LayoutInflater.from(parent.context).inflate(R.layout.history_page_header, parent, false)
-                HeaderViewHolder(header, filter)
+                HeaderViewHolder(activity, header, filter, filterTag)
             }
             else -> {
                 val element = LayoutInflater.from(parent.context).inflate(R.layout.record_layout, parent, false)
@@ -79,10 +152,11 @@ class HistoryFragmentAdapter(
             holder.itemViewType == ViewHolderType.HEADER.type -> {
                 val header = holder as HeaderViewHolder
                 header.headerText.text = "Browse your outcomes"
-                header.searchFiled.addTextChangedListener(object: TextWatcher {
+                header.searchFiled.addTextChangedListener(object : TextWatcher {
                     override fun afterTextChanged(s: Editable?) {
                         filter = s.toString()
                     }
+
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                 })
@@ -113,7 +187,8 @@ class HistoryFragmentAdapter(
                     }
 
                     itemView.setOnClickListener {
-                        openFullDescriptionActivity(it, position - 1)
+                        if (position - 1 in 0 until(filtered.size))
+                            openFullDescriptionActivity(it, filtered[position - 1].id)
                     }
                 }
             }
@@ -125,11 +200,11 @@ class HistoryFragmentAdapter(
         }
     }
 
-    private fun openFullDescriptionActivity(view: View, index: Int) {
+    private fun openFullDescriptionActivity(view: View, id: String) {
         if (!transitionsLocker.canRunTransition()) return
         transitionsLocker.lockTransitions()
         val intent = Intent(activity, FullDescriptionActivity::class.java)
-        intent.putExtra("index", index)
+        intent.putExtra("id", id)
         view.card.transitionName = "descriptionPageEnterTransition"
         val options = ActivityOptions.makeSceneTransitionAnimation(
             activity,
@@ -151,11 +226,43 @@ class HistoryFragmentAdapter(
         return filtered.size + 1
     }
 
-    class HeaderViewHolder(view: View, filter: String) : RecyclerView.ViewHolder(view) {
+    class HeaderViewHolder(ctx: Context, view: View, filter: String, tags: ListenableToggleableArray) :
+        RecyclerView.ViewHolder(view) {
         val headerText: TextView = view.findViewById(R.id.history_fragment_header_text)
         val searchFiled: EditText = view.findViewById(R.id.searchField)
+        private val chipGroup: ChipGroup = view.findViewById(R.id.chooseTags)
+
         init {
             searchFiled.setText(filter)
+            val addTag = Chip(ctx)
+            addTag.text = "+ Add"
+            chipGroup.addView(addTag)
+            addTag.setOnClickListener {
+                val dialog = ChooseOneFromListDialog(ctx, "Choose tag for filter", tags.getUnToggled())
+                val popup =
+                    PopupWindow(dialog, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                popup.showAtLocation(headerText, Gravity.CENTER, 0, 0)
+                dialog.setOkListener {
+                    tags.enable(it)
+                    val chip = Chip(ctx)
+                    chip.text = it
+                    chip.isCheckable = false
+                    chip.isCloseIconVisible = true
+                    chip.height = ViewGroup.LayoutParams.MATCH_PARENT
+                    chip.width = ViewGroup.LayoutParams.MATCH_PARENT
+                    chip.setOnCloseIconClickListener { _ ->
+                        run {
+                            chipGroup.removeView(chip)
+                            tags.disable(it)
+                        }
+                    }
+                    chipGroup.addView(chip)
+                    popup.dismiss()
+                }
+                dialog.setDismissListener {
+                    popup.dismiss()
+                }
+            }
         }
     }
 
@@ -169,14 +276,17 @@ class HistoryFragmentAdapter(
 
     private fun applyFilter() {
         val currentFiltered = ArrayList<Record>()
+        val tags = filterTag.getToggled()
         if (filter.isNotEmpty()) {
             for (i in 0 until (history.size)) {
-                if (history[i].name.toLowerCase().indexOf(filter.toLowerCase()) != -1)
+                if (history[i].name.toLowerCase().indexOf(filter.toLowerCase()) != -1 && (tags.isEmpty() || history[i].tag in tags)) {
                     currentFiltered.add(history[i])
+                }
             }
         } else {
             history.forEach {
-                currentFiltered.add(it)
+                if (tags.isEmpty() || it.tag in tags)
+                    currentFiltered.add(it)
             }
         }
         filtered = currentFiltered
