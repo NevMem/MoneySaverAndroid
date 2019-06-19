@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:transitionOrdering="together">
+    <slide android:startDelay="50" android:slideEdge="start" android:duration="150" />
+    <fade android:duration="200" android:interpolator="@android:interpolator/accelerate_quad" />
+</transitionSet>

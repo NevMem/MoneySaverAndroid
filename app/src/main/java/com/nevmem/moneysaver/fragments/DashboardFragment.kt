@@ -1,7 +1,11 @@
 package com.nevmem.moneysaver.fragments
 
 import android.animation.ValueAnimator
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log.i
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +17,7 @@ import androidx.lifecycle.Observer
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.activity.MainPage
+import com.nevmem.moneysaver.activity.SettingsActivity
 import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.data.UserHolder
 import com.nevmem.moneysaver.data.repositories.InfoRepository
@@ -82,8 +87,8 @@ class DashboardFragment : Fragment() {
             }
         })
 
-        logoutButton.setOnClickListener {
-            logout()
+        settingsButton.setOnClickListener {
+            settings()
         }
 
         refreshLayout.setOnRefreshListener {
@@ -91,12 +96,14 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    private fun logout() {
-        userHolder.ready = false
-        User.clearCredentials(app)
-        with (activity as MainPage) {
-            onLogout()
-        }
+    private fun settings() {
+        val currentRotation= settingsButton.rotation
+        settingsButton.animate().rotation(currentRotation + 180f).duration = 150
+        Handler(Looper.getMainLooper())
+            .postDelayed({
+            val intent = Intent(activity, SettingsActivity::class.java)
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
+        }, 150)
     }
 
     override fun onDestroyView() {
