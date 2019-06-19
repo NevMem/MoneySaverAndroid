@@ -4,6 +4,7 @@ import com.nevmem.moneysaver.activity.*
 import com.nevmem.moneysaver.dagger.modules.DataModule
 import com.nevmem.moneysaver.dagger.modules.NetworkModule
 import com.nevmem.moneysaver.fragments.*
+import com.nevmem.moneysaver.fragments.adapters.HistoryFragmentAdapter
 import com.nevmem.moneysaver.views.NewTemplateDialog
 import dagger.Component
 import javax.inject.Singleton
@@ -31,4 +32,5 @@ interface AppComponent {
     fun inject(registerDialogChooseLoginFragmentViewModel: RegisterDialogChooseLoginFragmentViewModel)
     fun inject(registerDialogPrivacyFragmentViewModel: RegisterDialogPrivacyFragmentViewModel)
     fun inject(settingsActivity: SettingsActivity)
+    fun inject(historyFragmentAdapter: HistoryFragmentAdapter)
 }
