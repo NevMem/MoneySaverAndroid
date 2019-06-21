@@ -82,7 +82,6 @@ class MyExpandableList : LinearLayout {
             }
             for (index in groupViewsMinimized.size until (size)) {
                 var child = it.getGroupView(index, false, this)
-                child.setBackgroundColor(ContextCompat.getColor(mContext, R.color.themeColor))
                 child.setOnClickListener {
                     trigger(index)
                 }
@@ -92,7 +91,6 @@ class MyExpandableList : LinearLayout {
                 child = it.getGroupView(index, true, this)
                 child.isActivated = true
                 child.visibility = View.GONE
-                child.setBackgroundColor(ContextCompat.getColor(mContext, R.color.specialColor))
                 child.setOnClickListener {
                     trigger(index)
                 }
