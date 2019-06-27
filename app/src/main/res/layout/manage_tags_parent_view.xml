@@ -6,17 +6,26 @@
         android:layout_height="match_parent"
         android:paddingStart="16dp" android:paddingEnd="16dp"
         android:paddingTop="16dp" android:paddingBottom="16dp"
-        android:gravity="center"
+        android:gravity="start|center"
 >
     <ImageView
-            android:layout_width="24dp" android:layout_height="24dp"
+            android:layout_width="16dp" android:layout_height="16dp"
             android:src="@drawable/expand_icon_selector"/>
     <TextView
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textColor="@color/default_white_color"
             android:id="@+id/header"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
             tools:text="Some text"
             android:layout_marginStart="16dp"
+    />
+    <TextView
+        android:textSize="18sp"
+        android:textColor="@color/secondary_white_color"
+        android:id="@+id/specialInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Some info"
+        android:layout_marginStart="16dp"
     />
 </LinearLayout>

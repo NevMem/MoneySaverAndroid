@@ -21,4 +21,5 @@
     <color name="dismiss_button_background_color">#22FF4662</color>
     <color name="blue_dismiss_button_border_color">#36466EFF</color>
     <color name="blue_dismiss_button_background_color">#22466EFF</color>
+    <color name="manage_tags_loading_state">#A0538CFF</color>
 </resources>

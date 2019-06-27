@@ -4,8 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
-import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.views.utils.MyDataObserver
 
 class MyExpandableList : LinearLayout {

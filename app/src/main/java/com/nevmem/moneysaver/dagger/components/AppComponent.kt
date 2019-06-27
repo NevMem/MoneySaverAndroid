@@ -1,7 +1,7 @@
 package com.nevmem.moneysaver.dagger.components
 
 import com.nevmem.moneysaver.activity.*
-import com.nevmem.moneysaver.activity.adapters.ManageTagsAdapter
+import com.nevmem.moneysaver.activity.adapters.ManageTagsWalletsAdapter
 import com.nevmem.moneysaver.dagger.modules.DataModule
 import com.nevmem.moneysaver.dagger.modules.NetworkModule
 import com.nevmem.moneysaver.fragments.*
@@ -34,5 +34,5 @@ interface AppComponent {
     fun inject(registerDialogPrivacyFragmentViewModel: RegisterDialogPrivacyFragmentViewModel)
     fun inject(settingsActivity: SettingsActivity)
     fun inject(historyFragmentAdapter: HistoryFragmentAdapter)
-    fun inject(manageTagsAdapter: ManageTagsAdapter)
+    fun inject(manageTagsWalletsAdapter: ManageTagsWalletsAdapter)
 }
