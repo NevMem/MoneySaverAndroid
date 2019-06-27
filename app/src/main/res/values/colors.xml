@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorAccent">#D81B60</color>
-    <color name="mainColor">#7a0099</color>
-    <color name="mPurple">#BB00FF</color>
     <color name="mainFontColor">#c7c7c7</color>
     <color name="secondaryFontColor">#9AC7C7C7</color>
     <color name="errorColor">#f55</color>
@@ -13,7 +10,6 @@
     <color name="themeColor">#f5b700</color>
     <color name="themeGrayedColor">#8DF5B700</color>
     <color name="profile_color">#191919</color>
-    <color name="profile_gray_color">#242424</color>
     <color name="secondary_white_color">#A0FFFFFF</color>
     <color name="default_white_color">#fff</color>
     <color name="dismiss_button_text_color">#f0FF4662</color>

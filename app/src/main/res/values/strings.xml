@@ -3,7 +3,6 @@
     <string name="passwordString">Password</string>
     <string name="loginPage_loginButtonText">Log in</string>
     <string name="Login">Login</string>
-    <string name="load_data">Load more</string>
     <string name="defaultRecordName">Some record name</string>
     <string name="defaultRecordDate">"01.01.1970"</string>
     <string name="defaultRecordValue">1000</string>
@@ -16,10 +15,6 @@
     <string name="addRecordHeader">New record</string>
     <string name="totalSpend">Total spend:</string>
     <string name="averageSpending">Average spending:</string>
-    <string name="average7Days">Avg. 7 days:</string>
-    <string name="average30Days">Avg. 30 days:</string>
-    <string name="sum7Days">Sum 7 days:</string>
-    <string name="sum30Days">Sum 30 days:</string>
     <string name="amountOfDays">Tracked days:</string>
     <string name="defaultTrackedDays">Over 9000 years</string>
     <string name="info_text_1">Time info(click to change):</string>
