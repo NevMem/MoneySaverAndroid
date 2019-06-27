@@ -11,12 +11,18 @@ import com.nevmem.moneysaver.fragments.TemplatesFragment
 
 class MainPageViewPager2Adapter(lifecycle: Lifecycle, fragmentManager: FragmentManager) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
+
+    private val dashboardFragment: DashboardFragment = DashboardFragment()
+    private val templatesFragment = TemplatesFragment()
+    private val addFragment = AddFragment()
+    private val historyFragment = HistoryFragment()
+
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> DashboardFragment()
-            1 -> TemplatesFragment()
-            2 -> AddFragment()
-            else -> HistoryFragment()
+            0 -> dashboardFragment
+            1 -> templatesFragment
+            2 -> addFragment
+            else -> historyFragment
         }
     }
 
