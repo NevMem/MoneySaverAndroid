@@ -1,7 +1,10 @@
 package com.nevmem.moneysaver.activity.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PorterDuff
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,19 +15,11 @@ import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.views.PieChart
 import kotlinx.android.synthetic.main.large_lable_row.view.*
 
-class MonthDescriptionLabelsAdapter(private var ctx: Context, map: HashMap<String, Double>) :
+class MonthDescriptionLabelsAdapter(private var ctx: Context) :
     RecyclerView.Adapter<MonthDescriptionLabelsAdapter.VH>() {
     data class LabelRepr(val name: String, val value: Double, val color: Int)
 
     private var data: ArrayList<LabelRepr> = ArrayList()
-
-    init {
-        for (element in map) {
-            data.add(LabelRepr(element.key, element.value, PieChart.baseColors[data.size % PieChart.baseColors.size]))
-        }
-        data.sortBy { value -> value.value }
-        data.reverse()
-    }
 
     override fun getItemCount(): Int {
         return data.size
@@ -45,5 +40,45 @@ class MonthDescriptionLabelsAdapter(private var ctx: Context, map: HashMap<Strin
         val badge: ImageView = view.labelBadge
         val name: TextView = view.labelName
         var value: TextView = view.labelValue
+    }
+
+    @SuppressLint("UseSparseArrays")
+    fun changeData(map: HashMap<String, Double>) {
+        val newData = ArrayList<LabelRepr>()
+        for (element in map) {
+            newData.add(LabelRepr(element.key, element.value, PieChart.baseColors[newData.size % PieChart.baseColors.size]))
+        }
+        newData.sortBy { element -> element.value }
+        newData.reverse()
+        val before = data
+        data = newData
+        var isSubsequence = false
+        var top = 0
+        for (i in 0 until before.size) {
+            if (top < data.size && data[top].name == before[i].name) {
+                top += 1
+            }
+            if (top == data.size) {
+                isSubsequence = true
+            }
+        }
+
+        if (isSubsequence) {
+            top = 0
+            var removed = 0
+            for (i in 0 until before.size) {
+                if (top < data.size && data[top].name == before[i].name) {
+                    if (data[top] != before[i]) {
+                        notifyItemChanged(i - removed)
+                    }
+                    top += 1
+                } else {
+                    notifyItemRemoved(i - removed)
+                    removed += 1
+                }
+            }
+        } else {
+            notifyDataSetChanged()
+        }
     }
 }
