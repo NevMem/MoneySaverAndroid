@@ -65,33 +65,35 @@
             <LinearLayout
                     android:orientation="horizontal" android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:weightSum="4"
-                    android:paddingTop="17dp" android:paddingBottom="17dp"
+                    android:paddingTop="8dp" android:paddingBottom="8dp"
             >
                 <TextView
                         android:layout_width="0dp" android:layout_weight="3" android:layout_height="wrap_content"
-                        android:text="@string/month_description_page_total_string" android:textSize="18sp"
+                        android:text="@string/month_description_page_total_string" android:textSize="22sp"
                 />
                 <TextView
                         android:layout_weight="1"
-                        android:id="@+id/monthSpend" android:textSize="18sp"
+                        android:id="@+id/monthSpend" android:textSize="20sp"
                         android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:gravity="end"
+                        android:gravity="end" tools:text="1000.0"
+                        android:textColor="@color/secondary_white_color"
                 />
             </LinearLayout>
             <LinearLayout
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:weightSum="4"
-                    android:paddingTop="17dp" android:paddingBottom="17dp"
+                    android:paddingTop="8dp" android:paddingBottom="8dp"
             >
                 <TextView
                         android:layout_width="0dp" android:layout_weight="3" android:layout_height="wrap_content"
-                        android:text="@string/month_description_page_daily_string" android:textSize="18sp"
+                        android:text="@string/month_description_page_daily_string" android:textSize="22sp"
                 />
                 <TextView
                         android:layout_weight="1"
-                        android:id="@+id/monthDailySpend" android:textSize="18sp"
+                        android:id="@+id/monthDailySpend" android:textSize="20sp"
                         android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:gravity="end"
+                        android:gravity="end" tools:text="1000.0"
+                        android:textColor="@color/secondary_white_color"
                 />
             </LinearLayout>
             <LinearLayout
