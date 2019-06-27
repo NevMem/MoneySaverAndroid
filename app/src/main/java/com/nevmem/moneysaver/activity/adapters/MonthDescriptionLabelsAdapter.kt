@@ -5,6 +5,8 @@ import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.views.PieChart
@@ -40,8 +42,8 @@ class MonthDescriptionLabelsAdapter(private var ctx: Context, map: HashMap<Strin
     }
 
     class VH(view: View) : RecyclerView.ViewHolder(view) {
-        val badge = view.labelBadge
-        val name = view.labelName
-        var value = view.labelValue
+        val badge: ImageView = view.labelBadge
+        val name: TextView = view.labelName
+        var value: TextView = view.labelValue
     }
 }
