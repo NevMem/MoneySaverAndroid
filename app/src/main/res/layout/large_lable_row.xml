@@ -10,7 +10,8 @@
     <ImageView
             android:id="@+id/labelBadge"
             android:contentDescription="@string/badge_for_label_content_description_string"
-            android:layout_width="16dp" android:layout_height="16dp" android:background="@drawable/large_rounder"
+            android:layout_width="16dp" android:layout_height="16dp"
+            android:background="@drawable/large_rounder"
     />
     <TextView
             android:gravity="start|center"
@@ -19,7 +20,8 @@
             android:id="@+id/labelName"
             android:layout_width="0dp" android:layout_height="wrap_content" android:textColor="#FFFFFF"
             tools:text="Some label"
-            android:textSize="22sp"
+            android:textSize="20sp"
+            android:paddingStart="8dp" android:paddingEnd="8dp"
     />
     <TextView
             android:gravity="center|end"
@@ -28,7 +30,8 @@
             tools:text="10000"
             android:id="@+id/labelValue"
             android:layout_weight="1"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:layout_width="0dp" android:layout_height="wrap_content"
+            android:textColor="@color/secondary_white_color"
     />
 </LinearLayout>

@@ -24,6 +24,8 @@ class MonthDescriptionActivity : AppCompatActivity() {
 
     lateinit var viewModel: MonthDescriptionViewModel
 
+    lateinit var adapter: MonthDescriptionLabelsAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.month_description_page)
@@ -41,12 +43,15 @@ class MonthDescriptionActivity : AppCompatActivity() {
         if (extras != null)
             viewModel.setIndex(extras.getInt("monthIndex", Int.MAX_VALUE))
 
+        adapter = MonthDescriptionLabelsAdapter(this)
+        labelsInfoRecycler.adapter = adapter
+
         viewModel.monthDescription.observe(this, Observer {
             if (it != null) {
                 setupChart(it.byTagTotal)
                 monthSpend.text = it.total.toString()
                 monthDailySpend.text = it.totalDaily.toString()
-                labelsInfoRecycler.adapter = MonthDescriptionLabelsAdapter(this, it.byTagTotal)
+                adapter.changeData(it.byTagTotal)
                 labelsInfoRecycler.scheduleLayoutAnimation()
                 headerText.text = it.monthId
             }

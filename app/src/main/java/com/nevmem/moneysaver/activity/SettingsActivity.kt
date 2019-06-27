@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.transition.TransitionInflater
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.activity.adapters.ManageTagsWalletsAdapter
 import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.data.UserHolder
 import kotlinx.android.synthetic.main.settings_activity.*
@@ -16,7 +16,6 @@ import javax.inject.Inject
 class SettingsActivity : AppCompatActivity() {
     @Inject
     lateinit var userHolder: UserHolder
-
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,9 +29,15 @@ class SettingsActivity : AppCompatActivity() {
 
         (application as App).appComponent.inject(this)
 
+        setupTagsAdapter()
+
         logoutButton.setOnClickListener {
             logout()
         }
+    }
+
+    private fun setupTagsAdapter() {
+        manageTags.setAdapter(ManageTagsWalletsAdapter(this, this, application as App))
     }
 
     private fun logout() {

@@ -65,4 +65,6 @@
     <string name="please_choose_login_string">Please choose your login, it will be used to log into application</string>
     <string name="privacy_convention_string">I read and agreed this convention</string>
     <string name="settings_header_string">Settings</string>
+    <string name="week_string">Week</string>
+    <string name="_30_days_string">30 days</string>
 </resources>
