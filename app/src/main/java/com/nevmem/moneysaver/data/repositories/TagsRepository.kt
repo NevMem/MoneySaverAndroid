@@ -119,4 +119,22 @@ class TagsRepository @Inject constructor(
     fun receivedAddingError() {
         addingState.postValue(NoneState)
     }
+
+    fun delete(tagName: String): MutableLiveData<RequestState> {
+        val state = MutableLiveData<RequestState>(LoadingState)
+        val params = userHolder.credentialsJson()
+        params.put("tagName", tagName)
+        val request = networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiRemoveTag, params)
+        request.success {
+            when (val parseResult = TagsRepositoryParsers.parseRemoveTagResponse(it)) {
+                is ParseError -> {
+                    state.postValue(ErrorState(parseResult.reason))
+                }
+                is ParsedValue<*> -> {
+                    state.postValue(SuccessState())
+                }
+            }
+        }
+        return state
+    }
 }

@@ -18,5 +18,17 @@ abstract class TagsRepositoryParsers {
                 return ParseError(Vars.unknownFormat)
             }
         }
+
+        fun parseRemoveTagResponse(json: JSONObject): ParseResult {
+            val type = json.optString("type") ?: return ParseError(Vars.unknownFormat)
+            if (type == "ok") {
+                return ParsedValue("ok")
+            }
+            if (type == "error") {
+                val error = json.optString("error") ?: return ParseError(Vars.unknownFormat)
+                return ParseError(error)
+            }
+            return ParseError(Vars.unknownFormat)
+        }
     }
 }

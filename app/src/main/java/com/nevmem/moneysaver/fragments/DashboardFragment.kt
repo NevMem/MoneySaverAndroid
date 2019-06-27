@@ -56,13 +56,10 @@ class DashboardFragment : Fragment() {
         app.appComponent.inject(this)
 
         infoRepo.info.observe(this, Observer {
-            average30Days.text = it.average30Days.toString()
-            average7Days.text = it.average7Days.toString()
+            weekMonthInfo.info = it
             trackedDays.text = it.trackedDays.toString()
             totalSpend.text = it.totalSpend.toString()
             averageSpend.text = it.average.toString()
-            sum30Days.text = it.sum30Days.toString()
-            sum7Days.text = it.sum7Days.toString()
             sumDayChart.values = it.sumDay
 
             val animator = ValueAnimator.ofFloat(0f, 1f)

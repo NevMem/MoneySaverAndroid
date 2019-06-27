@@ -20,6 +20,8 @@ class Vars {
         const val ServerApiRegister = "$ServerBase/api/register"
         const val ServerApiAddTag = "$ServerBase/api/addTag"
         const val ServerApiAddWallet = "$ServerBase/api/addWallet"
+        const val ServerApiRemoveTag = "$ServerBase/api/removeTag"
+        const val ServerApiRemoveWallet = "$ServerBase/api/removeWallet"
 
         const val ServerPrivacy = "$ServerBase/privacy"
 

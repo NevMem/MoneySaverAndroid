@@ -104,8 +104,7 @@ class WalletsRepository @Inject constructor(
         params.put("walletName", wallet)
         val request = networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiAddWallet, params)
         request.success {
-            val parsed = WalletsRepositoryParsers.parseAddWalletRequest(it)
-            when (parsed) {
+            when (val parsed = WalletsRepositoryParsers.parseAddWalletRequest(it)) {
                 is ParsedValue<*> -> {
                     addingState.postValue(SuccessState(parsed.parsed as String))
                 }
@@ -119,5 +118,23 @@ class WalletsRepository @Inject constructor(
 
     fun receivedAddingError() {
         addingState.postValue(NoneState)
+    }
+
+    fun delete(walletName: String): MutableLiveData<RequestState> {
+        val state = MutableLiveData<RequestState>(LoadingState)
+        val params = userHolder.credentialsJson()
+        params.put("walletName", walletName)
+        val request = networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiRemoveWallet, params)
+        request.success {
+            when (val parseResult = TagsRepositoryParsers.parseRemoveTagResponse(it)) {
+                is ParseError -> {
+                    state.postValue(ErrorState(parseResult.reason))
+                }
+                is ParsedValue<*> -> {
+                    state.postValue(SuccessState())
+                }
+            }
+        }
+        return state
     }
 }
