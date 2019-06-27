@@ -22,6 +22,7 @@
                 android:text="@string/settings_header_string"
                 android:textAlignment="center"
                 android:background="@color/profile_color"
+                android:drawableEnd="@drawable/beta_icon"
         />
 
         <com.nevmem.moneysaver.views.MyExpandableList
