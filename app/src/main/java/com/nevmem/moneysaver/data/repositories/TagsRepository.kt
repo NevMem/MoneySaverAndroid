@@ -44,8 +44,7 @@ class TagsRepository @Inject constructor(
         val request = networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiAddTag, params)
         request.success {
             addingState.postValue(NoneState)
-            val parsed = TagsRepositoryParsers.parseAddTagResponse(it)
-            when (parsed) {
+            when (val parsed = TagsRepositoryParsers.parseAddTagResponse(it)) {
                 is ParseError -> {
                     addingState.postValue(ErrorState(parsed.reason))
                 }

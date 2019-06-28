@@ -15,7 +15,7 @@ import com.nevmem.moneysaver.fragments.interfaces.Injector
 import kotlinx.android.synthetic.main.register_dialog_choose_login.*
 
 class RegisterDialogChooseLoginFragment : WellFilledCheckableFragment(), Injector<RegistrationArgs> {
-    lateinit var viewModel: RegisterDialogChooseLoginFragmentViewModel
+    private lateinit var viewModel: RegisterDialogChooseLoginFragmentViewModel
 
     private var login: String? = null
 
@@ -25,34 +25,36 @@ class RegisterDialogChooseLoginFragment : WellFilledCheckableFragment(), Injecto
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.let {
-            viewModel = ViewModelProviders.of(it).get(RegisterDialogChooseLoginFragmentViewModel::class.java)
-            viewModel.loginChecking.observe(this, Observer {
-                when (it) {
-                    null, RegisterDialogChooseLoginFragmentViewModel.Status.NONE -> {
-                        loginField.loading = false
-                        loginField.error = ""
-                        loginField.success = false
+        activity?.let { itActivity ->
+            run {
+                viewModel = ViewModelProviders.of(itActivity).get(RegisterDialogChooseLoginFragmentViewModel::class.java)
+                viewModel.loginChecking.observe(this, Observer {
+                    when (it) {
+                        null, RegisterDialogChooseLoginFragmentViewModel.Status.NONE -> {
+                            loginField.loading = false
+                            loginField.error = ""
+                            loginField.success = false
+                        }
+                        RegisterDialogChooseLoginFragmentViewModel.Status.CHECKING -> {
+                            loginField.loading = true
+                        }
+                        RegisterDialogChooseLoginFragmentViewModel.Status.SUCCESS -> {
+                            login = loginField.text
+                            loginField.success = true
+                            loginField.error = ""
+                            loginField.loading = false
+                        }
+                        RegisterDialogChooseLoginFragmentViewModel.Status.ERROR -> {
+                            loginField.error = "Error happened"
+                            loginField.loading = false
+                            loginField.success = false
+                        }
                     }
-                    RegisterDialogChooseLoginFragmentViewModel.Status.CHECKING -> {
-                        loginField.loading = true
-                    }
-                    RegisterDialogChooseLoginFragmentViewModel.Status.SUCCESS -> {
-                        login = loginField.text
-                        loginField.success = true
-                        loginField.error = ""
-                        loginField.loading = false
-                    }
-                    RegisterDialogChooseLoginFragmentViewModel.Status.ERROR -> {
-                        loginField.error = "Error happened"
-                        loginField.loading = false
-                        loginField.success = false
-                    }
-                }
-            })
+                })
 
-            loginField.changeHandler = {
-                viewModel.checkLogin(it)
+                loginField.changeHandler = {
+                    viewModel.checkLogin(it)
+                }
             }
         }
     }

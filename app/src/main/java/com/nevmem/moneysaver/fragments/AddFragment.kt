@@ -15,8 +15,6 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.RecordDate
-import com.nevmem.moneysaver.data.repositories.TagsRepository
-import com.nevmem.moneysaver.data.repositories.WalletsRepository
 import com.nevmem.moneysaver.data.util.ErrorState
 import com.nevmem.moneysaver.data.util.LoadingState
 import com.nevmem.moneysaver.data.util.NoneState
@@ -24,7 +22,6 @@ import com.nevmem.moneysaver.data.util.SuccessState
 import com.nevmem.moneysaver.views.InfoDialog
 import com.nevmem.moneysaver.views.OneStringDialog
 import kotlinx.android.synthetic.main.add_record_fragment.*
-import javax.inject.Inject
 
 
 class AddFragment : Fragment() {

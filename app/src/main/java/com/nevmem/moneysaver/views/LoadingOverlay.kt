@@ -12,7 +12,7 @@ class LoadingOverlay(ctx: Context) : ConstraintLayout(ctx) {
 
     enum class State { LOADING, ERROR, SUCCESS, NONE }
 
-    var currentState = State.NONE
+    private var currentState = State.NONE
 
     private var afterSuccess: (() -> Unit)? = null
     private var afterError: (() -> Unit)? = null

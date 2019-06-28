@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Dashboard"
+    <item android:title="@string/dashboard_page_menu_string"
           android:id="@+id/dashboardPageNavigation"
           android:icon="@drawable/home_icon"
     />
-    <item android:title="Templates"
+    <item android:title="@string/templates_page_menu_string"
           android:id="@+id/templatesNavigation"
           android:icon="@drawable/bookmark_icon"
     />
-    <item android:title="New record"
+    <item android:title="@string/new_record_page_menu_string"
           android:id="@+id/newRecordNavigation"
           android:icon="@drawable/create_icon"
     />
-    <item android:title="History"
+    <item android:title="@string/history_page_menu_string"
           android:id="@+id/historyNavigation"
           android:icon="@drawable/history_icon"
     />

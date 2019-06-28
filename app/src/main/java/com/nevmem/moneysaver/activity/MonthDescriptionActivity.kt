@@ -2,7 +2,6 @@ package com.nevmem.moneysaver.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.transition.Fade
 import androidx.appcompat.app.AppCompatActivity
@@ -22,7 +21,7 @@ class MonthDescriptionActivity : AppCompatActivity() {
     @Inject
     lateinit var infoRepo: InfoRepository
 
-    lateinit var viewModel: MonthDescriptionViewModel
+    private lateinit var viewModel: MonthDescriptionViewModel
 
     lateinit var adapter: MonthDescriptionLabelsAdapter
 

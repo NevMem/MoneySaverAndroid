@@ -9,6 +9,7 @@
         android:gravity="start|center"
 >
     <ImageView
+            android:contentDescription="@string/expand_icon_description_string"
             android:layout_width="16dp" android:layout_height="16dp"
             android:src="@drawable/expand_icon_selector"/>
     <TextView

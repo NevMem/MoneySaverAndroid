@@ -32,7 +32,7 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
     @Inject
     lateinit var infoRepo: InfoRepository
 
-    lateinit var viewModel: DashboardPageMonthDescriptionFragmentViewModel
+    private lateinit var viewModel: DashboardPageMonthDescriptionFragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

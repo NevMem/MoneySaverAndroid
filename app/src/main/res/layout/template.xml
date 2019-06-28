@@ -34,7 +34,7 @@
                  android:foregroundGravity="center"
     >
         <Button
-                android:text="USE IT"
+                android:text="@string/use_it_button_string"
                 android:layout_width="90dp"
                 android:layout_height="38dp"
                 android:layout_marginTop="6dp"
