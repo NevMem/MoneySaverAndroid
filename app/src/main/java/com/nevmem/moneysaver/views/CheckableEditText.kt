@@ -10,7 +10,7 @@ import android.widget.FrameLayout
 import com.nevmem.moneysaver.R
 import kotlinx.android.synthetic.main.checkable_edit_text.view.*
 
-class CheckableEditText(private var ctx: Context, private var attrs: AttributeSet) : FrameLayout(ctx, attrs) {
+class CheckableEditText(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs) {
     private var hint = ""
     private var inputType: Int = 0
 

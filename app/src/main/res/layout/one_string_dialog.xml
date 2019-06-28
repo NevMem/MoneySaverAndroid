@@ -29,7 +29,7 @@
             tools:text="Description"
     />
     <EditText
-            android:hint="Enter string"
+            android:hint="@string/enter_string_string"
             android:inputType="text"
             android:id="@+id/editText" android:focusable="true"
             android:layout_width="match_parent" android:layout_height="wrap_content"

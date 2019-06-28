@@ -39,8 +39,7 @@ class ChangeableTextField(private var ctx: Context, attrs: AttributeSet) : Frame
         val hint = attributeGetter.getString(R.styleable.CustomText_hint) ?: ""
         editText.hint = hint
         textView.hint = hint
-        val inputType = attributeGetter.getInt(R.styleable.CustomText_inputType, 0)
-        when (inputType) {
+        when (attributeGetter.getInt(R.styleable.CustomText_inputType, 0)) {
             0 -> {
                 editText.inputType = InputType.TYPE_CLASS_TEXT
             } // text

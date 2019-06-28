@@ -19,7 +19,7 @@ class MainPageWeekMonthInfo(ctx: Context, attrs: AttributeSet) : ConstraintLayou
         Week, ThirtyDays
     }
 
-    var mode: InfoMode = InfoMode.Week
+    private var mode: InfoMode = InfoMode.Week
         set(value) {
             field = value
             infoChanged()

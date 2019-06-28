@@ -69,7 +69,7 @@ class RegisterActivity : AppCompatActivity() {
         })
     }
 
-    private val dialogFragments = arrayListOf<WellFilledCheckableFragment>(
+    private val dialogFragments = arrayListOf(
         RegisterDialogMainInfoFragment(),
         RegisterDialogChooseLoginFragment(),
         RegisterDialogPasswordFragment(),

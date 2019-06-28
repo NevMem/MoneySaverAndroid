@@ -9,13 +9,11 @@ import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.Vars.Companion.unknownFormat
 import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.RegistrationArgs
-import com.nevmem.moneysaver.data.RequestBase
 import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.data.util.ParseError
 import com.nevmem.moneysaver.data.util.ParseResult
 import com.nevmem.moneysaver.data.util.ParsedValue
 import org.json.JSONObject
-import java.lang.ClassCastException
 import javax.inject.Inject
 
 class RegisterPageViewModel(app: Application) : AndroidViewModel(app) {

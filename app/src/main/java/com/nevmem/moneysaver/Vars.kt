@@ -6,7 +6,6 @@ class Vars {
         const val ServerApiLogin = "$ServerBase/api/login"
         const val ServerApiWallets = "$ServerBase/api/wallets"
         const val ServerApiTags = "$ServerBase/api/tags"
-        const val ServerApiData = "$ServerBase/api/data"
         const val ServerApiHistory = "$ServerBase/api/history"
         const val ServerApiInfo = "$ServerBase/api/info"
         const val ServerApiAdd = "$ServerBase/api/add"
@@ -29,6 +28,5 @@ class Vars {
         const val unknownFormat = "Server response has unknown format"
         const val unspecifiedData = "Server response has bad format(data array is missing)"
         const val corruptedRecord = "One or more record were corrupted"
-        const val inconsistentState = "Inconsistent state"
     }
 }

@@ -16,9 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
-import com.nevmem.moneysaver.activity.MainPage
 import com.nevmem.moneysaver.activity.SettingsActivity
-import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.data.UserHolder
 import com.nevmem.moneysaver.data.repositories.InfoRepository
 import kotlinx.android.synthetic.main.home_page_fragment.*

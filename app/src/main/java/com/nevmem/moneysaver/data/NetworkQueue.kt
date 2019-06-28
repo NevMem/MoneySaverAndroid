@@ -58,7 +58,7 @@ class NetworkQueue(ctx: Context) : NetworkQueueBase {
     override fun infinitePostStringRequest(
         url: String, params: JSONObject, timeout: Long, savedRequest: RequestBase<String>?
     ): RequestBase<String> {
-        val request = savedRequest ?: Request<String>()
+        val request = savedRequest ?: Request()
         val stringRequest = object : StringRequest(Method.POST, url, {
             if (!request.isCanceled()) {
                 request.resolve(it)
