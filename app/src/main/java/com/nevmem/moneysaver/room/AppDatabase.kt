@@ -12,7 +12,7 @@ import com.nevmem.moneysaver.room.entity.Wallet
 
 @Database(
     entities = [StoredTemplate::class, Record::class, Wallet::class, Tag::class, Info::class, MonthDescription::class],
-    exportSchema = false, version = 17
+    exportSchema = false, version = 18
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun templateDao(): TemplateDao
