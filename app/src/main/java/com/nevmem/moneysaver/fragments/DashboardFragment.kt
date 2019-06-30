@@ -55,8 +55,6 @@ class DashboardFragment : Fragment() {
 
         infoRepo.info.observe(this, Observer {
             trackedDays.text = it.trackedDays.toString()
-            totalSpend.text = it.totalSpend.toString()
-            averageSpend.text = it.average.toString()
             sumDayChart.values = it.sumDay
 
             val animator = ValueAnimator.ofFloat(0f, 1f)
@@ -75,10 +73,8 @@ class DashboardFragment : Fragment() {
         userName.text = userHolder.user.firstName
 
         infoRepo.loading.observe(this, Observer {
-            when (it) {
-                null -> {}
-                else -> refreshLayout.isRefreshing = it
-            }
+            if (it != null)
+                refreshLayout.isRefreshing = it
         })
 
         settingsButton.setOnClickListener {
