@@ -166,7 +166,7 @@ class HistoryFragmentAdapter(
                 with(holder as ElementViewHolder) {
                     recordName.text = filtered[position - 1].name
                     recordValue.text = filtered[position - 1].value.toString()
-                    recordWallet.text = filtered[position - 1].wallet
+                    recordTag.text = filtered[position - 1].tag
                     recordDate.text = filtered[position - 1].date.toString()
                     deleteButton.setOnClickListener {
                         val popupView = ConfirmationDialog(activity, "Do you really want delete this record?")
@@ -270,7 +270,7 @@ class HistoryFragmentAdapter(
         val recordName: TextView = view.findViewById(R.id.recordNameField)
         val recordDate: TextView = view.findViewById(R.id.dateField)
         val recordValue: TextView = view.findViewById(R.id.recordValue)
-        val recordWallet: TextView = view.findViewById(R.id.walletField)
+        val recordTag: TextView = view.findViewById(R.id.tagField)
         val deleteButton: ImageView = view.findViewById(R.id.deleteRecordButton)
     }
 

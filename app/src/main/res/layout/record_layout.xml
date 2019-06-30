@@ -41,21 +41,6 @@
                     android:paddingStart="10dp"/>
 
             <TextView
-                    tools:text="@string/defaultRecordValue"
-                    android:id="@+id/recordValue"
-                    android:layout_width="83dp"
-                    android:layout_height="45dp"
-                    android:layout_below="@+id/recordNameField"
-                    android:layout_alignParentStart="true"
-                    android:gravity="center|end"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:textColor="@android:color/darker_gray"
-                    android:transitionName="recordValue"
-                    app:layout_constraintTop_toBottomOf="@+id/recordNameField" app:layout_constraintEnd_toEndOf="parent"
-            />
-
-            <TextView
                     tools:text="@string/defaultRecordDate"
                     android:id="@+id/dateField"
                     android:layout_width="wrap_content"
@@ -69,15 +54,31 @@
                     app:layout_constraintStart_toStartOf="parent"
             />
             <TextView
-                    tools:text="Wallet"
+                    tools:text="Tag"
                     android:layout_width="wrap_content"
-                    android:layout_height="45dp" android:id="@+id/walletField" android:layout_below="@+id/dateField"
+                    android:layout_height="45dp" android:id="@+id/tagField"
+                    android:layout_below="@+id/dateField"
                     android:layout_alignParentEnd="true"
                     android:layout_toEndOf="@+id/recordValue" android:gravity="center|end"
                     android:paddingStart="20dp" android:paddingEnd="20dp"
                     android:textColor="@color/mainFontColor"
                     app:layout_constraintTop_toBottomOf="@+id/recordNameField"
-                    app:layout_constraintStart_toEndOf="@+id/dateField"/>
+                    app:layout_constraintStart_toEndOf="@+id/dateField"
+            />
+            <TextView
+                    tools:text="@string/defaultRecordValue"
+                    android:id="@+id/recordValue"
+                    android:layout_width="83dp"
+                    android:layout_height="45dp"
+                    android:layout_below="@+id/recordNameField"
+                    android:layout_alignParentStart="true"
+                    android:gravity="center|end"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@android:color/darker_gray"
+                    android:transitionName="recordValue"
+                    app:layout_constraintTop_toBottomOf="@+id/recordNameField" app:layout_constraintEnd_toEndOf="parent"
+            />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
