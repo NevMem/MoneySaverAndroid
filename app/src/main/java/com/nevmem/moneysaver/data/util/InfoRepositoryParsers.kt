@@ -36,6 +36,8 @@ abstract class InfoRepositoryParsers {
             info.average7Days = optDouble(json,"average7Days") ?: return null
             info.totalSpend = optDouble(json,"totalSpend") ?: return null
             info.trackedDays = optUInt(json, "amountOfDays") ?: return null
+            info.dailySum = optDouble(json, "dailySum") ?: return null
+            info.dailyAverage = optDouble(json, "dailyAverage") ?: return null
 
             val sumDayJson = json.optJSONObject("daySum")
             info.sumDay.clear()

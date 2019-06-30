@@ -76,4 +76,6 @@
     <string name="enter_field_for_template_string">Specify fields for new template</string>
     <string name="enter_string_string">Enter string</string>
     <string name="use_it_button_string">USE IT</string>
+    <string name="full_button_string">Full</string>
+    <string name="daily_button_string">Daily</string>
 </resources>
