@@ -16,12 +16,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
-import com.nevmem.moneysaver.activity.MainPage
 import com.nevmem.moneysaver.activity.SettingsActivity
-import com.nevmem.moneysaver.data.User
 import com.nevmem.moneysaver.data.UserHolder
 import com.nevmem.moneysaver.data.repositories.InfoRepository
-import kotlinx.android.synthetic.main.home_page_fragment.*
+import kotlinx.android.synthetic.main.dashboard_page_fragment.*
 import kotlinx.android.synthetic.main.user_profile.*
 import javax.inject.Inject
 
@@ -35,7 +33,7 @@ class DashboardFragment : Fragment() {
     lateinit var userHolder: UserHolder
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.home_page_fragment, container, false)
+        return inflater.inflate(R.layout.dashboard_page_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,10 +54,7 @@ class DashboardFragment : Fragment() {
         app.appComponent.inject(this)
 
         infoRepo.info.observe(this, Observer {
-            weekMonthInfo.info = it
             trackedDays.text = it.trackedDays.toString()
-            totalSpend.text = it.totalSpend.toString()
-            averageSpend.text = it.average.toString()
             sumDayChart.values = it.sumDay
 
             val animator = ValueAnimator.ofFloat(0f, 1f)
@@ -78,10 +73,8 @@ class DashboardFragment : Fragment() {
         userName.text = userHolder.user.firstName
 
         infoRepo.loading.observe(this, Observer {
-            when (it) {
-                null -> {}
-                else -> refreshLayout.isRefreshing = it
-            }
+            if (it != null)
+                refreshLayout.isRefreshing = it
         })
 
         settingsButton.setOnClickListener {

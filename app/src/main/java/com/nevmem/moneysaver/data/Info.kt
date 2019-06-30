@@ -1,11 +1,9 @@
 package com.nevmem.moneysaver.data
 
-import android.util.Log.i
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.nevmem.moneysaver.room.converters.InfoConverter
-import org.json.JSONObject
 
 @Entity
 class Info {
@@ -17,41 +15,10 @@ class Info {
     var trackedDays: Int? = null
     var totalSpend: Double? = null
     var average: Double? = null
+    var dailySum: Double? = null
+    var dailyAverage: Double? = null
     @TypeConverters(InfoConverter::class)
     var sumDay: ArrayList<Double> = ArrayList()
-
-    fun fromJSON(data: JSONObject) {
-        average30Days = null
-        average7Days = null
-        trackedDays = null
-        totalSpend = null
-        sumDay.clear()
-
-        if (data.has("average30Days"))
-            average30Days = data.getDouble("average30Days")
-        if (data.has("sum30Days"))
-            sum30Days = data.getDouble("sum30Days")
-
-        if (data.has("average7Days"))
-            average7Days = data.getDouble("average7Days")
-        if (data.has("sum7Days"))
-            sum7Days = data.getDouble("sum7Days")
-
-        if (data.has("amountOfDays"))
-            trackedDays = data.getInt("amountOfDays")
-        if (data.has("totalSpend"))
-            totalSpend = data.getDouble("totalSpend")
-        if (data.has("average"))
-            average = data.getDouble("average")
-
-        if (data.has("daySum")) {
-            val sum = data.getJSONObject("daySum")
-            println(sum.toString())
-            for (key in sum.keys()) {
-                sumDay.add(sum.getDouble(key))
-            }
-        }
-    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -59,6 +26,7 @@ class Info {
 
         other as Info
 
+        if (uid != other.uid) return false
         if (average30Days != other.average30Days) return false
         if (sum30Days != other.sum30Days) return false
         if (average7Days != other.average7Days) return false
@@ -66,24 +34,29 @@ class Info {
         if (trackedDays != other.trackedDays) return false
         if (totalSpend != other.totalSpend) return false
         if (average != other.average) return false
+        if (dailySum != other.dailySum) return false
+        if (dailyAverage != other.dailyAverage) return false
         if (sumDay != other.sumDay) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = average30Days?.hashCode() ?: 0
+        var result = uid
+        result = 31 * result + (average30Days?.hashCode() ?: 0)
         result = 31 * result + (sum30Days?.hashCode() ?: 0)
         result = 31 * result + (average7Days?.hashCode() ?: 0)
         result = 31 * result + (sum7Days?.hashCode() ?: 0)
         result = 31 * result + (trackedDays ?: 0)
         result = 31 * result + (totalSpend?.hashCode() ?: 0)
         result = 31 * result + (average?.hashCode() ?: 0)
+        result = 31 * result + (dailySum?.hashCode() ?: 0)
+        result = 31 * result + (dailyAverage?.hashCode() ?: 0)
         result = 31 * result + sumDay.hashCode()
         return result
     }
 
     override fun toString(): String {
-        return "Info(average30Days=$average30Days,\nsum30Days=$sum30Days,\naverage7Days=$average7Days,\nsum7Days=$sum7Days,\ntrackedDays=$trackedDays,\ntotalSpend=$totalSpend,\naverage=$average,\nsumDay=$sumDay)"
+        return "Info(uid=$uid, average30Days=$average30Days, sum30Days=$sum30Days, average7Days=$average7Days, sum7Days=$sum7Days, trackedDays=$trackedDays, totalSpend=$totalSpend, average=$average, dailySum=$dailySum, dailyAverage=$dailyAverage, sumDay=$sumDay)"
     }
 }

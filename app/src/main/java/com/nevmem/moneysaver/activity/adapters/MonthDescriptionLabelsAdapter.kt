@@ -3,8 +3,6 @@ package com.nevmem.moneysaver.activity.adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PorterDuff
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +15,9 @@ import kotlinx.android.synthetic.main.large_lable_row.view.*
 
 class MonthDescriptionLabelsAdapter(private var ctx: Context) :
     RecyclerView.Adapter<MonthDescriptionLabelsAdapter.VH>() {
-    data class LabelRepr(val name: String, val value: Double, val color: Int)
+    data class LabelRepresentation(val name: String, val value: Double, val color: Int)
 
-    private var data: ArrayList<LabelRepr> = ArrayList()
+    private var data: ArrayList<LabelRepresentation> = ArrayList()
 
     override fun getItemCount(): Int {
         return data.size
@@ -44,26 +42,26 @@ class MonthDescriptionLabelsAdapter(private var ctx: Context) :
 
     @SuppressLint("UseSparseArrays")
     fun changeData(map: HashMap<String, Double>) {
-        val newData = ArrayList<LabelRepr>()
+        val newData = ArrayList<LabelRepresentation>()
         for (element in map) {
-            newData.add(LabelRepr(element.key, element.value, PieChart.baseColors[newData.size % PieChart.baseColors.size]))
+            newData.add(LabelRepresentation(element.key, element.value, PieChart.baseColors[newData.size % PieChart.baseColors.size]))
         }
         newData.sortBy { element -> element.value }
         newData.reverse()
         val before = data
         data = newData
-        var isSubsequence = false
+        var isSubSequence = false
         var top = 0
         for (i in 0 until before.size) {
             if (top < data.size && data[top].name == before[i].name) {
                 top += 1
             }
             if (top == data.size) {
-                isSubsequence = true
+                isSubSequence = true
             }
         }
 
-        if (isSubsequence) {
+        if (isSubSequence) {
             top = 0
             var removed = 0
             for (i in 0 until before.size) {

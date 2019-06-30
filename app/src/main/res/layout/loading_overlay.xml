@@ -27,12 +27,18 @@
                          android:layout_height="100dp"
                          tools:visibility="visible"
             />
-            <ImageView android:visibility="gone" android:id="@+id/successImage" android:src="@drawable/ic_success"
-                       android:layout_width="100dp"
-                       android:layout_height="100dp"/>
-            <ImageView android:visibility="gone" android:id="@+id/errorImage" android:src="@drawable/ic_error"
-                       android:layout_width="100dp"
-                       android:layout_height="100dp"/>
+            <ImageView
+                    android:visibility="gone" android:id="@+id/successImage" android:src="@drawable/ic_success"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:contentDescription="@string/success_image_content_description_string"
+            />
+            <ImageView
+                    android:visibility="gone" android:id="@+id/errorImage" android:src="@drawable/ic_error"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:contentDescription="@string/error_image_content_description_string"
+            />
         </FrameLayout>
         <TextView android:id="@+id/overlayMessage" android:textColor="@color/themeColor"
                   android:layout_width="wrap_content" android:layout_height="wrap_content"

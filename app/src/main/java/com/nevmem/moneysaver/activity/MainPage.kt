@@ -63,10 +63,6 @@ class MainPage : AppCompatActivity() {
         mainPageNavigation.selectedItemId = R.id.dashboardPageNavigation
     }
 
-    fun onLogout() {
-        finish()
-    }
-
     private fun showDefaultToast(message: String) {
         val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
         toast.setGravity(Gravity.BOTTOM, 0, 40)

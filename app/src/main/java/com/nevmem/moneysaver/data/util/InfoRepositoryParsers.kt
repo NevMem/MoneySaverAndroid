@@ -36,6 +36,8 @@ abstract class InfoRepositoryParsers {
             info.average7Days = optDouble(json,"average7Days") ?: return null
             info.totalSpend = optDouble(json,"totalSpend") ?: return null
             info.trackedDays = optUInt(json, "amountOfDays") ?: return null
+            info.dailySum = optDouble(json, "dailySum") ?: return null
+            info.dailyAverage = optDouble(json, "dailyAverage") ?: return null
 
             val sumDayJson = json.optJSONObject("daySum")
             info.sumDay.clear()
@@ -52,7 +54,7 @@ abstract class InfoRepositoryParsers {
             return info
         }
 
-        fun parseOneMonthDescription(monthId: String, json: JSONObject): MonthDescription? {
+        private fun parseOneMonthDescription(monthId: String, json: JSONObject): MonthDescription? {
             val monthDescription = MonthDescription()
             monthDescription.average = optDouble(json, "average") ?: return null
             monthDescription.averageDaily = optDouble(json, "averageDaily") ?: return null
@@ -71,7 +73,7 @@ abstract class InfoRepositoryParsers {
             return monthDescription
         }
 
-        fun parseMonthDescriptions(json: JSONObject): ArrayList<MonthDescription>? {
+        private fun parseMonthDescriptions(json: JSONObject): ArrayList<MonthDescription>? {
             val result = ArrayList<MonthDescription>()
             for (key in json.keys()) {
                 val monthJson = json.optJSONObject(key) ?: return null

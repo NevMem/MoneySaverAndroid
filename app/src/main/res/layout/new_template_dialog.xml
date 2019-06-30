@@ -27,7 +27,7 @@
                   app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
                   app:layout_constraintStart_toStartOf="parent"
                   android:textSize="20sp"
-                  android:text="Specify fields for new template"
+                  android:text="@string/enter_field_for_template_string"
                   android:gravity="center"
                   android:paddingTop="20dp"
                   android:paddingBottom="20dp"

@@ -160,14 +160,6 @@ class HistoryRepository @Inject constructor(
         }
     }
 
-    fun getRecordOnIndex(index: Int): Record {
-        val buffer = history.value
-        return when {
-            buffer != null && index <= buffer.size -> buffer[index]
-            else -> Record()
-        }
-    }
-
     fun stopEditing() {
         editingState.postValue(NoneState)
     }

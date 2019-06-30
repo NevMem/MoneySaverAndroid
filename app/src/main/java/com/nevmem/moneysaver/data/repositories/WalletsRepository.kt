@@ -90,14 +90,6 @@ class WalletsRepository @Inject constructor(
         }
     }
 
-    fun getWalletsAsList(): List<String> {
-        val result = ArrayList<String>()
-        wallets.value?.forEach {
-            result.add(it.name)
-        }
-        return result
-    }
-
     fun addWallet(wallet: String) {
         addingState.postValue(LoadingState)
         val params = userHolder.credentialsJson()
