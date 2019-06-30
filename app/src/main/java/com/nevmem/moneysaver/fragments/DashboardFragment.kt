@@ -54,7 +54,6 @@ class DashboardFragment : Fragment() {
         app.appComponent.inject(this)
 
         infoRepo.info.observe(this, Observer {
-            weekMonthInfo.info = it
             trackedDays.text = it.trackedDays.toString()
             totalSpend.text = it.totalSpend.toString()
             averageSpend.text = it.average.toString()

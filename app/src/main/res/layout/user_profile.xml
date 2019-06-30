@@ -134,7 +134,8 @@
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/profile_color"
     >
-        <com.nevmem.moneysaver.views.MainPageWeekMonthInfo
+        <fragment
+                android:name="com.nevmem.moneysaver.fragments.DashboardPageDescriptions"
                 android:id="@+id/weekMonthInfo"
                 android:layout_height="wrap_content" android:layout_width="match_parent"
         />
