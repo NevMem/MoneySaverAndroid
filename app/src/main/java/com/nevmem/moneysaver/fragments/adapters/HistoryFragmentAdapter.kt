@@ -147,6 +147,10 @@ class HistoryFragmentAdapter(
         }
     }
 
+    private fun deleteRecord(record: Record) {
+        historyRepo.delete(record)
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when {
             holder.itemViewType == ViewHolderType.HEADER.type -> {
@@ -168,23 +172,6 @@ class HistoryFragmentAdapter(
                     recordValue.text = filtered[position - 1].value.toString()
                     recordTag.text = filtered[position - 1].tag
                     recordDate.text = filtered[position - 1].date.toString()
-                    deleteButton.setOnClickListener {
-                        val popupView = ConfirmationDialog(activity, "Do you really want delete this record?")
-                        val popup = PopupWindow(
-                            popupView,
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT
-                        )
-                        popup.showAtLocation(itemView, Gravity.CENTER, 0, 0)
-                        popupView.setOkListener {
-                            popup.dismiss()
-                            historyRepo.delete(filtered[position - 1])
-                        }
-
-                        popupView.setDismissListener {
-                            popup.dismiss()
-                        }
-                    }
 
                     itemView.setOnClickListener {
                         if (position - 1 in 0 until(filtered.size))
@@ -224,6 +211,18 @@ class HistoryFragmentAdapter(
 
     override fun getItemCount(): Int {
         return filtered.size + 1
+    }
+
+    private fun getRealPosition(position: Int): Int {
+        if (position !in 1 .. filtered.size + 1)
+            throw IllegalArgumentException("Wrong position $position, have to be from 1 and till ${filtered.size}")
+        return position - 1
+    }
+
+    fun handleRemoveItem(position: Int) {
+        val realPosition = getRealPosition(position)
+        val record = filtered[realPosition]
+        deleteRecord(record)
     }
 
     class HeaderViewHolder(ctx: Context, view: View, filter: String, tags: ListenableToggleableArray) :
@@ -271,10 +270,31 @@ class HistoryFragmentAdapter(
         val recordDate: TextView = view.findViewById(R.id.dateField)
         val recordValue: TextView = view.findViewById(R.id.recordValue)
         val recordTag: TextView = view.findViewById(R.id.tagField)
-        val deleteButton: ImageView = view.findViewById(R.id.deleteRecordButton)
+    }
+
+
+    /**
+     * Checks if suspect is a sub sequence of array
+     * returns null if NOT
+     * returns ArrayList of Ints which to remove to make array be equals to suspect
+     */
+    private fun isSubSequence(array: ArrayList<Record>, suspect: ArrayList<Record>): ArrayList<Int>? {
+        var top = 0
+        val indices = ArrayList<Int>()
+        for (i in 0 until array.size) {
+            if (top < suspect.size && array[i] == suspect[top]) {
+                top += 1
+            } else {
+                indices.add(i)
+            }
+        }
+        if (top != suspect.size) return null
+        return indices
     }
 
     private fun applyFilter() {
+        val before = filtered
+
         val currentFiltered = ArrayList<Record>()
         val tags = filterTag.getToggled()
         if (filter.isNotEmpty()) {
@@ -290,6 +310,15 @@ class HistoryFragmentAdapter(
             }
         }
         filtered = currentFiltered
-        notifyDataSetChanged()
+
+        val indices = isSubSequence(before, filtered)
+
+        if (indices == null) {
+            notifyDataSetChanged()
+        } else {
+            indices.forEach {
+                notifyItemRemoved(it)
+            }
+        }
     }
 }
