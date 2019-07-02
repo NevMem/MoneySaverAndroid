@@ -12,7 +12,7 @@ class ConfirmationDialog(private var header: String, private var message: String
     private var dismissCallback: (() -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity)
+        val builder = AlertDialog.Builder(activity, R.style.CustomDialogStyle)
         val inflater = activity?.layoutInflater
             ?: throw IllegalStateException("Something went wrong, layout inflater have to be not null")
         val view = inflater.inflate(R.layout.confirmation_dialog_popup, null)
