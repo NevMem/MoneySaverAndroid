@@ -74,20 +74,11 @@ class TemplatesFragment : Fragment() {
                 else -> useIt.visibility = View.VISIBLE
             }
             setOnLongClickListener {
-                val popupView = ConfirmationDialog(activity!!, "Do you really want delete this template?")
-                val popupWindow = PopupWindow(
-                    popupView,
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT,
-                    true
-                )
-                popupWindow.showAtLocation(templatesHeader, Gravity.CENTER, 0, 0)
-                popupView.setDismissListener {
-                    popupWindow.dismiss()
-                }
-                popupView.setOkListener {
+                val dialog = ConfirmationDialog("Confirm", "Do you really want to delete this template?")
+                dialog.setOkListener {
                     templatesRepo.removeTemplate(template.id)
-                    popupWindow.dismiss()
                 }
+                dialog.show(activity!!.supportFragmentManager, "delete_confirmation")
                 true
             }
         }
