@@ -2,12 +2,10 @@ package com.nevmem.moneysaver.fragments
 
 import android.os.Bundle
 import android.util.Log.i
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.PopupWindow
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -27,8 +25,6 @@ import kotlinx.android.synthetic.main.add_record_fragment.*
 class AddFragment : Fragment() {
     lateinit var app: App
     private lateinit var viewModel: AddFragmentViewModel
-
-    private var popupWindow: PopupWindow? = null
 
     init {
         i("ADD_FRAGMENT", "initialising AddFragment")
@@ -161,36 +157,18 @@ class AddFragment : Fragment() {
     }
 
     private fun createTag() {
-        popupWindow?.dismiss()
-        val createTag = OneStringDialog(app)
-        createTag.headerString = "Create tag"
-        createTag.descriptionString = "Please choose special unique name for new tag"
-        popupWindow =
-            PopupWindow(createTag, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
-        popupWindow?.showAtLocation(createTagButton, Gravity.CENTER, 0, 0)
-        createTag.setOnDismissListener {
-            popupWindow?.dismiss()
-        }
-        createTag.setOnOkListener {
+        val dialog = OneStringDialog("Create tag", "Please choose special unique name for new tag")
+        dialog.show(activity!!.supportFragmentManager, "create_tag_dialog")
+        dialog.setOnOkListener {
             viewModel.addTag(it)
-            popupWindow?.dismiss()
         }
     }
 
     private fun createWallet() {
-        popupWindow?.dismiss()
-        val createTag = OneStringDialog(app)
-        createTag.headerString = "Create wallet"
-        createTag.descriptionString = "Please choose special unique name for new wallet"
-        popupWindow =
-            PopupWindow(createTag, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
-        popupWindow?.showAtLocation(createTagButton, Gravity.CENTER, 0, 0)
-        createTag.setOnDismissListener {
-            popupWindow?.dismiss()
-        }
-        createTag.setOnOkListener {
+        val dialog = OneStringDialog("Create wallet", "Please choose special unique name for new wallet")
+        dialog.show(activity!!.supportFragmentManager, "create_wallet_dialog")
+        dialog.setOnOkListener {
             viewModel.addWallet(it)
-            popupWindow?.dismiss()
         }
     }
 
@@ -211,24 +189,14 @@ class AddFragment : Fragment() {
     }
 
     private fun showError(error: String) {
-        val dialog = InfoDialog(app, error)
-        val popupWindow =
-            PopupWindow(dialog, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog.setOkListener {
-            popupWindow.dismiss()
-        }
-        popupWindow.showAtLocation(header, Gravity.CENTER, 0, 0)
+        val dialog = InfoDialog("Error happened", error)
+        dialog.show(activity!!.supportFragmentManager, "error_info_dialog")
     }
 
     private fun showSuccess(success: String?) {
         if (success != null) {
-            val dialog = InfoDialog(app, success)
-            val popupWindow =
-                PopupWindow(dialog, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            dialog.setOkListener {
-                popupWindow.dismiss()
-            }
-            popupWindow.showAtLocation(header, Gravity.CENTER, 0, 0)
+            val dialog = InfoDialog("Success", success)
+            dialog.show(activity!!.supportFragmentManager, "success_info_dialog")
         }
     }
 
@@ -238,11 +206,7 @@ class AddFragment : Fragment() {
         val walletItem = chooseWallet.selectedItem
         val tagItem = tags.selectedItem
         if (walletItem == null || tagItem == null) {
-            val infoDialog = InfoDialog(activity!!, "Tag or wallet is empty, please create at least one before")
-            val popupWindow =
-                PopupWindow(infoDialog, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            popupWindow.showAtLocation(addRecord, Gravity.CENTER, 0, 0)
-            infoDialog.setOkListener { popupWindow.dismiss() }
+            showError("Tag or wallet is empty, please create at least one before")
             return
         }
         val wallet = walletItem.toString()

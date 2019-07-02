@@ -1,10 +1,11 @@
 package com.nevmem.moneysaver.views
 
-import android.content.Context
+import android.app.Dialog
+import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.LifecycleOwner
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.Observer
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
@@ -14,67 +15,82 @@ import com.nevmem.moneysaver.data.repositories.WalletsRepository
 import kotlinx.android.synthetic.main.new_template_dialog.view.*
 import javax.inject.Inject
 
-class NewTemplateDialog(ctx: Context, lifecycleOwner: LifecycleOwner) : ConstraintLayout(ctx) {
-    lateinit var okCallback: (TemplateBase) -> Unit
-    lateinit var dismissCallback: () -> Unit
+class NewTemplateDialog : AppCompatDialogFragment() {
+    var okCallback: ((TemplateBase) -> Unit)? = null
+    var dismissCallback: (() -> Unit)? = null
+    var errorCallback: ((String) -> Unit)? = null
 
     @Inject
     lateinit var walletsRepo: WalletsRepository
     @Inject
     lateinit var tagsRepo: TagsRepository
 
-    init {
-        inflate(ctx, R.layout.new_template_dialog, this)
+    private fun createView(): View {
+        val inflater = activity?.layoutInflater ?: throw IllegalStateException("Layout inflater have to be not null")
+        return inflater.inflate(R.layout.new_template_dialog, null)
+    }
 
-        val app = ctx.applicationContext as App
-        app.appComponent.inject(this)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val builder = AlertDialog.Builder(activity!!, R.style.CustomDialogStyle)
+        val view = createView()
 
-        tagsRepo.tags.observe(lifecycleOwner, Observer {
+        setupObservers(view)
+
+        return builder.setView(view)
+            .setTitle("Create new template")
+            .setNegativeButton("Cancel") { _, _ -> dismissCallback?.invoke() }
+            .setPositiveButton("Create") { _, _ ->
+                run {
+                    try {
+                        okCallback?.invoke(assembleTemplateBase(view))
+                    } catch (e: IllegalStateException) {
+                        errorCallback?.invoke(e.message.toString())
+                    }
+                }
+            }
+            .create()
+    }
+
+    private fun setupObservers(v: View) {
+        (activity!!.applicationContext as App).appComponent.inject(this)
+        tagsRepo.tags.observe(activity!!, Observer {
             if (it != null) {
                 val buffer = ArrayList<String>()
                 it.forEach { value -> buffer.add(value.name) }
-                newTemplateTag.adapter =
-                    ArrayAdapter<String>(ctx, R.layout.default_spinner_item_layout, buffer)
+                v.newTemplateTag.adapter =
+                    ArrayAdapter(activity!!, R.layout.default_spinner_item_layout, buffer)
             }
         })
-        walletsRepo.wallets.observe(lifecycleOwner, Observer {
+        walletsRepo.wallets.observe(activity!!, Observer {
             if (it != null) {
                 val buffer = ArrayList<String>()
                 it.forEach { value -> buffer.add(value.name) }
-                newTemplateWallet.adapter =
-                    ArrayAdapter<String>(ctx, R.layout.default_spinner_item_layout, buffer)
+                v.newTemplateWallet.adapter =
+                    ArrayAdapter(activity!!, R.layout.default_spinner_item_layout, buffer)
             }
         })
+    }
 
-        okButton.setOnClickListener {
-            var value = 0.0
-            try {
-                value = newTemplateValue.text.toString().toDouble()
-            } catch (e: NumberFormatException) {
-            }
-            val tagItem = newTemplateTag.selectedItem
-            val walletItem = newTemplateWallet.selectedItem
-            if (tagItem != null && walletItem != null) {
-                okCallback(
-                    TemplateBase(
-                        newTemplateName.text.toString(),
-                        value,
-                        newTemplateTag.selectedItem.toString(),
-                        newTemplateWallet.selectedItem.toString()
-                    )
-                )
-            } else {
-                Toast.makeText(ctx, "You has not set any valid wallet or tag", Toast.LENGTH_LONG).show()
-            }
+    private fun assembleTemplateBase(v: View): TemplateBase {
+        var value = 0.0
+        try {
+            value = v.newTemplateValue.text.toString().toDouble()
+        } catch (e: NumberFormatException) {
         }
-
-        dismissButton.setOnClickListener {
-            dismissCallback()
-        }
+        val tagName = v.newTemplateTag.selectedItem
+        val walletName = v.newTemplateWallet.selectedItem
+        val name = v.newTemplateName.text.toString()
+        if (tagName != null && walletName != null && name.isNotEmpty())
+            return TemplateBase(name, value, tagName.toString(), walletName.toString())
+        throw IllegalStateException("Name or tag or wallet is empty")
     }
 
     fun setOkListener(cb: (TemplateBase) -> Unit) {
         okCallback = cb
+    }
+
+    fun setErrorListener(cb: (String) -> Unit) {
+        errorCallback = cb
     }
 
     fun setDismissListener(cb: () -> Unit) {

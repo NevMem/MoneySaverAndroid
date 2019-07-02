@@ -13,7 +13,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
@@ -30,7 +29,6 @@ import com.nevmem.moneysaver.data.repositories.TagsRepository
 import com.nevmem.moneysaver.fragments.HistoryFragment
 import com.nevmem.moneysaver.utils.TransitionsLocker
 import com.nevmem.moneysaver.views.ChooseOneFromListDialog
-import com.nevmem.moneysaver.views.ConfirmationDialog
 import kotlinx.android.synthetic.main.record_layout.view.*
 import javax.inject.Inject
 
