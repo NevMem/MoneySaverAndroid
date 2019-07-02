@@ -129,19 +129,10 @@ class TemplatesFragment : Fragment() {
     }
 
     private fun newTemplate() {
-        val popupView = NewTemplateDialog(activity!!, this)
-        val popup =
-            PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true)
-
-        popupView.setOkListener {
+        val dialog = NewTemplateDialog()
+        dialog.setOkListener {
             templatesRepo.createNewTemplate(it)
-            popup.dismiss()
         }
-
-        popupView.setDismissListener {
-            popup.dismiss()
-        }
-
-        popup.showAtLocation(templatesHeader, Gravity.CENTER, 0, 0)
+        dialog.show(activity!!.supportFragmentManager, "new_template_dialog")
     }
 }
