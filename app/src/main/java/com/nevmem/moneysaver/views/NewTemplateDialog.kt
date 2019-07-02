@@ -18,6 +18,7 @@ import javax.inject.Inject
 class NewTemplateDialog : AppCompatDialogFragment() {
     var okCallback: ((TemplateBase) -> Unit)? = null
     var dismissCallback: (() -> Unit)? = null
+    var errorCallback: ((String) -> Unit)? = null
 
     @Inject
     lateinit var walletsRepo: WalletsRepository
@@ -43,7 +44,7 @@ class NewTemplateDialog : AppCompatDialogFragment() {
                     try {
                         okCallback?.invoke(assembleTemplateBase(view))
                     } catch (e: IllegalStateException) {
-                        // TODO: (handling errors)
+                        errorCallback?.invoke(e.message.toString())
                     }
                 }
             }
@@ -86,6 +87,10 @@ class NewTemplateDialog : AppCompatDialogFragment() {
 
     fun setOkListener(cb: (TemplateBase) -> Unit) {
         okCallback = cb
+    }
+
+    fun setErrorListener(cb: (String) -> Unit) {
+        errorCallback = cb
     }
 
     fun setDismissListener(cb: () -> Unit) {
