@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.transition.Fade
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
-import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -44,13 +41,7 @@ class LoginPageActivity : AppCompatActivity() {
 
         loginModel.error.observe(this, Observer {
             if (it != null && it.isNotEmpty()) {
-                val popup = InfoDialog(this, it)
-                val popupWindow =
-                    PopupWindow(popup, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-                popupWindow.showAtLocation(loginField, Gravity.CENTER, 0, 0)
-                popup.setOkListener {
-                    popupWindow.dismiss()
-                }
+                showError(it)
             }
         })
         loginModel.loading.observe(this, Observer {
@@ -65,6 +56,11 @@ class LoginPageActivity : AppCompatActivity() {
         registerButton.setOnClickListener {
             openRegisterPage()
         }
+    }
+
+    private fun showError(error: String) {
+        val dialog = InfoDialog("Error happened", error)
+        dialog.show(supportFragmentManager, "error_info_dialog")
     }
 
     override fun onResume() {

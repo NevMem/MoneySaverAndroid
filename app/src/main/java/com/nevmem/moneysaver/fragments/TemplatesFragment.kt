@@ -3,17 +3,15 @@ package com.nevmem.moneysaver.fragments
 import android.content.Context
 import android.os.Bundle
 import android.util.Log.i
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.nevmem.moneysaver.App
-import com.nevmem.moneysaver.activity.MainPage
 import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.activity.MainPage
 import com.nevmem.moneysaver.data.Template
 import com.nevmem.moneysaver.data.repositories.TemplatesRepository
 import com.nevmem.moneysaver.views.ConfirmationDialog
@@ -62,13 +60,7 @@ class TemplatesFragment : Fragment() {
                     templateError.visibility = View.VISIBLE
 
                     templateError.setOnClickListener {
-                        val popupView = InfoDialog(activity!!, template.error.toString())
-                        val popup =
-                            PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-                        popup.showAtLocation(templatesHeader, Gravity.CENTER, 0, 0)
-                        popupView.setOkListener {
-                            popup.dismiss()
-                        }
+                        showError(template.error.toString())
                     }
                 }
                 else -> useIt.visibility = View.VISIBLE
@@ -128,10 +120,18 @@ class TemplatesFragment : Fragment() {
         }
     }
 
+    private fun showError(message: String) {
+        val dialog = InfoDialog("Error happened", message)
+        dialog.show(activity!!.supportFragmentManager, "template_error")
+    }
+
     private fun newTemplate() {
         val dialog = NewTemplateDialog()
         dialog.setOkListener {
             templatesRepo.createNewTemplate(it)
+        }
+        dialog.setErrorListener {
+            showError(it)
         }
         dialog.show(activity!!.supportFragmentManager, "new_template_dialog")
     }

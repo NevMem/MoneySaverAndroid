@@ -211,24 +211,14 @@ class AddFragment : Fragment() {
     }
 
     private fun showError(error: String) {
-        val dialog = InfoDialog(app, error)
-        val popupWindow =
-            PopupWindow(dialog, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog.setOkListener {
-            popupWindow.dismiss()
-        }
-        popupWindow.showAtLocation(header, Gravity.CENTER, 0, 0)
+        val dialog = InfoDialog("Error happened", error)
+        dialog.show(activity!!.supportFragmentManager, "error_info_dialog")
     }
 
     private fun showSuccess(success: String?) {
         if (success != null) {
-            val dialog = InfoDialog(app, success)
-            val popupWindow =
-                PopupWindow(dialog, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            dialog.setOkListener {
-                popupWindow.dismiss()
-            }
-            popupWindow.showAtLocation(header, Gravity.CENTER, 0, 0)
+            val dialog = InfoDialog("Success", success)
+            dialog.show(activity!!.supportFragmentManager, "success_info_dialog")
         }
     }
 
@@ -238,11 +228,7 @@ class AddFragment : Fragment() {
         val walletItem = chooseWallet.selectedItem
         val tagItem = tags.selectedItem
         if (walletItem == null || tagItem == null) {
-            val infoDialog = InfoDialog(activity!!, "Tag or wallet is empty, please create at least one before")
-            val popupWindow =
-                PopupWindow(infoDialog, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            popupWindow.showAtLocation(addRecord, Gravity.CENTER, 0, 0)
-            infoDialog.setOkListener { popupWindow.dismiss() }
+            showError("Tag or wallet is empty, please create at least one before")
             return
         }
         val wallet = walletItem.toString()
