@@ -9,6 +9,7 @@ import android.graphics.RadialGradient
 import android.graphics.Shader
 import android.os.Bundle
 import android.util.Log.i
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -16,7 +17,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,8 +34,6 @@ import kotlin.math.sqrt
 class HistoryFragment : Fragment() {
     companion object {
         const val FULL_DESCRIPTION_PAGE_CALL = 0
-        const val SWIPE_THRESHOLD = 250
-        const val SWIPE_CIRCLE_DX = 60
     }
 
     lateinit var app: App
@@ -101,6 +99,11 @@ class HistoryFragment : Fragment() {
 
     class SwipeController(private var ctx: Context, private var mAdapter: HistoryFragmentAdapter) :
         ItemTouchHelper.Callback() {
+        companion object {
+            const val SWIPE_TO_DELETE_THRESHOLD = .35f
+            const val SWIPE_CIRCLE_DX = .15f
+        }
+        
         private var swipeBack: Boolean = false
 
         override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
@@ -145,8 +148,8 @@ class HistoryFragment : Fragment() {
 
         private fun interpolate(t: Float): Float {
             val x = abs(t)
-            if (x >= SWIPE_THRESHOLD - SWIPE_CIRCLE_DX) {
-                return if (x > SWIPE_THRESHOLD + SWIPE_CIRCLE_DX) 1f else (x - SWIPE_THRESHOLD + SWIPE_CIRCLE_DX) / (2f * SWIPE_CIRCLE_DX)
+            if (x >= SWIPE_TO_DELETE_THRESHOLD - SWIPE_CIRCLE_DX) {
+                return if (x > SWIPE_TO_DELETE_THRESHOLD + SWIPE_CIRCLE_DX) 1f else (x - SWIPE_TO_DELETE_THRESHOLD + SWIPE_CIRCLE_DX) / (2f * SWIPE_CIRCLE_DX)
             }
             return 0f
         }
@@ -156,7 +159,7 @@ class HistoryFragment : Fragment() {
             val height = v.height
             val maxRadius = sqrt(width * width + height * height / 4f)
 
-            val currentRadius = maxRadius * interpolate(dX)
+            val currentRadius = maxRadius * interpolate(dX / v.width)
 
             paint.color = ContextCompat.getColor(ctx, R.color.backgroundColor)
             c.drawRect(v.left.toFloat(), v.top.toFloat(), v.right.toFloat(), v.bottom.toFloat(), paint)
@@ -167,7 +170,7 @@ class HistoryFragment : Fragment() {
                     ContextCompat.getColor(ctx, R.color.deleteFromHistoryColor),
                     ContextCompat.getColor(ctx, R.color.backgroundColor)
                 ).toIntArray()
-                val stops = arrayOf(0f, interpolate(dX), interpolate(dX)).toFloatArray()
+                val stops = arrayOf(0f, interpolate(dX / v.width), interpolate(dX / v.width) + 0.001f).toFloatArray()
 
                 val shader = RadialGradient(
                     v.left + width - 90f,
@@ -194,7 +197,7 @@ class HistoryFragment : Fragment() {
         ) {
             c.save()
             if (actionState == ACTION_STATE_SWIPE)
-                setTouchListener(recyclerView, dX >= -SWIPE_THRESHOLD)
+                setTouchListener(recyclerView, dX >= -SWIPE_TO_DELETE_THRESHOLD)
             val item = viewHolder.itemView
 
             val paint = Paint()
@@ -202,7 +205,7 @@ class HistoryFragment : Fragment() {
 
             drawCircle(c, dX, item, paint)
             paint.color = ContextCompat.getColor(ctx, R.color.default_white_color)
-            paint.textSize = 36f
+            paint.textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20f, ctx.resources.displayMetrics)
             c.drawText("Delete", item.right - 140f, item.top + item.paddingTop + item.height / 2f + 18f, paint)
 
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)

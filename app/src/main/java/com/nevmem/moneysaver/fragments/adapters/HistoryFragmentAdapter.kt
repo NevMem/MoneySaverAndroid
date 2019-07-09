@@ -1,20 +1,16 @@
 package com.nevmem.moneysaver.fragments.adapters
 
-import android.app.Activity
 import android.app.ActivityOptions
-import android.content.Context
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log.i
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.EditText
-import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +22,7 @@ import com.nevmem.moneysaver.activity.FullDescriptionActivity
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.repositories.HistoryRepository
 import com.nevmem.moneysaver.data.repositories.TagsRepository
+import com.nevmem.moneysaver.data.util.DataHelper
 import com.nevmem.moneysaver.fragments.HistoryFragment
 import com.nevmem.moneysaver.utils.TransitionsLocker
 import com.nevmem.moneysaver.views.ChooseOneFromListDialog
@@ -33,7 +30,7 @@ import kotlinx.android.synthetic.main.record_layout.view.*
 import javax.inject.Inject
 
 class HistoryFragmentAdapter(
-    private val activity: Activity,
+    private val activity: FragmentActivity,
     private val fragment: HistoryFragment,
     lifeCycleOwner: LifecycleOwner
 ) :
@@ -120,7 +117,6 @@ class HistoryFragmentAdapter(
         historyRepo.history.observe(lifeCycleOwner, Observer {
             history = it
             applyFilter()
-            i("HFA", "Changes observed")
         })
         filterTag = ListenableToggleableArray(tagsRepo.getTagsAsList())
         filterTag.setListener {
@@ -154,6 +150,7 @@ class HistoryFragmentAdapter(
             holder.itemViewType == ViewHolderType.HEADER.type -> {
                 val header = holder as HeaderViewHolder
                 header.headerText.text = "Browse your outcomes"
+                holder.searchFiled.setText(filter.toCharArray(), 0, filter.length)
                 header.searchFiled.addTextChangedListener(object : TextWatcher {
                     override fun afterTextChanged(s: Editable?) {
                         filter = s.toString()
@@ -172,7 +169,7 @@ class HistoryFragmentAdapter(
                     recordDate.text = filtered[position - 1].date.toString()
 
                     itemView.setOnClickListener {
-                        if (position - 1 in 0 until(filtered.size))
+                        if (position - 1 in 0 until (filtered.size))
                             openFullDescriptionActivity(it, filtered[position - 1].id)
                     }
                 }
@@ -212,7 +209,7 @@ class HistoryFragmentAdapter(
     }
 
     private fun getRealPosition(position: Int): Int {
-        if (position !in 1 .. filtered.size + 1)
+        if (position !in 1..filtered.size + 1)
             throw IllegalArgumentException("Wrong position $position, have to be from 1 and till ${filtered.size}")
         return position - 1
     }
@@ -223,7 +220,7 @@ class HistoryFragmentAdapter(
         deleteRecord(record)
     }
 
-    class HeaderViewHolder(ctx: Context, view: View, filter: String, tags: ListenableToggleableArray) :
+    class HeaderViewHolder(activity: FragmentActivity, view: View, filter: String, tags: ListenableToggleableArray) :
         RecyclerView.ViewHolder(view) {
         val headerText: TextView = view.findViewById(R.id.history_fragment_header_text)
         val searchFiled: EditText = view.findViewById(R.id.searchField)
@@ -231,17 +228,15 @@ class HistoryFragmentAdapter(
 
         init {
             searchFiled.setText(filter)
-            val addTag = Chip(ctx)
+            val addTag = Chip(activity)
             addTag.text = "+ Add"
             chipGroup.addView(addTag)
             addTag.setOnClickListener {
-                val dialog = ChooseOneFromListDialog(ctx, "Choose tag for filter", tags.getUnToggled())
-                val popup =
-                    PopupWindow(dialog, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-                popup.showAtLocation(headerText, Gravity.CENTER, 0, 0)
+                val dialog = ChooseOneFromListDialog("Choose tag for filter", tags.getUnToggled())
+                dialog.show(activity.supportFragmentManager, "choose_tag_for_search")
                 dialog.setOkListener {
                     tags.enable(it)
-                    val chip = Chip(ctx)
+                    val chip = Chip(activity)
                     chip.text = it
                     chip.isCheckable = false
                     chip.isCloseIconVisible = true
@@ -254,10 +249,6 @@ class HistoryFragmentAdapter(
                         }
                     }
                     chipGroup.addView(chip)
-                    popup.dismiss()
-                }
-                dialog.setDismissListener {
-                    popup.dismiss()
                 }
             }
         }
@@ -268,26 +259,6 @@ class HistoryFragmentAdapter(
         val recordDate: TextView = view.findViewById(R.id.dateField)
         val recordValue: TextView = view.findViewById(R.id.recordValue)
         val recordTag: TextView = view.findViewById(R.id.tagField)
-    }
-
-
-    /**
-     * Checks if suspect is a sub sequence of array
-     * returns null if NOT
-     * returns ArrayList of Ints which to remove to make array be equals to suspect
-     */
-    private fun isSubSequence(array: ArrayList<Record>, suspect: ArrayList<Record>): ArrayList<Int>? {
-        var top = 0
-        val indices = ArrayList<Int>()
-        for (i in 0 until array.size) {
-            if (top < suspect.size && array[i] == suspect[top]) {
-                top += 1
-            } else {
-                indices.add(i)
-            }
-        }
-        if (top != suspect.size) return null
-        return indices
     }
 
     private fun applyFilter() {
@@ -309,13 +280,14 @@ class HistoryFragmentAdapter(
         }
         filtered = currentFiltered
 
-        val indices = isSubSequence(before, filtered)
+        val indices = DataHelper.isSubSequence(before, filtered)
 
         if (indices == null) {
-            notifyDataSetChanged()
+            notifyItemRangeChanged(1, filtered.size)
         } else {
+            indices.reverse()
             indices.forEach {
-                notifyItemRemoved(it)
+                notifyItemRemoved(it + 1)
             }
         }
     }
