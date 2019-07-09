@@ -43,7 +43,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun logout() {
         userHolder.ready = false
         User.clearCredentials(this)
-        val intent = Intent(this, LoginPageActivity::class.java)
+        val intent = Intent(this, SplashScreen::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
     }
