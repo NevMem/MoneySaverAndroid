@@ -9,6 +9,7 @@ import android.graphics.RadialGradient
 import android.graphics.Shader
 import android.os.Bundle
 import android.util.Log.i
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -167,7 +168,7 @@ class HistoryFragment : Fragment() {
                     ContextCompat.getColor(ctx, R.color.deleteFromHistoryColor),
                     ContextCompat.getColor(ctx, R.color.backgroundColor)
                 ).toIntArray()
-                val stops = arrayOf(0f, interpolate(dX), interpolate(dX)).toFloatArray()
+                val stops = arrayOf(0f, interpolate(dX), interpolate(dX) + 0.001f).toFloatArray()
 
                 val shader = RadialGradient(
                     v.left + width - 90f,
@@ -202,7 +203,7 @@ class HistoryFragment : Fragment() {
 
             drawCircle(c, dX, item, paint)
             paint.color = ContextCompat.getColor(ctx, R.color.default_white_color)
-            paint.textSize = 36f
+            paint.textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20f, ctx.resources.displayMetrics)
             c.drawText("Delete", item.right - 140f, item.top + item.paddingTop + item.height / 2f + 18f, paint)
 
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
