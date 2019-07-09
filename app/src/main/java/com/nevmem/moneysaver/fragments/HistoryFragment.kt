@@ -17,7 +17,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,8 +34,8 @@ import kotlin.math.sqrt
 class HistoryFragment : Fragment() {
     companion object {
         const val FULL_DESCRIPTION_PAGE_CALL = 0
-        const val SWIPE_THRESHOLD = 250
-        const val SWIPE_CIRCLE_DX = 60
+        const val SWIPE_TO_DELETE_THRESHOLD = .35f
+        const val SWIPE_CIRCLE_DX = .15f
     }
 
     lateinit var app: App
@@ -146,8 +145,8 @@ class HistoryFragment : Fragment() {
 
         private fun interpolate(t: Float): Float {
             val x = abs(t)
-            if (x >= SWIPE_THRESHOLD - SWIPE_CIRCLE_DX) {
-                return if (x > SWIPE_THRESHOLD + SWIPE_CIRCLE_DX) 1f else (x - SWIPE_THRESHOLD + SWIPE_CIRCLE_DX) / (2f * SWIPE_CIRCLE_DX)
+            if (x >= SWIPE_TO_DELETE_THRESHOLD - SWIPE_CIRCLE_DX) {
+                return if (x > SWIPE_TO_DELETE_THRESHOLD + SWIPE_CIRCLE_DX) 1f else (x - SWIPE_TO_DELETE_THRESHOLD + SWIPE_CIRCLE_DX) / (2f * SWIPE_CIRCLE_DX)
             }
             return 0f
         }
@@ -157,7 +156,7 @@ class HistoryFragment : Fragment() {
             val height = v.height
             val maxRadius = sqrt(width * width + height * height / 4f)
 
-            val currentRadius = maxRadius * interpolate(dX)
+            val currentRadius = maxRadius * interpolate(dX / v.width)
 
             paint.color = ContextCompat.getColor(ctx, R.color.backgroundColor)
             c.drawRect(v.left.toFloat(), v.top.toFloat(), v.right.toFloat(), v.bottom.toFloat(), paint)
@@ -168,7 +167,7 @@ class HistoryFragment : Fragment() {
                     ContextCompat.getColor(ctx, R.color.deleteFromHistoryColor),
                     ContextCompat.getColor(ctx, R.color.backgroundColor)
                 ).toIntArray()
-                val stops = arrayOf(0f, interpolate(dX), interpolate(dX) + 0.001f).toFloatArray()
+                val stops = arrayOf(0f, interpolate(dX / v.width), interpolate(dX / v.width) + 0.001f).toFloatArray()
 
                 val shader = RadialGradient(
                     v.left + width - 90f,
@@ -195,7 +194,7 @@ class HistoryFragment : Fragment() {
         ) {
             c.save()
             if (actionState == ACTION_STATE_SWIPE)
-                setTouchListener(recyclerView, dX >= -SWIPE_THRESHOLD)
+                setTouchListener(recyclerView, dX >= -SWIPE_TO_DELETE_THRESHOLD)
             val item = viewHolder.itemView
 
             val paint = Paint()
