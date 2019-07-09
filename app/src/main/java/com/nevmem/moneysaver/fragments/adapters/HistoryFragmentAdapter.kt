@@ -25,6 +25,7 @@ import com.nevmem.moneysaver.activity.FullDescriptionActivity
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.data.repositories.HistoryRepository
 import com.nevmem.moneysaver.data.repositories.TagsRepository
+import com.nevmem.moneysaver.data.util.DataHelper
 import com.nevmem.moneysaver.fragments.HistoryFragment
 import com.nevmem.moneysaver.utils.TransitionsLocker
 import com.nevmem.moneysaver.views.ChooseOneFromListDialog
@@ -269,26 +270,6 @@ class HistoryFragmentAdapter(
         val recordTag: TextView = view.findViewById(R.id.tagField)
     }
 
-
-    /**
-     * Checks if suspect is a sub sequence of array
-     * returns null if NOT
-     * returns sorted ArrayList of Ints which to remove to make array be equals to suspect
-     */
-    private fun isSubSequence(array: ArrayList<Record>, suspect: ArrayList<Record>): ArrayList<Int>? {
-        var top = 0
-        val indices = ArrayList<Int>()
-        for (i in 0 until array.size) {
-            if (top < suspect.size && array[i] == suspect[top]) {
-                top += 1
-            } else {
-                indices.add(i)
-            }
-        }
-        if (top != suspect.size) return null
-        return indices
-    }
-
     private fun applyFilter() {
         val before = filtered
 
@@ -308,7 +289,7 @@ class HistoryFragmentAdapter(
         }
         filtered = currentFiltered
 
-        val indices = isSubSequence(before, filtered)
+        val indices = DataHelper.isSubSequence(before, filtered)
 
         if (indices == null) {
             notifyItemRangeChanged(1, filtered.size)
