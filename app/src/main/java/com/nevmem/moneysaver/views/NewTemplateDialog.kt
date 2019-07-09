@@ -16,9 +16,9 @@ import kotlinx.android.synthetic.main.new_template_dialog.view.*
 import javax.inject.Inject
 
 class NewTemplateDialog : AppCompatDialogFragment() {
-    var okCallback: ((TemplateBase) -> Unit)? = null
-    var dismissCallback: (() -> Unit)? = null
-    var errorCallback: ((String) -> Unit)? = null
+    private var okCallback: ((TemplateBase) -> Unit)? = null
+    private var dismissCallback: (() -> Unit)? = null
+    private var errorCallback: ((String) -> Unit)? = null
 
     @Inject
     lateinit var walletsRepo: WalletsRepository
