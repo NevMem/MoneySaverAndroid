@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log.i
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -120,7 +119,6 @@ class HistoryFragmentAdapter(
         historyRepo.history.observe(lifeCycleOwner, Observer {
             history = it
             applyFilter()
-            i("HFA", "Changes observed")
         })
         filterTag = ListenableToggleableArray(tagsRepo.getTagsAsList())
         filterTag.setListener {
@@ -154,6 +152,7 @@ class HistoryFragmentAdapter(
             holder.itemViewType == ViewHolderType.HEADER.type -> {
                 val header = holder as HeaderViewHolder
                 header.headerText.text = "Browse your outcomes"
+                holder.searchFiled.setText(filter.toCharArray(), 0, filter.length)
                 header.searchFiled.addTextChangedListener(object : TextWatcher {
                     override fun afterTextChanged(s: Editable?) {
                         filter = s.toString()
@@ -172,7 +171,7 @@ class HistoryFragmentAdapter(
                     recordDate.text = filtered[position - 1].date.toString()
 
                     itemView.setOnClickListener {
-                        if (position - 1 in 0 until(filtered.size))
+                        if (position - 1 in 0 until (filtered.size))
                             openFullDescriptionActivity(it, filtered[position - 1].id)
                     }
                 }
@@ -212,7 +211,7 @@ class HistoryFragmentAdapter(
     }
 
     private fun getRealPosition(position: Int): Int {
-        if (position !in 1 .. filtered.size + 1)
+        if (position !in 1..filtered.size + 1)
             throw IllegalArgumentException("Wrong position $position, have to be from 1 and till ${filtered.size}")
         return position - 1
     }
@@ -274,7 +273,7 @@ class HistoryFragmentAdapter(
     /**
      * Checks if suspect is a sub sequence of array
      * returns null if NOT
-     * returns ArrayList of Ints which to remove to make array be equals to suspect
+     * returns sorted ArrayList of Ints which to remove to make array be equals to suspect
      */
     private fun isSubSequence(array: ArrayList<Record>, suspect: ArrayList<Record>): ArrayList<Int>? {
         var top = 0
@@ -312,10 +311,11 @@ class HistoryFragmentAdapter(
         val indices = isSubSequence(before, filtered)
 
         if (indices == null) {
-            notifyDataSetChanged()
+            notifyItemRangeChanged(1, filtered.size)
         } else {
+            indices.reverse()
             indices.forEach {
-                notifyItemRemoved(it)
+                notifyItemRemoved(it + 1)
             }
         }
     }
