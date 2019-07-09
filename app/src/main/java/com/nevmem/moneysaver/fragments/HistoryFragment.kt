@@ -34,8 +34,6 @@ import kotlin.math.sqrt
 class HistoryFragment : Fragment() {
     companion object {
         const val FULL_DESCRIPTION_PAGE_CALL = 0
-        const val SWIPE_TO_DELETE_THRESHOLD = .35f
-        const val SWIPE_CIRCLE_DX = .15f
     }
 
     lateinit var app: App
@@ -101,6 +99,11 @@ class HistoryFragment : Fragment() {
 
     class SwipeController(private var ctx: Context, private var mAdapter: HistoryFragmentAdapter) :
         ItemTouchHelper.Callback() {
+        companion object {
+            const val SWIPE_TO_DELETE_THRESHOLD = .35f
+            const val SWIPE_CIRCLE_DX = .15f
+        }
+        
         private var swipeBack: Boolean = false
 
         override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
