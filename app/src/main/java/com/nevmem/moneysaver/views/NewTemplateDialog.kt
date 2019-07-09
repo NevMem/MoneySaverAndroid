@@ -12,6 +12,7 @@ import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.TemplateBase
 import com.nevmem.moneysaver.data.repositories.TagsRepository
 import com.nevmem.moneysaver.data.repositories.WalletsRepository
+import com.nevmem.moneysaver.views.utils.DialogsHelper
 import kotlinx.android.synthetic.main.new_template_dialog.view.*
 import javax.inject.Inject
 
@@ -25,14 +26,9 @@ class NewTemplateDialog : AppCompatDialogFragment() {
     @Inject
     lateinit var tagsRepo: TagsRepository
 
-    private fun createView(): View {
-        val inflater = activity?.layoutInflater ?: throw IllegalStateException("Layout inflater have to be not null")
-        return inflater.inflate(R.layout.new_template_dialog, null)
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity!!, R.style.CustomDialogStyle)
-        val view = createView()
+        val view = DialogsHelper.createView(activity!!, R.layout.new_template_dialog)
 
         setupObservers(view)
 
