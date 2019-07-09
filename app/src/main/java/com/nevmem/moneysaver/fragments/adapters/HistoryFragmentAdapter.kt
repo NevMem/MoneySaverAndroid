@@ -1,19 +1,16 @@
 package com.nevmem.moneysaver.fragments.adapters
 
-import android.app.Activity
 import android.app.ActivityOptions
-import android.content.Context
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.EditText
-import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +30,7 @@ import kotlinx.android.synthetic.main.record_layout.view.*
 import javax.inject.Inject
 
 class HistoryFragmentAdapter(
-    private val activity: Activity,
+    private val activity: FragmentActivity,
     private val fragment: HistoryFragment,
     lifeCycleOwner: LifecycleOwner
 ) :
@@ -223,7 +220,7 @@ class HistoryFragmentAdapter(
         deleteRecord(record)
     }
 
-    class HeaderViewHolder(ctx: Context, view: View, filter: String, tags: ListenableToggleableArray) :
+    class HeaderViewHolder(activity: FragmentActivity, view: View, filter: String, tags: ListenableToggleableArray) :
         RecyclerView.ViewHolder(view) {
         val headerText: TextView = view.findViewById(R.id.history_fragment_header_text)
         val searchFiled: EditText = view.findViewById(R.id.searchField)
@@ -231,17 +228,15 @@ class HistoryFragmentAdapter(
 
         init {
             searchFiled.setText(filter)
-            val addTag = Chip(ctx)
+            val addTag = Chip(activity)
             addTag.text = "+ Add"
             chipGroup.addView(addTag)
             addTag.setOnClickListener {
-                val dialog = ChooseOneFromListDialog(ctx, "Choose tag for filter", tags.getUnToggled())
-                val popup =
-                    PopupWindow(dialog, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-                popup.showAtLocation(headerText, Gravity.CENTER, 0, 0)
+                val dialog = ChooseOneFromListDialog("Choose tag for filter", tags.getUnToggled())
+                dialog.show(activity.supportFragmentManager, "choose_tag_for_search")
                 dialog.setOkListener {
                     tags.enable(it)
-                    val chip = Chip(ctx)
+                    val chip = Chip(activity)
                     chip.text = it
                     chip.isCheckable = false
                     chip.isCloseIconVisible = true
@@ -254,10 +249,6 @@ class HistoryFragmentAdapter(
                         }
                     }
                     chipGroup.addView(chip)
-                    popup.dismiss()
-                }
-                dialog.setDismissListener {
-                    popup.dismiss()
                 }
             }
         }
