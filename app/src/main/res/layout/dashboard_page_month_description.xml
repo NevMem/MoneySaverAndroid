@@ -25,7 +25,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/headerWrapper"
                     android:gravity="center"
-                    android:layout_width="match_parent" android:layout_height="wrap_content">
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+            >
                 <ImageButton
                         android:contentDescription="@string/previous_month_string"
                         android:id="@+id/prevButton" android:src="@drawable/prev_nav_icon"
@@ -36,12 +37,10 @@
                 />
                 <TextView
                         android:layout_weight="1"
-                        android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_width="0dp" android:layout_height="match_parent"
                         android:id="@+id/descriptionHeading"
                         android:textSize="20sp"
-                        android:transitionName="headerTransition"
                         android:gravity="center"
-                        android:padding="8dp"
                         android:textColor="@color/default_white_color"
                         tools:text="Your last month description"
                 />

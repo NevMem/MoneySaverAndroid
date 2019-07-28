@@ -19,6 +19,7 @@ class MainPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_page_layout)
         window.exitTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_slide_left)
+        window.enterTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_slide_right)
         window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
         app = applicationContext as App
 

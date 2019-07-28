@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.transition.Fade
+import android.transition.TransitionInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -29,10 +30,10 @@ class MonthDescriptionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.month_description_page)
         (applicationContext as App).appComponent.inject(this)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.cardColor)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)g
 
-        window.enterTransition = Fade()
-        window.exitTransition = Fade()
+        window.exitTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_slide_left)
+        window.enterTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_slide_right)
 
         labelsInfoRecycler.layoutManager = LinearLayoutManager(this)
 
