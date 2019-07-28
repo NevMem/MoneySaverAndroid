@@ -283,7 +283,13 @@ class HistoryFragmentAdapter(
         val indices = DataHelper.isSubSequence(before, filtered)
 
         if (indices == null) {
-            notifyItemRangeChanged(1, filtered.size)
+            if (filtered.size > before.size) {
+                notifyItemRangeChanged(1, before.size)
+                notifyItemRangeInserted(1 + before.size, filtered.size - before.size)
+            } else {
+                notifyItemRangeChanged(1, filtered.size)
+                notifyItemRangeRemoved(1 + filtered.size, before.size - filtered.size)
+            }
         } else {
             indices.reverse()
             indices.forEach {

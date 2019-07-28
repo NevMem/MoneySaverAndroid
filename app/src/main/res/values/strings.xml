@@ -78,4 +78,5 @@
     <string name="use_it_button_string">USE IT</string>
     <string name="full_button_string">Full</string>
     <string name="daily_button_string">Daily</string>
+    <string name="delete_string">Delete</string>
 </resources>

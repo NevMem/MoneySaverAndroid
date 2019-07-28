@@ -25,6 +25,8 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.repositories.HistoryRepository
 import com.nevmem.moneysaver.fragments.adapters.HistoryFragmentAdapter
+import com.nevmem.moneysaver.utils.TextHelper
+import com.nevmem.moneysaver.utils.UnitsHelper
 import kotlinx.android.synthetic.main.history_layout.*
 import javax.inject.Inject
 import kotlin.math.abs
@@ -100,8 +102,10 @@ class HistoryFragment : Fragment() {
     class SwipeController(private var ctx: Context, private var mAdapter: HistoryFragmentAdapter) :
         ItemTouchHelper.Callback() {
         companion object {
-            const val SWIPE_TO_DELETE_THRESHOLD = .35f
+            const val SWIPE_TO_DELETE_THRESHOLD = .40f
             const val SWIPE_CIRCLE_DX = .15f
+            const val TEXT_SIZE = 20f
+            const val TEXT_RIGHT_PADDING = 30f
         }
         
         private var swipeBack: Boolean = false
@@ -154,7 +158,7 @@ class HistoryFragment : Fragment() {
             return 0f
         }
 
-        private fun drawCircle(c: Canvas, dX: Float, v: View, paint: Paint) {
+        private fun drawCircle(c: Canvas, dX: Float, v: View, circleCenterFromRightEnd: Float, paint: Paint) {
             val width = v.width
             val height = v.height
             val maxRadius = sqrt(width * width + height * height / 4f)
@@ -173,7 +177,7 @@ class HistoryFragment : Fragment() {
                 val stops = arrayOf(0f, interpolate(dX / v.width), interpolate(dX / v.width) + 0.001f).toFloatArray()
 
                 val shader = RadialGradient(
-                    v.left + width - 90f,
+                    v.left + width - circleCenterFromRightEnd,
                     v.top + height / 2f,
                     maxRadius,
                     colors,
@@ -203,10 +207,18 @@ class HistoryFragment : Fragment() {
             val paint = Paint()
             paint.flags = Paint.ANTI_ALIAS_FLAG
 
-            drawCircle(c, dX, item, paint)
+            paint.textSize = UnitsHelper.fromSp(TEXT_SIZE, ctx.resources.displayMetrics)
+            val text = ctx.getText(R.string.delete_string).toString()
+            val textWidth = TextHelper.getTextWidth(paint, text)
+            val textRightPadding = UnitsHelper.fromDp(TEXT_RIGHT_PADDING, ctx.resources.displayMetrics)
+
+            drawCircle(c, dX, item, textWidth / 2 + textRightPadding, paint)
+
             paint.color = ContextCompat.getColor(ctx, R.color.default_white_color)
-            paint.textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20f, ctx.resources.displayMetrics)
-            c.drawText("Delete", item.right - 140f, item.top + item.paddingTop + item.height / 2f + 18f, paint)
+            c.drawText(
+                text,
+                item.right - textWidth - textRightPadding,
+                item.top + item.paddingTop + item.height / 2f + 18f, paint)
 
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             c.restore()
