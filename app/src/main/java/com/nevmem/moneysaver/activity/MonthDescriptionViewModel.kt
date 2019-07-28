@@ -23,7 +23,7 @@ class MonthDescriptionViewModel(application: Application) : AndroidViewModel(app
 
     init {
         app.appComponent.inject(this)
-        currentLiveData = Transformations.map(infoRepo.monthDescriptions) {
+        currentLiveData = Transformations.map(infoRepo.monthDescriptions()) {
             descriptions -> run {
             if (index >= descriptions.size)
                 index = descriptions.size - 1
@@ -56,7 +56,7 @@ class MonthDescriptionViewModel(application: Application) : AndroidViewModel(app
 
     private fun indexChanged() {
         monthDescription.removeSource(currentLiveData)
-        currentLiveData = Transformations.map(infoRepo.monthDescriptions) {
+        currentLiveData = Transformations.map(infoRepo.monthDescriptions()) {
                 descriptions -> run {
             if (index >= descriptions.size)
                 index = descriptions.size - 1

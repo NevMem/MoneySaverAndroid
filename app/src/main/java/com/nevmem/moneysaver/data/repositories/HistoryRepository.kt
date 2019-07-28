@@ -27,12 +27,12 @@ class HistoryRepository @Inject constructor(
 
     val editingState = MutableLiveData<RequestState>(NoneState)
 
-    private val tag = "H_REP"
+    private val tag = "HISTORY_REPOSITORY"
 
     init {
-        i(tag, "Init was called")
+        i(tag, "init")
         loadFromDatabase()
-        loadFromNet()
+        tryUpdate()
     }
 
     fun tryUpdate() {

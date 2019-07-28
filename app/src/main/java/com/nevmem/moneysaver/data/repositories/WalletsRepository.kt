@@ -27,10 +27,11 @@ class WalletsRepository @Inject constructor(
 
     var addingState = MutableLiveData<RequestState>(NoneState)
 
-    private var tag = "W_REP"
+    private var tag = "WALLETS_REPOSITORY"
 
     init {
         i(tag, "init")
+        loadFromDatabase()
         tryUpdate()
     }
 
@@ -66,7 +67,6 @@ class WalletsRepository @Inject constructor(
     }
 
     fun tryUpdate() {
-        loadFromDatabase()
         loadFromNet()
     }
 

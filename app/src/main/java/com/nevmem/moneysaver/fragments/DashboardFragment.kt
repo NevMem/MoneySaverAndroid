@@ -14,23 +14,25 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.activity.SettingsActivity
 import com.nevmem.moneysaver.data.UserHolder
 import com.nevmem.moneysaver.data.repositories.InfoRepository
+import com.nevmem.moneysaver.data.util.LoadingState
 import kotlinx.android.synthetic.main.dashboard_page_fragment.*
 import kotlinx.android.synthetic.main.user_profile.*
 import javax.inject.Inject
 
 class DashboardFragment : Fragment() {
-    lateinit var app: App
-
     @Inject
     lateinit var infoRepo: InfoRepository
 
     @Inject
     lateinit var userHolder: UserHolder
+
+    lateinit var viewModel: DashboardFragmentViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dashboard_page_fragment, container, false)
@@ -38,6 +40,9 @@ class DashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProviders.of(this).get(DashboardFragmentViewModel::class.java)
+
         refreshLayout.setColorSchemeColors(
             ContextCompat.getColor(context!!, R.color.themeColor),
             ContextCompat.getColor(context!!, R.color.specialColor),
@@ -50,10 +55,7 @@ class DashboardFragment : Fragment() {
             )
         )
 
-        app = activity!!.applicationContext as App
-        app.appComponent.inject(this)
-
-        infoRepo.info.observe(this, Observer {
+        viewModel.info().observe(this, Observer {
             trackedDays.text = it.trackedDays.toString()
             sumDayChart.values = it.sumDay
 
@@ -70,11 +72,10 @@ class DashboardFragment : Fragment() {
             sumDayChart.invalidate()
         })
 
-        userName.text = userHolder.user.firstName
+        userName.text = viewModel.userHolder().firstName
 
-        infoRepo.loading.observe(this, Observer {
-            if (it != null)
-                refreshLayout.isRefreshing = it
+        viewModel.state().observe(this, Observer {
+            refreshLayout.isRefreshing = it != null && it is LoadingState
         })
 
         settingsButton.setOnClickListener {
@@ -82,7 +83,7 @@ class DashboardFragment : Fragment() {
         }
 
         refreshLayout.setOnRefreshListener {
-            infoRepo.tryUpdate()
+            viewModel.update()
         }
     }
 

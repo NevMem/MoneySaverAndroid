@@ -25,15 +25,15 @@ class TagsRepository @Inject constructor(
 
     var addingState = MutableLiveData<RequestState>(NoneState)
 
-    private var tag = "T_REP"
+    private var tag = "TAGS_REPOSITORY"
 
     init {
         i(tag, "init")
+        loadFromDatabase()
         tryUpdate()
     }
 
     fun tryUpdate() {
-        loadFromDatabase()
         loadFromNet()
     }
 
