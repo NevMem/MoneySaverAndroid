@@ -12,10 +12,7 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.repositories.TagsRepository
 import com.nevmem.moneysaver.data.repositories.WalletsRepository
-import com.nevmem.moneysaver.data.util.ErrorState
-import com.nevmem.moneysaver.data.util.LoadingState
-import com.nevmem.moneysaver.data.util.NoneState
-import com.nevmem.moneysaver.data.util.RequestState
+import com.nevmem.moneysaver.data.util.*
 import com.nevmem.moneysaver.views.MyExpandableListAdapter
 import com.nevmem.moneysaver.views.utils.MyDataObserver
 import kotlinx.android.synthetic.main.manage_tags_child_view.view.*
@@ -130,6 +127,11 @@ class ManageTagsWalletsAdapter(private var ctx: Context, private var activity: A
                             when (it) {
                                 null, NoneState -> {
                                     view.process.visibility = View.GONE
+                                }
+                                is SuccessState -> {
+                                    view.process.text = "Removed"
+                                    view.process.visibility = View.VISIBLE
+                                    view.process.setTextColor(ContextCompat.getColor(ctx, R.color.specialColor))
                                 }
                                 is LoadingState -> {
                                     view.process.text = "Removing..."

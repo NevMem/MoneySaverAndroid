@@ -131,6 +131,7 @@ class TagsRepository @Inject constructor(
                 }
                 is ParsedValue<*> -> {
                     state.postValue(SuccessState())
+                    loadFromNet()
                 }
             }
         }
