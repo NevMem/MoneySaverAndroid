@@ -3,6 +3,8 @@ package com.nevmem.moneysaver.dagger.modules
 import android.content.Context
 import androidx.room.Room
 import com.nevmem.moneysaver.data.UserHolder
+import com.nevmem.moneysaver.data.repositories.InfoRepository
+import com.nevmem.moneysaver.data.repositories.InfoRepositoryImpl
 import com.nevmem.moneysaver.room.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -35,5 +37,11 @@ class DataModule(private var context: Context) {
         return Room.databaseBuilder(context, AppDatabase::class.java, "moneysaverdb")
             .fallbackToDestructiveMigration()
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun infoRepository(infoRepoImpl: InfoRepositoryImpl): InfoRepository {
+        return infoRepoImpl
     }
 }
