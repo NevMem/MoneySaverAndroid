@@ -53,7 +53,7 @@ class DashboardPageDescriptions : Fragment() {
             mode = InfoMode.FullDaily
         }
         (activity?.applicationContext as App).appComponent.inject(this)
-        infoRepo.info.observe(this, Observer {
+        infoRepo.info().observe(this, Observer {
             info = it
             infoChanged()
         })

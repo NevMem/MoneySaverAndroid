@@ -37,4 +37,5 @@ interface AppComponent {
     fun inject(historyFragmentAdapter: HistoryFragmentAdapter)
     fun inject(manageTagsWalletsAdapter: ManageTagsWalletsAdapter)
     fun inject(dashboardPageDescriptions: DashboardPageDescriptions)
+    fun inject(dashboardFragmentViewModel: DashboardFragmentViewModel)
 }

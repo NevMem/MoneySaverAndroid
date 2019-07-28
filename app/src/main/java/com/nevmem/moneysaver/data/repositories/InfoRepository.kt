@@ -7,9 +7,7 @@ import com.nevmem.moneysaver.data.Info
 import com.nevmem.moneysaver.data.MonthDescription
 import com.nevmem.moneysaver.data.NetworkQueueBase
 import com.nevmem.moneysaver.data.UserHolder
-import com.nevmem.moneysaver.data.util.InfoRepositoryParsers
-import com.nevmem.moneysaver.data.util.ParseError
-import com.nevmem.moneysaver.data.util.ParsedValue
+import com.nevmem.moneysaver.data.util.*
 import com.nevmem.moneysaver.room.AppDatabase
 import java.util.concurrent.Executor
 import javax.inject.Inject
@@ -21,20 +19,25 @@ class InfoRepository
     var networkQueue: NetworkQueueBase, var appDatabase: AppDatabase,
     var executor: Executor, var userHolder: UserHolder
 ) {
-    private var tag = "I_REP"
-    var info = MutableLiveData<Info>(Info())
-    var error = MutableLiveData<String>("")
-    var loading = MutableLiveData<Boolean>(false)
-    var monthDescriptions = MutableLiveData<List<MonthDescription>>()
+    private var tag = "INFO_REPOSITORY"
+    private var info = MutableLiveData<Info>(Info())
+    private var requestState = MutableLiveData<RequestState>(NoneState)
+    private var monthDescriptions = MutableLiveData<List<MonthDescription>>()
 
     init {
         loadFromDatabase()
-        loadFromNet()
+        tryUpdate()
     }
 
     fun tryUpdate() {
         loadFromNet()
     }
+
+    fun state() = requestState
+
+    fun info() = info
+
+    fun monthDescriptions() = monthDescriptions
 
     private fun loadFromDatabase() {
         executor.execute {
@@ -98,14 +101,15 @@ class InfoRepository
         params.put("info30", true)
         params.put("daysDescription", true)
         params.put("months", true)
-        loading.postValue(true)
+        requestState.postValue(LoadingState)
         networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiInfo, params, {
-            loading.postValue(false)
+            requestState.postValue(NoneState)
             when (val parseResult = InfoRepositoryParsers.parseServerLoadedResponse(it)) {
                 is ParseError -> {
-                    error.postValue(parseResult.reason)
+                    requestState.postValue(ErrorState(parseResult.reason))
                 }
                 is ParsedValue<*> -> {
+                    requestState.postValue(SuccessState())
                     val parsed = parseResult.parsed
                     if (parsed is InfoRepositoryParsers.Companion.InfoMonthDescriptionsPair) {
                         resolveInfoConflicts(parsed.info)
