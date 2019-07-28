@@ -30,6 +30,7 @@ class WalletsRepository @Inject constructor(
     private var tag = "W_REP"
 
     init {
+        i(tag, "init")
         tryUpdate()
     }
 
