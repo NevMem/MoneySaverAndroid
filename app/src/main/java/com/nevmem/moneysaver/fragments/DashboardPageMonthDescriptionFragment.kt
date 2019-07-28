@@ -90,12 +90,7 @@ class DashboardPageMonthDescriptionFragment : Fragment() {
         val intent = Intent(activity!!, MonthDescriptionActivity::class.java)
         intent.putExtra("monthIndex", viewModel.getMonthIndex())
         if (descriptionCard != null) {
-            val options = ActivityOptions.makeSceneTransitionAnimation(
-                activity,
-                android.util.Pair<View, String>(descriptionHeading, "headerTransition"),
-                android.util.Pair<View, String>(chart, "chartTransition"),
-                android.util.Pair<View, String>(descriptionCard, "cardTransition")
-            )
+            val options = ActivityOptions.makeSceneTransitionAnimation(activity)
             startActivityForResult(intent, OVERVIEW_SYNC, options.toBundle())
         } else {
             Toast.makeText(activity, "Card is null", Toast.LENGTH_LONG).show()

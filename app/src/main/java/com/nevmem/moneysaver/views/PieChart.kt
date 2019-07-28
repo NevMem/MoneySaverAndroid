@@ -8,8 +8,9 @@ import android.util.AttributeSet
 import android.view.View
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.exceptions.WrongChartDataException
+import com.nevmem.moneysaver.utils.UnitsHelper
 
-class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
+class PieChart(private var ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
     private var paint: Paint = Paint(0)
     private var values: ArrayList<Double> = ArrayList()
     private var colors: ArrayList<Int> = ArrayList()
@@ -29,6 +30,8 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
             Color.parseColor("#ff6542"),
             Color.parseColor("#7d8cc4")
         )
+
+        const val ringWidth = 24f
     }
 
     private var chartBackgroundColor = Color.parseColor("#191919")
@@ -123,11 +126,18 @@ class PieChart(ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {
             }
         }
 
+        val ringPxWidth = UnitsHelper.fromDp(ringWidth, ctx.resources.displayMetrics)
+
         paint.color = chartBackgroundColor
         canvas.drawArc(
-            chartPadding + 60, chartPadding + 60,
-            chartPadding + chartSize - 60, chartPadding + chartSize - 60,
-            0f, 360f, true, paint
+            chartPadding + ringPxWidth,
+            chartPadding + ringPxWidth,
+            chartPadding + chartSize - ringPxWidth,
+            chartPadding + chartSize - ringPxWidth,
+            0f,
+            360f,
+            true,
+            paint
         )
     }
 }

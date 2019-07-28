@@ -5,7 +5,6 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:background="@color/cardColor"
         android:nestedScrollingEnabled="true">
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -21,22 +20,23 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:paddingTop="24dp"
-                android:paddingBottom="24dp"
                 android:id="@+id/headerWrapper"
                 android:gravity="center"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="24dp"
         >
             <ImageView
                     android:id="@+id/prevButton" android:src="@drawable/prev_nav_icon"
                     android:contentDescription="@string/month_description_page_prev_button_content_description_string"
                     android:layout_width="40dp" android:layout_height="40dp"
+                    android:padding="4dp"
+                    android:scaleType="fitCenter"
             />
             <TextView
-                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_width="0dp" android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/headerText" tools:text="Month overview"
                     android:textSize="20sp"
-                    android:transitionName="headerTransition"
                     android:gravity="center"
                     android:textColor="#fff"
             />
@@ -44,11 +44,13 @@
                     android:id="@+id/nextButton" android:src="@drawable/next_nav_icon"
                     android:contentDescription="@string/month_description_page_next_button_content_description_string"
                     android:layout_width="40dp" android:layout_height="40dp"
+                    android:padding="4dp"
+                    android:scaleType="fitCenter"
             />
         </LinearLayout>
         <com.nevmem.moneysaver.views.PieChart
                 android:id="@+id/chart"
-                app:chartBackground="@color/cardColor"
+                app:chartBackground="@color/backgroundColor"
                 android:layout_width="170dp" android:layout_height="170dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/headerWrapper"
