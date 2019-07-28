@@ -22,7 +22,7 @@ class DashboardPageMonthDescriptionFragmentViewModel(application: Application) :
 
     init {
         app.appComponent.inject(this)
-        currentLiveData = Transformations.map(infoRepo.monthDescriptions) { descriptions ->
+        currentLiveData = Transformations.map(infoRepo.monthDescriptions()) { descriptions ->
             run {
                 if (index >= descriptions.size)
                     index = descriptions.size - 1
@@ -53,7 +53,7 @@ class DashboardPageMonthDescriptionFragmentViewModel(application: Application) :
     }
 
     private fun setupNewLiveData() {
-        currentLiveData = Transformations.map(infoRepo.monthDescriptions) { descriptions ->
+        currentLiveData = Transformations.map(infoRepo.monthDescriptions()) { descriptions ->
             run {
                 if (index >= descriptions.size)
                     index = descriptions.size - 1
