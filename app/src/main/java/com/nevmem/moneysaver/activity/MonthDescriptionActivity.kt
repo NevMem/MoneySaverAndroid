@@ -30,7 +30,7 @@ class MonthDescriptionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.month_description_page)
         (applicationContext as App).appComponent.inject(this)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)g
+        window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
 
         window.exitTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_slide_left)
         window.enterTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_slide_right)
