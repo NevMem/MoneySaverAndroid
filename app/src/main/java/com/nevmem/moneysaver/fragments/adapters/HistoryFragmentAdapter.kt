@@ -4,6 +4,7 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -280,11 +281,26 @@ class HistoryFragmentAdapter(
         }
         filtered = currentFiltered
 
+        before.forEach {
+            Log.d("curdeb", "$it before")
+        }
+        filtered.forEach {
+            Log.d("curdeb", "$it after")
+        }
+
         val indices = DataHelper.isSubSequence(before, filtered)
 
         if (indices == null) {
-            notifyItemRangeChanged(1, filtered.size)
+            Log.d("curdeb", "Not a subsequence")
+            if (filtered.size > before.size) {
+                notifyItemRangeChanged(1, before.size)
+                notifyItemRangeInserted(1 + before.size, filtered.size - before.size)
+            } else {
+                notifyItemRangeChanged(1, filtered.size)
+                notifyItemRangeRemoved(1 + filtered.size, before.size - filtered.size)
+            }
         } else {
+            Log.d("curdeb", "Subsequence")
             indices.reverse()
             indices.forEach {
                 notifyItemRemoved(it + 1)
