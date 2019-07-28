@@ -45,4 +45,34 @@ class Record {
         date.injectJson(dateJson)
         json.put("date", dateJson)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Record
+
+        if (name != other.name) return false
+        if (value != other.value) return false
+        if (tag != other.tag) return false
+        if (wallet != other.wallet) return false
+        if (date != other.date) return false
+        if (id != other.id) return false
+        if (daily != other.daily) return false
+        if (timestamp != other.timestamp) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + value.hashCode()
+        result = 31 * result + tag.hashCode()
+        result = 31 * result + wallet.hashCode()
+        result = 31 * result + date.hashCode()
+        result = 31 * result + id.hashCode()
+        result = 31 * result + daily.hashCode()
+        result = 31 * result + timestamp.hashCode()
+        return result
+    }
 }
