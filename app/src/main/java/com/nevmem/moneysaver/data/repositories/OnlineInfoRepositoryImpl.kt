@@ -14,7 +14,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class InfoRepositoryImpl
+class OnlineInfoRepositoryImpl
 @Inject constructor(
     var networkQueue: NetworkQueueBase, var appDatabase: AppDatabase,
     var executor: Executor, var userHolder: UserHolder
