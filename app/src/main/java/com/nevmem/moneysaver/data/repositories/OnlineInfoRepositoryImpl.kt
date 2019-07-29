@@ -19,7 +19,7 @@ class OnlineInfoRepositoryImpl
     var networkQueue: NetworkQueueBase, var appDatabase: AppDatabase,
     var executor: Executor, var userHolder: UserHolder
 ) : InfoRepository {
-    private var tag = "INFO_REPOSITORY"
+    private var tag = "ONLINE_INFO_REPOSITORY"
     private var info = MutableLiveData<Info>(Info())
     private var requestState = MutableLiveData<RequestState>(NoneState)
     private var monthDescriptions = MutableLiveData<List<MonthDescription>>()
