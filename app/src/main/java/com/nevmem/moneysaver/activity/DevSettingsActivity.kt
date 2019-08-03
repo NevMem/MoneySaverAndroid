@@ -14,6 +14,10 @@ import kotlinx.android.synthetic.main.dev_settings_page.*
 class DevSettingsActivity : FragmentActivity() {
     lateinit var viewModel: DevSettingsPageViewModel
 
+    companion object {
+        const val DEFAULT_DRAWABLE_SIZE = 24f
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dev_settings_page)
@@ -41,16 +45,17 @@ class DevSettingsActivity : FragmentActivity() {
         textView.text = featureName
 
         val verticalPadding = UnitsHelper.fromDp(16f, resources.displayMetrics).toInt()
+        val horizontalPadding = 0
 
         textView.setPadding(
-            0,
+            horizontalPadding,
             verticalPadding,
-            0,
+            horizontalPadding,
             verticalPadding)
 
         if (isActive) {
             val drawable = resources.getDrawable(R.drawable.check_icon_white)
-            val size = UnitsHelper.fromDp(24f, resources.displayMetrics).toInt()
+            val size = UnitsHelper.fromDp(DEFAULT_DRAWABLE_SIZEgit, resources.displayMetrics).toInt()
             drawable.setBounds(0, 0, size, size)
             textView.setCompoundDrawables(null, null, drawable, null)
         }
