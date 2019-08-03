@@ -49,9 +49,14 @@ class SettingsManagerImpl @Inject constructor(
 
     override fun disableFeature(featureName: String) {
         if (isFeatureEnabled(featureName)) {
+            val featureToDelete = enabledFeatures.find {
+                it.featureName == featureName
+            }
             enabledFeatures.remove(Feature(featureName))
-            executor.execute {
-                appDatabase.featuresDao().delete(Feature(featureName))
+            if (featureToDelete != null) {
+                executor.execute {
+                    appDatabase.featuresDao().delete(featureToDelete)
+                }
             }
             notifyFeaturesChanged()
         }

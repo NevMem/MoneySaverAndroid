@@ -21,7 +21,7 @@ import com.nevmem.moneysaver.room.entity.Wallet
         MonthDescription::class,
         Feature::class],
     exportSchema = false,
-    version = 19
+    version = 20
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun templateDao(): TemplateDao
