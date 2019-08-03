@@ -58,8 +58,10 @@ class DataModule(private var context: Context) {
             settingsManager.initialize().join()
         }
         return if (settingsManager.isFeatureEnabled(Features.FEATURE_OFFLINE_INFO)) {
+            Log.d("Dagger", "Offline impl")
             offlineImpl
         } else {
+            Log.d("Dagger", "online impl")
             onlineImpl
         }
     }
