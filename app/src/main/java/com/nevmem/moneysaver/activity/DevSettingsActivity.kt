@@ -3,6 +3,7 @@ package com.nevmem.moneysaver.activity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -26,6 +27,7 @@ class DevSettingsActivity : FragmentActivity() {
                 it.forEach { featureIt -> run {
                     val view = createFeatureView(featureIt.description, featureIt.isEnabled)
                     view.setOnClickListener {
+                        Toast.makeText(this, "Reset app to apply changes", Toast.LENGTH_LONG).show()
                         viewModel.toggleFeature(featureIt.featureName)
                     }
                     featuresAnchor.addView(view)
