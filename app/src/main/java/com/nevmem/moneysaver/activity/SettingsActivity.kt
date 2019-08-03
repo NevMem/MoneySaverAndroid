@@ -1,6 +1,7 @@
 package com.nevmem.moneysaver.activity
 
 import android.annotation.SuppressLint
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.transition.TransitionInflater
@@ -21,8 +22,8 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
-        val enterTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_slide_right)
-        window.enterTransition = enterTransition
+        window.enterTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_slide_right)
+        window.exitTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_slide_left)
 
         val pManagerInfo = packageManager.getPackageInfo(packageName, 0)
         versionCode.text = "Version: ${pManagerInfo.versionName}"
@@ -42,7 +43,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun openDevSettings() {
         val intent = Intent(this, DevSettingsActivity::class.java)
-        startActivity(intent)
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
     }
 
     private fun setupTagsAdapter() {

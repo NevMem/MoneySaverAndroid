@@ -1,6 +1,7 @@
 package com.nevmem.moneysaver.activity
 
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -21,6 +22,8 @@ class DevSettingsActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dev_settings_page)
+        window.enterTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_slide_right)
+        window.exitTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_slide_left)
 
         viewModel = ViewModelProviders.of(this).get(DevSettingsPageViewModel::class.java)
 
