@@ -80,4 +80,5 @@
     <string name="daily_button_string">Daily</string>
     <string name="delete_string">Delete</string>
     <string name="developer_settings_string">Developer settings</string>
+    <string name="features_string">Features</string>
 </resources>

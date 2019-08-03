@@ -38,4 +38,5 @@ interface AppComponent {
     fun inject(manageTagsWalletsAdapter: ManageTagsWalletsAdapter)
     fun inject(dashboardPageDescriptions: DashboardPageDescriptions)
     fun inject(dashboardFragmentViewModel: DashboardFragmentViewModel)
+    fun inject(devSettingsPageViewModel: DevSettingsPageViewModel)
 }

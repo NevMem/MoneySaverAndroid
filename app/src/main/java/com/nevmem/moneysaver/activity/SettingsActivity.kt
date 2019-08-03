@@ -31,9 +31,18 @@ class SettingsActivity : AppCompatActivity() {
 
         setupTagsAdapter()
 
+        devSettingsButton.setOnClickListener {
+            openDevSettings()
+        }
+
         logoutButton.setOnClickListener {
             logout()
         }
+    }
+
+    private fun openDevSettings() {
+        val intent = Intent(this, DevSettingsActivity::class.java)
+        startActivity(intent)
     }
 
     private fun setupTagsAdapter() {

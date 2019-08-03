@@ -43,6 +43,7 @@ class SettingsManagerImpl @Inject constructor(
             executor.execute {
                 appDatabase.featuresDao().insert(Feature(featureName))
             }
+            notifyFeaturesChanged()
         }
     }
 
@@ -52,6 +53,7 @@ class SettingsManagerImpl @Inject constructor(
             executor.execute {
                 appDatabase.featuresDao().delete(Feature(featureName))
             }
+            notifyFeaturesChanged()
         }
     }
 
