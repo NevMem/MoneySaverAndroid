@@ -2,7 +2,7 @@ package com.nevmem.moneysaver.fragments
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.data.Info
 import com.nevmem.moneysaver.data.UserHolder
@@ -22,7 +22,7 @@ class DashboardFragmentViewModel(application: Application) : AndroidViewModel(ap
         application.appComponent.inject(this)
     }
 
-    fun info(): MutableLiveData<Info> = infoRepo.info()
+    fun info(): LiveData<Info> = infoRepo.info()
 
     fun userHolder() = userHolder.user
 

@@ -73,26 +73,26 @@ class DashboardPageDescriptions : Fragment() {
                 InfoMode.Week -> run {
                     weekButton.isActivated = true
                     description.text = "Your last week info"
-                    value.text = it.sum7Days.toString()
-                    averageValue.text = it.average7Days.toString()
+                    value.text = String.format("%.2f", it.sum7Days)
+                    averageValue.text = String.format("%.2f", it.average7Days)
                 }
                 InfoMode.ThirtyDays -> run {
                     _30daysButton.isActivated = true
                     description.text = "Your last 30 days info"
-                    value.text = it.sum30Days.toString()
-                    averageValue.text = it.average30Days.toString()
+                    value.text = String.format("%.2f", it.sum30Days)
+                    averageValue.text = String.format("%.2f", it.average30Days)
                 }
                 InfoMode.Full -> run {
                     fullButton.isActivated = true
                     description.text = "All outcomes"
-                    value.text = info?.totalSpend.toString()
-                    averageValue.text = info?.average.toString()
+                    value.text = String.format("%.2f", it.totalSpend)
+                    averageValue.text = String.format("%.2f", it.average)
                 }
                 InfoMode.FullDaily -> run {
                     fullDailyButton.isActivated = true
                     description.text = "All daily outcomes"
-                    value.text = info?.dailySum.toString()
-                    averageValue.text = info?.dailyAverage.toString()
+                    value.text = String.format("%.2f", it.dailySum)
+                    averageValue.text = String.format("%.2f", it.dailyAverage)
                 }
             }
         }

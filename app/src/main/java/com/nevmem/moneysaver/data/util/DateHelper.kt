@@ -1,5 +1,7 @@
 package com.nevmem.moneysaver.data.util
 
+import com.nevmem.moneysaver.data.RecordDate
+
 abstract class DateHelper {
     companion object {
         private fun fillTo2Length(current: String): String = current.padStart(2, '0')
@@ -41,6 +43,48 @@ abstract class DateHelper {
 
         fun getAmountOfDaysInMonth(year: Int, month: Int): Int {
             return getAmountOfDaysInMonth(year, getMonthName(month))
+        }
+
+        /**
+         *  Finds a day before date, in such way as between result and date inclusively exactly amount days
+         */
+        fun dayBefore(date: RecordDate, amount: Int): RecordDate {
+            val result = RecordDate(date)
+            result.hour = 0
+            result.minute = 0
+            for (i in 0 until(amount - 1)) {
+                if (result.day == 1) {
+                    if (result.month == 1) {
+                        result.month = 12
+                        result.year -= 1
+                    } else {
+                        result.month -= 1
+                    }
+                    result.day = getAmountOfDaysInMonth(result.year, result.month)
+                } else {
+                    result.day -= 1
+                }
+            }
+            return result
+        }
+
+        fun sameDay(first: RecordDate, second: RecordDate): Boolean {
+            return first.year == second.year && first.month == second.month
+                && first.day == second.day;
+        }
+
+        fun amountOfDaysBetween(first: RecordDate?, second: RecordDate?): Int {
+            if (first == null || second == null)
+                return 0
+            if (first > second)
+                return amountOfDaysBetween(second, first)
+            val runner = RecordDate(first)
+            var amount = 1
+            while (!sameDay(runner, second)) {
+                runner.nextDay(true)
+                amount += 1
+            }
+            return amount
         }
     }
 }

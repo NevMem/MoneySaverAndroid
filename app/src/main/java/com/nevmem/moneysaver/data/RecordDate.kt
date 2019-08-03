@@ -4,7 +4,7 @@ import com.nevmem.moneysaver.data.util.DateHelper
 import org.json.JSONObject
 import java.util.*
 
-class RecordDate {
+class RecordDate : Comparable<RecordDate> {
     var year: Int = 0
     var month: Int = 0
     var day: Int = 0
@@ -44,6 +44,8 @@ class RecordDate {
         this.minute = minute
     }
 
+    internal constructor(other: RecordDate): this(other.year, other.month, other.day, other.hour, other.minute)
+
     fun toJSON(): JSONObject {
         val json = JSONObject()
         json.put("year", year)
@@ -62,9 +64,41 @@ class RecordDate {
         json.put("minute", minute)
     }
 
+    fun nextDay(inPlace: Boolean = false): RecordDate {
+        var result = this
+        if (!inPlace)
+            result = RecordDate(this)
+
+        if (result.day == DateHelper.getAmountOfDaysInMonth(result.year, result.month)) {
+            result.day = 1
+            if (result.month == 12) {
+                result.month = 1
+                result.year += 1
+            } else {
+                result.month += 1
+            }
+        } else {
+            result.day += 1
+        }
+
+        return this
+    }
+
     fun dateString(): String = DateHelper.fillTo2Length(day) + "." + DateHelper.fillTo2Length(month) + "." + year
 
     fun timeString(): String = DateHelper.fillTo2Length(hour) + ":" + DateHelper.fillTo2Length(minute)
+
+    override fun compareTo(other: RecordDate): Int {
+        if (year != other.year)
+            return year.compareTo(other.year)
+        if (month != other.month)
+            return month.compareTo(other.month)
+        if (day != other.day)
+            return day.compareTo(other.day)
+        if (hour != other.hour)
+            return hour.compareTo(other.hour)
+        return minute.compareTo(other.minute)
+    }
 
     override fun toString(): String = dateString() + " " + timeString()
 
