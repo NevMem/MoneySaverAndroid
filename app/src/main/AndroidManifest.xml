@@ -26,6 +26,7 @@
         <activity android:name=".activity.MonthDescriptionActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.DevSettingsActivity" />
     </application>
 
 </manifest>

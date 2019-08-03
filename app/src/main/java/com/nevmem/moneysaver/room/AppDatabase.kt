@@ -6,13 +6,22 @@ import com.nevmem.moneysaver.data.Info
 import com.nevmem.moneysaver.data.MonthDescription
 import com.nevmem.moneysaver.data.Record
 import com.nevmem.moneysaver.room.dao.*
+import com.nevmem.moneysaver.room.entity.Feature
 import com.nevmem.moneysaver.room.entity.StoredTemplate
 import com.nevmem.moneysaver.room.entity.Tag
 import com.nevmem.moneysaver.room.entity.Wallet
 
 @Database(
-    entities = [StoredTemplate::class, Record::class, Wallet::class, Tag::class, Info::class, MonthDescription::class],
-    exportSchema = false, version = 18
+    entities = [
+        StoredTemplate::class,
+        Record::class,
+        Wallet::class,
+        Tag::class,
+        Info::class,
+        MonthDescription::class,
+        Feature::class],
+    exportSchema = false,
+    version = 20
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun templateDao(): TemplateDao
@@ -21,4 +30,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun tagsDao(): TagsDao
     abstract fun infoDao(): InfoDao
     abstract fun monthDescriptionDao(): MonthDescriptionDao
+    abstract fun featuresDao(): FeaturesDao
 }
