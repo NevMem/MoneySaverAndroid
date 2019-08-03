@@ -39,9 +39,9 @@ class DevSettingsActivity : FragmentActivity() {
         textView.text = featureName
 
         textView.setPadding(0,
-            UnitsHelper.fromDp(24f, resources.displayMetrics).toInt(),
+            UnitsHelper.fromDp(16f, resources.displayMetrics).toInt(),
             0,
-            UnitsHelper.fromDp(24f, resources.displayMetrics).toInt())
+            UnitsHelper.fromDp(16f, resources.displayMetrics).toInt())
 
         if (isActive) {
             val drawable = resources.getDrawable(R.drawable.check_icon_white)

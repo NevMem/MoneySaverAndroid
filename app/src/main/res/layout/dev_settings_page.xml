@@ -29,7 +29,7 @@
             android:padding="24dp"
             android:textColor="@color/default_white_color"
             android:text="@string/features_string"
-            android:textSize="18sp"
+            android:textSize="20sp"
         />
 
         <LinearLayout
