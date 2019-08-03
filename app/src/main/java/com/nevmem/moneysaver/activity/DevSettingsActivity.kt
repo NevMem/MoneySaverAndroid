@@ -55,7 +55,7 @@ class DevSettingsActivity : FragmentActivity() {
 
         if (isActive) {
             val drawable = resources.getDrawable(R.drawable.check_icon_white)
-            val size = UnitsHelper.fromDp(DEFAULT_DRAWABLE_SIZEgit, resources.displayMetrics).toInt()
+            val size = UnitsHelper.fromDp(DEFAULT_DRAWABLE_SIZE, resources.displayMetrics).toInt()
             drawable.setBounds(0, 0, size, size)
             textView.setCompoundDrawables(null, null, drawable, null)
         }
