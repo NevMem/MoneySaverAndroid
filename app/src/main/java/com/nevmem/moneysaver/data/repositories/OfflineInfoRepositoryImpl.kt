@@ -11,12 +11,9 @@ import com.nevmem.moneysaver.data.util.*
 import java.lang.IllegalStateException
 import javax.inject.Inject
 
-class OfflineInfoRepositoryImpl @Inject constructor(
-    private var historyRepository: HistoryRepository
-) : InfoRepository {
-    init {
-        historyRepository.tryUpdate()
-    }
+class OfflineInfoRepositoryImpl @Inject constructor() : InfoRepository {
+    @Inject
+    lateinit var historyRepository: HistoryRepository
 
     companion object {
         const val DEFAULT_SUM_DAY_SIZE = 30
