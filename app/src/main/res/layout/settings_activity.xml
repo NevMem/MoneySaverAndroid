@@ -42,7 +42,7 @@
             android:layout_marginTop="16dp"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="Developer settings"
+            android:text="@string/developer_settings_string"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:gravity="start|center"
             android:background="@color/profile_color"
