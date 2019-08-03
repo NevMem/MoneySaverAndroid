@@ -40,10 +40,13 @@ class DevSettingsActivity : FragmentActivity() {
         val textView = TextView(this)
         textView.text = featureName
 
-        textView.setPadding(0,
-            UnitsHelper.fromDp(16f, resources.displayMetrics).toInt(),
+        val verticalPadding = UnitsHelper.fromDp(16f, resources.displayMetrics).toInt()
+
+        textView.setPadding(
             0,
-            UnitsHelper.fromDp(16f, resources.displayMetrics).toInt())
+            verticalPadding,
+            0,
+            verticalPadding)
 
         if (isActive) {
             val drawable = resources.getDrawable(R.drawable.check_icon_white)
