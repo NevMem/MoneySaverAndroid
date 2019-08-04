@@ -7,6 +7,7 @@ import com.nevmem.moneysaver.room.entity.Feature
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 import java.util.concurrent.Executor
 import javax.inject.Inject
 
@@ -17,7 +18,7 @@ class SettingsManagerImpl @Inject constructor(
     private val enabledFeatures = HashSet<Feature>()
     private val tag = "SETTINGS_MANAGER_IMPL"
 
-    private val listeners = ArrayList<SettingsManagerListener>()
+    private val listeners = ArrayList<WeakReference<SettingsManagerListener>>()
 
     init {
         Log.d(tag, "Initialization")
@@ -70,17 +71,22 @@ class SettingsManagerImpl @Inject constructor(
         }
     }
 
-    override fun subscribe(listener: SettingsManagerListener) {
+    override fun subscribe(listener: WeakReference<SettingsManagerListener>) {
         listeners.add(listener)
     }
 
-    override fun unsubscribe(listener: SettingsManagerListener) {
+    override fun unsubscribe(listener: WeakReference<SettingsManagerListener>) {
         listeners.remove(listener)
     }
 
     private fun notifyFeaturesChanged() {
         listeners.forEach {
-            it.onFeaturesUpdated()
+            val ref = it.get()
+            if (ref != null) {
+                ref.onFeaturesUpdated()
+            } else {
+                listeners.remove(it)
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.nevmem.moneysaver.data
 
 import kotlinx.coroutines.Job
+import java.lang.ref.WeakReference
 
 interface SettingsManagerListener {
     fun onFeaturesUpdated()
@@ -14,6 +15,6 @@ interface SettingsManager {
     fun disableFeature(featureName: String)
     fun toggleFeature(featureName: String)
 
-    fun subscribe(listener: SettingsManagerListener)
-    fun unsubscribe(listener: SettingsManagerListener)
+    fun subscribe(listener: WeakReference<SettingsManagerListener>)
+    fun unsubscribe(listener: WeakReference<SettingsManagerListener>)
 }
