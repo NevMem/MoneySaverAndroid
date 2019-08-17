@@ -9,7 +9,6 @@ import android.graphics.RadialGradient
 import android.graphics.Shader
 import android.os.Bundle
 import android.util.Log.i
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -41,7 +40,7 @@ class HistoryFragment : Fragment() {
     lateinit var app: App
 
     @Inject
-    lateinit var historyRepo: HistoryRepository
+    lateinit var historyRepoImpl: HistoryRepository
 
     private lateinit var adapter: HistoryFragmentAdapter
 
@@ -76,9 +75,9 @@ class HistoryFragment : Fragment() {
         app.appComponent.inject(this)
 
         historySwipeRefreshLayout.setOnRefreshListener {
-            historyRepo.tryUpdate()
+            historyRepoImpl.tryUpdate()
         }
-        historyRepo.loading.observe(this, Observer {
+        historyRepoImpl.loading().observe(this, Observer {
             if (it != null) {
                 historySwipeRefreshLayout.isRefreshing = it
             }

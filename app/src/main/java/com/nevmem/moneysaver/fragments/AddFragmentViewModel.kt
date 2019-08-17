@@ -18,7 +18,7 @@ class AddFragmentViewModel(application: Application) : AndroidViewModel(applicat
     private var app: App = application as App
 
     @Inject
-    lateinit var historyRepo: HistoryRepository
+    lateinit var historyRepoImpl: HistoryRepository
 
     @Inject
     lateinit var tagsRepo: TagsRepository
@@ -62,7 +62,7 @@ class AddFragmentViewModel(application: Application) : AndroidViewModel(applicat
 
     fun add(record: Record) {
         addingState.postValue(LoadingState)
-        historyRepo.addRecord(record) {
+        historyRepoImpl.addRecord(record) {
             if (it == null) {
                 addingState.postValue(SuccessState("Successfully added record"))
             } else {

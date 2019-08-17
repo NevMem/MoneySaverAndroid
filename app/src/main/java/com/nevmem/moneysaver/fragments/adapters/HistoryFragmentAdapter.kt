@@ -45,7 +45,7 @@ class HistoryFragmentAdapter(
     lateinit var tagsRepo: TagsRepository
 
     @Inject
-    lateinit var historyRepo: HistoryRepository
+    lateinit var historyRepoImpl: HistoryRepository
 
     class ListenableToggleableArray(fromArray: List<String>) {
         private var array = ArrayList<String>()
@@ -114,7 +114,7 @@ class HistoryFragmentAdapter(
 
     init {
         (activity.application as App).appComponent.inject(this)
-        historyRepo.history.observe(lifeCycleOwner, Observer {
+        historyRepoImpl.history().observe(lifeCycleOwner, Observer {
             history = it
             applyFilter()
         })
@@ -142,7 +142,7 @@ class HistoryFragmentAdapter(
     }
 
     private fun deleteRecord(record: Record) {
-        historyRepo.delete(record)
+        historyRepoImpl.delete(record)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
