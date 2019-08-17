@@ -10,6 +10,7 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.data.Info
 import com.nevmem.moneysaver.data.repositories.InfoRepository
+import com.nevmem.moneysaver.utils.TypeUtils
 import kotlinx.android.synthetic.main.dashboard_page_descriptions.*
 import javax.inject.Inject
 
@@ -73,26 +74,26 @@ class DashboardPageDescriptions : Fragment() {
                 InfoMode.Week -> run {
                     weekButton.isActivated = true
                     description.text = "Your last week info"
-                    value.text = String.format("%.2f", it.sum7Days)
-                    averageValue.text = String.format("%.2f", it.average7Days)
+                    value.text = TypeUtils.formatDouble(it.sum7Days)
+                    averageValue.text = TypeUtils.formatDouble(it.average7Days)
                 }
                 InfoMode.ThirtyDays -> run {
                     _30daysButton.isActivated = true
                     description.text = "Your last 30 days info"
-                    value.text = String.format("%.2f", it.sum30Days)
-                    averageValue.text = String.format("%.2f", it.average30Days)
+                    value.text = TypeUtils.formatDouble(it.sum30Days)
+                    averageValue.text = TypeUtils.formatDouble(it.average30Days)
                 }
                 InfoMode.Full -> run {
                     fullButton.isActivated = true
                     description.text = "All outcomes"
-                    value.text = String.format("%.2f", it.totalSpend)
-                    averageValue.text = String.format("%.2f", it.average)
+                    value.text = TypeUtils.formatDouble(it.totalSpend)
+                    averageValue.text = TypeUtils.formatDouble(it.average)
                 }
                 InfoMode.FullDaily -> run {
                     fullDailyButton.isActivated = true
                     description.text = "All daily outcomes"
-                    value.text = String.format("%.2f", it.dailySum)
-                    averageValue.text = String.format("%.2f", it.dailyAverage)
+                    value.text = TypeUtils.formatDouble(it.dailySum)
+                    averageValue.text = TypeUtils.formatDouble(it.dailyAverage)
                 }
             }
         }
