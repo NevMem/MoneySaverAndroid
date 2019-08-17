@@ -14,6 +14,7 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.activity.adapters.MonthDescriptionLabelsAdapter
 import com.nevmem.moneysaver.data.repositories.InfoRepository
+import com.nevmem.moneysaver.utils.TypeUtils
 import com.nevmem.moneysaver.views.PieChart
 import kotlinx.android.synthetic.main.month_description_page.*
 import javax.inject.Inject
@@ -49,8 +50,8 @@ class MonthDescriptionActivity : AppCompatActivity() {
         viewModel.monthDescription.observe(this, Observer {
             if (it != null) {
                 setupChart(it.byTagTotal)
-                monthSpend.text = it.total.toString()
-                monthDailySpend.text = it.totalDaily.toString()
+                monthSpend.text = TypeUtils.formatDouble(it.total)
+                monthDailySpend.text = TypeUtils.formatDouble(it.totalDaily)
                 adapter.changeData(it.byTagTotal)
                 labelsInfoRecycler.scheduleLayoutAnimation()
                 headerText.text = it.monthId
