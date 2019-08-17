@@ -24,14 +24,15 @@ class DashboardPageMonthDescriptionFragmentViewModel(application: Application) :
         app.appComponent.inject(this)
         currentLiveData = Transformations.map(infoRepo.monthDescriptions()) { descriptions ->
             run {
-                if (index >= descriptions.size)
-                    index = descriptions.size - 1
-                if (index < 0)
-                    index = 0
-                if (descriptions.isEmpty())
+                if (descriptions.isEmpty()) {
                     null
-                else
+                } else {
+                    if (index >= descriptions.size)
+                        index = descriptions.size - 1
+                    if (index < 0)
+                        index = 0
                     descriptions[index]
+                }
             }
         }
         monthDescription.addSource(currentLiveData) { value -> monthDescription.postValue(value) }
