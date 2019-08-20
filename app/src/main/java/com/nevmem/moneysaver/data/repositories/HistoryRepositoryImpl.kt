@@ -28,7 +28,7 @@ class HistoryRepositoryImpl @Inject constructor(
 
     private val editingState = MutableLiveData<RequestState>(NoneState)
 
-    private val tag = "HISTORY_REPOSITORY"
+    private val tag = "HISTORY_REPOSITORY_IMPL"
 
     init {
         i(tag, "init")

@@ -40,7 +40,7 @@ class HistoryFragment : Fragment() {
     lateinit var app: App
 
     @Inject
-    lateinit var historyRepoImpl: HistoryRepository
+    lateinit var historyRepo: HistoryRepository
 
     private lateinit var adapter: HistoryFragmentAdapter
 
@@ -75,9 +75,9 @@ class HistoryFragment : Fragment() {
         app.appComponent.inject(this)
 
         historySwipeRefreshLayout.setOnRefreshListener {
-            historyRepoImpl.tryUpdate()
+            historyRepo.tryUpdate()
         }
-        historyRepoImpl.loading().observe(this, Observer {
+        historyRepo.loading().observe(this, Observer {
             if (it != null) {
                 historySwipeRefreshLayout.isRefreshing = it
             }

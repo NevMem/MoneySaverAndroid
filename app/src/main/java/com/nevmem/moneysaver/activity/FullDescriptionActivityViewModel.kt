@@ -12,13 +12,13 @@ import javax.inject.Inject
 class FullDescriptionActivityViewModel(app: Application) : AndroidViewModel(app) {
     var record = MutableLiveData<Record>(Record())
 
-    fun editingState() = historyRepoImpl.editingState()
+    fun editingState() = historyRepo.editingState()
 
     private var changedName: String? = null
     private var changedValue: Double? = null
 
     @Inject
-    lateinit var historyRepoImpl: HistoryRepository
+    lateinit var historyRepo: HistoryRepository
 
     var id: String = ""
         set(value) {
@@ -88,7 +88,7 @@ class FullDescriptionActivityViewModel(app: Application) : AndroidViewModel(app)
     fun save() {
         val currentRecord = record.value ?: return
         insertChangedFields(currentRecord)
-        historyRepoImpl.editRecord(currentRecord)
+        historyRepo.editRecord(currentRecord)
     }
 
     fun currentDate(): RecordDate {
@@ -97,11 +97,11 @@ class FullDescriptionActivityViewModel(app: Application) : AndroidViewModel(app)
     }
 
     fun stopEditing() {
-        historyRepoImpl.stopEditing()
+        historyRepo.stopEditing()
     }
 
     private fun idChanged() {
-        val allHistory = historyRepoImpl.history().value ?: return
+        val allHistory = historyRepo.history().value ?: return
         allHistory.forEach {
             if (it.id == id)
                 record.postValue(it)
