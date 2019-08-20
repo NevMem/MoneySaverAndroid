@@ -12,7 +12,7 @@ import javax.inject.Inject
 class FullDescriptionActivityViewModel(app: Application) : AndroidViewModel(app) {
     var record = MutableLiveData<Record>(Record())
 
-    fun editingState() = historyRepo.editingState
+    fun editingState() = historyRepo.editingState()
 
     private var changedName: String? = null
     private var changedValue: Double? = null
@@ -101,7 +101,7 @@ class FullDescriptionActivityViewModel(app: Application) : AndroidViewModel(app)
     }
 
     private fun idChanged() {
-        val allHistory = historyRepo.history.value ?: return
+        val allHistory = historyRepo.history().value ?: return
         allHistory.forEach {
             if (it.id == id)
                 record.postValue(it)

@@ -114,7 +114,7 @@ class HistoryFragmentAdapter(
 
     init {
         (activity.application as App).appComponent.inject(this)
-        historyRepo.history.observe(lifeCycleOwner, Observer {
+        historyRepo.history().observe(lifeCycleOwner, Observer {
             history = it
             applyFilter()
         })

@@ -7,9 +7,7 @@ import com.nevmem.moneysaver.data.Features
 import com.nevmem.moneysaver.data.SettingsManager
 import com.nevmem.moneysaver.data.SettingsManagerImpl
 import com.nevmem.moneysaver.data.UserHolder
-import com.nevmem.moneysaver.data.repositories.InfoRepository
-import com.nevmem.moneysaver.data.repositories.OfflineInfoRepositoryImpl
-import com.nevmem.moneysaver.data.repositories.OnlineInfoRepositoryImpl
+import com.nevmem.moneysaver.data.repositories.*
 import com.nevmem.moneysaver.room.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -50,6 +48,10 @@ class DataModule(private var context: Context) {
     fun providesSettingsManager(impl: SettingsManagerImpl): SettingsManager {
         return impl
     }
+
+    @Provides
+    @Singleton
+    fun providesHistoryRepository(impl: HistoryRepositoryImpl): HistoryRepository = impl
 
     @Provides
     @Singleton
