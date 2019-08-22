@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.utils.TypeUtils
 import com.nevmem.moneysaver.views.PieChart
 import kotlinx.android.synthetic.main.large_lable_row.view.*
 
@@ -31,7 +32,7 @@ class MonthDescriptionLabelsAdapter(private var ctx: Context) :
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.name.text = data[position].name
         holder.badge.background.setColorFilter(data[position].color, PorterDuff.Mode.MULTIPLY)
-        holder.value.text = data[position].value.toString()
+        holder.value.text = TypeUtils.formatDouble(data[position].value)
     }
 
     class VH(view: View) : RecyclerView.ViewHolder(view) {

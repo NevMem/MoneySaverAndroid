@@ -30,23 +30,23 @@ class OfflineInfoRepositoryImpl @Inject constructor() : InfoRepository {
     }
 
     override fun info(): LiveData<Info> {
-        return Transformations.map(historyRepository.history) { records -> makeInfo(records) }
+        return Transformations.map(historyRepository.history()) { records -> makeInfo(records) }
     }
 
     override fun monthDescriptions(): LiveData<List<MonthDescription>> {
-        return Transformations.map(historyRepository.history) { records -> makeMonthDescriptions(records) }
+        return Transformations.map(historyRepository.history()) { records -> makeMonthDescriptions(records) }
     }
 
     override fun state(): LiveData<RequestState> {
         val mediator = MediatorLiveData<RequestState>()
 
-        mediator.addSource(historyRepository.error) { value -> run {
+        mediator.addSource(historyRepository.error()) { value -> run {
             if (value.isNotEmpty()) {
                 mediator.postValue(ErrorState(value))
                 currentState = RepoState.ErrorState
             }
         }}
-        mediator.addSource(historyRepository.loading) {value -> run {
+        mediator.addSource(historyRepository.loading()) { value -> run {
             if (value) {
                 mediator.postValue(LoadingState)
                 currentState = RepoState.LoadingState
