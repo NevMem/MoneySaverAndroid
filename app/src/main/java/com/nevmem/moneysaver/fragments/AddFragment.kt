@@ -45,24 +45,30 @@ class AddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.tags.observe(this, Observer {
-            if (it != null) {
-                val strings = ArrayList<String>()
-                it.forEach { tag ->
-                    strings.add(tag.name)
-                }
-                tags.adapter =
-                    ArrayAdapter<String>(app, R.layout.default_spinner_item_layout, strings)
+            if (it == null)
+                return@Observer
+            val strings = it.map { tag -> tag.name }
+            val alreadyPicked = tags.selectedItem
+            tags.adapter =
+                ArrayAdapter<String>(app, R.layout.default_spinner_item_layout, strings)
+            if (alreadyPicked != null) {
+                val index = strings.indexOfFirst { it == alreadyPicked }
+                if (index != -1)
+                    tags.setSelection(index)
             }
         })
 
         viewModel.wallets.observe(this, Observer {
-            if (it != null) {
-                val strings = ArrayList<String>()
-                it.forEach { wallet ->
-                    strings.add(wallet.name)
-                }
-                chooseWallet.adapter =
-                    ArrayAdapter<String>(app, R.layout.default_spinner_item_layout, strings)
+            if (it == null)
+                return@Observer
+            val strings = it.map { wallet -> wallet.name }
+            val alreadyPicked = chooseWallet.selectedItem
+            chooseWallet.adapter =
+                ArrayAdapter<String>(app, R.layout.default_spinner_item_layout, strings)
+            if (alreadyPicked != null) {
+                val index = strings.indexOfFirst { it == alreadyPicked }
+                if (index != -1)
+                    chooseWallet.setSelection(index)
             }
         })
 
