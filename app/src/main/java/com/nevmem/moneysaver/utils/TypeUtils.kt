@@ -7,11 +7,5 @@ abstract class TypeUtils {
                 return String.format("%.2f", double)
             return "null"
         }
-
-        fun formatFloat(float: Float?): String {
-            if (float != null)
-                return String.format("%.2f", float)
-            return "null"
-        }
     }
 }

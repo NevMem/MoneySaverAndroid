@@ -12,7 +12,5 @@ abstract class TextHelper {
         }
 
         fun getTextWidth(p: Paint, text: String): Int = getTextRect(p, text).width()
-
-        fun getTextHeight(p: Paint, text: String): Int = getTextRect(p, text).height()
     }
 }
