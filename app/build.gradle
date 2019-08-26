@@ -19,10 +19,25 @@ android {
         versionName "1.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        release {
+            if (System.env.SIGN_APP != null) {
+                storeFile file(System.env.RELEASE_SIGNING_KEY_FILE)
+                storePassword System.env.RELEASE_SIGN_PASSWORD
+                keyAlias System.env.RELEASE_SIGN_KEY_ALIAS
+                keyPassword System.env.RELEASE_SIGN_KEY_PASSWORD
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (System.env.SIGN_APP != null) {
+                signingConfig signingConfigs.release
+            }
         }
 
         debug {
