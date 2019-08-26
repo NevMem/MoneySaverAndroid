@@ -26,10 +26,6 @@ class DashboardFragmentViewModel(application: Application) : AndroidViewModel(ap
 
     fun userHolder() = userHolder.user
 
-    fun loadingState() {
-
-    }
-
     fun update() {
         infoRepo.tryUpdate()
     }

@@ -52,7 +52,7 @@ class AddFragment : Fragment() {
             tags.adapter =
                 ArrayAdapter<String>(app, R.layout.default_spinner_item_layout, strings)
             if (alreadyPicked != null) {
-                val index = strings.indexOfFirst { it == alreadyPicked }
+                val index = strings.indexOfFirst { value -> value == alreadyPicked }
                 if (index != -1)
                     tags.setSelection(index)
             }
@@ -66,7 +66,7 @@ class AddFragment : Fragment() {
             chooseWallet.adapter =
                 ArrayAdapter<String>(app, R.layout.default_spinner_item_layout, strings)
             if (alreadyPicked != null) {
-                val index = strings.indexOfFirst { it == alreadyPicked }
+                val index = strings.indexOfFirst { value -> value == alreadyPicked }
                 if (index != -1)
                     chooseWallet.setSelection(index)
             }

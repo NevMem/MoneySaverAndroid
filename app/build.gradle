@@ -1,11 +1,11 @@
+plugins {
+    id "de.undercouch.download" version "4.0.0"
+}
+
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'kotlin-kapt'
-
 apply plugin: 'io.fabric'
 
 android {
@@ -81,3 +81,20 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+task googleServicesJsonResolver {
+    def fileName = 'app/google-services.json'
+    def jsonFile = new File(fileName)
+    if (jsonFile.exists()) {
+        println("google-services.json file is FOUND")
+    } else {
+        println("google-services.json file is NOT FOUND")
+        if (System.env.GOOGLE_SERVICES_JSON_FILE_PATH == null)
+            throw IllegalStateException("GOOGLE_SERVICES_JSON_FILE_PATH is not set cannot proceed copy task")
+        copy {
+            from System.env.GOOGLE_SERVICES_JSON_FILE_PATH
+            into './'
+        }
+        println("LOADED")
+    }
+}

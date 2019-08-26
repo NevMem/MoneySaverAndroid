@@ -2,7 +2,6 @@ package com.nevmem.moneysaver.data
 
 import android.util.Log
 import com.nevmem.moneysaver.room.AppDatabase
-import com.nevmem.moneysaver.room.dao.FeaturesDao_Impl
 import com.nevmem.moneysaver.room.entity.Feature
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
