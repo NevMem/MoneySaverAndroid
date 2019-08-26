@@ -92,7 +92,6 @@ class HistoryFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        println("On activity result: $requestCode")
         if (requestCode == FULL_DESCRIPTION_PAGE_CALL) {
             adapter.handleReturn()
         }

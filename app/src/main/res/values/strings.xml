@@ -8,13 +8,9 @@
     <string name="defaultRecordValue">1000</string>
     <string name="defaultUserName">Some user</string>
     <string name="logout">Log out</string>
-    <string name="defaultTotallySpend">Default total spend: 1000</string>
-    <string name="defaultAverage">Average: 1200.12 per day</string>
     <string name="chooseTag">Tag:</string>
     <string name="chooseWallet">Wallet:</string>
     <string name="addRecordHeader">New record</string>
-    <string name="totalSpend">Total spend:</string>
-    <string name="averageSpending">Average spending:</string>
     <string name="amountOfDays">Tracked days:</string>
     <string name="defaultTrackedDays">Over 9000 years</string>
     <string name="info_text_1">Time info(click to change):</string>
@@ -23,7 +19,6 @@
     <string name="search_icon_content_description_string">Search icon</string>
     <string name="search_string">Search</string>
     <string name="badge_for_label_content_description_string">Just a badge for label</string>
-    <string name="delete_record_icon_content_description_string">Delete record icon</string>
     <string name="success_image_content_description_string">Success image</string>
     <string name="error_image_content_description_string">Error image</string>
     <string name="login_page_register_string">Register</string>
@@ -50,8 +45,8 @@
     <string name="pm_string">PM</string>
     <string name="edit_record_string">Edit record</string>
     <string name="browse_templates_string">Browse your templates</string>
-    <string name="new_template_dialog_tname_string">Name</string>
-    <string name="new_template_dialog_tvalue_string">Value</string>
+    <string name="new_template_dialog_name_string">Name</string>
+    <string name="new_template_dialog_value_string">Value</string>
     <string name="month_description_page_prev_button_content_description_string">Previous month button</string>
     <string name="month_description_page_next_button_content_description_string">Next month button</string>
     <string name="previous_month_string">Previous month</string>
@@ -65,7 +60,6 @@
     <string name="create_record_string">Create</string>
     <string name="expand_icon_description_string">Expand icon</string>
     <string name="value_string">Value</string>
-    <string name="choose_string">Choose</string>
     <string name="choose_date_string">Choose date</string>
     <string name="date_semicolon_string">Date:</string>
     <string name="time_semicolon_string">Time:</string>
@@ -73,7 +67,6 @@
     <string name="templates_page_menu_string">Templates</string>
     <string name="new_record_page_menu_string">New record</string>
     <string name="history_page_menu_string">History</string>
-    <string name="enter_field_for_template_string">Specify fields for new template</string>
     <string name="enter_string_string">Enter string</string>
     <string name="use_it_button_string">USE IT</string>
     <string name="full_button_string">Full</string>

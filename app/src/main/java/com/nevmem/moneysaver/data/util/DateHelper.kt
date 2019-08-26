@@ -68,9 +68,9 @@ abstract class DateHelper {
             return result
         }
 
-        fun sameDay(first: RecordDate, second: RecordDate): Boolean {
+        private fun sameDay(first: RecordDate, second: RecordDate): Boolean {
             return first.year == second.year && first.month == second.month
-                && first.day == second.day;
+                && first.day == second.day
         }
 
         fun amountOfDaysBetween(first: RecordDate?, second: RecordDate?): Int {

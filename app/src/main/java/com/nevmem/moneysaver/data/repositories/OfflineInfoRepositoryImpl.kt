@@ -63,11 +63,11 @@ class OfflineInfoRepositoryImpl @Inject constructor() : InfoRepository {
     private fun makeInfo(records: ArrayList<Record>): Info {
         val currentDate = RecordDate.currentDate()
         val weekBefore = DateHelper.dayBefore(currentDate, 7)
-        val _30DaysBefore = DateHelper.dayBefore(currentDate, 30)
+        val thirtyDaysBefore = DateHelper.dayBefore(currentDate, 30)
 
         var totalSpend = 0.0
         var weekSpend = 0.0
-        var _30DaysSpend = 0.0
+        var thirtyDaysSpend = 0.0
         var minDate: RecordDate? = null
         var totalDaily = 0.0
 
@@ -90,8 +90,8 @@ class OfflineInfoRepositoryImpl @Inject constructor() : InfoRepository {
             if (it.date in weekBefore..currentDate) {
                 weekSpend += it.value
             }
-            if (it.date in _30DaysBefore..currentDate) {
-                _30DaysSpend += it.value
+            if (it.date in thirtyDaysBefore..currentDate) {
+                thirtyDaysSpend += it.value
             }
             if (it.date in sumDayDate..currentDate) {
                 val index = DateHelper.amountOfDaysBetween(sumDayDate, it.date) - 1
@@ -112,7 +112,7 @@ class OfflineInfoRepositoryImpl @Inject constructor() : InfoRepository {
         val info = Info()
         info.totalSpend = totalSpend
         info.sum7Days = weekSpend
-        info.sum30Days = _30DaysSpend
+        info.sum30Days = thirtyDaysSpend
         info.dailySum = totalDaily
 
         if (minDate != null) {
@@ -122,10 +122,10 @@ class OfflineInfoRepositoryImpl @Inject constructor() : InfoRepository {
                 info.average7Days = weekSpend / DateHelper.amountOfDaysBetween(minDate, currentDate)
             }
 
-            if (minDate <= _30DaysBefore) {
-                info.average30Days = _30DaysSpend / 30
+            if (minDate <= thirtyDaysBefore) {
+                info.average30Days = thirtyDaysSpend / 30
             } else {
-                info.average30Days = _30DaysSpend / DateHelper.amountOfDaysBetween(minDate, currentDate)
+                info.average30Days = thirtyDaysSpend / DateHelper.amountOfDaysBetween(minDate, currentDate)
             }
         }
 
