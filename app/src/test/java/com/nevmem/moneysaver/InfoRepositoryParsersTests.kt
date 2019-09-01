@@ -29,6 +29,8 @@ class InfoRepositoryParsersTests {
         expectedInfo.sum7Days = 6765.0
         expectedInfo.sum30Days = 6765.0
         expectedInfo.trackedDays = 5
+        expectedInfo.dailySum = 6765.0
+        expectedInfo.dailyAverage = 128.0
         Assert.assertEquals(expectedInfo, parsed)
     }
 }
