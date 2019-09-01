@@ -27,7 +27,7 @@ abstract class InfoRepositoryParsers {
             return timestamp
         }
 
-        private fun parseInfo(json: JSONObject): Info? {
+        fun parseInfo(json: JSONObject): Info? {
             val info = Info()
             info.average = optDouble(json, "average") ?: return null
             info.sum30Days = optDouble(json, "sum30Days") ?: return null

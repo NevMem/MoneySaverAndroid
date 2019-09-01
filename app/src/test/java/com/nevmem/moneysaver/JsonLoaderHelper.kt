@@ -6,7 +6,7 @@ import java.io.*
 abstract class JsonLoaderHelper {
     companion object {
         fun loadJson(filename: String): JSONObject {
-            val file = File("src\\test\\java\\com\\nevmem\\moneysaver\\resources\\$filename")
+            val file = File("./src/test/java/com/nevmem/moneysaver/resources/$filename")
             return loadJson(FileInputStream(file))
         }
 
