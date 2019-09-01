@@ -1,0 +1,46 @@
+{
+  "totalSpend": 6765,
+  "amountOfDays": 5,
+  "average": 1353,
+  "dailySum": 6765,
+  "sum30Days": 6765,
+  "average30Days": 1353,
+  "sum7Days": 6765,
+  "average7Days": 1353,
+  "dailyAverage": 128,
+  "daySum": {
+    "2019-3-29": 500,
+    "2019-3-30": 0,
+    "2019-3-31": 0,
+    "2019-4-1": 4687,
+    "2019-4-2": 1578
+  },
+  "monthSum": {
+    "2019.4": {
+      "total": 6265,
+      "monthTimestamp": 24232,
+      "totalDaily": 6265,
+      "average": 208.83,
+      "averageDaily": 208.83,
+      "byTag": {
+        "The first tag": {
+          "daily": 6265,
+          "total": 6265
+        }
+      }
+    },
+    "2019.3": {
+      "total": 500,
+      "monthTimestamp": 24231,
+      "totalDaily": 500,
+      "average": 16.13,
+      "averageDaily": 16.13,
+      "byTag": {
+        "The first tag": {
+          "daily": 500,
+          "total": 500
+        }
+      }
+    }
+  }
+}
