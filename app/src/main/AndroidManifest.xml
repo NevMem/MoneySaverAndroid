@@ -13,20 +13,20 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activity.SplashScreen">
+        <activity android:name="com.nevmem.moneysaver.app.activity.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginPageActivity" />
-        <activity android:name=".activity.FullDescriptionActivity" />
-        <activity android:name=".activity.MainPage" />
-        <activity android:name=".activity.MonthDescriptionActivity" />
-        <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.SettingsActivity" />
-        <activity android:name=".activity.DevSettingsActivity" />
+        <activity android:name="com.nevmem.moneysaver.app.activity.LoginPageActivity" />
+        <activity android:name="com.nevmem.moneysaver.app.activity.FullDescriptionActivity" />
+        <activity android:name="com.nevmem.moneysaver.app.activity.MainPage" />
+        <activity android:name="com.nevmem.moneysaver.app.activity.MonthDescriptionActivity" />
+        <activity android:name="com.nevmem.moneysaver.app.activity.RegisterActivity" />
+        <activity android:name="com.nevmem.moneysaver.app.activity.SettingsActivity" />
+        <activity android:name="com.nevmem.moneysaver.app.activity.DevSettingsActivity" />
     </application>
 
 </manifest>

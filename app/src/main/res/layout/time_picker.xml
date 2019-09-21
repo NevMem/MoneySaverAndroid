@@ -88,7 +88,7 @@
                     tools:visibility="gone"
                     android:gravity="end" android:layout_width="match_parent" android:layout_height="match_parent"
             >
-                <com.nevmem.moneysaver.views.RadialPicker
+                <com.nevmem.moneysaver.app.views.RadialPicker
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/hourPicker"

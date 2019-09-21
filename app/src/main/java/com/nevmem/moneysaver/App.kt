@@ -2,11 +2,11 @@ package com.nevmem.moneysaver
 
 import android.app.Application
 import android.util.Log.i
-import com.nevmem.moneysaver.dagger.components.AppComponent
-import com.nevmem.moneysaver.dagger.components.DaggerAppComponent
-import com.nevmem.moneysaver.dagger.modules.DataModule
-import com.nevmem.moneysaver.dagger.modules.NetworkModule
-import com.nevmem.moneysaver.data.Info
+import com.nevmem.moneysaver.app.dagger.components.AppComponent
+import com.nevmem.moneysaver.app.dagger.components.DaggerAppComponent
+import com.nevmem.moneysaver.app.dagger.modules.DataModule
+import com.nevmem.moneysaver.app.dagger.modules.NetworkModule
+import com.nevmem.moneysaver.app.data.Info
 
 class App : Application() {
     var info: Info
