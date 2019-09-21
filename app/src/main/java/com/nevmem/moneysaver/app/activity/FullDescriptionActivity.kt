@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.app.activity.viewModels.FullDescriptionActivityViewModel
 import com.nevmem.moneysaver.app.data.Record
 import com.nevmem.moneysaver.app.data.util.ErrorState
 import com.nevmem.moneysaver.app.data.util.LoadingState

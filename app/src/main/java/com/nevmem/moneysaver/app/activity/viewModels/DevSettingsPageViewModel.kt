@@ -1,4 +1,4 @@
-package com.nevmem.moneysaver.app.activity
+package com.nevmem.moneysaver.app.activity.viewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -8,10 +8,9 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.app.data.Features
 import com.nevmem.moneysaver.app.data.SettingsManager
 import com.nevmem.moneysaver.app.data.SettingsManagerListener
+import com.nevmem.moneysaver.common.data.ToggleableFeature
 import java.lang.ref.WeakReference
 import javax.inject.Inject
-
-class ToggleableFeature(val featureName: String, val description: String, val isEnabled: Boolean)
 
 class DevSettingsPageViewModel(app: Application): AndroidViewModel(app), SettingsManagerListener {
     @Inject
@@ -35,7 +34,13 @@ class DevSettingsPageViewModel(app: Application): AndroidViewModel(app), Setting
     override fun onFeaturesUpdated() {
         val arr = ArrayList<ToggleableFeature>()
         Features.availableFeatures.forEach {
-            arr.add(ToggleableFeature(it.second, it.first, settingsManager.isFeatureEnabled(it.second)))
+            arr.add(
+                ToggleableFeature(
+                    it.second,
+                    it.first,
+                    settingsManager.isFeatureEnabled(it.second)
+                )
+            )
         }
         features.postValue(arr)
     }
