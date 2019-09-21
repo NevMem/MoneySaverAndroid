@@ -7,7 +7,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import com.nevmem.moneysaver.R
-import com.nevmem.moneysaver.app.exceptions.WrongChartDataException
+import com.nevmem.moneysaver.common.exceptions.WrongChartDataException
 import com.nevmem.moneysaver.app.utils.UnitsHelper
 
 class PieChart(private var ctx: Context, attrs: AttributeSet) : View(ctx, attrs) {

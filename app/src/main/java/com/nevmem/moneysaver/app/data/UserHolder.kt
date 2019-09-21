@@ -1,7 +1,7 @@
 package com.nevmem.moneysaver.app.data
 
 import android.content.Context
-import com.nevmem.moneysaver.app.exceptions.UserCredentialsNotFound
+import com.nevmem.moneysaver.common.exceptions.UserCredentialsNotFound
 import org.json.JSONObject
 
 class UserHolder(var context: Context) {

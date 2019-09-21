@@ -1,7 +1,7 @@
 package com.nevmem.moneysaver.app.data
 
 import android.content.Context
-import com.nevmem.moneysaver.app.exceptions.UserCredentialsNotFound
+import com.nevmem.moneysaver.common.exceptions.UserCredentialsNotFound
 
 class User(var login: String, var token: String, var firstName: String, var lastName: String) {
     override fun toString(): String {
