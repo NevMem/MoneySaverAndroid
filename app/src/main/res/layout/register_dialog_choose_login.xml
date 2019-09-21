@@ -22,7 +22,7 @@
                 android:paddingStart="4dp" android:paddingEnd="4dp"
         />
 
-        <com.nevmem.moneysaver.views.CheckableEditText
+        <com.nevmem.moneysaver.app.views.CheckableEditText
                 android:id="@+id/loginField"
                 app:hint="@string/Login"
                 android:layout_width="match_parent"

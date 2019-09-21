@@ -1,9 +1,9 @@
 package com.nevmem.moneysaver
 
-import com.nevmem.moneysaver.data.util.InfoRepositoryParsers
-import com.nevmem.moneysaver.data.util.ParsedValue
+import com.nevmem.moneysaver.app.data.util.InfoRepositoryParsers
+import com.nevmem.moneysaver.app.data.util.ParsedValue
 import com.nevmem.moneysaver.JsonLoaderHelper.Companion.loadJson
-import com.nevmem.moneysaver.data.Info
+import com.nevmem.moneysaver.app.data.Info
 import org.junit.Assert
 import org.junit.Test
 

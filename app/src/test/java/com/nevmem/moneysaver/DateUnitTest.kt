@@ -1,6 +1,6 @@
 package com.nevmem.moneysaver
 
-import com.nevmem.moneysaver.data.RecordDate
+import com.nevmem.moneysaver.app.data.RecordDate
 import org.json.JSONObject
 import org.junit.Assert
 import org.junit.Test

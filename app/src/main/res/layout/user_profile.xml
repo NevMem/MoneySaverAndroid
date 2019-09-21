@@ -42,7 +42,7 @@
                     android:background="@color/profile_color"
             />
 
-            <com.nevmem.moneysaver.views.BarChart
+            <com.nevmem.moneysaver.app.views.BarChart
                     android:id="@+id/sumDayChart"
                     android:layout_height="120dp"
                     android:layout_width="0dp"
@@ -96,7 +96,7 @@
             app:cardBackgroundColor="@color/profile_color"
     >
         <fragment
-                android:name="com.nevmem.moneysaver.fragments.DashboardPageDescriptions"
+                android:name="com.nevmem.moneysaver.app.fragments.DashboardPageDescriptions"
                 android:id="@+id/weekMonthInfo"
                 android:layout_height="wrap_content" android:layout_width="match_parent"
         />
@@ -104,7 +104,7 @@
 
     <fragment
             android:layout_marginTop="8dp"
-            android:name="com.nevmem.moneysaver.fragments.DashboardPageMonthDescriptionFragment"
+            android:name="com.nevmem.moneysaver.app.fragments.DashboardPageMonthDescriptionFragment"
             android:layout_width="match_parent" android:layout_height="295dp"
             app:chartPadding="30" android:id="@+id/monthDescription"
             tools:visibility="gone"
