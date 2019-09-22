@@ -3,7 +3,9 @@ package com.nevmem.moneysaver.app.data.repositories
 import android.util.Log.i
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
+import com.nevmem.moneysaver.app.data.Features
 import com.nevmem.moneysaver.app.data.NetworkQueueBase
+import com.nevmem.moneysaver.app.data.SettingsManager
 import com.nevmem.moneysaver.app.data.UserHolder
 import com.nevmem.moneysaver.app.data.util.*
 import com.nevmem.moneysaver.app.room.AppDatabase
@@ -17,7 +19,8 @@ class TagsRepository @Inject constructor(
     var networkQueue: NetworkQueueBase,
     var appDatabase: AppDatabase,
     var executor: Executor,
-    var userHolder: UserHolder
+    var userHolder: UserHolder,
+    val settingsManager: SettingsManager
 ) {
     var loading = MutableLiveData<Boolean>(false)
     var error = MutableLiveData<String>("")
@@ -102,9 +105,16 @@ class TagsRepository @Inject constructor(
     private fun loadFromDatabase() {
         executor.execute {
             with (appDatabase.tagsDao()) {
-                tags.postValue(getAll())
+                tags.postValue(predictOrder(getAll()))
             }
         }
+    }
+
+    private fun predictOrder(tags: List<Tag>): List<Tag> {
+        val list = ArrayList<Tag>()
+        list.addAll(tags)
+
+        return list
     }
 
     fun getTagsAsList(): List<String> {
