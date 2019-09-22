@@ -18,6 +18,7 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.app.MainPageMediator
 import com.nevmem.moneysaver.app.activity.adapters.MainPageViewPager2Adapter
+import com.nevmem.moneysaver.ui.CustomSnackbar
 import kotlinx.android.synthetic.main.main_page_layout.*
 
 class MainPage : AppCompatActivity(), MainPageMediator {
@@ -77,15 +78,11 @@ class MainPage : AppCompatActivity(), MainPageMediator {
         anchor.isUserInputEnabled = false
 
         mainPageNavigation.selectedItemId = R.id.dashboardPageNavigation
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            showSnackBar("Hello")
-        }, 2000)
     }
 
     override fun showSnackBar(str: String) {
         hideNavigationBar {
-            showSnackbar(str) {
+            showSnackbarWithCallback(str) {
                 showNavigationBar()
             }
         }
@@ -95,10 +92,10 @@ class MainPage : AppCompatActivity(), MainPageMediator {
         = mainPageNavigation.height +
         (mainPageNavigation.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin
 
-    private fun showSnackbar(str: String, onEnd: (() -> Unit)? = null) {
-        val snack = Snackbar.make(rootView, str, Snackbar.LENGTH_LONG)
-        snack.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+    private fun showSnackbarWithCallback(str: String, onEnd: (() -> Unit)? = null) {
+        val snack = CustomSnackbar.make(rootView, str, Snackbar.LENGTH_LONG)
+        snack.addCallback(object : BaseTransientBottomBar.BaseCallback<CustomSnackbar>() {
+            override fun onDismissed(transientBottomBar: CustomSnackbar?, event: Int) {
                 super.onDismissed(transientBottomBar, event)
                 onEnd?.invoke()
             }
