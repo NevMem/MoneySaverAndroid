@@ -36,7 +36,7 @@ class RecordDate : Comparable<RecordDate> {
 
     constructor()
 
-    internal constructor(year: Int, month: Int, day: Int, hour: Int, minute: Int) {
+    constructor(year: Int, month: Int, day: Int, hour: Int, minute: Int) {
         this.year = year
         this.month = month
         this.day = day
@@ -44,7 +44,7 @@ class RecordDate : Comparable<RecordDate> {
         this.minute = minute
     }
 
-    internal constructor(other: RecordDate): this(other.year, other.month, other.day, other.hour, other.minute)
+    constructor(other: RecordDate): this(other.year, other.month, other.day, other.hour, other.minute)
 
     fun toJSON(): JSONObject {
         val json = JSONObject()
