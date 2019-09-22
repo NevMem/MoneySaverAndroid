@@ -5,7 +5,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.nevmem.moneysaver.R
-import com.nevmem.moneysaver.app.data.RecordDate
+import com.nevmem.moneysaver.common.data.RecordDate
 import kotlinx.android.synthetic.main.time_picker.view.*
 
 class CustomTimePicker(private var ctx: Context, private var currentDate: RecordDate) : ConstraintLayout(ctx) {

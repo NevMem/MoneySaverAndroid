@@ -3,8 +3,8 @@ package com.nevmem.moneysaver.app.data.util
 import com.nevmem.moneysaver.Vars.Companion.corruptedRecord
 import com.nevmem.moneysaver.Vars.Companion.unknownFormat
 import com.nevmem.moneysaver.Vars.Companion.unspecifiedData
-import com.nevmem.moneysaver.app.data.Record
-import com.nevmem.moneysaver.app.data.RecordDate
+import com.nevmem.moneysaver.common.data.Record
+import com.nevmem.moneysaver.common.data.RecordDate
 import org.json.JSONObject
 
 abstract class HistoryRepositoryParsers {

@@ -1,7 +1,7 @@
-package com.nevmem.moneysaver.app.room.converters
+package com.nevmem.moneysaver.common.converters
 
 import androidx.room.TypeConverter
-import com.nevmem.moneysaver.app.data.RecordDate
+import com.nevmem.moneysaver.common.data.RecordDate
 import org.json.JSONObject
 
 class HistoryConverter {

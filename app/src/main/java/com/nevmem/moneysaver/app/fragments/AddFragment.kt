@@ -11,8 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
-import com.nevmem.moneysaver.app.data.Record
-import com.nevmem.moneysaver.app.data.RecordDate
+import com.nevmem.moneysaver.common.data.Record
+import com.nevmem.moneysaver.common.data.RecordDate
 import com.nevmem.moneysaver.app.data.util.ErrorState
 import com.nevmem.moneysaver.app.data.util.LoadingState
 import com.nevmem.moneysaver.app.data.util.NoneState

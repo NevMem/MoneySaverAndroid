@@ -4,11 +4,11 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.nevmem.moneysaver.app.data.Info
 import com.nevmem.moneysaver.app.data.MonthDescription
-import com.nevmem.moneysaver.app.data.Record
+import com.nevmem.moneysaver.common.data.Record
 import com.nevmem.moneysaver.app.room.dao.*
 import com.nevmem.moneysaver.app.room.entity.Feature
 import com.nevmem.moneysaver.app.room.entity.StoredTemplate
-import com.nevmem.moneysaver.app.room.entity.Tag
+import com.nevmem.moneysaver.common.data.Tag
 import com.nevmem.moneysaver.app.room.entity.Wallet
 
 @Database(
