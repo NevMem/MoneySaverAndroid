@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.App
-import com.nevmem.moneysaver.app.data.Record
-import com.nevmem.moneysaver.app.data.RecordDate
+import com.nevmem.moneysaver.common.data.Record
+import com.nevmem.moneysaver.common.data.RecordDate
 import com.nevmem.moneysaver.app.data.repositories.HistoryRepository
 import javax.inject.Inject
 

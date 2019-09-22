@@ -1,7 +1,7 @@
 package com.nevmem.moneysaver.app.room.dao
 
 import androidx.room.*
-import com.nevmem.moneysaver.app.data.Record
+import com.nevmem.moneysaver.common.data.Record
 
 @Dao
 interface HistoryDao {

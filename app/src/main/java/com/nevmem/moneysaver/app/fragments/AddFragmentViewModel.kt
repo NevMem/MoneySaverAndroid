@@ -4,12 +4,12 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.App
-import com.nevmem.moneysaver.app.data.Record
+import com.nevmem.moneysaver.common.data.Record
 import com.nevmem.moneysaver.app.data.repositories.HistoryRepository
 import com.nevmem.moneysaver.app.data.repositories.TagsRepository
 import com.nevmem.moneysaver.app.data.repositories.WalletsRepository
 import com.nevmem.moneysaver.app.data.util.*
-import com.nevmem.moneysaver.app.room.entity.Tag
+import com.nevmem.moneysaver.common.data.Tag
 import com.nevmem.moneysaver.app.room.entity.Wallet
 import javax.inject.Inject
 

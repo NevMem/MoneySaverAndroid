@@ -1,9 +1,9 @@
-package com.nevmem.moneysaver.app.data
+package com.nevmem.moneysaver.common.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.nevmem.moneysaver.app.room.converters.HistoryConverter
+import com.nevmem.moneysaver.common.converters.HistoryConverter
 import org.json.JSONObject
 
 @Entity

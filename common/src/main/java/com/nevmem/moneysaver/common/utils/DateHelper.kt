@@ -1,12 +1,13 @@
-package com.nevmem.moneysaver.app.data.util
+package com.nevmem.moneysaver.common.utils
 
-import com.nevmem.moneysaver.app.data.RecordDate
+import com.nevmem.moneysaver.common.data.RecordDate
 
 abstract class DateHelper {
     companion object {
         private fun fillTo2Length(current: String): String = current.padStart(2, '0')
 
-        fun fillTo2Length(current: Int): String = fillTo2Length(current.toString())
+        fun fillTo2Length(current: Int): String =
+            fillTo2Length(current.toString())
 
         private fun isLeapYear(year: Int): Boolean {
             return (year % 4) == 0 && (year % 100 != 0 || year % 400 == 0)
@@ -42,7 +43,10 @@ abstract class DateHelper {
         }
 
         fun getAmountOfDaysInMonth(year: Int, month: Int): Int {
-            return getAmountOfDaysInMonth(year, getMonthName(month))
+            return getAmountOfDaysInMonth(
+                year,
+                getMonthName(month)
+            )
         }
 
         /**
@@ -60,7 +64,11 @@ abstract class DateHelper {
                     } else {
                         result.month -= 1
                     }
-                    result.day = getAmountOfDaysInMonth(result.year, result.month)
+                    result.day =
+                        Companion.getAmountOfDaysInMonth(
+                            result.year,
+                            result.month
+                        )
                 } else {
                     result.day -= 1
                 }
@@ -77,7 +85,10 @@ abstract class DateHelper {
             if (first == null || second == null)
                 return 0
             if (first > second)
-                return amountOfDaysBetween(second, first)
+                return amountOfDaysBetween(
+                    second,
+                    first
+                )
             val runner = RecordDate(first)
             var amount = 1
             while (!sameDay(runner, second)) {
