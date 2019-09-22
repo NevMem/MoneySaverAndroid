@@ -26,6 +26,8 @@ import com.nevmem.moneysaver.app.data.util.DataHelper
 import com.nevmem.moneysaver.app.fragments.HistoryFragment
 import com.nevmem.moneysaver.app.utils.TransitionsLocker
 import com.nevmem.moneysaver.app.views.ChooseOneFromListDialog
+import com.nevmem.moneysaver.ui.actions.NotifySnackbarAction
+import com.nevmem.moneysaver.ui.useCases.SnackbarUseCase
 import kotlinx.android.synthetic.main.record_layout.view.*
 import javax.inject.Inject
 
@@ -46,6 +48,9 @@ class HistoryFragmentAdapter(
 
     @Inject
     lateinit var historyRepo: HistoryRepository
+
+    @Inject
+    lateinit var snackbarUseCase: SnackbarUseCase
 
     class ListenableToggleableArray(fromArray: List<String>) {
         private var array = ArrayList<String>()
@@ -218,6 +223,8 @@ class HistoryFragmentAdapter(
         val realPosition = getRealPosition(position)
         val record = filtered[realPosition]
         deleteRecord(record)
+
+        snackbarUseCase.execute(NotifySnackbarAction("Removed"))
     }
 
     class HeaderViewHolder(activity: FragmentActivity, view: View, filter: String, tags: ListenableToggleableArray) :

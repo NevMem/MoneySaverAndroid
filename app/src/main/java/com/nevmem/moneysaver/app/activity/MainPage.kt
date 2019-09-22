@@ -3,8 +3,6 @@ package com.nevmem.moneysaver.app.activity
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.transition.TransitionInflater
 import android.view.Gravity
 import android.view.ViewGroup
@@ -16,17 +14,23 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
-import com.nevmem.moneysaver.app.MainPageMediator
 import com.nevmem.moneysaver.app.activity.adapters.MainPageViewPager2Adapter
 import com.nevmem.moneysaver.ui.CustomSnackbar
+import com.nevmem.moneysaver.ui.actions.ExtendedSnackbarAction
+import com.nevmem.moneysaver.ui.actions.SnackbarAction
+import com.nevmem.moneysaver.ui.useCases.SnackbarUseCase
 import kotlinx.android.synthetic.main.main_page_layout.*
+import javax.inject.Inject
 
-class MainPage : AppCompatActivity(), MainPageMediator {
+class MainPage : AppCompatActivity(), SnackbarUseCase.Callback {
     companion object {
         const val BOTTOM_BAR_ANIMATION_DURATION = 300L
     }
 
     lateinit var app: App
+
+    @Inject
+    lateinit var snackbarUseCase: SnackbarUseCase
 
     private var animator: ValueAnimator? = null
 
@@ -36,8 +40,8 @@ class MainPage : AppCompatActivity(), MainPageMediator {
         window.exitTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_slide_left)
         window.enterTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_slide_right)
         window.statusBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
-        app = applicationContext as App
 
+        app = applicationContext as App
         app.appComponent.inject(this)
 
         val adapter = MainPageViewPager2Adapter(lifecycle, supportFragmentManager)
@@ -80,9 +84,23 @@ class MainPage : AppCompatActivity(), MainPageMediator {
         mainPageNavigation.selectedItemId = R.id.dashboardPageNavigation
     }
 
-    override fun showSnackBar(str: String) {
+    override fun onResume() {
+        super.onResume()
+        snackbarUseCase.subscribe(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        snackbarUseCase.unsubscribe(this)
+    }
+
+    override fun onActionReceived(action: SnackbarAction) {
+        showSnackBar(action)
+    }
+
+    fun showSnackBar(action: SnackbarAction) {
         hideNavigationBar {
-            showSnackbarWithCallback(str) {
+            showSnackbarWithCallback(action) {
                 showNavigationBar()
             }
         }
@@ -92,8 +110,15 @@ class MainPage : AppCompatActivity(), MainPageMediator {
         = mainPageNavigation.height +
         (mainPageNavigation.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin
 
-    private fun showSnackbarWithCallback(str: String, onEnd: (() -> Unit)? = null) {
-        val snack = CustomSnackbar.make(rootView, str, Snackbar.LENGTH_LONG)
+    private fun showSnackbarWithCallback(action: SnackbarAction, onEnd: (() -> Unit)? = null) {
+        val snack = CustomSnackbar.make(rootView, action.message, Snackbar.LENGTH_LONG)
+
+        if (action is ExtendedSnackbarAction) {
+            snack.setAction(action.buttonText) {
+                action.callback()
+            }
+        }
+
         snack.addCallback(object : BaseTransientBottomBar.BaseCallback<CustomSnackbar>() {
             override fun onDismissed(transientBottomBar: CustomSnackbar?, event: Int) {
                 super.onDismissed(transientBottomBar, event)
