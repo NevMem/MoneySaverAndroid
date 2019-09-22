@@ -7,10 +7,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.app.data.NetworkQueueBase
-import com.nevmem.moneysaver.app.data.Record
+import com.nevmem.moneysaver.common.data.Record
 import com.nevmem.moneysaver.app.data.UserHolder
 import com.nevmem.moneysaver.app.data.util.*
 import com.nevmem.moneysaver.app.room.AppDatabase
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import java.util.concurrent.Executor
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,6 +28,8 @@ class HistoryRepositoryImpl @Inject constructor(
     private val history = MutableLiveData<ArrayList<Record>>(ArrayList())
     private val error = MutableLiveData<String>("")
 
+    private val subject = BehaviorSubject.create<ArrayList<Record>>()
+
     private val editingState = MutableLiveData<RequestState>(NoneState)
 
     private val tag = "HISTORY_REPOSITORY_IMPL"
@@ -39,6 +43,8 @@ class HistoryRepositoryImpl @Inject constructor(
     override fun editingState(): LiveData<RequestState> = editingState
 
     override fun history(): LiveData<ArrayList<Record>> = history
+
+    override fun historyObservable(): Observable<ArrayList<Record>> = subject
 
     override fun error(): LiveData<String> = error
 
@@ -83,6 +89,7 @@ class HistoryRepositoryImpl @Inject constructor(
             Handler(Looper.getMainLooper()).post {
                 i(tag, "Posting data and loading false to live data")
                 history.postValue(data)
+                subject.onNext(data)
                 loading.postValue(false)
             }
         }
@@ -165,9 +172,7 @@ class HistoryRepositoryImpl @Inject constructor(
     private fun loadFromDatabase() {
         executor.execute {
             val list: ArrayList<Record> = ArrayList(appDatabase.historyDao().loadAll())
-            Handler(Looper.getMainLooper()).post {
-                history.value = list
-            }
+            history.postValue(list)
         }
     }
 

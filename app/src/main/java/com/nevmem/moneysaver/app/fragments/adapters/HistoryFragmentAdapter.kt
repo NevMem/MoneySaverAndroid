@@ -19,7 +19,7 @@ import com.google.android.material.chip.ChipGroup
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.app.activity.FullDescriptionActivity
-import com.nevmem.moneysaver.app.data.Record
+import com.nevmem.moneysaver.common.data.Record
 import com.nevmem.moneysaver.app.data.repositories.HistoryRepository
 import com.nevmem.moneysaver.app.data.repositories.TagsRepository
 import com.nevmem.moneysaver.app.data.util.DataHelper
@@ -27,10 +27,8 @@ import com.nevmem.moneysaver.app.fragments.HistoryFragment
 import com.nevmem.moneysaver.app.utils.TransitionsLocker
 import com.nevmem.moneysaver.app.views.ChooseOneFromListDialog
 import com.nevmem.moneysaver.ui.actions.ExtendedSnackbarAction
-import com.nevmem.moneysaver.ui.actions.NotifySnackbarAction
 import com.nevmem.moneysaver.ui.useCases.SnackbarUseCase
 import kotlinx.android.synthetic.main.record_layout.view.*
-import kotlinx.coroutines.selects.whileSelect
 import javax.inject.Inject
 
 class HistoryFragmentAdapter(

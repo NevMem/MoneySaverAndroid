@@ -3,8 +3,8 @@ package com.nevmem.moneysaver.app.views
 import android.content.Context
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.nevmem.moneysaver.R
-import com.nevmem.moneysaver.app.data.RecordDate
-import com.nevmem.moneysaver.app.data.util.DateHelper
+import com.nevmem.moneysaver.common.data.RecordDate
+import com.nevmem.moneysaver.common.utils.DateHelper
 import kotlinx.android.synthetic.main.date_picker.view.*
 
 class CustomDatePicker(ctx: Context, date: RecordDate? = null) : ConstraintLayout(ctx) {

@@ -1,6 +1,6 @@
-package com.nevmem.moneysaver.app.data
+package com.nevmem.moneysaver.common.data
 
-import com.nevmem.moneysaver.app.data.util.DateHelper
+import com.nevmem.moneysaver.common.utils.DateHelper
 import org.json.JSONObject
 import java.util.*
 

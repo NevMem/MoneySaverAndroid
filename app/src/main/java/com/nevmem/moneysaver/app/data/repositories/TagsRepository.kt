@@ -3,25 +3,38 @@ package com.nevmem.moneysaver.app.data.repositories
 import android.util.Log.i
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
-import com.nevmem.moneysaver.app.data.NetworkQueueBase
-import com.nevmem.moneysaver.app.data.UserHolder
+import com.nevmem.moneysaver.app.data.*
 import com.nevmem.moneysaver.app.data.util.*
 import com.nevmem.moneysaver.app.room.AppDatabase
-import com.nevmem.moneysaver.app.room.entity.Tag
+import com.nevmem.moneysaver.app.utils.DataUtils
+import com.nevmem.moneysaver.common.data.ByHourStatistics
+import com.nevmem.moneysaver.common.data.Record
+import com.nevmem.moneysaver.common.data.RecordDate
+import com.nevmem.moneysaver.common.data.Tag
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.functions.BiFunction
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import java.util.*
 import java.util.concurrent.Executor
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 @Singleton
 class TagsRepository @Inject constructor(
-    var networkQueue: NetworkQueueBase,
-    var appDatabase: AppDatabase,
-    var executor: Executor,
-    var userHolder: UserHolder
+    val networkQueue: NetworkQueueBase,
+    val appDatabase: AppDatabase,
+    val executor: Executor,
+    val userHolder: UserHolder,
+    val historyRepository: HistoryRepository,
+    val settingsManager: SettingsManager
 ) {
-    var loading = MutableLiveData<Boolean>(false)
-    var error = MutableLiveData<String>("")
-    var tags = MutableLiveData<List<Tag>>(ArrayList())
+    val loading = MutableLiveData<Boolean>(false)
+    val error = MutableLiveData<String>("")
+    val tags = MutableLiveData<List<Tag>>(ArrayList())
+
+    val subject = BehaviorSubject.create<List<Tag>>()
 
     var addingState = MutableLiveData<RequestState>(NoneState)
 
@@ -31,6 +44,16 @@ class TagsRepository @Inject constructor(
         i(tag, "init")
         loadFromDatabase()
         tryUpdate()
+
+        Observable
+            .combineLatest(
+                subject,
+                historyRepository.historyObservable(),
+                BiFunction<List<Tag>, List<Record>, Pair<List<Tag>, ByHourStatistics>>
+                    { list, history -> Pair(list, DataUtils.collectByHourStatistics(history)) })
+            .subscribe {
+                tags.postValue(applyTransform(it.first, it.second))
+            }
     }
 
     fun tryUpdate() {
@@ -102,9 +125,22 @@ class TagsRepository @Inject constructor(
     private fun loadFromDatabase() {
         executor.execute {
             with (appDatabase.tagsDao()) {
-                tags.postValue(getAll())
+                subject.onNext(getAll())
             }
         }
+    }
+
+    private fun applyTransform(list: List<Tag>, stats: ByHourStatistics): List<Tag> {
+        val currentHour = RecordDate.currentDate()
+        val arrayList = ArrayList<Tag>()
+        arrayList.addAll(list)
+        if (settingsManager.isFeatureEnabled(Features.FEATURE_PREDICTIVE_TAGS)) {
+            arrayList.sortWith(Comparator { first, second ->
+                val hourStat = stats.hourStats(currentHour.hour)
+                (hourStat[second.name] ?: 0) - (hourStat[first.name] ?: 0)
+            })
+        }
+        return arrayList
     }
 
     fun getTagsAsList(): List<String> {
