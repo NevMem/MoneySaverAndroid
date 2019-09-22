@@ -52,6 +52,7 @@ class CustomSnackbar private constructor(
         view.actionButton.text = buttonCaption
         view.actionButton.setOnClickListener {
             onClick()
+            dismiss()
         }
         return this
     }

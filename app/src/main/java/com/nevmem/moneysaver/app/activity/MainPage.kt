@@ -15,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.app.activity.adapters.MainPageViewPager2Adapter
+import com.nevmem.moneysaver.common.utils.ThreadUtils
 import com.nevmem.moneysaver.ui.CustomSnackbar
 import com.nevmem.moneysaver.ui.actions.ExtendedSnackbarAction
 import com.nevmem.moneysaver.ui.actions.SnackbarAction
@@ -129,48 +130,54 @@ class MainPage : AppCompatActivity(), SnackbarUseCase.Callback {
     }
 
     private fun showNavigationBar(onEnd: (()->Unit)? = null) {
-        animator?.cancel()
-        val newAnimator = ValueAnimator.ofFloat(1f, 0f)
-        newAnimator.duration = BOTTOM_BAR_ANIMATION_DURATION
-        val startTranslationY = mainPageNavigation.translationY
-        newAnimator.addUpdateListener {
-            mainPageNavigation.translationY = it.animatedValue as Float * startTranslationY
+        ThreadUtils.runOnUi {
+            animator?.cancel()
+            val newAnimator = ValueAnimator.ofFloat(1f, 0f)
+            newAnimator.duration = BOTTOM_BAR_ANIMATION_DURATION
+            val startTranslationY = mainPageNavigation.translationY
+            newAnimator.addUpdateListener {
+                mainPageNavigation.translationY = it.animatedValue as Float * startTranslationY
+            }
+            newAnimator.addListener(object : Animator.AnimatorListener {
+                override fun onAnimationRepeat(p0: Animator?) {}
+                override fun onAnimationCancel(p0: Animator?) {
+                    newAnimator.removeListener(this)
+                }
+
+                override fun onAnimationStart(p0: Animator?) {}
+                override fun onAnimationEnd(p0: Animator?) {
+                    onEnd?.invoke()
+                }
+            })
+            newAnimator.start()
+            animator = newAnimator
         }
-        newAnimator.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(p0: Animator?) {}
-            override fun onAnimationCancel(p0: Animator?) {
-                newAnimator.removeListener(this)
-            }
-            override fun onAnimationStart(p0: Animator?) {}
-            override fun onAnimationEnd(p0: Animator?) {
-                onEnd?.invoke()
-            }
-        })
-        newAnimator.start()
-        animator = newAnimator
     }
 
     private fun hideNavigationBar(onEnd: (()->Unit)? = null) {
-        animator?.cancel()
-        val newAnimator = ValueAnimator.ofFloat(0f, 1f)
-        newAnimator.duration = BOTTOM_BAR_ANIMATION_DURATION
-        val startTranslation = mainPageNavigation.translationY
-        newAnimator.addUpdateListener {
-            mainPageNavigation.translationY =
-                startTranslation + it.animatedValue as Float * (bottomBarHeight() - startTranslation)
+        ThreadUtils.runOnUi {
+            animator?.cancel()
+            val newAnimator = ValueAnimator.ofFloat(0f, 1f)
+            newAnimator.duration = BOTTOM_BAR_ANIMATION_DURATION
+            val startTranslation = mainPageNavigation.translationY
+            newAnimator.addUpdateListener {
+                mainPageNavigation.translationY =
+                    startTranslation + it.animatedValue as Float * (bottomBarHeight() - startTranslation)
+            }
+            newAnimator.addListener(object : Animator.AnimatorListener {
+                override fun onAnimationRepeat(p0: Animator?) {}
+                override fun onAnimationCancel(p0: Animator?) {
+                    newAnimator.removeListener(this)
+                }
+
+                override fun onAnimationStart(p0: Animator?) {}
+                override fun onAnimationEnd(p0: Animator?) {
+                    onEnd?.invoke()
+                }
+            })
+            newAnimator.start()
+            animator = newAnimator
         }
-        newAnimator.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(p0: Animator?) {}
-            override fun onAnimationCancel(p0: Animator?) {
-                newAnimator.removeListener(this)
-            }
-            override fun onAnimationStart(p0: Animator?) {}
-            override fun onAnimationEnd(p0: Animator?) {
-                onEnd?.invoke()
-            }
-        })
-        newAnimator.start()
-        animator = newAnimator
     }
 
     private fun showDefaultToast(message: String) {

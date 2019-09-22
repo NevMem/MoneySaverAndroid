@@ -74,4 +74,6 @@
     <string name="delete_string">Delete</string>
     <string name="developer_settings_string">Developer settings</string>
     <string name="features_string">Features</string>
+    <string name="deleted_string">Deleted</string>
+    <string name="undo_string">Undo</string>
 </resources>

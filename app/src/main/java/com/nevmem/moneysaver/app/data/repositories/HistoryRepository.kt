@@ -13,7 +13,7 @@ interface HistoryRepository {
     fun error(): LiveData<String>
     fun loading(): LiveData<Boolean>
 
-    fun delete(record: Record)
+    fun delete(record: Record, deleteCallback: (() -> Unit)? = null)
     fun addRecord(record: Record, cd : (String?) -> Unit)
     fun stopEditing()
     fun editRecord(record: Record)
