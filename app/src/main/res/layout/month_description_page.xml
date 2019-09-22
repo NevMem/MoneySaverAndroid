@@ -48,7 +48,7 @@
                     android:scaleType="fitCenter"
             />
         </LinearLayout>
-        <com.nevmem.moneysaver.views.PieChart
+        <com.nevmem.moneysaver.app.views.PieChart
                 android:id="@+id/chart"
                 app:chartBackground="@color/backgroundColor"
                 android:layout_width="170dp" android:layout_height="170dp"

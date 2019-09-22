@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.FullDescriptionActivity"
+    tools:context=".app.activity.FullDescriptionActivity"
     android:clipToPadding="false"
     android:transitionName="descriptionPageEnterTransition"
     android:id="@+id/coordinator"
@@ -27,7 +27,7 @@
                 android:id="@+id/header"
                 android:alpha="0" tools:alpha="1"
         />
-        <com.nevmem.moneysaver.views.ChangeableTextField
+        <com.nevmem.moneysaver.app.views.ChangeableTextField
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/recordNameField" tools:text="Some record name"
@@ -47,7 +47,7 @@
                 android:alpha="0" tools:alpha="1"
                 tools:checked="false" android:theme="@style/SwitchTheme"
         />
-        <com.nevmem.moneysaver.views.ChangeableTextField
+        <com.nevmem.moneysaver.app.views.ChangeableTextField
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/recordValueField" app:layout_constraintStart_toStartOf="parent"

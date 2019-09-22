@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="themeColor">#f5b700</color>
+    <color name="snackbar_text_color">#CCCCCC</color>
+    <color name="transparent">#00000000</color>
+</resources>
