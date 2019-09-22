@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.Vars
+import com.nevmem.moneysaver.app.activity.viewModels.LoginPageViewModel
 import com.nevmem.moneysaver.app.data.NetworkQueueBase
 import com.nevmem.moneysaver.app.data.UserHolder
 import com.nevmem.moneysaver.app.views.InfoDialog

@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.R
+import com.nevmem.moneysaver.app.activity.viewModels.DevSettingsPageViewModel
 import com.nevmem.moneysaver.app.utils.UnitsHelper
 import kotlinx.android.synthetic.main.dev_settings_page.*
 

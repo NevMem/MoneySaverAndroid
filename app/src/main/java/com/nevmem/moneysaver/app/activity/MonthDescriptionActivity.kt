@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.app.activity.adapters.MonthDescriptionLabelsAdapter
+import com.nevmem.moneysaver.app.activity.viewModels.MonthDescriptionViewModel
 import com.nevmem.moneysaver.app.data.repositories.InfoRepository
 import com.nevmem.moneysaver.app.utils.TypeUtils
 import com.nevmem.moneysaver.app.views.PieChart

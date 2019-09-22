@@ -97,7 +97,7 @@ class HistoryFragment : Fragment() {
         }
     }
 
-    class SwipeController(private var ctx: Context, private var mAdapter: HistoryFragmentAdapter) :
+    class SwipeController(private val ctx: Context, private val mAdapter: HistoryFragmentAdapter) :
         ItemTouchHelper.Callback() {
         companion object {
             const val SWIPE_TO_DELETE_THRESHOLD = .40f

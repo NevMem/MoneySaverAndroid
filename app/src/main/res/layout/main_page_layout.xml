@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootView"
+    android:clipToPadding="false">
     <androidx.viewpager2.widget.ViewPager2
-            android:layout_width="match_parent" android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/anchor"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:id="@+id/anchor"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/mainPageNavigation"
-            android:background="@drawable/bottom_view_background"
-            app:menu="@menu/main_page_navigation"
-            app:itemTextColor="@android:color/white"
-            app:itemIconTint="@android:color/white"
-            android:elevation="@dimen/stdElevation"
-            android:layout_marginBottom="7dp"
-            android:layout_marginStart="7dp"
-            android:layout_marginEnd="7dp"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:id="@+id/mainPageNavigation"
+        android:background="@drawable/bottom_view_background"
+        app:menu="@menu/main_page_navigation"
+        app:itemTextColor="@android:color/white"
+        app:itemIconTint="@android:color/white"
+        android:layout_gravity="bottom"
+        android:elevation="@dimen/stdElevation"
+        android:layout_marginBottom="7dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

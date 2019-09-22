@@ -26,7 +26,11 @@ import com.nevmem.moneysaver.app.data.util.DataHelper
 import com.nevmem.moneysaver.app.fragments.HistoryFragment
 import com.nevmem.moneysaver.app.utils.TransitionsLocker
 import com.nevmem.moneysaver.app.views.ChooseOneFromListDialog
+import com.nevmem.moneysaver.ui.actions.ExtendedSnackbarAction
+import com.nevmem.moneysaver.ui.actions.NotifySnackbarAction
+import com.nevmem.moneysaver.ui.useCases.SnackbarUseCase
 import kotlinx.android.synthetic.main.record_layout.view.*
+import kotlinx.coroutines.selects.whileSelect
 import javax.inject.Inject
 
 class HistoryFragmentAdapter(
@@ -46,6 +50,9 @@ class HistoryFragmentAdapter(
 
     @Inject
     lateinit var historyRepo: HistoryRepository
+
+    @Inject
+    lateinit var snackbarUseCase: SnackbarUseCase
 
     class ListenableToggleableArray(fromArray: List<String>) {
         private var array = ArrayList<String>()
@@ -141,10 +148,6 @@ class HistoryFragmentAdapter(
         }
     }
 
-    private fun deleteRecord(record: Record) {
-        historyRepo.delete(record)
-    }
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when {
             holder.itemViewType == ViewHolderType.HEADER.type -> {
@@ -217,7 +220,15 @@ class HistoryFragmentAdapter(
     fun handleRemoveItem(position: Int) {
         val realPosition = getRealPosition(position)
         val record = filtered[realPosition]
-        deleteRecord(record)
+
+        historyRepo.delete(record) {
+            val message = activity.resources.getString(R.string.deleted_string)
+            val buttonCaption = activity.resources.getString(R.string.undo_string)
+            snackbarUseCase.execute(
+                ExtendedSnackbarAction(message, buttonCaption) {
+                    historyRepo.addRecord(record) {}
+                })
+        }
     }
 
     class HeaderViewHolder(activity: FragmentActivity, view: View, filter: String, tags: ListenableToggleableArray) :

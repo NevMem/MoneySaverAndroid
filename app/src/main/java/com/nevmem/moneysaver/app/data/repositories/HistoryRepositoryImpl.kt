@@ -88,7 +88,7 @@ class HistoryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun delete(record: Record) {
+    override fun delete(record: Record, deleteCallback: (()->Unit)?) {
         val params = userHolder.credentialsJson()
         i(tag, record.id)
         params.put("record_id", record.id)
@@ -97,6 +97,7 @@ class HistoryRepositoryImpl @Inject constructor(
             if (it.has("type")) {
                 when {
                     it.getString("type") == "ok" -> executor.execute {
+                        deleteCallback?.invoke()
                         with(appDatabase.historyDao()) {
                             i(tag, "Delete request ${record.uid}")
                             val toDelete = findById(record.id)
@@ -157,6 +158,7 @@ class HistoryRepositoryImpl @Inject constructor(
                 }
                 else -> cb("Server response has unknown format")
             }
+            tryUpdate()
         })
     }
 
