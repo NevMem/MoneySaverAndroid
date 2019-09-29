@@ -71,7 +71,7 @@ class DashboardFragment : Fragment() {
             sumDayChart.invalidate()
         })
 
-        userName.text = viewModel.userHolder().firstName
+        userName.text = viewModel.user().firstName
 
         viewModel.state().observe(this, Observer {
             refreshLayout.isRefreshing = it != null && it is LoadingState

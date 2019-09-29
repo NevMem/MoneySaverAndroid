@@ -24,7 +24,7 @@ class DashboardFragmentViewModel(application: Application) : AndroidViewModel(ap
 
     fun info(): LiveData<Info> = infoRepo.info()
 
-    fun userHolder() = userHolder.user
+    fun user() = userHolder.user
 
     fun update() {
         infoRepo.tryUpdate()
