@@ -1,4 +1,4 @@
-package com.nevmem.moneysaver.app.data
+package com.nevmem.moneysaver.auth
 
 import android.content.Context
 import com.nevmem.moneysaver.common.exceptions.UserCredentialsNotFound

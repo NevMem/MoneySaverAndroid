@@ -15,7 +15,7 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.app.activity.viewModels.LoginPageViewModel
-import com.nevmem.moneysaver.app.data.UserHolder
+import com.nevmem.moneysaver.auth.UserHolder
 import com.nevmem.moneysaver.app.views.InfoDialog
 import kotlinx.android.synthetic.main.login_page.*
 import org.json.JSONObject
@@ -28,7 +28,7 @@ class LoginPageActivity : AppCompatActivity() {
     lateinit var networkQueue: com.nevmem.moneysaver.network.NetworkQueue
 
     @Inject
-    lateinit var userHolder: UserHolder
+    lateinit var userHolder: com.nevmem.moneysaver.auth.UserHolder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

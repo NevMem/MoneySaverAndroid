@@ -9,14 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.app.activity.adapters.ManageTagsWalletsAdapter
-import com.nevmem.moneysaver.app.data.User
-import com.nevmem.moneysaver.app.data.UserHolder
+import com.nevmem.moneysaver.auth.User
+import com.nevmem.moneysaver.auth.UserHolder
 import kotlinx.android.synthetic.main.settings_activity.*
 import javax.inject.Inject
 
 class SettingsActivity : AppCompatActivity() {
     @Inject
-    lateinit var userHolder: UserHolder
+    lateinit var userHolder: com.nevmem.moneysaver.auth.UserHolder
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +52,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun logout() {
         userHolder.ready = false
-        User.clearCredentials(this)
+        com.nevmem.moneysaver.auth.User.clearCredentials(this)
         val intent = Intent(this, SplashScreen::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)

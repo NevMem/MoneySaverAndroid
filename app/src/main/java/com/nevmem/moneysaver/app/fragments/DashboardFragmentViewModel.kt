@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.app.data.Info
-import com.nevmem.moneysaver.app.data.UserHolder
+import com.nevmem.moneysaver.auth.UserHolder
 import com.nevmem.moneysaver.app.data.repositories.InfoRepository
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ class DashboardFragmentViewModel(application: Application) : AndroidViewModel(ap
     lateinit var infoRepo: InfoRepository
 
     @Inject
-    lateinit var userHolder: UserHolder
+    lateinit var userHolder: com.nevmem.moneysaver.auth.UserHolder
 
     init {
         application as App
