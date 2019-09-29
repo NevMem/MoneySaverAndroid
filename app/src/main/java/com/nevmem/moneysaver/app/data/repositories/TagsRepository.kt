@@ -26,7 +26,7 @@ class TagsRepository @Inject constructor(
     val networkQueue: com.nevmem.moneysaver.network.NetworkQueue,
     val appDatabase: AppDatabase,
     val executor: Executor,
-    val userHolder: UserHolder,
+    val userHolder: com.nevmem.moneysaver.auth.UserHolder,
     val historyRepository: HistoryRepository,
     val settingsManager: SettingsManager
 ) {

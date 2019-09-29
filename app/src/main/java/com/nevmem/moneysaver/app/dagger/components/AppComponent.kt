@@ -2,10 +2,7 @@ package com.nevmem.moneysaver.app.dagger.components
 
 import com.nevmem.moneysaver.app.activity.*
 import com.nevmem.moneysaver.app.activity.adapters.ManageTagsWalletsAdapter
-import com.nevmem.moneysaver.app.activity.viewModels.DevSettingsPageViewModel
-import com.nevmem.moneysaver.app.activity.viewModels.FullDescriptionActivityViewModel
-import com.nevmem.moneysaver.app.activity.viewModels.MonthDescriptionViewModel
-import com.nevmem.moneysaver.app.activity.viewModels.RegisterPageViewModel
+import com.nevmem.moneysaver.app.activity.viewModels.*
 import com.nevmem.moneysaver.app.dagger.modules.DataModule
 import com.nevmem.moneysaver.app.dagger.modules.NetworkModule
 import com.nevmem.moneysaver.app.dagger.modules.UiModule
@@ -26,7 +23,6 @@ interface AppComponent {
     fun inject(activity: FullDescriptionActivity)
     fun inject(newTemplateDialog: NewTemplateDialog)
     fun inject(dashboardFragment: DashboardFragment)
-    fun inject(loginPageActivity: LoginPageActivity)
     fun inject(dashboardPageMonthDescriptionFragment: DashboardPageMonthDescriptionFragment)
     fun inject(monthDescription: MonthDescriptionActivity)
     fun inject(registerPageViewModel: RegisterPageViewModel)
@@ -44,4 +40,5 @@ interface AppComponent {
     fun inject(dashboardPageDescriptions: DashboardPageDescriptions)
     fun inject(dashboardFragmentViewModel: DashboardFragmentViewModel)
     fun inject(devSettingsPageViewModel: DevSettingsPageViewModel)
+    fun inject(loginPageViewModel: LoginPageViewModel)
 }

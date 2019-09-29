@@ -6,7 +6,7 @@ import androidx.room.Room
 import com.nevmem.moneysaver.app.data.Features
 import com.nevmem.moneysaver.app.data.SettingsManager
 import com.nevmem.moneysaver.app.data.SettingsManagerImpl
-import com.nevmem.moneysaver.app.data.UserHolder
+import com.nevmem.moneysaver.auth.UserHolder
 import com.nevmem.moneysaver.app.data.repositories.*
 import com.nevmem.moneysaver.app.room.AppDatabase
 import dagger.Module
@@ -20,8 +20,8 @@ import javax.inject.Singleton
 class DataModule(private var context: Context) {
     @Provides
     @Singleton
-    fun providesUser(): UserHolder {
-        return UserHolder(context)
+    fun providesUser(): com.nevmem.moneysaver.auth.UserHolder {
+        return com.nevmem.moneysaver.auth.UserHolder(context)
     }
 
     @Provides

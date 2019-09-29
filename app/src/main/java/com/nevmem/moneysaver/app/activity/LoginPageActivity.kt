@@ -15,7 +15,10 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.app.activity.viewModels.LoginPageViewModel
-import com.nevmem.moneysaver.app.data.UserHolder
+import com.nevmem.moneysaver.app.data.util.ErrorState
+import com.nevmem.moneysaver.app.data.util.LoadingState
+import com.nevmem.moneysaver.app.data.util.SuccessState
+import com.nevmem.moneysaver.auth.UserHolder
 import com.nevmem.moneysaver.app.views.InfoDialog
 import kotlinx.android.synthetic.main.login_page.*
 import org.json.JSONObject
@@ -23,12 +26,6 @@ import javax.inject.Inject
 
 class LoginPageActivity : AppCompatActivity() {
     private lateinit var loginModel: LoginPageViewModel
-
-    @Inject
-    lateinit var networkQueue: com.nevmem.moneysaver.network.NetworkQueue
-
-    @Inject
-    lateinit var userHolder: UserHolder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,19 +36,24 @@ class LoginPageActivity : AppCompatActivity() {
 
         loginModel = ViewModelProviders.of(this).get(LoginPageViewModel::class.java)
 
-        loginModel.error.observe(this, Observer {
-            if (it != null && it.isNotEmpty()) {
-                showError(it)
+        loginModel.requestState().observe(this, Observer {
+            loginPageLoadingBar.visibility = View.GONE
+            when (it) {
+                is SuccessState -> {
+                    goToHomePage()
+                }
+                is LoadingState -> {
+                    loginPageLoadingBar.visibility = View.VISIBLE
+                }
+                is ErrorState -> {
+                    showError(it.error)
+                }
             }
         })
-        loginModel.loading.observe(this, Observer {
-            if (it == true)
-                loginPageLoadingBar.visibility = View.VISIBLE
-            else
-                loginPageLoadingBar.visibility = View.INVISIBLE
-        })
 
-        (applicationContext as App).appComponent.inject(this)
+        loginButton.setOnClickListener {
+            loginButtonClicked()
+        }
 
         registerButton.setOnClickListener {
             openRegisterPage()
@@ -61,15 +63,6 @@ class LoginPageActivity : AppCompatActivity() {
     private fun showError(error: String) {
         val dialog = InfoDialog("Error happened", error)
         dialog.show(supportFragmentManager, "error_info_dialog")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Handler(Looper.getMainLooper()).post {
-            if (userHolder.ready) {
-                goToHomePage()
-            }
-        }
     }
 
     private fun openRegisterPage() {
@@ -82,31 +75,10 @@ class LoginPageActivity : AppCompatActivity() {
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
     }
 
-    fun onLoginButtonClick(@Suppress("UNUSED_PARAMETER") view: View) {
+    private fun loginButtonClicked() {
         val login = loginField.text.toString()
         val password = passwordField.text.toString()
-        val params = JSONObject()
-        params.put("login", login)
-        params.put("password", password)
 
-        loginModel.error.postValue("")
-        loginModel.loading.postValue(true)
-
-        networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiLogin, params, {
-            loginModel.loading.postValue(false)
-            if (it.has("type")) {
-                when (it.getString("type")) {
-                    "ok" -> {
-                        val json = it.getJSONObject("data")
-                        userHolder.initializeByJson(json)
-                        goToHomePage()
-                    }
-                    "error" -> loginModel.error.postValue(it.getString("error"))
-                    else -> loginModel.error.postValue("Sever response has unknown format")
-                }
-            } else {
-                loginModel.error.postValue("Sever response has unknown format")
-            }
-        })
+        loginModel.tryLogin(login, password)
     }
 }

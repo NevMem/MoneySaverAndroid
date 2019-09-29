@@ -15,7 +15,7 @@ import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.app.activity.viewModels.RegisterPageViewModel
 import com.nevmem.moneysaver.app.data.RegistrationArgs
-import com.nevmem.moneysaver.app.data.UserHolder
+import com.nevmem.moneysaver.auth.UserHolder
 import com.nevmem.moneysaver.app.data.util.BadFilled
 import com.nevmem.moneysaver.app.data.util.FilledWell
 import com.nevmem.moneysaver.app.fragments.*

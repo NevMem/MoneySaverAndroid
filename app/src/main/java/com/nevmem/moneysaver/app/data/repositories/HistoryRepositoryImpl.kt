@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.common.data.Record
-import com.nevmem.moneysaver.app.data.UserHolder
+import com.nevmem.moneysaver.auth.UserHolder
 import com.nevmem.moneysaver.app.data.util.*
 import com.nevmem.moneysaver.app.room.AppDatabase
 import io.reactivex.rxjava3.core.Observable
@@ -19,7 +19,7 @@ import javax.inject.Singleton
 @Singleton
 class HistoryRepositoryImpl @Inject constructor(
     private var networkQueue: com.nevmem.moneysaver.network.NetworkQueue,
-    private var userHolder: UserHolder,
+    private var userHolder: com.nevmem.moneysaver.auth.UserHolder,
     private var executor: Executor,
     private var appDatabase: AppDatabase
 ) : HistoryRepository {

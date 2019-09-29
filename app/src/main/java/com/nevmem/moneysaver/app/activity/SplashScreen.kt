@@ -10,13 +10,17 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
-import com.nevmem.moneysaver.app.data.UserHolder
+import com.nevmem.moneysaver.auth.UserHolder
 import kotlinx.android.synthetic.main.splash_screen.*
 import javax.inject.Inject
 
 class SplashScreen : AppCompatActivity() {
     @Inject
     lateinit var userHolder: UserHolder
+
+    companion object {
+        const val SPLASH_SCREEN_DELAY = 700L
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +54,6 @@ class SplashScreen : AppCompatActivity() {
         Handler(Looper.getMainLooper())
             .postDelayed({
                 navigate()
-            }, 500)
+            }, SPLASH_SCREEN_DELAY)
     }
 }
