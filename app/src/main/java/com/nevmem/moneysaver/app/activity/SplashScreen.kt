@@ -16,7 +16,11 @@ import javax.inject.Inject
 
 class SplashScreen : AppCompatActivity() {
     @Inject
-    lateinit var userHolder: com.nevmem.moneysaver.auth.UserHolder
+    lateinit var userHolder: UserHolder
+
+    companion object {
+        const val SPLASH_SCREEN_DELAY = 700L
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +54,6 @@ class SplashScreen : AppCompatActivity() {
         Handler(Looper.getMainLooper())
             .postDelayed({
                 navigate()
-            }, 500)
+            }, SPLASH_SCREEN_DELAY)
     }
 }
