@@ -55,8 +55,6 @@ class LoginPageActivity : AppCompatActivity() {
             loginButtonClicked()
         }
 
-        (applicationContext as App).appComponent.inject(this)
-
         registerButton.setOnClickListener {
             openRegisterPage()
         }

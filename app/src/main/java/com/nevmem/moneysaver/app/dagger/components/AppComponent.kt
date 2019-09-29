@@ -23,7 +23,6 @@ interface AppComponent {
     fun inject(activity: FullDescriptionActivity)
     fun inject(newTemplateDialog: NewTemplateDialog)
     fun inject(dashboardFragment: DashboardFragment)
-    fun inject(loginPageActivity: LoginPageActivity)
     fun inject(dashboardPageMonthDescriptionFragment: DashboardPageMonthDescriptionFragment)
     fun inject(monthDescription: MonthDescriptionActivity)
     fun inject(registerPageViewModel: RegisterPageViewModel)
