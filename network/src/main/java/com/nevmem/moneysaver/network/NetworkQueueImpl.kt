@@ -1,4 +1,4 @@
-package com.nevmem.moneysaver.app.data
+package com.nevmem.moneysaver.network
 
 import android.content.Context
 import android.os.Handler
@@ -10,19 +10,46 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 
-class NetworkQueue(ctx: Context) : NetworkQueueBase {
+class NetworkQueueImpl(ctx: Context) : NetworkQueue {
     private var volleyRequestQueue: RequestQueue = Volley.newRequestQueue(ctx)
     private val tag = "NET_QUEUE"
 
     init {
-        i(tag, "NetworkQueue constructor was called")
+        i(tag, "NetworkQueueImpl constructor was called")
+    }
+
+    private class RequestImpl<T> : com.nevmem.moneysaver.network.Request<T> {
+        private var tag = "NET_REQUEST"
+        private var canceled = false
+        private var cb: ((T) -> Unit)? = null
+
+        override fun cancel() {
+            i(tag, "Canceled one request")
+            canceled = true
+        }
+
+        override fun isCanceled() = canceled
+
+        override fun success(cb: (T) -> Unit) {
+            i(tag, "Setting callback")
+            this.cb = cb
+        }
+
+        override fun resolve(result: T) {
+            if (cb == null) {
+                i(tag, "Callback is null")
+            } else {
+                i(tag, "Callback is not null")
+            }
+            cb?.invoke(result)
+        }
     }
 
     override fun infinitePostJsonObjectRequest(
-        url: String, params: JSONObject, timeout: Long, savedRequest: RequestBase<JSONObject>?
-    ): RequestBase<JSONObject> {
+        url: String, params: JSONObject, timeout: Long, savedRequest: com.nevmem.moneysaver.network.Request<JSONObject>?
+    ): com.nevmem.moneysaver.network.Request<JSONObject> {
         i(tag, "Starting loading json object from $url")
-        val request = savedRequest ?: Request()
+        val request = savedRequest ?: RequestImpl()
         val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, params, {
             i(tag, "Successfully loaded json object from $url")
             if (!request.isCanceled()) {
@@ -49,16 +76,16 @@ class NetworkQueue(ctx: Context) : NetworkQueueBase {
         params: JSONObject,
         resolve: (JSONObject) -> Unit,
         timeout: Long
-    ): RequestBase<JSONObject> {
+    ): com.nevmem.moneysaver.network.Request<JSONObject> {
         val request = infinitePostJsonObjectRequest(url, params, timeout)
         request.success(resolve)
         return request
     }
 
     override fun infinitePostStringRequest(
-        url: String, params: JSONObject, timeout: Long, savedRequest: RequestBase<String>?
-    ): RequestBase<String> {
-        val request = savedRequest ?: Request()
+        url: String, params: JSONObject, timeout: Long, savedRequest: com.nevmem.moneysaver.network.Request<String>?
+    ): com.nevmem.moneysaver.network.Request<String> {
+        val request = savedRequest ?: RequestImpl()
         val stringRequest = object : StringRequest(Method.POST, url, {
             if (!request.isCanceled()) {
                 request.resolve(it)
@@ -87,7 +114,7 @@ class NetworkQueue(ctx: Context) : NetworkQueueBase {
         params: JSONObject,
         resolve: (String) -> Unit,
         timeout: Long
-    ): RequestBase<String> {
+    ): com.nevmem.moneysaver.network.Request<String> {
         val request = infinitePostStringRequest(url, params, timeout)
         request.success(resolve)
         return request

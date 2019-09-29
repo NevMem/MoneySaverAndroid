@@ -5,8 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.Vars
-import com.nevmem.moneysaver.app.data.NetworkQueueBase
-import com.nevmem.moneysaver.app.data.RequestBase
+import com.nevmem.moneysaver.network.Request
 import com.nevmem.moneysaver.app.data.util.ParseError
 import com.nevmem.moneysaver.app.data.util.ParseResult
 import com.nevmem.moneysaver.app.data.util.ParsedValue
@@ -17,10 +16,10 @@ class RegisterDialogChooseLoginFragmentViewModel(app: Application) : AndroidView
     enum class Status { CHECKING, SUCCESS, ERROR, NONE }
 
     val loginChecking = MutableLiveData<Status>(Status.NONE)
-    private var loginCheckRequest: RequestBase<JSONObject>? = null
+    private var loginCheckRequest: Request<JSONObject>? = null
 
     @Inject
-    lateinit var networkQueue: NetworkQueueBase
+    lateinit var networkQueue: com.nevmem.moneysaver.network.NetworkQueue
 
     init {
         (app as App).appComponent.inject(this)
