@@ -8,8 +8,21 @@ import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.app.views.utils.DialogsHelper
 import kotlinx.android.synthetic.main.info_dialog_popup.view.*
 
-class InfoDialog(private var header: String, private var message: String) : AppCompatDialogFragment() {
+class InfoDialog : AppCompatDialogFragment {
     private var okCallback: (() -> Unit)? = null
+
+    private var header: String
+    private var message: String
+
+    constructor(headerStringId: Int, messageStringId: Int) : super() {
+        header = resources.getString(headerStringId)
+        message = resources.getString(messageStringId)
+    }
+
+    constructor(headerString: String, messageString: String) : super() {
+        header = headerString
+        message = messageString
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = DialogsHelper.createView(activity!!, R.layout.info_dialog_popup)
