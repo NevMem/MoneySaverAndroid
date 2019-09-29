@@ -1,7 +1,7 @@
 package com.nevmem.moneysaver.app.dagger.modules
 
-import com.nevmem.moneysaver.app.data.NetworkQueueBase
+import com.nevmem.moneysaver.network.NetworkQueue
 
 interface NetworkModuleBase {
-    fun providesNetworkQueueBase(): NetworkQueueBase
+    fun providesNetworkQueueBase(): NetworkQueue
 }

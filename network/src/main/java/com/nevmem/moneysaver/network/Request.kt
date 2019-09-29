@@ -1,6 +1,6 @@
-package com.nevmem.moneysaver.app.data
+package com.nevmem.moneysaver.network
 
-interface RequestBase<T> {
+interface Request<T> {
     fun success(cb: (T) -> Unit)
     fun cancel()
     fun isCanceled(): Boolean

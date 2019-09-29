@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.Vars.Companion.unknownFormat
-import com.nevmem.moneysaver.app.data.NetworkQueueBase
 import com.nevmem.moneysaver.app.data.RegistrationArgs
 import com.nevmem.moneysaver.app.data.User
 import com.nevmem.moneysaver.app.data.util.ParseError
@@ -29,7 +28,7 @@ class RegisterPageViewModel(app: Application) : AndroidViewModel(app) {
     var user: User?= null
 
     @Inject
-    lateinit var networkQueue: NetworkQueueBase
+    lateinit var networkQueue: com.nevmem.moneysaver.network.NetworkQueue
 
     init {
         (app as App).appComponent.inject(this)

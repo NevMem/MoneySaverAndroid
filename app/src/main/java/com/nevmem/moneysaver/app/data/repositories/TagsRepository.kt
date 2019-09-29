@@ -23,7 +23,7 @@ import kotlin.collections.HashSet
 
 @Singleton
 class TagsRepository @Inject constructor(
-    val networkQueue: NetworkQueueBase,
+    val networkQueue: com.nevmem.moneysaver.network.NetworkQueue,
     val appDatabase: AppDatabase,
     val executor: Executor,
     val userHolder: UserHolder,
