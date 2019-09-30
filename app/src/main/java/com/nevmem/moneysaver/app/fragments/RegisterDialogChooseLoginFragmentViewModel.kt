@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.App
-import com.nevmem.moneysaver.Vars
+import com.nevmem.moneysaver.common.Vars
 import com.nevmem.moneysaver.network.Request
 import com.nevmem.moneysaver.app.data.util.ParseError
 import com.nevmem.moneysaver.app.data.util.ParseResult

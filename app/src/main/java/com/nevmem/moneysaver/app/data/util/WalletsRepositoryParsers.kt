@@ -1,6 +1,6 @@
 package com.nevmem.moneysaver.app.data.util
 
-import com.nevmem.moneysaver.Vars.Companion.unknownFormat
+import com.nevmem.moneysaver.common.Vars.Companion.unknownFormat
 import org.json.JSONObject
 
 abstract class WalletsRepositoryParsers {

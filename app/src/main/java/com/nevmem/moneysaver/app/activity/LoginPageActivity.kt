@@ -3,26 +3,19 @@ package com.nevmem.moneysaver.app.activity
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.transition.Fade
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.nevmem.moneysaver.App
 import com.nevmem.moneysaver.R
-import com.nevmem.moneysaver.Vars
 import com.nevmem.moneysaver.app.activity.viewModels.LoginPageViewModel
 import com.nevmem.moneysaver.app.data.util.ErrorState
 import com.nevmem.moneysaver.app.data.util.LoadingState
 import com.nevmem.moneysaver.app.data.util.SuccessState
-import com.nevmem.moneysaver.auth.UserHolder
 import com.nevmem.moneysaver.app.views.InfoDialog
 import kotlinx.android.synthetic.main.login_page.*
-import org.json.JSONObject
-import javax.inject.Inject
 
 class LoginPageActivity : AppCompatActivity() {
     private lateinit var loginModel: LoginPageViewModel

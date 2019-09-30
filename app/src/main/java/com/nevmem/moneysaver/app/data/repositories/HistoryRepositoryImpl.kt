@@ -5,9 +5,8 @@ import android.os.Looper
 import android.util.Log.i
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.nevmem.moneysaver.Vars
+import com.nevmem.moneysaver.common.Vars
 import com.nevmem.moneysaver.common.data.Record
-import com.nevmem.moneysaver.auth.UserHolder
 import com.nevmem.moneysaver.app.data.util.*
 import com.nevmem.moneysaver.app.room.AppDatabase
 import io.reactivex.rxjava3.core.Observable

@@ -6,10 +6,9 @@ import android.os.Looper
 import android.util.Log.i
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.nevmem.moneysaver.Vars
+import com.nevmem.moneysaver.common.Vars
 import com.nevmem.moneysaver.app.data.Template
 import com.nevmem.moneysaver.app.data.TemplateBase
-import com.nevmem.moneysaver.auth.UserHolder
 import com.nevmem.moneysaver.app.room.AppDatabase
 import com.nevmem.moneysaver.app.room.entity.StoredTemplate
 import org.json.JSONArray
@@ -169,7 +168,8 @@ class TemplatesRepository @Inject constructor(
         params.put("templateId", templates.value!![templateIndex].id)
         params.put("date", createDate())
         i("TR", params.toString())
-        networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiUseTemplate, params,
+        networkQueue.infinitePostJsonObjectRequest(
+            Vars.ServerApiUseTemplate, params,
             {
                 i("TR", it.toString())
                 if (it.has("type")) {

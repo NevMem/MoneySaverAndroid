@@ -3,6 +3,7 @@ package com.nevmem.moneysaver
 import com.nevmem.moneysaver.app.data.util.HistoryRepositoryParsers
 import com.nevmem.moneysaver.app.data.util.ParseError
 import com.nevmem.moneysaver.app.data.util.ParsedValue
+import com.nevmem.moneysaver.common.Vars
 import org.json.JSONObject
 import org.junit.Assert
 import org.junit.Test
