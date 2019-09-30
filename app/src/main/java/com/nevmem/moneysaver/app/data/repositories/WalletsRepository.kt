@@ -4,8 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log.i
 import androidx.lifecycle.MutableLiveData
-import com.nevmem.moneysaver.Vars
-import com.nevmem.moneysaver.auth.UserHolder
+import com.nevmem.moneysaver.common.Vars
 import com.nevmem.moneysaver.app.data.util.*
 import com.nevmem.moneysaver.app.room.AppDatabase
 import com.nevmem.moneysaver.app.room.entity.Wallet

@@ -4,9 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.nevmem.moneysaver.App
-import com.nevmem.moneysaver.Vars
+import com.nevmem.moneysaver.common.Vars
 import com.nevmem.moneysaver.app.data.util.ErrorState
 import com.nevmem.moneysaver.app.data.util.LoadingState
 import com.nevmem.moneysaver.app.data.util.RequestState

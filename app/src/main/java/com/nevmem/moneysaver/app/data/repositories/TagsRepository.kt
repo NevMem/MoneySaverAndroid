@@ -2,7 +2,7 @@ package com.nevmem.moneysaver.app.data.repositories
 
 import android.util.Log.i
 import androidx.lifecycle.MutableLiveData
-import com.nevmem.moneysaver.Vars
+import com.nevmem.moneysaver.common.Vars
 import com.nevmem.moneysaver.app.data.*
 import com.nevmem.moneysaver.app.data.util.*
 import com.nevmem.moneysaver.app.room.AppDatabase

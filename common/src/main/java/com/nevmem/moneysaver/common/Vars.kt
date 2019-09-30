@@ -1,4 +1,4 @@
-package com.nevmem.moneysaver
+package com.nevmem.moneysaver.common
 
 class Vars {
     companion object {
