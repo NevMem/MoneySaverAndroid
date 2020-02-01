@@ -1,8 +1,8 @@
-package com.nevmem.moneysaver.app.data
+package com.nevmem.moneysaver.network
 
 import org.json.JSONObject
 
-interface NetworkQueueBase {
+interface NetworkQueue {
     companion object {
         const val DEFAULT_TIMEOUT: Long = 5000
     }
@@ -19,15 +19,15 @@ interface NetworkQueueBase {
     fun infinitePostJsonObjectRequest(
         url: String, params: JSONObject,
         resolve: (JSONObject) -> Unit, timeout: Long = DEFAULT_TIMEOUT
-    ): RequestBase<JSONObject>
+    ): Request<JSONObject>
 
     /**
      * Same as previous function but you have subscribe on success event by yourself
      */
     fun infinitePostJsonObjectRequest(
         url: String, params: JSONObject,
-        timeout: Long = DEFAULT_TIMEOUT, savedRequest: RequestBase<JSONObject>? = null
-    ): RequestBase<JSONObject>
+        timeout: Long = DEFAULT_TIMEOUT, savedRequest: Request<JSONObject>? = null
+    ): Request<JSONObject>
 
     /**
      * Same as infinitePostJsonObjectRequest but loads string
@@ -35,13 +35,13 @@ interface NetworkQueueBase {
     fun infinitePostStringRequest(
         url: String, params: JSONObject,
         resolve: (String) -> Unit, timeout: Long = DEFAULT_TIMEOUT
-    ): RequestBase<String>
+    ): Request<String>
 
     /**
      * Same as previous function but you have subscribe on success event by yourself
      */
     fun infinitePostStringRequest(
         url: String, params: JSONObject,
-        timeout: Long = DEFAULT_TIMEOUT, savedRequest: RequestBase<String>? = null
-    ): RequestBase<String>
+        timeout: Long = DEFAULT_TIMEOUT, savedRequest: Request<String>? = null
+    ): Request<String>
 }

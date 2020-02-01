@@ -4,8 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.nevmem.moneysaver.App
-import com.nevmem.moneysaver.Vars
-import com.nevmem.moneysaver.app.data.NetworkQueueBase
+import com.nevmem.moneysaver.common.Vars
 import com.nevmem.moneysaver.app.data.util.LoadingState
 import com.nevmem.moneysaver.app.data.util.RequestState
 import com.nevmem.moneysaver.app.data.util.SuccessState
@@ -14,7 +13,7 @@ import javax.inject.Inject
 
 class RegisterDialogPrivacyFragmentViewModel(app: Application) : AndroidViewModel(app) {
     @Inject
-    lateinit var networkQueue: NetworkQueueBase
+    lateinit var networkQueue: com.nevmem.moneysaver.network.NetworkQueue
 
     val state: MutableLiveData<RequestState> = MutableLiveData(LoadingState)
 

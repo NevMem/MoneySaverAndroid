@@ -17,7 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.app.activity.SettingsActivity
-import com.nevmem.moneysaver.app.data.UserHolder
+import com.nevmem.moneysaver.auth.UserHolder
 import com.nevmem.moneysaver.app.data.repositories.InfoRepository
 import com.nevmem.moneysaver.app.data.util.LoadingState
 import kotlinx.android.synthetic.main.dashboard_page_fragment.*
@@ -29,7 +29,7 @@ class DashboardFragment : Fragment() {
     lateinit var infoRepo: InfoRepository
 
     @Inject
-    lateinit var userHolder: UserHolder
+    lateinit var userHolder: com.nevmem.moneysaver.auth.UserHolder
 
     lateinit var viewModel: DashboardFragmentViewModel
 
@@ -71,7 +71,7 @@ class DashboardFragment : Fragment() {
             sumDayChart.invalidate()
         })
 
-        userName.text = viewModel.userHolder().firstName
+        userName.text = viewModel.user().firstName
 
         viewModel.state().observe(this, Observer {
             refreshLayout.isRefreshing = it != null && it is LoadingState

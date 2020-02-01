@@ -3,6 +3,7 @@ package com.nevmem.moneysaver.app.activity.adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,8 @@ class MonthDescriptionLabelsAdapter(private var ctx: Context) :
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.name.text = data[position].name
-        holder.badge.background.setColorFilter(data[position].color, PorterDuff.Mode.MULTIPLY)
+        holder.badge.background.colorFilter =
+            PorterDuffColorFilter(data[position].color, PorterDuff.Mode.MULTIPLY)
         holder.value.text = TypeUtils.formatDouble(data[position].value)
     }
 

@@ -1,6 +1,6 @@
 package com.nevmem.moneysaver.app.data.util
 
-import com.nevmem.moneysaver.Vars
+import com.nevmem.moneysaver.common.Vars
 import com.nevmem.moneysaver.app.data.Info
 import com.nevmem.moneysaver.app.data.MonthDescription
 import com.nevmem.moneysaver.app.data.util.ParseUtils.Companion.optDouble

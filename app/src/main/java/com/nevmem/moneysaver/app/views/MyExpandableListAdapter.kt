@@ -31,4 +31,7 @@ interface MyExpandableListAdapter {
     fun getGroupCount(): Int
 
     fun getGroup(groupPosition: Int): Any
+
+    fun onAttachedToWindow()
+    fun onDetachedFromWindow()
 }

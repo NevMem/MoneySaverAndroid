@@ -61,7 +61,7 @@ class OfflineInfoRepositoryImpl @Inject constructor() : InfoRepository {
         return mediator
     }
 
-    private fun makeInfo(records: ArrayList<Record>): Info {
+    private fun makeInfo(records: List<Record>): Info {
         val currentDate = RecordDate.currentDate()
         val weekBefore = DateHelper.dayBefore(currentDate, 7)
         val thirtyDaysBefore = DateHelper.dayBefore(currentDate, 30)
@@ -140,7 +140,7 @@ class OfflineInfoRepositoryImpl @Inject constructor() : InfoRepository {
         return info
     }
 
-    private fun makeMonthDescriptions(records: ArrayList<Record>): List<MonthDescription> {
+    private fun makeMonthDescriptions(records: List<Record>): List<MonthDescription> {
         val result = ArrayList<MonthDescription>()
 
         val map = HashMap<String, MonthDescription>()

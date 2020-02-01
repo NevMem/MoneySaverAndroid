@@ -82,7 +82,7 @@
                     android:background="@drawable/login_page_login_button"
                     android:textColor="@color/backgroundColor"
                     android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="parent" android:onClick="onLoginButtonClick"
+                    app:layout_constraintEnd_toEndOf="parent"
             />
 
 

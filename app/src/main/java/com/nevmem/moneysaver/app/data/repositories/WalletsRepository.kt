@@ -4,9 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log.i
 import androidx.lifecycle.MutableLiveData
-import com.nevmem.moneysaver.Vars
-import com.nevmem.moneysaver.app.data.NetworkQueueBase
-import com.nevmem.moneysaver.app.data.UserHolder
+import com.nevmem.moneysaver.common.Vars
 import com.nevmem.moneysaver.app.data.util.*
 import com.nevmem.moneysaver.app.room.AppDatabase
 import com.nevmem.moneysaver.app.room.entity.Wallet
@@ -17,8 +15,8 @@ import javax.inject.Singleton
 @Singleton
 class WalletsRepository @Inject constructor(
     var appDatabase: AppDatabase,
-    var networkQueue: NetworkQueueBase,
-    var userHolder: UserHolder,
+    var networkQueue: com.nevmem.moneysaver.network.NetworkQueue,
+    var userHolder: com.nevmem.moneysaver.auth.UserHolder,
     var executor: Executor
 ) {
     var loading = MutableLiveData<Boolean>(true)

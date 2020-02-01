@@ -2,11 +2,9 @@ package com.nevmem.moneysaver.app.data.repositories
 
 import android.util.Log.i
 import androidx.lifecycle.MutableLiveData
-import com.nevmem.moneysaver.Vars
+import com.nevmem.moneysaver.common.Vars
 import com.nevmem.moneysaver.app.data.Info
 import com.nevmem.moneysaver.app.data.MonthDescription
-import com.nevmem.moneysaver.app.data.NetworkQueueBase
-import com.nevmem.moneysaver.app.data.UserHolder
 import com.nevmem.moneysaver.app.data.util.*
 import com.nevmem.moneysaver.app.room.AppDatabase
 import java.util.concurrent.Executor
@@ -16,8 +14,8 @@ import javax.inject.Singleton
 @Singleton
 class OnlineInfoRepositoryImpl
 @Inject constructor(
-    var networkQueue: NetworkQueueBase, var appDatabase: AppDatabase,
-    var executor: Executor, var userHolder: UserHolder
+    var networkQueue: com.nevmem.moneysaver.network.NetworkQueue, var appDatabase: AppDatabase,
+    var executor: Executor, var userHolder: com.nevmem.moneysaver.auth.UserHolder
 ) : InfoRepository {
     private var tag = "ONLINE_INFO_REPOSITORY"
     private var info = MutableLiveData<Info>(Info())

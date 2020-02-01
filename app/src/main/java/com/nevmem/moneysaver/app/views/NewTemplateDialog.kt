@@ -13,6 +13,8 @@ import com.nevmem.moneysaver.app.data.TemplateBase
 import com.nevmem.moneysaver.app.data.repositories.TagsRepository
 import com.nevmem.moneysaver.app.data.repositories.WalletsRepository
 import com.nevmem.moneysaver.app.views.utils.DialogsHelper
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.new_template_dialog.view.*
 import javax.inject.Inject
 
@@ -25,6 +27,8 @@ class NewTemplateDialog : AppCompatDialogFragment() {
     lateinit var walletsRepo: WalletsRepository
     @Inject
     lateinit var tagsRepo: TagsRepository
+
+    private val subscriptions = CompositeDisposable()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity!!, R.style.CustomDialogStyle)
@@ -47,16 +51,28 @@ class NewTemplateDialog : AppCompatDialogFragment() {
             .create()
     }
 
+    override fun onResume() {
+        super.onResume()
+        view?.let { setupObservers(it) }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        subscriptions.dispose()
+    }
+
     private fun setupObservers(v: View) {
         (activity!!.applicationContext as App).appComponent.inject(this)
-        tagsRepo.tags.observe(activity!!, Observer {
-            if (it != null) {
-                val buffer = ArrayList<String>()
-                it.forEach { value -> buffer.add(value.name) }
-                v.newTemplateTag.adapter =
-                    ArrayAdapter(activity!!, R.layout.default_spinner_item_layout, buffer)
-            }
-        })
+        subscriptions.add(tagsRepo.tags
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                if (it != null) {
+                    val buffer = ArrayList<String>()
+                    it.forEach { value -> buffer.add(value.name) }
+                    v.newTemplateTag.adapter =
+                        ArrayAdapter(activity!!, R.layout.default_spinner_item_layout, buffer)
+                }
+            })
         walletsRepo.wallets.observe(activity!!, Observer {
             if (it != null) {
                 val buffer = ArrayList<String>()

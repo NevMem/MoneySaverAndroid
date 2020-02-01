@@ -13,18 +13,15 @@ class App : Application() {
 
     var appComponent: AppComponent
 
+    private val tag = "App"
+
     init {
-        i("APP_CLASS", "App() init method was called")
+        i(tag, "Components initialization")
         info = Info()
 
         appComponent = DaggerAppComponent.builder()
             .dataModule(DataModule(this))
             .networkModule(NetworkModule(this))
             .build()
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        i("APP_CLASS", "onCreate method was called")
     }
 }

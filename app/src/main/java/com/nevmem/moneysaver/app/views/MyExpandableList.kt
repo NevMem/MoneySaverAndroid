@@ -28,16 +28,6 @@ class MyExpandableList : LinearLayout {
 
     init {
         orientation = VERTICAL
-    }
-
-    private fun getGroupView(index: Int, isExpanded: Boolean): View {
-        return when (isExpanded) {
-            true -> groupViewsExpanded[index]
-            false -> groupViewsMinimized[index]
-        }
-    }
-
-    init {
         mDataObserver.observe {
             children.forEach {
                 it.forEach { view ->
@@ -57,6 +47,25 @@ class MyExpandableList : LinearLayout {
         }
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        mAdapter?.onAttachedToWindow()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        mAdapter?.onDetachedFromWindow()
+    }
+
+    override fun shouldDelayChildPressedState(): Boolean = false
+
+    private fun getGroupView(index: Int, isExpanded: Boolean): View {
+        return when (isExpanded) {
+            true -> groupViewsExpanded[index]
+            false -> groupViewsMinimized[index]
+        }
+    }
+
     private fun trigger(index: Int) {
         mExpanded[index] = !mExpanded[index]
         getGroupView(index, !mExpanded[index]).visibility = View.GONE
@@ -69,8 +78,6 @@ class MyExpandableList : LinearLayout {
             }
         }
     }
-
-    override fun shouldDelayChildPressedState(): Boolean = false
 
     private fun revalidateSize() {
         mAdapter?.let {

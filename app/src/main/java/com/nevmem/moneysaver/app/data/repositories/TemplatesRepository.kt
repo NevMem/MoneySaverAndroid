@@ -6,11 +6,9 @@ import android.os.Looper
 import android.util.Log.i
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.nevmem.moneysaver.Vars
-import com.nevmem.moneysaver.app.data.NetworkQueueBase
+import com.nevmem.moneysaver.common.Vars
 import com.nevmem.moneysaver.app.data.Template
 import com.nevmem.moneysaver.app.data.TemplateBase
-import com.nevmem.moneysaver.app.data.UserHolder
 import com.nevmem.moneysaver.app.room.AppDatabase
 import com.nevmem.moneysaver.app.room.entity.StoredTemplate
 import org.json.JSONArray
@@ -23,8 +21,8 @@ import kotlin.collections.ArrayList
 
 @Singleton
 class TemplatesRepository @Inject constructor(
-    private var networkQueue: NetworkQueueBase,
-    private var userHolder: UserHolder,
+    private var networkQueue: com.nevmem.moneysaver.network.NetworkQueue,
+    private var userHolder: com.nevmem.moneysaver.auth.UserHolder,
     private var appDatabase: AppDatabase,
     private var context: Context,
     private var executor: Executor
@@ -170,7 +168,8 @@ class TemplatesRepository @Inject constructor(
         params.put("templateId", templates.value!![templateIndex].id)
         params.put("date", createDate())
         i("TR", params.toString())
-        networkQueue.infinitePostJsonObjectRequest(Vars.ServerApiUseTemplate, params,
+        networkQueue.infinitePostJsonObjectRequest(
+            Vars.ServerApiUseTemplate, params,
             {
                 i("TR", it.toString())
                 if (it.has("type")) {
