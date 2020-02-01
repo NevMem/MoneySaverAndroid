@@ -1,22 +1,23 @@
 package com.nevmem.moneysaver.app.views
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.app.views.utils.DialogsHelper
 import kotlinx.android.synthetic.main.one_string_dialog.view.*
 
-class OneStringDialog(private var header: String, private var description: String) : AppCompatDialogFragment() {
+class OneStringDialog(private var header: Int, private var description: Int) : AppCompatDialogFragment() {
+
     private var onOkListener: ((String) -> Unit)? = null
     private var onDismissListener: (() -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = DialogsHelper.createView(activity!!, R.layout.one_string_dialog)
-        view.description.text = description
+        view.description.text = context?.getString(description) ?: ""
 
-        val builder = AlertDialog.Builder(activity!!, R.style.CustomDialogStyle)
+        val builder = AlertDialog.Builder(context!!, R.style.CustomDialogStyle)
         return builder
             .setTitle(header)
             .setView(view)

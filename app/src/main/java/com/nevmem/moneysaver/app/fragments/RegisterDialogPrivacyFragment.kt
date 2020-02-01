@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.nevmem.moneysaver.R
 import com.nevmem.moneysaver.app.data.util.*
 import kotlinx.android.synthetic.main.register_dialog_privacy.*
+import kotlinx.android.synthetic.main.register_dialog_privacy.view.*
 
 class RegisterDialogPrivacyFragment : WellFilledCheckableFragment() {
     private lateinit var viewModel: RegisterDialogPrivacyFragmentViewModel
@@ -62,7 +63,11 @@ class RegisterDialogPrivacyFragment : WellFilledCheckableFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.register_dialog_privacy, container, false)
+        return inflater.inflate(R.layout.register_dialog_privacy, container, false).also {
+            it.checkBoxLabel.setOnClickListener { _ ->
+                it.checkBox.isChecked = !checkBox.isChecked
+            }
+        }
     }
 
     override fun isWellFilled(): FillInfo {

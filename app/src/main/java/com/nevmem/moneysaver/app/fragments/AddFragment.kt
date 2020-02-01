@@ -19,12 +19,16 @@ import com.nevmem.moneysaver.app.data.util.NoneState
 import com.nevmem.moneysaver.app.data.util.SuccessState
 import com.nevmem.moneysaver.app.views.InfoDialog
 import com.nevmem.moneysaver.app.views.OneStringDialog
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.add_record_fragment.*
 
 
 class AddFragment : Fragment() {
     lateinit var app: App
     private lateinit var viewModel: AddFragmentViewModel
+
+    private val subscriptions = CompositeDisposable()
 
     init {
         i("ADD_FRAGMENT", "initialising AddFragment")
@@ -44,20 +48,6 @@ class AddFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.tags.observe(this, Observer {
-            if (it == null)
-                return@Observer
-            val strings = it.map { tag -> tag.name }
-            val alreadyPicked = tags.selectedItem
-            tags.adapter =
-                ArrayAdapter<String>(app, R.layout.default_spinner_item_layout, strings)
-            if (alreadyPicked != null) {
-                val index = strings.indexOfFirst { value -> value == alreadyPicked }
-                if (index != -1)
-                    tags.setSelection(index)
-            }
-        })
-
         viewModel.wallets.observe(this, Observer {
             if (it == null)
                 return@Observer
@@ -162,8 +152,31 @@ class AddFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        subscriptions.add(viewModel.tags
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                val strings = it.map { tag -> tag.name }
+                val alreadyPicked = tags.selectedItem
+                tags.adapter =
+                    ArrayAdapter<String>(app, R.layout.default_spinner_item_layout, strings)
+                if (alreadyPicked != null) {
+                    val index = strings.indexOfFirst { value -> value == alreadyPicked }
+                    if (index != -1)
+                        tags.setSelection(index)
+                }
+            })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        subscriptions.dispose()
+    }
+
     private fun createTag() {
-        val dialog = OneStringDialog("Create tag", "Please choose special unique name for new tag")
+        val dialog = OneStringDialog(
+            R.string.create_tag_string, R.string.create_tag_description_string)
         dialog.show(activity!!.supportFragmentManager, "create_tag_dialog")
         dialog.setOnOkListener {
             viewModel.addTag(it)
@@ -171,7 +184,8 @@ class AddFragment : Fragment() {
     }
 
     private fun createWallet() {
-        val dialog = OneStringDialog("Create wallet", "Please choose special unique name for new wallet")
+        val dialog = OneStringDialog(
+            R.string.create_wallet_string, R.string.create_wallet_description_string)
         dialog.show(activity!!.supportFragmentManager, "create_wallet_dialog")
         dialog.setOnOkListener {
             viewModel.addWallet(it)

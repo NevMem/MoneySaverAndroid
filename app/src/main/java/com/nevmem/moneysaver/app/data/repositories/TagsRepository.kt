@@ -11,10 +11,9 @@ import com.nevmem.moneysaver.common.data.ByHourStatistics
 import com.nevmem.moneysaver.common.data.Record
 import com.nevmem.moneysaver.common.data.RecordDate
 import com.nevmem.moneysaver.common.data.Tag
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.functions.BiFunction
-import io.reactivex.rxjava3.subjects.BehaviorSubject
-import java.util.*
+import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
+import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.Executor
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,33 +26,32 @@ class TagsRepository @Inject constructor(
     val appDatabase: AppDatabase,
     val executor: Executor,
     val userHolder: com.nevmem.moneysaver.auth.UserHolder,
-    val historyRepository: HistoryRepository,
-    val settingsManager: SettingsManager
+    historyRepository: HistoryRepository,
+    private val settingsManager: SettingsManager
 ) {
+    private var logTag = "TAGS_REPOSITORY"
+
     val loading = MutableLiveData<Boolean>(false)
     val error = MutableLiveData<String>("")
-    val tags = MutableLiveData<List<Tag>>(ArrayList())
 
-    val subject = BehaviorSubject.create<List<Tag>>()
+    private val tagsList = BehaviorSubject.create<List<Tag>>()
 
     var addingState = MutableLiveData<RequestState>(NoneState)
 
-    private var tag = "TAGS_REPOSITORY"
+    val tags: Observable<List<Tag>> = Observable
+        .combineLatest(
+            tagsList,
+            historyRepository.historyObservable(),
+            BiFunction<List<Tag>, List<Record>, Pair<List<Tag>, ByHourStatistics>>
+            { list, history -> Pair(list, DataUtils.collectByHourStatistics(history)) })
+        .map {
+            applyTransform(it.first, it.second)
+        }
 
     init {
-        i(tag, "init")
+        i(logTag, "init")
         loadFromDatabase()
         tryUpdate()
-
-        Observable
-            .combineLatest(
-                subject,
-                historyRepository.historyObservable(),
-                BiFunction<List<Tag>, List<Record>, Pair<List<Tag>, ByHourStatistics>>
-                    { list, history -> Pair(list, DataUtils.collectByHourStatistics(history)) })
-            .subscribe {
-                tags.postValue(applyTransform(it.first, it.second))
-            }
     }
 
     fun tryUpdate() {
@@ -108,7 +106,7 @@ class TagsRepository @Inject constructor(
                 names.add(it.name)
                 if (appDatabase.tagsDao().findByName(it.name) == null) {
                     appDatabase.tagsDao().insert(it)
-                    i(tag, "Inserting")
+                    i(logTag, "Inserting")
                 }
             }
             with (appDatabase.tagsDao()) {
@@ -125,7 +123,7 @@ class TagsRepository @Inject constructor(
     private fun loadFromDatabase() {
         executor.execute {
             with (appDatabase.tagsDao()) {
-                subject.onNext(getAll())
+                tagsList.onNext(getAll())
             }
         }
     }
@@ -144,11 +142,7 @@ class TagsRepository @Inject constructor(
     }
 
     fun getTagsAsList(): List<String> {
-        val result = ArrayList<String>()
-        tags.value?.forEach {
-            result.add(it.name)
-        }
-        return result
+        return tags.blockingFirst().map { it.name }
     }
 
     fun receivedAddingError() {
