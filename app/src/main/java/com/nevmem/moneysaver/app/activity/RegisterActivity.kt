@@ -81,7 +81,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
     private fun tryGoToHomePage() {
-        if (viewModel.user == null) throw IllegalStateException("User in view model cannot be null after on success calling")
+        checkNotNull(viewModel.user) { "User in view model cannot be null after on success calling" }
         val curUser = viewModel.user
         if (curUser != null)
             userHolder.initializeByUser(curUser)
@@ -124,7 +124,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun showLoading() {
         if (popup == null) initOverlay()
-        overlay.let { it?.setLoading("Loading") }
+        overlay?.apply { setLoading("Loading") }
     }
 
     private fun showError(error: String) {
@@ -173,7 +173,7 @@ class RegisterActivity : AppCompatActivity() {
         if (index >= 1) {
             index -= 1
             switchFragmentRight(index)
-            nextButton.text = "Next"
+            nextButton.text = getString(R.string.next_button_string)
         }
     }
 
@@ -195,7 +195,7 @@ class RegisterActivity : AppCompatActivity() {
             index += 1
             switchFragmentLeft(index)
             if (index == dialogFragments.size - 1) {
-                nextButton.text = "Register"
+                nextButton.text = getString(R.string.register)
             }
         } else {
             proceedRegistration()

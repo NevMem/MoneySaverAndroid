@@ -66,6 +66,7 @@
     <string name="prev_button_string">Prev</string>
     <string name="previous_month_string">Previous month</string>
     <string name="privacy_convention_string">I read and agreed this convention</string>
+    <string name="register">Register</string>
     <string name="register_page_name_hint_string">Name</string>
     <string name="register_page_surname_hint_string">Surname</string>
     <string name="removed_string">Removed</string>
