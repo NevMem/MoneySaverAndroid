@@ -32,8 +32,7 @@ class AddFragmentViewModel(application: Application) : AndroidViewModel(applicat
         tagsRepo.tryUpdate()
     }
 
-    val tags: MutableLiveData<List<Tag>>
-        get() = tagsRepo.tags
+    val tags = tagsRepo.tags
 
     val wallets: MutableLiveData<List<Wallet>>
         get() = walletsRepo.wallets

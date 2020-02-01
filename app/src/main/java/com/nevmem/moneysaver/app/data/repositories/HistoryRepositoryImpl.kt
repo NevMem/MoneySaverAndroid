@@ -9,11 +9,12 @@ import com.nevmem.moneysaver.common.Vars
 import com.nevmem.moneysaver.common.data.Record
 import com.nevmem.moneysaver.app.data.util.*
 import com.nevmem.moneysaver.app.room.AppDatabase
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.Executor
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.collections.HashSet
 
 @Singleton
 class HistoryRepositoryImpl @Inject constructor(
@@ -23,10 +24,10 @@ class HistoryRepositoryImpl @Inject constructor(
     private var appDatabase: AppDatabase
 ) : HistoryRepository {
     private val loading = MutableLiveData<Boolean>(false)
-    private val history = MutableLiveData<ArrayList<Record>>(ArrayList())
+    private val history = MutableLiveData<List<Record>>(ArrayList())
     private val error = MutableLiveData<String>("")
 
-    private val subject = BehaviorSubject.create<ArrayList<Record>>()
+    private val subject = BehaviorSubject.create<List<Record>>()
 
     private val editingState = MutableLiveData<RequestState>(NoneState)
 
@@ -40,9 +41,9 @@ class HistoryRepositoryImpl @Inject constructor(
 
     override fun editingState(): LiveData<RequestState> = editingState
 
-    override fun history(): LiveData<ArrayList<Record>> = history
+    override fun history(): LiveData<List<Record>> = history
 
-    override fun historyObservable(): Observable<ArrayList<Record>> = subject
+    override fun historyObservable(): Observable<List<Record>> = subject
 
     override fun error(): LiveData<String> = error
 
@@ -52,7 +53,7 @@ class HistoryRepositoryImpl @Inject constructor(
         loadFromNet()
     }
 
-    private fun resolveConflicts(data: ArrayList<Record>) {
+    private fun resolveConflicts(data: List<Record>) {
         i(tag, "Resolving conflicts")
         executor.execute {
             var inserted = 0
@@ -137,7 +138,9 @@ class HistoryRepositoryImpl @Inject constructor(
                 i(tag, "Parsed some info")
                 resolveConflicts(
                     try {
-                        parsed.parsed as ArrayList<Record>
+                        (parsed.parsed as ArrayList<*>?)?.let { array ->
+                            array.map { rec -> rec as Record }
+                        } ?: emptyList()
                     } catch (e: ClassCastException) {
                         ArrayList<Record>()
                     }

@@ -15,7 +15,7 @@ import org.json.JSONObject
 import javax.inject.Inject
 
 class RegisterPageViewModel(app: Application) : AndroidViewModel(app) {
-    val tag: String = "REG_PAGE_VIEW_MODEL"
+    val logTag: String = "REG_PAGE_VIEW_MODEL"
 
     val loading = MutableLiveData<Boolean>(false)
 
@@ -75,7 +75,7 @@ class RegisterPageViewModel(app: Application) : AndroidViewModel(app) {
                     try {
                         postSuccess(parsed.parsed as com.nevmem.moneysaver.auth.User)
                     } catch (e: ClassCastException) {
-                        d("REG page VM", e.message)
+                        d(logTag, "REG page VM ${e.message}")
                         postError("Bad server response")
                     }
                 }

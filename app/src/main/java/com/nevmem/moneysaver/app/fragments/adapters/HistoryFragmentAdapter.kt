@@ -37,8 +37,8 @@ class HistoryFragmentAdapter(
     lifeCycleOwner: LifecycleOwner
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var history: ArrayList<Record> = ArrayList()
-    private var filtered: ArrayList<Record> = ArrayList()
+    private var history: List<Record> = emptyList()
+    private var filtered: List<Record> = emptyList()
     private var animationPosition: Int = 0
 
     private val transitionsLocker = TransitionsLocker()
@@ -150,7 +150,7 @@ class HistoryFragmentAdapter(
         when {
             holder.itemViewType == ViewHolderType.HEADER.type -> {
                 val header = holder as HeaderViewHolder
-                header.headerText.text = "Browse your outcomes"
+                header.headerText.text = activity.getString(R.string.browse_outcomes)
                 holder.searchFiled.setText(filter.toCharArray(), 0, filter.length)
                 header.searchFiled.addTextChangedListener(object : TextWatcher {
                     override fun afterTextChanged(s: Editable?) {
@@ -238,10 +238,10 @@ class HistoryFragmentAdapter(
         init {
             searchFiled.setText(filter)
             val addTag = Chip(activity)
-            addTag.text = "+ Add"
+            addTag.text = activity.getString(R.string.plus_add)
             chipGroup.addView(addTag)
             addTag.setOnClickListener {
-                val dialog = ChooseOneFromListDialog("Choose tag for filter", tags.getUnToggled())
+                val dialog = ChooseOneFromListDialog(R.string.choose_tag_for_filter, tags.getUnToggled())
                 dialog.show(activity.supportFragmentManager, "choose_tag_for_search")
                 dialog.setOkListener {
                     tags.enable(it)

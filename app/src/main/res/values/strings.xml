@@ -76,4 +76,17 @@
     <string name="features_string">Features</string>
     <string name="deleted_string">Deleted</string>
     <string name="undo_string">Undo</string>
+    <string name="click_to_remove_string">click to remove</string>
+    <string name="wallets_string">Wallets</string>
+    <string name="tags_string">Tags</string>
+    <string name="removed_string">Removed</string>
+    <string name="error_string">Error</string>
+    <string name="removing_string">Removing…</string>
+    <string name="create_tag_string">Create tag</string>
+    <string name="create_tag_description_string">Please choose special unique name for new tag</string>
+    <string name="create_wallet_string">Create wallet</string>
+    <string name="create_wallet_description_string">Please choose special unique name for new wallet</string>
+    <string name="choose_tag_for_filter">Choose tag for filter</string>
+    <string name="browse_outcomes">Browse your outcomes</string>
+    <string name="plus_add">+ Add</string>
 </resources>

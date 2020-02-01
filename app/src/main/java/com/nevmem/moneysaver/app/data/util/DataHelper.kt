@@ -7,10 +7,10 @@ abstract class DataHelper {
          * returns null if NOT
          * returns sorted ArrayList of Ints which to remove to make array be equals to suspect
          */
-        fun <T>isSubSequence(array: ArrayList<T>, suspect: ArrayList<T>): ArrayList<Int>? {
+        fun <T>isSubSequence(array: List<T>, suspect: List<T>): ArrayList<Int>? {
             var top = 0
             val indices = ArrayList<Int>()
-            for (i in 0 until array.size) {
+            for (i in array.indices) {
                 if (top < suspect.size && array[i] == suspect[top]) {
                     top += 1
                 } else {
